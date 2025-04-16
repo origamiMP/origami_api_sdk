@@ -18,7 +18,7 @@ abstract class RestClientRepository
      * @throws GuzzleException
      */
     public function get(
-        $resource,
+        string $resource,
         ?RequestParamBag $paramBag = null,
         bool $doBeforeApiCall = true,
         bool $doAfterApiCall = true,
@@ -36,7 +36,7 @@ abstract class RestClientRepository
      * @throws GuzzleException
      */
     public function post(
-        $resource,
+        string $resource,
         ?RequestParamBag $paramBag = null,
         bool $doBeforeApiCall = true,
         bool $doAfterApiCall = true,
@@ -54,7 +54,7 @@ abstract class RestClientRepository
      * @throws GuzzleException
      */
     public function put(
-        $resource,
+        string $resource,
         ?RequestParamBag $paramBag = null,
         bool $doBeforeApiCall = true,
         bool $doAfterApiCall = true,
@@ -72,7 +72,7 @@ abstract class RestClientRepository
      * @throws GuzzleException
      */
     public function patch(
-        $resource,
+        string $resource,
         ?RequestParamBag $paramBag = null,
         bool $doBeforeApiCall = true,
         bool $doAfterApiCall = true,
@@ -90,7 +90,7 @@ abstract class RestClientRepository
      * @throws GuzzleException
      */
     public function delete(
-        $resource,
+        string $resource,
         ?RequestParamBag $paramBag = null,
         bool $doBeforeApiCall = true,
         bool $doAfterApiCall = true,
@@ -120,7 +120,7 @@ abstract class RestClientRepository
     protected function callRestApi(
         HttpRequestMethodEnum $method,
         string $resource,
-        RequestParamBag $paramBag,
+        ?RequestParamBag $paramBag,
         bool $doBeforeApiCall = true,
         bool $doAfterApiCall = true,
     ): ResponseInterface {
@@ -163,7 +163,7 @@ abstract class RestClientRepository
     protected function beforeApiCall(
         HttpRequestMethodEnum $method,
         string $resource,
-        RequestParamBag $paramBag,
+        ?RequestParamBag $paramBag,
     ): void {
         //
     }
@@ -172,7 +172,7 @@ abstract class RestClientRepository
         ResponseInterface &$response,
         HttpRequestMethodEnum $method,
         string $resource,
-        RequestParamBag $paramBag,
+        ?RequestParamBag $paramBag,
         ?BadResponseException $exception = null
     ): void {
         //
@@ -202,7 +202,7 @@ abstract class RestClientRepository
 
     abstract protected function getGuzzleParamsForRequest(
         HttpRequestMethodEnum $method,
-        RequestParamBag $paramBag,
+        ?RequestParamBag $paramBag,
     ): array;
 
     abstract protected function getRestApiBaseUrl(): string;

@@ -1,0 +1,45 @@
+name: PHPStan
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '*.*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  larastan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup nightly PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, redis
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist
+
+      - name: PHPStan check
+        run: ./vendor/bin/phpstan analyse -v
