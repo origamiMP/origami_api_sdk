@@ -1,0 +1,23 @@
+{
+    "name": "origami-mp/origami-api-sdk",
+    "description": "A lightweight package to interact easily with Origami API.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Origami Marketplace",
+            "email": "developers@origami-marketplace.com"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9",
+        "illuminate/support": "^12.9",
+        "nesbot/carbon": "^3.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "OrigamiMp\\OrigamiApiSdk\\": "src/"
+        }
+    }
+}
