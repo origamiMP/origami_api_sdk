@@ -5,8 +5,9 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
-use OrigamiMp\OrigamiApiSdk\Enums\HttpRequestMethodEnum;
-use OrigamiMp\OrigamiApiSdk\Enums\HttpRequestParamsTypeEnum;
+use Illuminate\Support\Arr;
+use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamsBags\RequestParamBag;
 use Psr\Http\Message\ResponseInterface;
 
@@ -200,6 +201,20 @@ abstract class RestClientRepository
         return '';
     }
 
+    protected function mergeCommonHeadersInGuzzleParams(array $guzzleParams): array
+    {
+        $headersFromParamBag = Arr::get($guzzleParams, 'headers', []);
+
+        $finalHeaders = array_merge(
+            $this->getCommonHeaders(),
+            $headersFromParamBag,
+        );
+
+        $guzzleParams['headers'] = $finalHeaders;
+
+        return $guzzleParams;
+    }
+
     abstract protected function getGuzzleParamsForRequest(
         HttpRequestMethodEnum $method,
         ?RequestParamBag $paramBag,
@@ -207,5 +222,9 @@ abstract class RestClientRepository
 
     abstract protected function getRestApiBaseUrl(): string;
 
-    abstract protected function handleRequestError(BadResponseException $exception): void;
+    /**
+     * Headers that will be added to every request made by this client. They can be overridden by the ones
+     * specified in the RequestParamBag.
+     */
+    abstract protected function getCommonHeaders(): array;
 }

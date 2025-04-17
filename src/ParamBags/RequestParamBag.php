@@ -1,8 +1,8 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamsBags;
+namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
-use OrigamiMp\OrigamiApiSdk\Enums\HttpRequestParamsTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 
 /**
  * This class is made to handle two use-cases :

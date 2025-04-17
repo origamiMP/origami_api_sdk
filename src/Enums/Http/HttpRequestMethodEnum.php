@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums;
+namespace OrigamiMp\OrigamiApiSdk\Enums\Http;
 
 enum HttpRequestMethodEnum: string
 {

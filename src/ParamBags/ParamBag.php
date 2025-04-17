@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamsBags;
+namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
