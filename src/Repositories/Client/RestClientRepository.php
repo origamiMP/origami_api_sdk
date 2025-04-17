@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
-use OrigamiMp\OrigamiApiSdk\ParamsBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class RestClientRepository
