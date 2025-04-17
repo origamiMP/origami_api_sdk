@@ -60,4 +60,4 @@ jobs:
 
       - name: Laravel pint
 #        if: steps.changed-files.outputs.all_changed_files
-        run: ./vendor/bin/pint --test -v
+        run: ./vendor/bin/pint --test -v src

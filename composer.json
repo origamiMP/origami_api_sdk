@@ -16,14 +16,20 @@
         "nesbot/carbon": "^3.9",
         "firebase/php-jwt": "^6.11"
     },
-    "autoload": {
-        "psr-4": {
-            "OrigamiMp\\OrigamiApiSdk\\": "src/"
-        }
-    },
     "require-dev": {
         "laravel/pint": "^1.22",
         "phpstan/phpstan": "^2.1",
-        "psy/psysh": "@stable"
+        "psy/psysh": "^0.12.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "OrigamiMp\\OrigamiApiSdk\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true
     }
 }
