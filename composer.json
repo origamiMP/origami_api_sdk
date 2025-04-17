@@ -13,7 +13,8 @@
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.9",
         "illuminate/support": "^12.9",
-        "nesbot/carbon": "^3.9"
+        "nesbot/carbon": "^3.9",
+        "firebase/php-jwt": "^6.11"
     },
     "autoload": {
         "psr-4": {
@@ -22,6 +23,7 @@
     },
     "require-dev": {
         "laravel/pint": "^1.22",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "psy/psysh": "@stable"
     }
 }
