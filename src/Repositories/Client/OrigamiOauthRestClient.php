@@ -1,0 +1,55 @@
+<?php
+
+namespace OrigamiMp\OrigamiApiSdk\Repositories\Client;
+
+use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+
+class OrigamiOauthRestClient extends OrigamiRestClient
+{
+    /**
+     * ID of the API auth client. Supplied by Origami.
+     */
+    private string $apiClientId;
+
+    /**
+     * Secret of the API auth client. Supplied by Origami.
+     */
+    private string $apiClientSecret;
+
+    public function __construct(string $apiUri, string $apiClientId, string $apiClientSecret)
+    {
+        parent::__construct($apiUri);
+
+        $this->apiClientId = $apiClientId;
+        $this->apiClientSecret = $apiClientSecret;
+    }
+
+    public function getApiClientId(): string
+    {
+        return $this->apiClientId;
+    }
+
+    public function getApiClientSecret(): string
+    {
+        return $this->apiClientSecret;
+    }
+
+    protected function getGuzzleParamsForRequest(HttpRequestMethodEnum $method, ?RequestParamBag $paramBag): array
+    {
+        $guzzleParamsFromParamBag = $paramBag?->asGuzzleParams() ?? [];
+
+        return $this->mergeCommonHeadersInGuzzleParams($guzzleParamsFromParamBag);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getCommonHeaders(): array
+    {
+        return [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+    }
+}
