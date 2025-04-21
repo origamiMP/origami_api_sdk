@@ -9,7 +9,7 @@ class OrigamiApiUnknownException extends OrigamiApiException
 {
     public ?OrigamiApiErrorDto $errorDto;
 
-    public function __construct(string $message = "", int $code = 0, ?\Throwable $previous = null, ?OrigamiApiErrorDto $errorDto = null)
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, ?OrigamiApiErrorDto $errorDto = null)
     {
         parent::__construct($message, $code, $previous);
 

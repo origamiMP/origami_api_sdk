@@ -41,8 +41,8 @@ class OrigamiApiErrorsDto extends ApiResponseDto
     public function getDefaultDataStructureToProperties(): array
     {
         return [
-            'status_code'    => 'statusCode',
-            'errors'         => fn ($errors) => $this->initErrorsProperty($errors),
+            'status_code' => 'statusCode',
+            'errors'      => fn ($errors) => $this->initErrorsProperty($errors),
         ];
     }
 

@@ -8,7 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
 class OrigamiApiMultipleException extends OrigamiApiException
 {
     /**
-     * @param  Collection|OrigamiApiErrorDto[] $errorDtos
+     * @param  Collection|OrigamiApiErrorDto[]  $errorDtos
      */
     public function __construct(protected Collection $errorDtos)
     {

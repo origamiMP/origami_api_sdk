@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Exceptions\Api;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
-use Throwable;
 
 abstract class OrigamiApiSingleException extends OrigamiApiException
 {

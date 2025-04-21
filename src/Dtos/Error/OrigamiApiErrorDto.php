@@ -66,7 +66,7 @@ class OrigamiApiErrorDto extends ApiResponseDto
             $msg .= " Error code {$this->errorCode} -";
         }
 
-        return $msg . " {$this->message}";
+        return "$msg {$this->message}";
     }
 
     protected function getCorrespondingExceptionToErrorCode(): ?OrigamiApiSingleException

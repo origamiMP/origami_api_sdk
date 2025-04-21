@@ -5,7 +5,6 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorsDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 

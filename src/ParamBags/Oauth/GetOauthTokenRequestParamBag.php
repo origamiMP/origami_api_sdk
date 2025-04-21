@@ -13,8 +13,7 @@ class GetOauthTokenRequestParamBag extends RequestParamBag
         public string $password,
         public ?string $client_id = null,
         public ?string $client_secret = null,
-    ) {
-    }
+    ) {}
 
     protected function getJsonRequestParamsList(): array
     {
