@@ -179,6 +179,8 @@ abstract class RestClientRepository
         //
     }
 
+    abstract protected function handleRequestError(BadResponseException $guzzleException): void;
+
     protected function getRequestParamsTypeDependingOnRequestMethod(
         HttpRequestMethodEnum $method
     ): HttpRequestParamsTypeEnum {
