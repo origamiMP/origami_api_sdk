@@ -78,17 +78,17 @@ abstract class ApiResponseDto
      */
     protected function fillPropertyWithData(string $dottedPath, mixed $propertyCaster): void
     {
-        $dataToHave = Arr::get(
-            objectToArray($this->apiResponse),
+        $dataToHave = data_get(
+            $this->apiResponse,
             $dottedPath,
-            JsonResponseErrorEnum::MISSING_PROPERTY
+            JsonResponseErrorEnum::MISSING_PROPERTY,
         );
 
         if ($dataToHave === JsonResponseErrorEnum::MISSING_PROPERTY) {
             throw (
-            $this->getDefaultNotConstructableException(
-                "No error sent back by API but '$dottedPath' is missing.",
-            )
+                $this->getDefaultNotConstructableException(
+                    "No error sent back by API but '$dottedPath' is missing.",
+                )
             );
         }
 
@@ -101,7 +101,7 @@ abstract class ApiResponseDto
         } catch (\Throwable $e) {
             throw (
                 $this->getDefaultNotConstructableException(
-                    "Could not assign data to property '$propertyCaster' : {$e->getMessage()}",
+                    "Could not assign data '$dottedPath' to property : {$e->getMessage()}",
                     $e,
                 )
             );

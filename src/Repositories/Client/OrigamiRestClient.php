@@ -4,6 +4,10 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Client;
 
 use GuzzleHttp\Exception\BadResponseException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorsDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
 abstract class OrigamiRestClient extends RestClientRepository
 {
@@ -23,19 +27,23 @@ abstract class OrigamiRestClient extends RestClientRepository
         return trim($this->apiUri, '/');
     }
 
-    protected function handleRequestError(BadResponseException $exception): void
+    /**
+     * @throws OrigamiApiException
+     */
+    protected function handleRequestError(BadResponseException $guzzleException): void
     {
-        $responseContent = $exception->getResponse()->getBody()->getContents();
+        $encodedResponseContent = $guzzleException->getResponse()->getBody()->getContents();
         // Rewind for next times some code will try to read body content
-        $exception->getResponse()->getBody()->rewind();
+        $guzzleException->getResponse()->getBody()->rewind();
+
+        $decodedResponseContent = json_decode($encodedResponseContent);
 
         try {
-            $errorDto = new OrigamiApiErrorsDto(json_decode($responseContent));
+            $errorDto = new OrigamiApiErrorsDto($decodedResponseContent);
 
             $errorDto->throwCorrespondingException();
-        } catch (\Throwable $exception) {
-            // TODO throw generic exception
-            throw new \Exception('NOT RECOGNIZED EXCEPTION');
+        } catch (ApiResponseDtoNotConstructableException $dtoNotConstructableException) {
+            throw OrigamiApiUnknownException::createFromGuzzleBadResponse($guzzleException);
         }
     }
 }

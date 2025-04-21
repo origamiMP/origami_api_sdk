@@ -1,0 +1,14 @@
+<?php
+
+namespace OrigamiMp\OrigamiApiSdk\Exceptions\Api;
+
+use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
+use Throwable;
+
+abstract class OrigamiApiSingleException extends OrigamiApiException
+{
+    public function __construct(protected OrigamiApiErrorDto $errorDto, $previous = null)
+    {
+        parent::__construct($this->errorDto->toString(), $this->errorDto->errorCode, $previous);
+    }
+}

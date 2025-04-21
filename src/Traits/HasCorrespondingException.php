@@ -4,5 +4,13 @@ namespace OrigamiMp\OrigamiApiSdk\Traits;
 
 trait HasCorrespondingException
 {
-    abstract public function throwCorrespondingException(): void;
+    /**
+     * @throws \Throwable
+     */
+    public function throwCorrespondingException(): void
+    {
+        throw $this->getCorrespondingException();
+    }
+
+    abstract public function getCorrespondingException(): \Throwable;
 }

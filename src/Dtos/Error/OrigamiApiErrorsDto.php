@@ -4,6 +4,8 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Error;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiMultipleException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Error\OrigamiApiErrorsDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\HasCorrespondingException;
@@ -40,16 +42,25 @@ class OrigamiApiErrorsDto extends ApiResponseDto
     {
         return [
             'status_code'    => 'statusCode',
-            'errors'         => fn ($errors) => $this->errors = collect($errors)->map(fn ($error) => new OrigamiApiErrorDto($error)),
+            'errors'         => fn ($errors) => $this->initErrorsProperty($errors),
         ];
     }
 
-    public function throwCorrespondingException(): void
+    public function getCorrespondingException(): OrigamiApiException
     {
         if ($this->errors->count() === 1) {
-            $this->errors[0]->throwCorrespondingException();
+            return $this->errors[0]->getCorrespondingException();
         }
 
-        // TODO handle multiple errors
+        return new OrigamiApiMultipleException($this->errors);
+    }
+
+    protected function initErrorsProperty(array $errors): void
+    {
+        if (count($errors) === 0) {
+            throw self::getDefaultNotConstructableException('The error list is empty.');
+        }
+
+        $this->errors = collect($errors)->map(fn ($error) => new OrigamiApiErrorDto($error));
     }
 }
