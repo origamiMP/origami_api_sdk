@@ -5,15 +5,19 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Oauth;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\GetOauthTokenGrantTypeParamEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class GetOauthTokenRequestParamBag extends RequestParamBag
+abstract class GetOauthTokenRequestParamBag extends RequestParamBag
 {
+    public GetOauthTokenGrantTypeParamEnum $grant_type;
+
+    public string $client_id;
+
+    public string $client_secret;
+
     public function __construct(
-        public GetOauthTokenGrantTypeParamEnum $grant_type,
-        public string $username,
-        public string $password,
-        public ?string $client_id = null,
-        public ?string $client_secret = null,
-    ) {}
+        GetOauthTokenGrantTypeParamEnum $grant_type,
+    ) {
+        $this->grant_type = $grant_type;
+    }
 
     protected function getJsonRequestParamsList(): array
     {
@@ -21,8 +25,6 @@ class GetOauthTokenRequestParamBag extends RequestParamBag
             'client_id',
             'client_secret',
             'grant_type',
-            'username',
-            'password',
         ];
     }
 }
