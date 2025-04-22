@@ -41,15 +41,4 @@ class OrigamiOauthRestClient extends OrigamiRestClient
 
         return $this->mergeCommonHeadersInGuzzleParams($guzzleParamsFromParamBag);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getCommonHeaders(): array
-    {
-        return [
-            'Accept'       => 'application/json',
-            'Content-Type' => 'application/json',
-        ];
-    }
 }

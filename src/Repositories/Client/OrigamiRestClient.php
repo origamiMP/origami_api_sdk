@@ -10,15 +10,20 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 
 abstract class OrigamiRestClient extends RestClientRepository
 {
+    const DEFAULT_USER_AGENT_PREFIX = 'OrigamiApiSdk';
+
     /**
      * Domain of the Origami API uri.
      * Ex : https://testing.sandbox-origami.net
      */
     private string $apiUri;
 
-    public function __construct(string $apiUri)
+    private string $userAgent;
+
+    public function __construct(string $apiUri, ?string $userAgent = null)
     {
         $this->apiUri = $apiUri;
+        $this->initUserAgent($userAgent);
     }
 
     protected function getRestApiBaseUrl(): string
@@ -44,5 +49,28 @@ abstract class OrigamiRestClient extends RestClientRepository
         } catch (ApiResponseDtoNotConstructableException $dtoNotConstructableException) {
             throw OrigamiApiUnknownException::createFromGuzzleBadResponse($guzzleException);
         }
+    }
+
+    protected function initUserAgent(?string $userAgent = null): void
+    {
+        $defaultPrefix = self::DEFAULT_USER_AGENT_PREFIX;
+        $sdkVersion = getOrigamiApiSdkVersion();
+        $defaultUserAgent = "$defaultPrefix/$sdkVersion";
+
+        $this->userAgent = ! is_null($userAgent)
+            ? "$userAgent ($defaultUserAgent)"
+            : $defaultUserAgent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getCommonHeaders(): array
+    {
+        return [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json',
+            'User-Agent'   => $this->userAgent,
+        ];
     }
 }
