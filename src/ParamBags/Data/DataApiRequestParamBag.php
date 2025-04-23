@@ -6,6 +6,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 abstract class DataApiRequestParamBag extends RequestParamBag
 {
+    // TODO DEV : Refactor includes, move them to DTOs
     public array $availableIncludes = [];
 
     public array $include = [];
