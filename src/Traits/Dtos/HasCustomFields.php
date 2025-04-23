@@ -26,8 +26,8 @@ trait HasCustomFields
         ];
     }
 
-    protected function initAdditionalInformation(array $additionalInformation): void
+    protected function initAdditionalInformation(object $additionalInformation): void
     {
-        $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldDto());
+        $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldDto($customField));
     }
 }

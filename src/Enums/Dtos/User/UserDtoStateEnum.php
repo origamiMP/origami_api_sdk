@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos;
+namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\User;
 
 enum UserDtoStateEnum: string
 {
