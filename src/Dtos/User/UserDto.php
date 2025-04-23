@@ -5,13 +5,12 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\UserDtoStateEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-// TODO DEV : Documentation
 class UserDto extends ApiResponseDto
 {
     use HasCustomFields, HasTimestamps;
@@ -26,27 +25,51 @@ class UserDto extends ApiResponseDto
 
     public string $email;
 
+    /**
+     * User-specific configuration used by Origami Back-office for certain behaviours.
+     */
     public ?string $externalConfiguration;
 
+    /**
+     * Users have an assigned language, which will be for example used when sending notifications to them.
+     */
     public ?int $languageId;
 
+    /**
+     * ISO code of the language of this User
+     */
     public ?string $languageIso;
 
+    /**
+     * Some Users are automatically created by Origami API when certain modules are installed. In this case,
+     * this field will be filled with the linked module id.
+     */
     public ?int $moduleId;
 
+    /**
+     * True if this User has access to seller features, such as tickets, creating / updating a product...
+     * This field can be updated depending on existing UserReports, or MFA validation.
+     */
     public bool $hasAccessToSellerFeatures;
 
     /**
+     * If UserReports are activated on your API, the state of this User will be updated depending on
+     * if it is reported or not.
+     *
      * May be undefined if not used by your Origami API.
      */
     public UserDtoStateEnum $state;
 
     /**
+     * If MFA module is activated on your API, will be true if this User is validated, false otherwise.
+     *
      * May be undefined if not used by your Origami API.
      */
     public bool $isAccountValidated;
 
     /**
+     * UserGroups to which this User has access when logged in.
+     *
      * May be undefined if the corresponding data was not included.
      *
      * @var UserGroupDto[]|Collection
@@ -103,6 +126,8 @@ class UserDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
+        $states = collect(UserDtoStateEnum::cases())->pluck('value');
+
         $rules = [
             'id'                            => ['required', 'integer'],
             'firstname'                     => ['required', 'string'],
@@ -114,7 +139,7 @@ class UserDto extends ApiResponseDto
             'language_iso'                  => ['present', 'nullable', 'string'],
             'module_id'                     => ['present', 'nullable', 'integer'],
             'has_access_to_seller_features' => ['required', 'boolean'],
-            'state'                         => [Rule::in([UserDtoStateEnum::BANNED, UserDtoStateEnum::ENABLED])],
+            'state'                         => [Rule::in($states)],
             'is_account_validated'          => ['boolean'],
         ];
 

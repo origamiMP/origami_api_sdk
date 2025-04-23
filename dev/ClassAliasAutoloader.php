@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Str;
 
-// TODO DEV : Documentation
+/**
+ * This class is highly inspired by Laravel Tinker alias autoloader. Since we are using Psy Shell without
+ * Tinker, the alias autoload feature was missing.
+ */
 class ClassAliasAutoloader
 {
     /**
