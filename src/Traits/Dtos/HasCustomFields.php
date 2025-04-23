@@ -28,6 +28,6 @@ trait HasCustomFields
 
     protected function initAdditionalInformation(array $additionalInformation): void
     {
-        $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldDto($customField));
+        $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldDto());
     }
 }

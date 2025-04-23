@@ -11,7 +11,7 @@ abstract class DataApiRequestParamBag extends RequestParamBag
     public array $include = [];
 
     /**
-     * @param  string[]  $includes Array of includes as strings. Ex : ['products', 'offers']
+     * @param  string[]  $includes  Array of includes as strings. Ex : ['products', 'offers']
      */
     public function setIncludes(array $includes): void
     {

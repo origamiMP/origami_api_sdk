@@ -12,6 +12,6 @@ class Validator extends BaseValidator
         array $messages = [],
         array $attributes = []
     ) {
-        parent::__construct(new DummyTranslator(), $data, $rules, $messages, $attributes);
+        parent::__construct(new DummyTranslator, $data, $rules, $messages, $attributes);
     }
 }

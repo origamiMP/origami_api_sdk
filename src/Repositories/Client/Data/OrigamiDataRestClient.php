@@ -32,7 +32,7 @@ class OrigamiDataRestClient extends OrigamiRestClient
         return $this->oauthTokenDto;
     }
 
-    public function getUserGroupId(): string
+    public function getUserGroupId(): ?int
     {
         return $this->userGroupId;
     }

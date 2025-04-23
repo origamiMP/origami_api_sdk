@@ -48,12 +48,12 @@ class Obj
             }
 
             $segment = match ($segment) {
-                '\*' => '*',
+                '\*'       => '*',
                 '\{first}' => '{first}',
-                '{first}' => array_key_first(is_array($target) ? $target : (new Collection($target))->all()),
-                '\{last}' => '{last}',
-                '{last}' => array_key_last(is_array($target) ? $target : (new Collection($target))->all()),
-                default => $segment,
+                '{first}'  => array_key_first(is_array($target) ? $target : (new Collection($target))->all()),
+                '\{last}'  => '{last}',
+                '{last}'   => array_key_last(is_array($target) ? $target : (new Collection($target))->all()),
+                default    => $segment,
             };
 
             if (Arr::accessible($target) && Arr::exists($target, $segment)) {
