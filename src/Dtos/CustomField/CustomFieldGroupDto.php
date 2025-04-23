@@ -27,7 +27,7 @@ class CustomFieldGroupDto extends ApiResponseDto
     {
         return [
             'key'          => 'key',
-            'translations' => fn($translations) => $this->initTranslations($translations),
+            'translations' => fn ($translations) => $this->initTranslations($translations),
         ];
     }
 
