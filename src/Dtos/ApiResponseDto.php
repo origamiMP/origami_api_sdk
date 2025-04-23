@@ -3,8 +3,11 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos;
 
 use Illuminate\Support\Arr;
+use Illuminate\Validation\ValidationException;
 use OrigamiMp\OrigamiApiSdk\Enums\Json\JsonResponseErrorEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
+use OrigamiMp\OrigamiApiSdk\Helpers\Validation\Validator;
 
 abstract class ApiResponseDto
 {
@@ -19,11 +22,6 @@ abstract class ApiResponseDto
     {
         return $this->apiResponse;
     }
-
-    abstract public static function getDefaultNotConstructableException(
-        string $msg,
-        ?\Throwable $previous = null,
-    ): ApiResponseDtoNotConstructableException;
 
     /**
      * This method defines the mapping between the expected data structure from an
@@ -43,7 +41,29 @@ abstract class ApiResponseDto
      * containing an object with a key 'id', and that the value at this key should be
      * assigned to the property $id of the class inheriting this one.
      */
-    abstract public function getDefaultDataStructureToProperties(): array;
+    abstract protected function getDefaultDataStructureToProperties(): array;
+
+    /**
+     * This method defines the rules (based on Laravel validation system) that should be applied to
+     * validate the original api response before filling properties.
+     *
+     * The returned array should be formatted to be compatible with Laravel Validator, like so for example :
+     * [
+     *     'account.id'      => ['required', 'string'],
+     *     'account.balance' => ['required', 'int'],
+     * ]
+     */
+    abstract protected function validationRulesForProperties(): array;
+
+    abstract protected static function getDefaultNotConstructableException(
+        string $msg,
+        ?\Throwable $previous = null,
+    ): ApiResponseDtoNotConstructableException;
+
+    protected function getDataToValidateAndFillFrom(): object
+    {
+        return $this->apiResponse;
+    }
 
     /**
      * This method is used to check if an API response has the fields
@@ -59,11 +79,20 @@ abstract class ApiResponseDto
      *
      * @throws ApiResponseDtoNotConstructableException
      */
-    public function throwIfDataIsMissingFromApiResponse(
+    protected function validateAndFill(
         array $dataStructureToProperties = []
     ): void {
         if (empty($dataStructureToProperties)) {
             $dataStructureToProperties = $this->getDefaultDataStructureToProperties();
+        }
+
+        try {
+            $this->validateApiResponseRawValues();
+        } catch (ValidationException $e) {
+            throw $this->getDefaultNotConstructableException(
+                'Api response data failed to be validated.',
+                $e,
+            );
         }
 
         $propertiesIndexedByDottedPaths = Arr::dot($dataStructureToProperties);
@@ -78,18 +107,14 @@ abstract class ApiResponseDto
      */
     protected function fillPropertyWithData(string $dottedPath, mixed $propertyCaster): void
     {
-        $dataToHave = data_get(
-            $this->apiResponse,
+        $dataToHave = Obj::get(
+            $this->getDataToValidateAndFillFrom(),
             $dottedPath,
             JsonResponseErrorEnum::MISSING_PROPERTY,
         );
 
         if ($dataToHave === JsonResponseErrorEnum::MISSING_PROPERTY) {
-            throw (
-                $this->getDefaultNotConstructableException(
-                    "No error sent back by API but '$dottedPath' is missing.",
-                )
-            );
+            return;
         }
 
         try {
@@ -99,11 +124,34 @@ abstract class ApiResponseDto
                 $propertyCaster($dataToHave);
             }
         } catch (\Throwable $e) {
-            throw (
-                $this->getDefaultNotConstructableException(
-                    "Could not assign data '$dottedPath' to property : {$e->getMessage()}",
-                    $e,
-                )
+            throw $this->getDefaultNotConstructableException(
+                "Could not assign data '$dottedPath' to property : {$e->getMessage()}",
+                $e,
+            );
+        }
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    protected function validateApiResponseRawValues(): void
+    {
+        $responseRawValuesIndexedByDottedPaths = objectToArray($this->getDataToValidateAndFillFrom());
+        $rules = $this->validationRulesForProperties();
+
+        $validator = new Validator($responseRawValuesIndexedByDottedPaths, $rules);
+
+        $validator->validate();
+    }
+
+    /**
+     * @throws ApiResponseDtoNotConstructableException
+     */
+    protected function throwIfDataFieldOnObjectIsEmpty(object $object): void
+    {
+        if (! isset($object->data)) {
+            throw $this->getDefaultNotConstructableException(
+                'Object part from API response does not have mandatory "data" field.',
             );
         }
     }

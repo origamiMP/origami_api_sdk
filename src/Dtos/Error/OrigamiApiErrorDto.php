@@ -4,12 +4,12 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Error;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Error\OrigamiApiErrorCodeEnum;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\Oauth\OrigamiApiUnauthorizedException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnauthorizedException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Error\OrigamiApiErrorDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\HasCorrespondingException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCorrespondingException;
 
 class OrigamiApiErrorDto extends ApiResponseDto
 {
@@ -28,23 +28,7 @@ class OrigamiApiErrorDto extends ApiResponseDto
     {
         parent::__construct($apiResponse);
 
-        $this->throwIfDataIsMissingFromApiResponse();
-    }
-
-    public static function getDefaultNotConstructableException(
-        string $msg,
-        ?\Throwable $previous = null,
-    ): ApiResponseDtoNotConstructableException {
-        return new OrigamiApiErrorDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function getDefaultDataStructureToProperties(): array
-    {
-        return [
-            'status' => 'httpStatusCode',
-            'detail' => 'message',
-            'code'   => 'errorCode',
-        ];
+        $this->validateAndFill();
     }
 
     public function getCorrespondingException(): OrigamiApiSingleException
@@ -67,6 +51,31 @@ class OrigamiApiErrorDto extends ApiResponseDto
         }
 
         return "$msg {$this->message}";
+    }
+
+    protected function getDefaultDataStructureToProperties(): array
+    {
+        return [
+            'status' => 'httpStatusCode',
+            'detail' => 'message',
+            'code'   => 'errorCode',
+        ];
+    }
+
+    protected function validationRulesForProperties(): array
+    {
+        return [
+            'status' => ['required', 'integer'],
+            'detail' => ['required', 'string'],
+            'code'   => ['required', 'string'],
+        ];
+    }
+
+    protected static function getDefaultNotConstructableException(
+        string $msg,
+        ?\Throwable $previous = null,
+    ): ApiResponseDtoNotConstructableException {
+        return new OrigamiApiErrorDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function getCorrespondingExceptionToErrorCode(): ?OrigamiApiSingleException

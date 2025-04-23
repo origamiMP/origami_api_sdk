@@ -1,9 +1,10 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Repositories\Client;
+namespace OrigamiMp\OrigamiApiSdk\Repositories\Client\Oauth;
 
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Repositories\Client\OrigamiRestClient;
 
 class OrigamiOauthRestClient extends OrigamiRestClient
 {
@@ -39,6 +40,6 @@ class OrigamiOauthRestClient extends OrigamiRestClient
     {
         $guzzleParamsFromParamBag = $paramBag?->asGuzzleParams() ?? [];
 
-        return $this->mergeCommonHeadersInGuzzleParams($guzzleParamsFromParamBag);
+        return $this->mergeAdditionalHeadersInGuzzleParams($guzzleParamsFromParamBag);
     }
 }

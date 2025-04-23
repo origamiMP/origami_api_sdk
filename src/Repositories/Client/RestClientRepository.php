@@ -203,12 +203,12 @@ abstract class RestClientRepository
         return '';
     }
 
-    protected function mergeCommonHeadersInGuzzleParams(array $guzzleParams): array
+    protected function mergeAdditionalHeadersInGuzzleParams(array $guzzleParams): array
     {
         $headersFromParamBag = Arr::get($guzzleParams, 'headers', []);
 
         $finalHeaders = array_merge(
-            $this->getCommonHeaders(),
+            $this->getAdditionalHeaders(),
             $headersFromParamBag,
         );
 
@@ -228,5 +228,5 @@ abstract class RestClientRepository
      * Headers that will be added to every request made by this client. They can be overridden by the ones
      * specified in the RequestParamBag.
      */
-    abstract protected function getCommonHeaders(): array;
+    abstract protected function getAdditionalHeaders(): array;
 }

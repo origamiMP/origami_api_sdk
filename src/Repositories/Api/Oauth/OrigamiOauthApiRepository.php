@@ -1,12 +1,13 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Repositories\Api;
+namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Oauth;
 
 use GuzzleHttp\Exception\GuzzleException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Oauth\GetOauthTokenRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\Repositories\Client\OrigamiOauthRestClient;
+use OrigamiMp\OrigamiApiSdk\Repositories\Api\RestApiRepository;
+use OrigamiMp\OrigamiApiSdk\Repositories\Client\Oauth\OrigamiOauthRestClient;
 
 class OrigamiOauthApiRepository extends RestApiRepository
 {

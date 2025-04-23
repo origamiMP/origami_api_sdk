@@ -27,17 +27,10 @@ class OauthTokenDto extends ApiResponseDto
     {
         parent::__construct($apiResponse);
 
-        $this->throwIfDataIsMissingFromApiResponse();
+        $this->validateAndFill();
     }
 
-    public static function getDefaultNotConstructableException(
-        string $msg,
-        ?\Throwable $previous = null,
-    ): ApiResponseDtoNotConstructableException {
-        return new OauthTokenDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function getDefaultDataStructureToProperties(): array
+    protected function getDefaultDataStructureToProperties(): array
     {
         return [
             'token_type'    => 'tokenType',
@@ -45,5 +38,22 @@ class OauthTokenDto extends ApiResponseDto
             'refresh_token' => 'refreshToken',
             'expires_in'    => fn ($expiresIn) => $this->expiresAt = Carbon::createFromTimestamp(Carbon::now()->timestamp + $expiresIn),
         ];
+    }
+
+    protected function validationRulesForProperties(): array
+    {
+        return [
+            'token_type'    => ['required', 'string'],
+            'access_token'  => ['required', 'string'],
+            'refresh_token' => ['required', 'string'],
+            'expires_in'    => ['required', 'integer', 'min:1'],
+        ];
+    }
+
+    protected static function getDefaultNotConstructableException(
+        string $msg,
+        ?\Throwable $previous = null,
+    ): ApiResponseDtoNotConstructableException {
+        return new OauthTokenDtoNotConstructableException($msg, previous: $previous);
     }
 }

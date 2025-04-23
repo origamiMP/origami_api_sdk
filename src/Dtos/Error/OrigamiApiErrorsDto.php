@@ -8,7 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiMultipleException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Error\OrigamiApiErrorsDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\HasCorrespondingException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCorrespondingException;
 
 class OrigamiApiErrorsDto extends ApiResponseDto
 {
@@ -28,22 +28,7 @@ class OrigamiApiErrorsDto extends ApiResponseDto
     {
         parent::__construct($apiResponse);
 
-        $this->throwIfDataIsMissingFromApiResponse();
-    }
-
-    public static function getDefaultNotConstructableException(
-        string $msg,
-        ?\Throwable $previous = null,
-    ): ApiResponseDtoNotConstructableException {
-        return new OrigamiApiErrorsDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function getDefaultDataStructureToProperties(): array
-    {
-        return [
-            'status_code' => 'statusCode',
-            'errors'      => fn ($errors) => $this->initErrorsProperty($errors),
-        ];
+        $this->validateAndFill();
     }
 
     public function getCorrespondingException(): OrigamiApiException
@@ -53,6 +38,29 @@ class OrigamiApiErrorsDto extends ApiResponseDto
         }
 
         return new OrigamiApiMultipleException($this->errors);
+    }
+
+    protected function getDefaultDataStructureToProperties(): array
+    {
+        return [
+            'status_code' => 'statusCode',
+            'errors'      => fn ($errors) => $this->initErrorsProperty($errors),
+        ];
+    }
+
+    protected function validationRulesForProperties(): array
+    {
+        return [
+            'status_code' => ['required', 'integer'],
+            'errors'      => ['required', 'array'],
+        ];
+    }
+
+    protected static function getDefaultNotConstructableException(
+        string $msg,
+        ?\Throwable $previous = null,
+    ): ApiResponseDtoNotConstructableException {
+        return new OrigamiApiErrorsDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initErrorsProperty(array $errors): void

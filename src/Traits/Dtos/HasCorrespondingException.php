@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Traits;
+namespace OrigamiMp\OrigamiApiSdk\Traits\Dtos;
 
 trait HasCorrespondingException
 {

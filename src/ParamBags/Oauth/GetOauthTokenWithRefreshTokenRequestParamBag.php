@@ -6,17 +6,14 @@ use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\GetOauthTokenGrantTypeParamEnum;
 
 class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestParamBag
 {
+    /**
+     * @var string The refresh token obtained during a previous GetOauthTokenRequest.
+     */
     public string $refresh_token;
 
-    /**
-     * @param  string  $refresh_token  The refresh token obtained during a previous GetOauthTokenRequest.
-     */
-    public function __construct(
-        string $refresh_token,
-    ) {
+    public function __construct()
+    {
         parent::__construct(GetOauthTokenGrantTypeParamEnum::REFRESH);
-
-        $this->refresh_token = $refresh_token;
     }
 
     protected function getJsonRequestParamsList(): array

@@ -65,7 +65,7 @@ abstract class OrigamiRestClient extends RestClientRepository
     /**
      * {@inheritDoc}
      */
-    protected function getCommonHeaders(): array
+    protected function getAdditionalHeaders(): array
     {
         return [
             'Accept'       => 'application/json',

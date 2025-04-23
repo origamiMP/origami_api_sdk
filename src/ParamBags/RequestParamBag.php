@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
+use Illuminate\Support\Arr;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 
 abstract class RequestParamBag extends ParamBag
@@ -58,12 +59,19 @@ abstract class RequestParamBag extends ParamBag
 
     protected function getTypedRequestParamsAsGuzzleParams(
         HttpRequestParamsTypeEnum $requestParamsTypeEnum,
-        ?array $requestParamsList = null,
+        array $requestParamsList,
     ): array {
-        $paramsAsEncodableArray = $this->asEncodableArray($requestParamsList);
+        $paramsAsEncodableArray = $this->asEncodableArray(
+            Arr::except($requestParamsList, self::propertiesToExcludeFromGuzzleParams())
+        );
 
         return ! empty($paramsAsEncodableArray)
             ? [$requestParamsTypeEnum->value => $paramsAsEncodableArray]
             : [];
+    }
+
+    protected static function propertiesToExcludeFromGuzzleParams(): array
+    {
+        return [];
     }
 }
