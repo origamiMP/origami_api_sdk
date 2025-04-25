@@ -1,5 +1,6 @@
 {
     "name": "origami-mp/origami-api-sdk",
+    "version": "0.1",
     "description": "A lightweight package to interact easily with Origami API.",
     "type": "library",
     "license": "MIT",
@@ -14,7 +15,8 @@
         "guzzlehttp/guzzle": "^7.9",
         "illuminate/support": "^12.9",
         "nesbot/carbon": "^3.9",
-        "firebase/php-jwt": "^6.11"
+        "firebase/php-jwt": "^6.11",
+        "illuminate/validation": "^12.10"
     },
     "require-dev": {
         "laravel/pint": "^1.22",

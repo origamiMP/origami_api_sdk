@@ -2,28 +2,13 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
+use Illuminate\Support\Arr;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 
-/**
- * This class is made to handle two use-cases :
- *
- * - If it only has one request params type, it only requires the getRequestParamsMainType()
- * method to be defined, along with typed properties representing the request params.
- * Example : TODO
- *
- * - If it has multiple request params types, following methods should be defined along with
- * typed properties representing the request params : getJsonRequestParamsList(), getFormRequestParamsList
- * and getQueryRequestParamsList.
- * Example : TODO
- */
 abstract class RequestParamBag extends ParamBag
 {
     public function asGuzzleParams(): array
     {
-        if (! $this->hasMultipleRequestParamsTypes()) {
-            return $this->getTypedRequestParamsAsGuzzleParams($this->getRequestParamsMainType());
-        }
-
         $jsonParams = $this->getTypedRequestParamsAsGuzzleParams(
             HttpRequestParamsTypeEnum::JSON,
             $this->getJsonRequestParamsList(),
@@ -47,34 +32,6 @@ abstract class RequestParamBag extends ParamBag
         );
     }
 
-    protected function getRequestParamsMainType(): HttpRequestParamsTypeEnum
-    {
-        return HttpRequestParamsTypeEnum::JSON;
-    }
-
-    protected function hasMultipleRequestParamsTypes(): bool
-    {
-        return ! empty($this->getJsonRequestParamsList())
-            || ! empty($this->getFormRequestParamsList())
-            || ! empty($this->getQueryRequestParamsList());
-    }
-
-    protected function getTypedRequestParamsAsGuzzleParams(
-        HttpRequestParamsTypeEnum $requestParamsTypeEnum,
-        ?array $requestParamsList = null,
-    ): array {
-        $paramsAsEncodableArray = $this->asEncodableArray($requestParamsList);
-
-        return ! empty($paramsAsEncodableArray)
-            ? [$requestParamsTypeEnum->value => $paramsAsEncodableArray]
-            : [];
-    }
-
-    protected function getHeadersAsGuzzleParams(): array
-    {
-        return ['headers' => $this->getHeaders()];
-    }
-
     protected function getHeaders(): array
     {
         return [];
@@ -91,6 +48,29 @@ abstract class RequestParamBag extends ParamBag
     }
 
     protected function getQueryRequestParamsList(): array
+    {
+        return [];
+    }
+
+    protected function getHeadersAsGuzzleParams(): array
+    {
+        return ['headers' => $this->getHeaders()];
+    }
+
+    protected function getTypedRequestParamsAsGuzzleParams(
+        HttpRequestParamsTypeEnum $requestParamsTypeEnum,
+        array $requestParamsList,
+    ): array {
+        $paramsAsEncodableArray = $this->asEncodableArray(
+            Arr::except($requestParamsList, self::propertiesToExcludeFromGuzzleParams())
+        );
+
+        return ! empty($paramsAsEncodableArray)
+            ? [$requestParamsTypeEnum->value => $paramsAsEncodableArray]
+            : [];
+    }
+
+    protected static function propertiesToExcludeFromGuzzleParams(): array
     {
         return [];
     }
