@@ -6,17 +6,24 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 abstract class DataApiRequestParamBag extends RequestParamBag
 {
-    // TODO DEV : Refactor includes, move them to DTOs
-    public array $availableIncludes = [];
-
     public array $include = [];
 
     /**
-     * @param  string[]  $includes  Array of includes as strings. Ex : ['products', 'offers']
+     * @param  string[]  $includes  Array of includes as strings. Ex : ['products', 'offers.seller']
      */
     public function setIncludes(array $includes): void
     {
-        $this->include = collect($includes)->values()->unique()->intersect($this->availableIncludes)->toArray();
+        $requestMainDto = static::getRequestMainDto();
+
+        if (! method_exists($requestMainDto, 'isIncludeAvailable')) {
+            return;
+        }
+
+        $this->include = collect($includes)
+            ->values()
+            ->unique()
+            ->filter(fn ($include) => $requestMainDto::isIncludeAvailable($include))
+            ->toArray();
     }
 
     protected static function propertiesToExcludeFromGuzzleParams(): array
@@ -31,4 +38,11 @@ abstract class DataApiRequestParamBag extends RequestParamBag
             ['include'],
         );
     }
+
+    /**
+     * If this DataApiRequestParamBag is used in a request that will return a certain DTO,
+     * return it here.
+     * Example : UserDto::class
+     */
+    abstract protected static function getRequestMainDto(): string;
 }

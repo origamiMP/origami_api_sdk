@@ -8,12 +8,13 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class UserDto extends ApiResponseDto
 {
-    use HasCustomFields, HasTimestamps;
+    use HasAvailableIncludes, HasCustomFields, HasTimestamps;
 
     public int $id;
 
@@ -67,6 +68,14 @@ class UserDto extends ApiResponseDto
      */
     public bool $isAccountValidated;
 
+    protected static array $availableIncludes = [
+        'user_groups' => UserGroupDto::class,
+        // TODO 'roles',
+        // TODO 'user_group_users',
+        // TODO 'module',
+        // TODO 'user_reports_received',
+    ];
+
     /**
      * UserGroups to which this User has access when logged in.
      *
@@ -75,14 +84,6 @@ class UserDto extends ApiResponseDto
      * @var UserGroupDto[]|Collection
      */
     public Collection $userGroups;
-
-    // TODO public array $roles;
-
-    // TODO public array $userGroupUsers;
-
-    // TODO public ModuleDto $module;
-
-    // TODO public array $userReportsReceived;
 
     /**
      * @throws UserDtoNotConstructableException
@@ -111,10 +112,6 @@ class UserDto extends ApiResponseDto
             'is_account_validated'          => 'isAccountValidated',
 
             'user_groups' => fn ($userGroups) => $this->initUserGroups($userGroups),
-            // TODO 'roles' => 'roles',
-            // TODO 'user_group_users' => 'userGroupUsers',
-            // TODO 'module' => 'module',
-            // TODO 'user_reports_received' => 'userReportsReceived',
         ];
 
         return array_merge(
