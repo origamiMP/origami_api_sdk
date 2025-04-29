@@ -1,0 +1,8 @@
+.github export-ignore
+/dev export-ignore
+.gitignore export-ignore
+composer.lock export-ignore
+Makefile export-ignore
+phpstan.neon export-ignore
+pint.json export-ignore
+psysh.php export-ignore
