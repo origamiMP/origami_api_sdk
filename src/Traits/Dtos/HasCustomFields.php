@@ -26,8 +26,12 @@ trait HasCustomFields
         ];
     }
 
-    protected function initAdditionalInformation(object $additionalInformation): void
+    protected function initAdditionalInformation($additionalInformation): void
     {
+        if (! is_object($additionalInformation)) {
+            $this->additionalInformation = collect();
+        }
+
         $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldDto($customField));
     }
 }
