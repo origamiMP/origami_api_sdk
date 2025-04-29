@@ -1,0 +1,74 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+ORANGE='\033[0;33m'
+NC='\033[0m'
+
+usage() {
+  echo -e "${ORANGE}Usage:${NC}
+    push_tag {VERSION}\n"
+  echo -e "${ORANGE}Arguments:
+    ${GREEN}VERSION :${NC} SemVer formatted version number of the release you want to tag. Ex : ${GREEN}2.7.41${NC}"
+  exit 1
+}
+
+check_if_good_directory() {
+  if [[ ! -f "composer.json" ]]
+  then
+      echo -e "${RED}Please launch this script from the same directory as 'composer.json' (usually in project root).${NC}"
+      exit
+  fi
+}
+
+# $1 => SemVer formatted version number
+update_composer_json_with_new_version() {
+  sed -i -e "s/\"version\".*$/\"version\" : \"$1\",/g" ./composer.json
+  if [[ -f "./composer.json-e" ]]
+  then
+      rm "./composer.json-e"
+  fi
+
+  echo -e "\n\n${GREEN}composer.json updated.${NC}"
+}
+
+ask_user_to_check_composer_json_content() {
+  while true; do
+    echo -e "\n\n${ORANGE}composer.json updated. Please check the content of the composer.json file before continuing. Is the version correctly set ?${NC}"
+    read -p "[y/n]" yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit;;
+        * ) echo -e "${RED}Please answer yes or no.${NC}";;
+    esac
+  done
+
+}
+
+commit_and_push_composer_json() {
+  git add 'composer.json' &&
+  git commit -m "Update composer.json with version $1" &&
+  git push
+}
+
+# $1 => SemVer formatted version number
+push_tag_on_git() {
+  # (Force) Pull branch and reload all tags
+  git pull --tags -f &&
+  # Create tag with message
+  git tag -fa v$1 -m "Origami API SDK v$1" &&
+  # Push tag
+  git push --tags -f
+
+  echo -e "${GREEN}Done !${NC}"
+}
+
+if [ -z "$1" ]; then
+  usage
+fi
+
+check_if_good_directory
+update_composer_json_with_new_version $1
+ask_user_to_check_composer_json_content
+commit_and_push_composer_json $1
+push_tag_on_git $1
