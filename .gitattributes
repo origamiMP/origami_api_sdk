@@ -6,3 +6,4 @@ Makefile export-ignore
 phpstan.neon export-ignore
 pint.json export-ignore
 psysh.php export-ignore
+.gitattributes export-ignore
