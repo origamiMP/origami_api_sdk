@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Client\Data;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
+use OrigamiMp\OrigamiApiSdk\Contracts\OauthToken;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Client\OrigamiRestClient;
@@ -12,24 +12,24 @@ class OrigamiDataRestClient extends OrigamiRestClient
     /**
      * Oauth token that will be used for authenticating a certain User.
      */
-    private OauthTokenDto $oauthTokenDto;
+    private OauthToken $oauthToken;
 
     /**
      * Id of the UserGroup that should be used for authentication.
      */
     private ?int $userGroupId;
 
-    public function __construct(string $apiUri, OauthTokenDto $oauthTokenDto, ?int $userGroupId = null)
+    public function __construct(string $apiUri, OauthToken $oauthToken, ?int $userGroupId = null)
     {
         parent::__construct($apiUri);
 
-        $this->oauthTokenDto = $oauthTokenDto;
+        $this->oauthToken = $oauthToken;
         $this->userGroupId = $userGroupId;
     }
 
-    public function getOauthTokenDto(): OauthTokenDto
+    public function getoauthToken(): OauthToken
     {
-        return $this->oauthTokenDto;
+        return $this->oauthToken;
     }
 
     public function getUserGroupId(): ?int
@@ -60,7 +60,7 @@ class OrigamiDataRestClient extends OrigamiRestClient
     protected function getAuthentificationHeaders(): array
     {
         $headers = [
-            'Authorization' => "Bearer {$this->oauthTokenDto->accessToken}",
+            'Authorization' => "Bearer {$this->oauthToken->getAccessToken()}",
         ];
 
         if (! is_null($this->userGroupId)) {
