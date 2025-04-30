@@ -3,11 +3,12 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Oauth;
 
 use Carbon\Carbon;
+use OrigamiMp\OrigamiApiSdk\Contracts\OauthToken;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
 
-class OauthTokenDto extends ApiResponseDto
+class OauthTokenDto extends ApiResponseDto implements OauthToken
 {
     /**
      * Most likely, will always contain 'Bearer'.
@@ -28,6 +29,26 @@ class OauthTokenDto extends ApiResponseDto
         parent::__construct($apiResponse);
 
         $this->validateAndFill();
+    }
+
+    public function getTokenType(): string
+    {
+        return $this->tokenType;
+    }
+
+    public function getAccessToken(): string
+    {
+        return $this->accessToken;
+    }
+
+    public function getRefreshToken(): string
+    {
+        return $this->refreshToken;
+    }
+
+    public function getExpiresAt(): Carbon
+    {
+        return $this->expiresAt;
     }
 
     protected function getDefaultDataStructureToProperties(): array
