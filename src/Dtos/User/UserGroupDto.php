@@ -14,6 +14,26 @@ class UserGroupDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasTimestamps;
 
+    protected static array $availableIncludes = [
+        // TODO 'shipping_offers',
+        // TODO 'product_offers',
+        // TODO 'tickets',
+        // TODO 'documents',
+        // TODO 'payment_reports',
+        // TODO 'bank_accounts',
+        // TODO 'invoices',
+        // TODO 'subscriptions',
+        // TODO 'subscription_lines',
+        // TODO 'users',
+        // TODO 'legal_information',
+        // TODO 'psp_wallets',
+        // TODO 'psp_users',
+        // TODO 'translations',
+        // TODO 'user_group_users',
+        // TODO 'mandates',
+        // TODO 'customer_groups',
+    ];
+
     public int $id;
 
     public UserGroupDtoTypeEnum $type;
@@ -71,26 +91,6 @@ class UserGroupDto extends ApiResponseDto
     public bool $emailValidated;
 
     public bool $phoneValidated;
-
-    protected static array $availableIncludes = [
-        // TODO 'shipping_offers',
-        // TODO 'product_offers',
-        // TODO 'tickets',
-        // TODO 'documents',
-        // TODO 'payment_reports',
-        // TODO 'bank_accounts',
-        // TODO 'invoices',
-        // TODO 'subscriptions',
-        // TODO 'subscription_lines',
-        // TODO 'users',
-        // TODO 'legal_information',
-        // TODO 'psp_wallets',
-        // TODO 'psp_users',
-        // TODO 'translations',
-        // TODO 'user_group_users',
-        // TODO 'mandates',
-        // TODO 'customer_groups',
-    ];
 
     public function __construct(object $apiResponse)
     {

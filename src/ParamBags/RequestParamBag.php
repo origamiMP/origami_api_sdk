@@ -61,6 +61,9 @@ abstract class RequestParamBag extends ParamBag
         HttpRequestParamsTypeEnum $requestParamsTypeEnum,
         array $requestParamsList,
     ): array {
+        // TODO DEV : Add validation mechanism with rules as $requestParamsList values
+        // TODO DEV : Throw custom validation exception if not validated
+
         $paramsAsEncodableArray = $this->asEncodableArray(
             Arr::except($requestParamsList, self::propertiesToExcludeFromGuzzleParams())
         );

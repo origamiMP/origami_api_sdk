@@ -26,6 +26,11 @@ class OrigamiOauthRestClient extends OrigamiRestClient
         $this->apiClientSecret = $apiClientSecret;
     }
 
+    protected function getResourcePrefix(): string
+    {
+        return '';
+    }
+
     public function getApiClientId(): string
     {
         return $this->apiClientId;
@@ -34,12 +39,5 @@ class OrigamiOauthRestClient extends OrigamiRestClient
     public function getApiClientSecret(): string
     {
         return $this->apiClientSecret;
-    }
-
-    protected function getGuzzleParamsForRequest(HttpRequestMethodEnum $method, ?RequestParamBag $paramBag): array
-    {
-        $guzzleParamsFromParamBag = $paramBag?->asGuzzleParams() ?? [];
-
-        return $this->mergeAdditionalHeadersInGuzzleParams($guzzleParamsFromParamBag);
     }
 }

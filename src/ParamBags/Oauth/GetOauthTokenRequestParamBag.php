@@ -7,24 +7,24 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 abstract class GetOauthTokenRequestParamBag extends RequestParamBag
 {
-    public GetOauthTokenGrantTypeParamEnum $grant_type;
+    public GetOauthTokenGrantTypeParamEnum $grantType;
 
-    public string $client_id;
+    public string $clientId;
 
-    public string $client_secret;
+    public string $clientSecret;
 
     public function __construct(
-        GetOauthTokenGrantTypeParamEnum $grant_type,
+        GetOauthTokenGrantTypeParamEnum $grantType,
     ) {
-        $this->grant_type = $grant_type;
+        $this->grantType = $grantType;
     }
 
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'client_id',
-            'client_secret',
-            'grant_type',
+            'clientId',
+            'clientSecret',
+            'grantType',
         ];
     }
 }

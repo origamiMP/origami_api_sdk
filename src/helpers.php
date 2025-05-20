@@ -23,3 +23,17 @@ if (! function_exists('getOrigamiApiSdkVersion')) {
         return $decodedComposerJsonContent['version'];
     }
 }
+
+if (! function_exists('camelCaseToSnakeCase')) {
+    function camelCaseToSnakeCase(string $input): string
+    {
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $input));
+    }
+}
+
+if (! function_exists('snakeCaseToCamelCase')) {
+    function snakeCaseToCamelCase(string $input): string
+    {
+        return str_replace('_', '', ucwords($input, '_'));
+    }
+}

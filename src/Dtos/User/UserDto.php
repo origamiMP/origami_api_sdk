@@ -16,6 +16,14 @@ class UserDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasCustomFields, HasTimestamps;
 
+    protected static array $availableIncludes = [
+        'user_groups' => UserGroupDto::class,
+        // TODO 'roles',
+        // TODO 'user_group_users',
+        // TODO 'module',
+        // TODO 'user_reports_received',
+    ];
+
     public int $id;
 
     public string $firstName;
@@ -67,14 +75,6 @@ class UserDto extends ApiResponseDto
      * May be undefined if not used by your Origami API.
      */
     public bool $isAccountValidated;
-
-    protected static array $availableIncludes = [
-        'user_groups' => UserGroupDto::class,
-        // TODO 'roles',
-        // TODO 'user_group_users',
-        // TODO 'module',
-        // TODO 'user_reports_received',
-    ];
 
     /**
      * UserGroups to which this User has access when logged in.

@@ -3,6 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data;
 
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 
 abstract class DataApiRequestParamBag extends RequestParamBag
 {
@@ -13,6 +14,9 @@ abstract class DataApiRequestParamBag extends RequestParamBag
      */
     public function setIncludes(array $includes): void
     {
+        /**
+         * @var $requestMainDto class-string<HasAvailableIncludes>
+         */
         $requestMainDto = static::getRequestMainDto();
 
         if (! method_exists($requestMainDto, 'isIncludeAvailable')) {
@@ -24,11 +28,6 @@ abstract class DataApiRequestParamBag extends RequestParamBag
             ->unique()
             ->filter(fn ($include) => $requestMainDto::isIncludeAvailable($include))
             ->toArray();
-    }
-
-    protected static function propertiesToExcludeFromGuzzleParams(): array
-    {
-        return ['availableIncludes'];
     }
 
     protected function getQueryRequestParamsList(): array

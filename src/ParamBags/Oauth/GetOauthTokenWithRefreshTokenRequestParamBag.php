@@ -9,7 +9,7 @@ class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestP
     /**
      * @var string The refresh token obtained during a previous GetOauthTokenRequest.
      */
-    public string $refresh_token;
+    public string $refreshToken;
 
     public function __construct()
     {
@@ -21,7 +21,7 @@ class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestP
         return array_merge(
             parent::getJsonRequestParamsList(),
             [
-                'refresh_token',
+                'refreshToken',
             ]
         );
     }

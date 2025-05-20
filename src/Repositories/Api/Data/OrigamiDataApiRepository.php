@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\RestApiRepository;
 use OrigamiMp\OrigamiApiSdk\Repositories\Client\Data\OrigamiDataRestClient;
 
-class OrigamiDataApiRepository extends RestApiRepository
+abstract class OrigamiDataApiRepository extends RestApiRepository
 {
     public function __construct(OrigamiDataRestClient $restClient)
     {
