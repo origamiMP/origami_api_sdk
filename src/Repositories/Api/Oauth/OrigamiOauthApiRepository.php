@@ -22,16 +22,16 @@ class OrigamiOauthApiRepository extends RestApiRepository
      */
     public function getOauthToken(GetOauthTokenRequestParamBag $paramBag): OauthTokenDto
     {
-        if (! isset($paramBag->client_id)) {
-            $paramBag->client_id = $this->restClient->getApiClientId();
+        if (! isset($paramBag->clientId)) {
+            $paramBag->clientId = $this->restClient->getApiClientId();
         }
 
-        if (! isset($paramBag->client_secret)) {
-            $paramBag->client_secret = $this->restClient->getApiClientSecret();
+        if (! isset($paramBag->clientSecret)) {
+            $paramBag->clientSecret = $this->restClient->getApiClientSecret();
         }
 
         $response = $this->restClient->post('oauth/token', $paramBag);
-
+        
         $responseContent = json_decode($response->getBody()->getContents());
 
         return new OauthTokenDto($responseContent);
