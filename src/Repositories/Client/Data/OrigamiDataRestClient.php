@@ -3,8 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Client\Data;
 
 use OrigamiMp\OrigamiApiSdk\Contracts\OauthToken;
-use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
-use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Client\OrigamiRestClient;
 
 class OrigamiDataRestClient extends OrigamiRestClient

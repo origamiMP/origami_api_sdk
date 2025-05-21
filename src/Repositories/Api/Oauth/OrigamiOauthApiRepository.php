@@ -31,7 +31,7 @@ class OrigamiOauthApiRepository extends RestApiRepository
         }
 
         $response = $this->restClient->post('oauth/token', $paramBag);
-        
+
         $responseContent = json_decode($response->getBody()->getContents());
 
         return new OauthTokenDto($responseContent);

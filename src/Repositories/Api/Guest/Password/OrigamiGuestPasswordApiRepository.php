@@ -2,11 +2,11 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\Password;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Password\SendResetPasswordEmailRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Password\ResetPasswordRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\ResetPasswordDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Password\ResetPasswordRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Password\SendResetPasswordEmailRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 
 class OrigamiGuestPasswordApiRepository extends OrigamiGuestApiRepository
 {
