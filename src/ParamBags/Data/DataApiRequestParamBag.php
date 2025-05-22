@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data;
 
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 
 abstract class DataApiRequestParamBag extends RequestParamBag
 {
