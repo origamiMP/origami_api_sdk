@@ -15,7 +15,7 @@ abstract class DataApiRequestParamBag extends RequestParamBag
     public function setIncludes(array $includes): void
     {
         /**
-         * @var $requestMainDto class-string<HasAvailableIncludes>
+         * @var string $requestMainDto
          */
         $requestMainDto = static::getRequestMainDto();
 

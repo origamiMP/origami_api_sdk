@@ -9,7 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\ResetPasswordDtoNotConstruc
 class ResetPasswordDto extends ApiResponseDto
 {
     /**
-     * If the email was sent successfully.
+     * If the password was reset successfully.
      */
     public bool $success;
 
