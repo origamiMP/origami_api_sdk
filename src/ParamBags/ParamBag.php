@@ -11,11 +11,13 @@ abstract class ParamBag
     protected function asEncodableArray(?array $propertiesList = null): array
     {
         $allProperties = get_object_vars($this);
+
         $properties = is_null($propertiesList) ? $allProperties : Arr::only($allProperties, $propertiesList);
+        $propertiesAsSnakeCase = $this->propertyNamesToSnakeCase($properties);
 
         $encodableArray = [];
 
-        foreach ($properties as $propertyName => $propertyValue) {
+        foreach ($propertiesAsSnakeCase as $propertyName => $propertyValue) {
             if ($this->doesPropertyHaveCustomCastMethod($propertyName)) {
                 $encodableArray[$propertyName] = $this->useCustomCastForProperty($propertyName, $propertyValue);
             } else {
@@ -85,5 +87,16 @@ abstract class ParamBag
         $methodName = $this->getCustomCastMethodNameForProperty($propertyName);
 
         return $this->$methodName($propertyValue);
+    }
+
+    protected function propertyNamesToSnakeCase(array $propertyList): array
+    {
+        $newPropertyList = [];
+
+        foreach ($propertyList as $propertyName => $propertyValue) {
+            $newPropertyList[camelCaseToSnakeCase($propertyName)] = $propertyValue;
+        }
+
+        return $newPropertyList;
     }
 }

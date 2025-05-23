@@ -3,8 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Client\Data;
 
 use OrigamiMp\OrigamiApiSdk\Contracts\OauthToken;
-use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
-use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Client\OrigamiRestClient;
 
 class OrigamiDataRestClient extends OrigamiRestClient
@@ -27,7 +25,7 @@ class OrigamiDataRestClient extends OrigamiRestClient
         $this->userGroupId = $userGroupId;
     }
 
-    public function getoauthToken(): OauthToken
+    public function getOauthToken(): OauthToken
     {
         return $this->oauthToken;
     }
@@ -35,18 +33,6 @@ class OrigamiDataRestClient extends OrigamiRestClient
     public function getUserGroupId(): ?int
     {
         return $this->userGroupId;
-    }
-
-    protected function getGuzzleParamsForRequest(HttpRequestMethodEnum $method, ?RequestParamBag $paramBag): array
-    {
-        $guzzleParamsFromParamBag = $paramBag?->asGuzzleParams() ?? [];
-
-        return $this->mergeAdditionalHeadersInGuzzleParams($guzzleParamsFromParamBag);
-    }
-
-    protected function getResourcePrefix(): string
-    {
-        return 'v1';
     }
 
     protected function getAdditionalHeaders(): array
@@ -69,6 +55,4 @@ class OrigamiDataRestClient extends OrigamiRestClient
 
         return $headers;
     }
-
-    // TODO DEV : Auto-use of refresh token if 401 (configurable) ?
 }

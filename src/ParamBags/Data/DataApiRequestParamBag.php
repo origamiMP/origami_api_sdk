@@ -13,6 +13,9 @@ abstract class DataApiRequestParamBag extends RequestParamBag
      */
     public function setIncludes(array $includes): void
     {
+        /**
+         * @var string $requestMainDto
+         */
         $requestMainDto = static::getRequestMainDto();
 
         if (! method_exists($requestMainDto, 'isIncludeAvailable')) {
@@ -24,11 +27,6 @@ abstract class DataApiRequestParamBag extends RequestParamBag
             ->unique()
             ->filter(fn ($include) => $requestMainDto::isIncludeAvailable($include))
             ->toArray();
-    }
-
-    protected static function propertiesToExcludeFromGuzzleParams(): array
-    {
-        return ['availableIncludes'];
     }
 
     protected function getQueryRequestParamsList(): array

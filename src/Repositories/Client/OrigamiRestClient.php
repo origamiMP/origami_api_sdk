@@ -4,9 +4,11 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Client;
 
 use GuzzleHttp\Exception\BadResponseException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorsDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 abstract class OrigamiRestClient extends RestClientRepository
 {
@@ -62,6 +64,11 @@ abstract class OrigamiRestClient extends RestClientRepository
             : $defaultUserAgent;
     }
 
+    protected function getResourcePrefix(): string
+    {
+        return 'v1';
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -72,5 +79,12 @@ abstract class OrigamiRestClient extends RestClientRepository
             'Content-Type' => 'application/json',
             'User-Agent'   => $this->userAgent,
         ];
+    }
+
+    protected function getGuzzleParamsForRequest(HttpRequestMethodEnum $method, ?RequestParamBag $paramBag): array
+    {
+        $guzzleParamsFromParamBag = $paramBag?->asGuzzleParams() ?? [];
+
+        return $this->mergeAdditionalHeadersInGuzzleParams($guzzleParamsFromParamBag);
     }
 }
