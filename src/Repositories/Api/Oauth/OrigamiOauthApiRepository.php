@@ -2,8 +2,10 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Oauth;
 
-use GuzzleHttp\Exception\GuzzleException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\Oauth\OrigamiApiUnauthorizedException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Oauth\GetOauthTokenRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\RestApiRepository;
@@ -17,7 +19,9 @@ class OrigamiOauthApiRepository extends RestApiRepository
     }
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiUnauthorizedException
      * @throws OauthTokenDtoNotConstructableException
      */
     public function getOauthToken(GetOauthTokenRequestParamBag $paramBag): OauthTokenDto

@@ -33,13 +33,8 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     public function getCorrespondingException(): OrigamiApiSingleException
     {
-        $errorCodeException = $this->getCorrespondingExceptionToErrorCode();
-
-        if (! is_null($errorCodeException)) {
-            return $errorCodeException;
-        }
-
-        return $this->getCorrespondingExceptionToHttpStatusCode();
+        return $this->getCorrespondingExceptionToErrorCode()
+            ?: $this->getCorrespondingExceptionToHttpStatusCode();
     }
 
     public function toString(): string

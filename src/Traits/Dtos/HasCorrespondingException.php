@@ -2,10 +2,12 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Traits\Dtos;
 
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
+
 trait HasCorrespondingException
 {
     /**
-     * @throws \Throwable
+     * @throws OrigamiApiException
      */
     public function throwCorrespondingException(): void
     {

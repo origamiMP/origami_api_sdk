@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use Psr\Http\Message\ResponseInterface;
 
@@ -16,7 +17,7 @@ abstract class RestClientRepository
     protected GuzzleClient $guzzleClient;
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
      */
     public function get(
         string $resource,
@@ -34,7 +35,7 @@ abstract class RestClientRepository
     }
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
      */
     public function post(
         string $resource,
@@ -52,7 +53,7 @@ abstract class RestClientRepository
     }
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
      */
     public function put(
         string $resource,
@@ -70,7 +71,7 @@ abstract class RestClientRepository
     }
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
      */
     public function patch(
         string $resource,
@@ -88,7 +89,7 @@ abstract class RestClientRepository
     }
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
      */
     public function delete(
         string $resource,
@@ -116,7 +117,7 @@ abstract class RestClientRepository
     }
 
     /**
-     * @throws GuzzleException
+     * @throws HttpClientException
      */
     protected function callRestApi(
         HttpRequestMethodEnum $method,
@@ -141,6 +142,8 @@ abstract class RestClientRepository
             $response = $e->getResponse();
             $doAfterApiCall && $this->afterApiCall($response, $method, $resource, $paramBag, $e);
             $this->handleRequestError($e);
+        } catch (GuzzleException $e) {
+            throw new HttpClientException($e);
         }
 
         return $response;
