@@ -27,4 +27,4 @@ class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBa
     {
         return UserGroupInvitationHistoryResponseDto::class;
     }
-} 
+}

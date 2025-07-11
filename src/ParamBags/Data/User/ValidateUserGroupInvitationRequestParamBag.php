@@ -8,6 +8,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
 {
     public int $invitationId;
+
     public int $userGroupId;
 
     protected function getJsonRequestParamsList(): array
@@ -30,4 +31,4 @@ class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
     {
         return UserGroupInvitationValidateResponseDto::class;
     }
-} 
+}

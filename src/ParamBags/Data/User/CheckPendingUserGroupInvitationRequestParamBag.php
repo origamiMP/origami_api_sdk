@@ -27,4 +27,4 @@ class CheckPendingUserGroupInvitationRequestParamBag extends DataApiRequestParam
     {
         return UserGroupInvitationCheckPendingResponseDto::class;
     }
-} 
+}

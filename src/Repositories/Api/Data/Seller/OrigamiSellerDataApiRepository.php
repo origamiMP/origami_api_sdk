@@ -17,4 +17,4 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
 
         return new LegalTypeListDto($responseContent);
     }
-} 
+}

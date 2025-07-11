@@ -10,9 +10,13 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationResendRespon
 class UserGroupInvitationResendResponseDto extends ApiResponseDto
 {
     public int $id;
+
     public string $email;
+
     public string $status;
+
     public string $token;
+
     public Carbon $tokenExpiresAt;
 
     public function __construct(object $apiResponse)
@@ -28,7 +32,7 @@ class UserGroupInvitationResendResponseDto extends ApiResponseDto
             'email'            => 'email',
             'status'           => 'status',
             'token'            => 'token',
-            'token_expires_at' => fn($date) => $this->tokenExpiresAt = Carbon::parse($date),
+            'token_expires_at' => fn ($date) => $this->tokenExpiresAt = Carbon::parse($date),
         ];
     }
 
@@ -49,4 +53,4 @@ class UserGroupInvitationResendResponseDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationResendResponseDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

@@ -26,4 +26,4 @@ class OrigamiGuestUserGroupInvitationsApiRepository extends OrigamiGuestApiRepos
 
         return new UserGroupInvitationAcceptResponseDto($responseContent);
     }
-} 
+}

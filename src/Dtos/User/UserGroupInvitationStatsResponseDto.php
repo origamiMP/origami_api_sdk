@@ -9,10 +9,15 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationStatsRespons
 class UserGroupInvitationStatsResponseDto extends ApiResponseDto
 {
     public int $totalInvitations;
+
     public int $pendingInvitations;
+
     public int $acceptedInvitations;
+
     public int $cancelledInvitations;
+
     public int $expiredInvitations;
+
     public float $acceptanceRate;
 
     public function __construct(object $apiResponse)
@@ -51,4 +56,4 @@ class UserGroupInvitationStatsResponseDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationStatsResponseDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

@@ -10,11 +10,17 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationListItemDtoN
 class UserGroupInvitationListItemDto extends ApiResponseDto
 {
     public int $id;
+
     public string $email;
+
     public string $status;
+
     public Carbon $sentAt;
+
     public ?Carbon $acceptedAt;
+
     public ?Carbon $cancelledAt;
+
     public ?Carbon $expiredAt;
 
     public function __construct(object $apiResponse)
@@ -29,10 +35,10 @@ class UserGroupInvitationListItemDto extends ApiResponseDto
             'id'           => 'id',
             'email'        => 'email',
             'status'       => 'status',
-            'sent_at'      => fn($date) => $this->sentAt = Carbon::parse($date),
-            'accepted_at'  => fn($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
-            'cancelled_at' => fn($date) => $this->cancelledAt = is_null($date) ? null : Carbon::parse($date),
-            'expired_at'   => fn($date) => $this->expiredAt = is_null($date) ? null : Carbon::parse($date),
+            'sent_at'      => fn ($date) => $this->sentAt = Carbon::parse($date),
+            'accepted_at'  => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
+            'cancelled_at' => fn ($date) => $this->cancelledAt = is_null($date) ? null : Carbon::parse($date),
+            'expired_at'   => fn ($date) => $this->expiredAt = is_null($date) ? null : Carbon::parse($date),
         ];
     }
 
@@ -55,4 +61,4 @@ class UserGroupInvitationListItemDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationListItemDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

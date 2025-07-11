@@ -10,8 +10,11 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationHistoryItemD
 class UserGroupInvitationHistoryItemDto extends ApiResponseDto
 {
     public int $id;
+
     public string $status;
+
     public Carbon $sentAt;
+
     public ?Carbon $acceptedAt;
 
     public function __construct(object $apiResponse)
@@ -25,8 +28,8 @@ class UserGroupInvitationHistoryItemDto extends ApiResponseDto
         return [
             'id'          => 'id',
             'status'      => 'status',
-            'sent_at'     => fn($date) => $this->sentAt = Carbon::parse($date),
-            'accepted_at' => fn($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
+            'sent_at'     => fn ($date) => $this->sentAt = Carbon::parse($date),
+            'accepted_at' => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
         ];
     }
 
@@ -46,4 +49,4 @@ class UserGroupInvitationHistoryItemDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationHistoryItemDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

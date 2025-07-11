@@ -9,6 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCheckPending
 class UserGroupInvitationCheckPendingResponseDto extends ApiResponseDto
 {
     public string $email;
+
     public bool $hasPendingInvitation;
 
     public function __construct(object $apiResponse)
@@ -20,16 +21,16 @@ class UserGroupInvitationCheckPendingResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'email'                    => 'email',
-            'has_pending_invitation'   => 'hasPendingInvitation',
+            'email'                  => 'email',
+            'has_pending_invitation' => 'hasPendingInvitation',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'email'                    => ['required', 'string', 'email'],
-            'has_pending_invitation'   => ['required', 'boolean'],
+            'email'                  => ['required', 'string', 'email'],
+            'has_pending_invitation' => ['required', 'boolean'],
         ];
     }
 
@@ -39,4 +40,4 @@ class UserGroupInvitationCheckPendingResponseDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationCheckPendingResponseDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

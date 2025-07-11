@@ -32,7 +32,7 @@ class LegalTypeListDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'types' => ['required', 'array'],
+            'types'   => ['required', 'array'],
             'types.*' => ['required', 'string'],
         ];
     }
@@ -41,4 +41,4 @@ class LegalTypeListDto extends ApiResponseDto
     {
         return new LegalTypeListDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

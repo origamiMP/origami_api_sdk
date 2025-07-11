@@ -8,9 +8,13 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 class GetUserGroupInvitationsListRequestParamBag extends DataApiRequestParamBag
 {
     public string $filterEmail = '';
+
     public string $filterStatus = '';
+
     public int $page = 1;
+
     public int $perPage = 20;
+
     public string $search = '';
 
     protected function getQueryRequestParamsList(): array
@@ -42,15 +46,16 @@ class GetUserGroupInvitationsListRequestParamBag extends DataApiRequestParamBag
     protected function asEncodableArray(?array $propertiesList = null): array
     {
         $array = parent::asEncodableArray($propertiesList);
-        
+
         // Handle filter parameters
-        if (!empty($this->filterEmail)) {
+        if (! empty($this->filterEmail)) {
             $array['filter']['email'] = $this->filterEmail;
         }
-        if (!empty($this->filterStatus)) {
+
+        if (! empty($this->filterStatus)) {
             $array['filter']['status'] = $this->filterStatus;
         }
-        
+
         return $array;
     }
-} 
+}

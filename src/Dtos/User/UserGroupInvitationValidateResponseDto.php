@@ -9,6 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationValidateResp
 class UserGroupInvitationValidateResponseDto extends ApiResponseDto
 {
     public bool $success;
+
     public string $message;
 
     public function __construct(object $apiResponse)
@@ -39,4 +40,4 @@ class UserGroupInvitationValidateResponseDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationValidateResponseDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

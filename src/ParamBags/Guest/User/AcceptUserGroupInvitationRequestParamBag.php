@@ -27,4 +27,4 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag
     {
         return UserGroupInvitationAcceptResponseDto::class;
     }
-} 
+}

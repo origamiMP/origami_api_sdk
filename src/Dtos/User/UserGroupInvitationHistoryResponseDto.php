@@ -23,7 +23,7 @@ class UserGroupInvitationHistoryResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'data' => fn($data) => $this->initData($data),
+            'data' => fn ($data) => $this->initData($data),
         ];
     }
 
@@ -43,6 +43,6 @@ class UserGroupInvitationHistoryResponseDto extends ApiResponseDto
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn($invitationItem) => new UserGroupInvitationHistoryItemDto($invitationItem));
+        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationHistoryItemDto($invitationItem));
     }
-} 
+}

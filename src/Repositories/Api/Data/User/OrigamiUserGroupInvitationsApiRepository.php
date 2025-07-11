@@ -38,6 +38,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->delete("users/groups/invitations/{$invitationId}");
         $responseContent = json_decode($response->getBody()->getContents());
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCancelResponseDto($responseContent);
     }
 
@@ -52,6 +53,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend");
         $responseContent = json_decode($response->getBody()->getContents())->data;
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationResendResponseDto($responseContent);
     }
 
@@ -66,6 +68,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->post('users/groups/invitations/validate', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationValidateResponseDto($responseContent);
     }
 
@@ -80,6 +83,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->get('users/groups/invitations/stats');
         $responseContent = json_decode($response->getBody()->getContents())->data;
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationStatsResponseDto($responseContent);
     }
 
@@ -94,6 +98,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->get('users/groups/invitations/history', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryResponseDto($responseContent);
     }
 
@@ -108,6 +113,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->get('users/groups/invitations/check-pending', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents())->data;
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCheckPendingResponseDto($responseContent);
     }
 
@@ -122,6 +128,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->get('users/groups/invitations', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());
+
         return new \OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationListResponseDto($responseContent);
     }
 }

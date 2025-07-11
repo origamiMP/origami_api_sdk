@@ -14,6 +14,7 @@ class OrigamiFeesDataApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->get('fees/profiles');
         $responseContent = json_decode($response->getBody()->getContents());
+
         return new FeeProfileListDto($responseContent);
     }
-} 
+}

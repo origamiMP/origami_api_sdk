@@ -10,9 +10,13 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationAcceptRespon
 class UserGroupInvitationAcceptResponseDto extends ApiResponseDto
 {
     public int $id;
+
     public string $email;
+
     public string $status;
+
     public Carbon $acceptedAt;
+
     public string $onboardingUrl;
 
     public function __construct(object $apiResponse)
@@ -27,7 +31,7 @@ class UserGroupInvitationAcceptResponseDto extends ApiResponseDto
             'id'             => 'id',
             'email'          => 'email',
             'status'         => 'status',
-            'accepted_at'    => fn($date) => $this->acceptedAt = Carbon::parse($date),
+            'accepted_at'    => fn ($date) => $this->acceptedAt = Carbon::parse($date),
             'onboarding_url' => 'onboardingUrl',
         ];
     }
@@ -49,4 +53,4 @@ class UserGroupInvitationAcceptResponseDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationAcceptResponseDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

@@ -15,8 +15,11 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
     public Collection $data;
 
     public int $currentPage;
+
     public int $perPage;
+
     public int $total;
+
     public int $lastPage;
 
     public function __construct(object $apiResponse)
@@ -28,7 +31,7 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'data' => fn($data) => $this->initData($data),
+            'data' => fn ($data) => $this->initData($data),
             'meta' => [
                 'current_page' => 'currentPage',
                 'per_page'     => 'perPage',
@@ -60,6 +63,6 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn($invitationItem) => new UserGroupInvitationListItemDto($invitationItem));
+        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationListItemDto($invitationItem));
     }
-} 
+}

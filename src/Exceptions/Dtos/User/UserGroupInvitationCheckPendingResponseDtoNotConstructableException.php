@@ -4,4 +4,4 @@ namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User;
 
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
-class UserGroupInvitationCheckPendingResponseDtoNotConstructableException extends ApiResponseDtoNotConstructableException {} 
+class UserGroupInvitationCheckPendingResponseDtoNotConstructableException extends ApiResponseDtoNotConstructableException {}
