@@ -41,9 +41,9 @@ class UserGroupInvitationResultDto extends ApiResponseDto
         return [
             'email'         => ['required', 'string', 'email'],
             'success'       => ['required', 'boolean'],
-            'invitation_id' => ['present', 'nullable', 'integer'],
-            'action'        => ['present', 'nullable', 'string'],
-            'error'         => ['present', 'nullable', 'string'],
+            'invitation_id' => ['required', 'integer'],
+            'action'        => ['required', 'string'],
+            'error'         => ['nullable', 'string'],
         ];
     }
 

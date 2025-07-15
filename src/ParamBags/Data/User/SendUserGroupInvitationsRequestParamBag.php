@@ -21,7 +21,7 @@ class SendUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
     {
         return [
             'emails',
-            'onboarding_url',
+            'onboardingUrl',
         ];
     }
 
@@ -30,7 +30,7 @@ class SendUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
         return [
             'emails'         => ['required', 'array', 'min:1'],
             'emails.*'       => ['required', 'string', 'email'],
-            'onboarding_url' => ['required', 'string', 'url'],
+            'onboardingUrl' => ['required', 'string', 'url'],
         ];
     }
 
