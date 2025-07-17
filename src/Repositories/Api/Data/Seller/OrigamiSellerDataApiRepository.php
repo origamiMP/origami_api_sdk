@@ -3,9 +3,11 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\CreateBankAccountResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\CreateDocumentResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\LegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\RequiredDocumentListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateBankAccountRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateDocumentRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
@@ -41,5 +43,16 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         $responseContent = json_decode($response->getBody()->getContents());
 
         return new RequiredDocumentListDto($responseContent);
+    }
+
+    /**
+     * Create a new document for the seller
+     */
+    public function createDocument(CreateDocumentRequestParamBag $paramBag): CreateDocumentResponseDto
+    {
+        $response = $this->restClient->post('sellers/documents', $paramBag);
+        $responseContent = json_decode($response->getBody()->getContents());
+
+        return new CreateDocumentResponseDto($responseContent);
     }
 }
