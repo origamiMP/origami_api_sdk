@@ -7,23 +7,23 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
 {
-    public int $invitationId;
+    public string $token;
 
     public int $userGroupId;
 
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'invitation_id',
-            'user_group_id',
+            'token',
+            'userGroupId',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'invitation_id' => ['required', 'integer'],
-            'user_group_id' => ['required', 'integer'],
+            'token' => ['required', 'string'],
+            'userGroupId' => ['required', 'integer'],
         ];
     }
 

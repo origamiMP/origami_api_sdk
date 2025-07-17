@@ -30,11 +30,11 @@ class GetUserGroupInvitationsListRequestParamBag extends DataApiRequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'filter_email'  => ['present', 'string', 'email'],
-            'filter_status' => ['present', 'string', 'in:pending,accepted,cancelled,expired'],
-            'page'          => ['present', 'integer', 'min:1'],
-            'per_page'      => ['present', 'integer', 'min:1', 'max:100'],
-            'search'        => ['present', 'string'],
+            'filter_email'  => ['string', 'email'],
+            'filter_status' => ['string', 'in:pending,accepted,cancelled,expired'],
+            'page'          => ['integer', 'min:1'],
+            'per_page'      => ['integer', 'min:1', 'max:100'],
+            'search'        => ['string', 'nullable'],
         ];
     }
 

@@ -14,13 +14,17 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
      */
     public Collection $data;
 
-    public int $currentPage;
+    public int $total;
+
+    public int $count;
 
     public int $perPage;
 
-    public int $total;
+    public int $currentPage;
 
-    public int $lastPage;
+    public int $totalPages;
+
+    public array $links;
 
     public function __construct(object $apiResponse)
     {
@@ -33,10 +37,14 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
         return [
             'data' => fn ($data) => $this->initData($data),
             'meta' => [
-                'current_page' => 'currentPage',
-                'per_page'     => 'perPage',
-                'total'        => 'total',
-                'last_page'    => 'lastPage',
+                'pagination' => [
+                    'total'        => 'total',
+                    'count'        => 'count',
+                    'per_page'     => 'perPage',
+                    'current_page' => 'currentPage',
+                    'total_pages'  => 'totalPages',
+                    'links'        => fn ($links) => $this->initLinks($links),
+                ],
             ],
         ];
     }
@@ -44,12 +52,16 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'data' => ['required', 'array'],
+            'data' => ['array'],
             'meta' => [
-                'current_page' => ['required', 'integer', 'min:1'],
-                'per_page'     => ['required', 'integer', 'min:1'],
-                'total'        => ['required', 'integer', 'min:0'],
-                'last_page'    => ['required', 'integer', 'min:1'],
+                'pagination' => [
+                    'total'        => ['required', 'integer', 'min:0'],
+                    'count'        => ['required', 'integer', 'min:0'],
+                    'per_page'     => ['required', 'integer', 'min:0'],
+                    'current_page' => ['required', 'integer', 'min:1'],
+                    'total_pages'  => ['required', 'integer', 'min:1'],
+                    'links'        => ['required', 'array'],
+                ],
             ],
         ];
     }
@@ -64,5 +76,11 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
     protected function initData(array $data): void
     {
         $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationListItemDto($invitationItem));
+    }
+
+    protected function initLinks(object|array $links): void
+    {
+        // Convertir l'objet en array si nécessaire
+        $this->links = is_object($links) ? (array) $links : $links;
     }
 }

@@ -8,15 +8,15 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationStatsRespons
 
 class UserGroupInvitationStatsResponseDto extends ApiResponseDto
 {
-    public int $totalInvitations;
+    public int $total;
 
-    public int $pendingInvitations;
+    public int $pending;
 
-    public int $acceptedInvitations;
+    public int $accepted;
 
-    public int $cancelledInvitations;
+    public int $cancelled;
 
-    public int $expiredInvitations;
+    public int $expired;
 
     public float $acceptanceRate;
 
@@ -29,24 +29,24 @@ class UserGroupInvitationStatsResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'total_invitations'     => 'totalInvitations',
-            'pending_invitations'   => 'pendingInvitations',
-            'accepted_invitations'  => 'acceptedInvitations',
-            'cancelled_invitations' => 'cancelledInvitations',
-            'expired_invitations'   => 'expiredInvitations',
-            'acceptance_rate'       => 'acceptanceRate',
+            'total'           => 'total',
+            'pending'         => 'pending',
+            'accepted'        => 'accepted',
+            'cancelled'       => 'cancelled',
+            'expired'         => 'expired',
+            'acceptance_rate' => 'acceptanceRate',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'total_invitations'     => ['required', 'integer', 'min:0'],
-            'pending_invitations'   => ['required', 'integer', 'min:0'],
-            'accepted_invitations'  => ['required', 'integer', 'min:0'],
-            'cancelled_invitations' => ['required', 'integer', 'min:0'],
-            'expired_invitations'   => ['required', 'integer', 'min:0'],
-            'acceptance_rate'       => ['required', 'numeric', 'min:0', 'max:100'],
+            'total'           => ['required', 'integer', 'min:0'],
+            'pending'         => ['required', 'integer', 'min:0'],
+            'accepted'        => ['required', 'integer', 'min:0'],
+            'cancelled'       => ['required', 'integer', 'min:0'],
+            'expired'         => ['required', 'integer', 'min:0'],
+            'acceptance_rate' => ['required', 'numeric', 'min:0', 'max:100'],
         ];
     }
 

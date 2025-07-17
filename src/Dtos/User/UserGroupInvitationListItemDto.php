@@ -11,17 +11,29 @@ class UserGroupInvitationListItemDto extends ApiResponseDto
 {
     public int $id;
 
-    public string $email;
+    public ?int $userGroupId;
 
     public string $status;
+
+    public string $email;
+
+    public string $onboardingUrl;
 
     public Carbon $sentAt;
 
     public ?Carbon $acceptedAt;
 
-    public ?Carbon $cancelledAt;
+    public Carbon $expiresAt;
 
-    public ?Carbon $expiredAt;
+    public bool $isExpired;
+
+    public bool $isValid;
+
+    public string $token;
+
+    public Carbon $createdAt;
+
+    public Carbon $updatedAt;
 
     public function __construct(object $apiResponse)
     {
@@ -32,26 +44,38 @@ class UserGroupInvitationListItemDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'           => 'id',
-            'email'        => 'email',
-            'status'       => 'status',
-            'sent_at'      => fn ($date) => $this->sentAt = Carbon::parse($date),
-            'accepted_at'  => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
-            'cancelled_at' => fn ($date) => $this->cancelledAt = is_null($date) ? null : Carbon::parse($date),
-            'expired_at'   => fn ($date) => $this->expiredAt = is_null($date) ? null : Carbon::parse($date),
+            'id'             => 'id',
+            'user_group_id'  => 'userGroupId',
+            'status'         => 'status',
+            'email'          => 'email',
+            'onboarding_url' => 'onboardingUrl',
+            'sent_at'        => fn ($date) => $this->sentAt = Carbon::parse($date),
+            'accepted_at'    => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
+            'expires_at'     => fn ($date) => $this->expiresAt = Carbon::parse($date),
+            'is_expired'     => 'isExpired',
+            'is_valid'       => 'isValid',
+            'token'          => 'token',
+            'created_at'     => fn ($date) => $this->createdAt = Carbon::parse($date),
+            'updated_at'     => fn ($date) => $this->updatedAt = Carbon::parse($date),
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'           => ['required', 'integer'],
-            'email'        => ['required', 'string', 'email'],
-            'status'       => ['required', 'string'],
-            'sent_at'      => ['required', 'date'],
-            'accepted_at'  => ['present', 'nullable', 'date'],
-            'cancelled_at' => ['present', 'nullable', 'date'],
-            'expired_at'   => ['present', 'nullable', 'date'],
+            'id'             => ['required', 'integer'],
+            'user_group_id'  => ['present', 'nullable', 'integer'],
+            'status'         => ['required', 'string'],
+            'email'          => ['required', 'string', 'email'],
+            'onboarding_url' => ['required', 'string', 'url'],
+            'sent_at'        => ['required', 'date'],
+            'accepted_at'    => ['present', 'nullable', 'date'],
+            'expires_at'     => ['required', 'date'],
+            'is_expired'     => ['required', 'boolean'],
+            'is_valid'       => ['required', 'boolean'],
+            'token'          => ['required', 'string'],
+            'created_at'     => ['required', 'date'],
+            'updated_at'     => ['required', 'date'],
         ];
     }
 

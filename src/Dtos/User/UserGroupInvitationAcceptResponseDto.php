@@ -2,18 +2,22 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
+use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationAcceptResponseDtoNotConstructableException;
 
 class UserGroupInvitationAcceptResponseDto extends ApiResponseDto
 {
-    /**
-     * @var array
-     */
-    public array $data;
+    public int $id;
 
-    public string $message;
+    public string $email;
+
+    public string $status;
+
+    public Carbon $acceptedAt;
+
+    public string $onboardingUrl;
 
     public function __construct(object $apiResponse)
     {
@@ -24,20 +28,22 @@ class UserGroupInvitationAcceptResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'data'    => fn ($data) => $this->data = $data,
-            'message' => 'message',
+            'id'              => 'id',
+            'email'           => 'email',
+            'status'          => 'status',
+            'accepted_at'     => fn ($date) => $this->acceptedAt = Carbon::parse($date),
+            'onboarding_url'  => 'onboardingUrl',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'data'    => ['required', 'array'],
-            'data.*.email' => ['required', 'string', 'email'],
-            'data.*.success' => ['required', 'boolean'],
-            'data.*.invitation_id' => ['required', 'integer'],
-            'data.*.action' => ['required', 'string'],
-            'message' => ['required', 'string'],
+            'id'              => ['required', 'integer'],
+            'email'           => ['required', 'string', 'email'],
+            'status'          => ['required', 'string'],
+            'accepted_at'     => ['required', 'date'],
+            'onboarding_url'  => ['required', 'string', 'url'],
         ];
     }
 
