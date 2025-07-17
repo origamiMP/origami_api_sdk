@@ -7,4 +7,4 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 class BankAccountDtoNotConstructableException extends ApiResponseDtoNotConstructableException
 {
     //
-} 
+}

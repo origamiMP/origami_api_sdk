@@ -65,4 +65,4 @@ class CreateBankAccountRequestParamBag extends DataApiRequestParamBag
     {
         return CreateBankAccountResponseDto::class;
     }
-} 
+}

@@ -45,4 +45,4 @@ class TaxListDto extends ApiResponseDto
     {
         $this->data = collect($data)->map(fn ($tax) => new TaxDto($tax));
     }
-} 
+}

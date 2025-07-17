@@ -28,8 +28,8 @@ class SendUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'emails'         => ['required', 'array', 'min:1'],
-            'emails.*'       => ['required', 'string', 'email'],
+            'emails'        => ['required', 'array', 'min:1'],
+            'emails.*'      => ['required', 'string', 'email'],
             'onboardingUrl' => ['required', 'string', 'url'],
         ];
     }

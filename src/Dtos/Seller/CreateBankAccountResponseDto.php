@@ -19,7 +19,7 @@ class CreateBankAccountResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'data' => fn($data) => $this->data = new BankAccountDto($data),
+            'data' => fn ($data) => $this->data = new BankAccountDto($data),
         ];
     }
 
@@ -34,4 +34,4 @@ class CreateBankAccountResponseDto extends ApiResponseDto
     {
         return new CreateBankAccountResponseDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

@@ -22,7 +22,7 @@ class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'token' => ['required', 'string'],
+            'token'       => ['required', 'string'],
             'userGroupId' => ['required', 'integer'],
         ];
     }

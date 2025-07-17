@@ -28,22 +28,22 @@ class UserGroupInvitationAcceptResponseDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'              => 'id',
-            'email'           => 'email',
-            'status'          => 'status',
-            'accepted_at'     => fn ($date) => $this->acceptedAt = Carbon::parse($date),
-            'onboarding_url'  => 'onboardingUrl',
+            'id'             => 'id',
+            'email'          => 'email',
+            'status'         => 'status',
+            'accepted_at'    => fn ($date) => $this->acceptedAt = Carbon::parse($date),
+            'onboarding_url' => 'onboardingUrl',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'              => ['required', 'integer'],
-            'email'           => ['required', 'string', 'email'],
-            'status'          => ['required', 'string'],
-            'accepted_at'     => ['required', 'date'],
-            'onboarding_url'  => ['required', 'string', 'url'],
+            'id'             => ['required', 'integer'],
+            'email'          => ['required', 'string', 'email'],
+            'status'         => ['required', 'string'],
+            'accepted_at'    => ['required', 'date'],
+            'onboarding_url' => ['required', 'string', 'url'],
         ];
     }
 

@@ -4,7 +4,7 @@ if (! function_exists('objectToArray')) {
     /**
      * Convert an object to an array
      *
-     * @param object $object The object to convert
+     * @param  object  $object  The object to convert
      * @return array The converted array
      */
     function objectToArray(object $object): array
@@ -34,7 +34,7 @@ if (! function_exists('camelCaseToSnakeCase')) {
     /**
      * Convert a camelCase string to snake_case
      *
-     * @param string $input The camelCase string to convert
+     * @param  string  $input  The camelCase string to convert
      * @return string The converted snake_case string
      */
     function camelCaseToSnakeCase(string $input): string
@@ -47,7 +47,7 @@ if (! function_exists('snakeCaseToCamelCase')) {
     /**
      * Convert a snake_case string to camelCase
      *
-     * @param string $input The snake_case string to convert
+     * @param  string  $input  The snake_case string to convert
      * @return string The converted camelCase string
      */
     function snakeCaseToCamelCase(string $input): string

@@ -17,4 +17,4 @@ class OrigamiTaxesGuestApiRepository extends OrigamiGuestApiRepository
 
         return new TaxListDto($responseContent);
     }
-} 
+}

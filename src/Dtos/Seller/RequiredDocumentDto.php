@@ -37,14 +37,14 @@ class RequiredDocumentDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'            => 'id',
-            'type'          => 'type',
-            'mandatory_on'  => 'mandatoryOn',
-            'format'        => 'format',
-            'key'           => 'key',
-            'created_at'    => fn($date) => $this->createdAt = Carbon::parse($date),
-            'updated_at'    => fn($date) => $this->updatedAt = Carbon::parse($date),
-            'required_by'   => 'requiredBy',
+            'id'           => 'id',
+            'type'         => 'type',
+            'mandatory_on' => 'mandatoryOn',
+            'format'       => 'format',
+            'key'          => 'key',
+            'created_at'   => fn ($date) => $this->createdAt = Carbon::parse($date),
+            'updated_at'   => fn ($date) => $this->updatedAt = Carbon::parse($date),
+            'required_by'  => 'requiredBy',
         ];
     }
 
@@ -67,4 +67,4 @@ class RequiredDocumentDto extends ApiResponseDto
     {
         return new RequiredDocumentDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

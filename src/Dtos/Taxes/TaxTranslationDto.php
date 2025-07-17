@@ -25,20 +25,20 @@ class TaxTranslationDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'locale' => 'locale',
-            'default' => fn ($default) => $this->default = (bool) $default,
+            'locale'      => 'locale',
+            'default'     => fn ($default) => $this->default = (bool) $default,
             'language_id' => 'languageId',
-            'name' => 'name',
+            'name'        => 'name',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'locale' => ['required', 'string'],
-            'default' => ['required', 'boolean'],
+            'locale'      => ['required', 'string'],
+            'default'     => ['required', 'boolean'],
             'language_id' => ['required', 'integer'],
-            'name' => ['required', 'string'],
+            'name'        => ['required', 'string'],
         ];
     }
 
@@ -48,4 +48,4 @@ class TaxTranslationDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new TaxTranslationDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

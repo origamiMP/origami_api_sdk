@@ -37,32 +37,32 @@ class BankAccountDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'                    => 'id',
-            'user_group_id'         => 'userGroupId',
-            'bank_name'             => 'bankName',
-            'owner_name'            => 'ownerName',
-            'owner_address'         => 'ownerAddress',
-            'iban'                  => 'iban',
-            'bic'                   => 'bic',
-            'is_default'            => fn($value) => $this->isDefault = (bool) $value,
-            'is_active'             => fn($value) => $this->isActive = (bool) $value,
-            'psp_validation_state'  => fn($value) => $this->pspValidationState = (bool) $value,
+            'id'                   => 'id',
+            'user_group_id'        => 'userGroupId',
+            'bank_name'            => 'bankName',
+            'owner_name'           => 'ownerName',
+            'owner_address'        => 'ownerAddress',
+            'iban'                 => 'iban',
+            'bic'                  => 'bic',
+            'is_default'           => fn ($value) => $this->isDefault = (bool) $value,
+            'is_active'            => fn ($value) => $this->isActive = (bool) $value,
+            'psp_validation_state' => fn ($value) => $this->pspValidationState = (bool) $value,
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'                    => ['required', 'integer'],
-            'user_group_id'         => ['required', 'integer'],
-            'bank_name'             => ['required', 'string'],
-            'owner_name'            => ['required', 'string'],
-            'owner_address'         => ['required', 'string'],
-            'iban'                  => ['required', 'string'],
-            'bic'                   => ['required', 'string'],
-            'is_default'            => ['required'],
-            'is_active'             => ['required'],
-            'psp_validation_state'  => ['required'],
+            'id'                   => ['required', 'integer'],
+            'user_group_id'        => ['required', 'integer'],
+            'bank_name'            => ['required', 'string'],
+            'owner_name'           => ['required', 'string'],
+            'owner_address'        => ['required', 'string'],
+            'iban'                 => ['required', 'string'],
+            'bic'                  => ['required', 'string'],
+            'is_default'           => ['required'],
+            'is_active'            => ['required'],
+            'psp_validation_state' => ['required'],
         ];
     }
 
@@ -70,4 +70,4 @@ class BankAccountDto extends ApiResponseDto
     {
         return new BankAccountDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

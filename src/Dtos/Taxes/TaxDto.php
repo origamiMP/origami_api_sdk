@@ -17,6 +17,7 @@ class TaxDto extends ApiResponseDto
     protected static array $availableIncludes = [
         // TODO: Add available includes if needed in the future
     ];
+
     public int $id;
 
     public float $value;
@@ -39,10 +40,10 @@ class TaxDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id' => 'id',
-            'value' => fn ($value) => $this->value = (float) $value,
-            'type' => fn ($type) => $this->type = TaxTypeEnum::from($type),
-            'id_scs_tax' => 'idScsTax',
+            'id'           => 'id',
+            'value'        => fn ($value) => $this->value = (float) $value,
+            'type'         => fn ($type) => $this->type = TaxTypeEnum::from($type),
+            'id_scs_tax'   => 'idScsTax',
             'translations' => fn ($translations) => $this->initTranslations($translations),
         ];
     }
@@ -52,10 +53,10 @@ class TaxDto extends ApiResponseDto
         $types = collect(TaxTypeEnum::cases())->pluck('value');
 
         return [
-            'id' => ['required', 'integer'],
-            'value' => ['required', 'numeric'],
-            'type' => ['required', Rule::in($types)],
-            'id_scs_tax' => ['present', 'nullable', 'integer'],
+            'id'           => ['required', 'integer'],
+            'value'        => ['required', 'numeric'],
+            'type'         => ['required', Rule::in($types)],
+            'id_scs_tax'   => ['present', 'nullable', 'integer'],
             'translations' => ['required', 'array'],
         ];
     }
@@ -73,4 +74,4 @@ class TaxDto extends ApiResponseDto
 
         $this->translations = collect($translations->data)->map(fn ($translation) => new TaxTranslationDto($translation));
     }
-} 
+}
