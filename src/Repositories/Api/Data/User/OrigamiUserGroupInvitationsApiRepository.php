@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCancelResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCheckPendingResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationListResponseDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationResendResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationSendResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationStatsResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationValidateResponseDto;
@@ -16,7 +16,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCancelRespon
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCheckPendingResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationHistoryResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationListResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationResendResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationsSendResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationStatsResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationValidateResponseDtoNotConstructableException;
@@ -65,14 +65,14 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationResendResponseDtoNotConstructableException
+     * @throws UserGroupInvitationDtoNotConstructableException
      */
-    public function resendInvitation(int $invitationId): UserGroupInvitationResendResponseDto
+    public function resendInvitation(int $invitationId): UserGroupInvitationDto
     {
         $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend");
         $responseContent = json_decode($response->getBody()->getContents())->data;
 
-        return new UserGroupInvitationResendResponseDto($responseContent);
+        return new UserGroupInvitationDto($responseContent);
     }
 
     /**

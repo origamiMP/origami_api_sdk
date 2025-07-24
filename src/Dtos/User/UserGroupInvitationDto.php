@@ -5,10 +5,10 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationResendResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-class UserGroupInvitationResendResponseDto extends ApiResponseDto
+class UserGroupInvitationDto extends ApiResponseDto
 {
     use HasTimestamps;
 
@@ -16,9 +16,9 @@ class UserGroupInvitationResendResponseDto extends ApiResponseDto
 
     public ?int $userGroupId;
 
-    public string $email;
-
     public string $status;
+
+    public string $email;
 
     public string $onboardingUrl;
 
@@ -88,6 +88,6 @@ class UserGroupInvitationResendResponseDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationResendResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationDtoNotConstructableException($msg, previous: $previous);
     }
 }
