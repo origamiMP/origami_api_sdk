@@ -38,7 +38,7 @@ class TaxTranslationDto extends ApiResponseDto
             'locale'      => ['required', 'string'],
             'default'     => ['required', 'boolean'],
             'language_id' => ['required', 'integer'],
-            'name'        => ['required', 'string'],
+            'name'        => ['present', 'string'],
         ];
     }
 

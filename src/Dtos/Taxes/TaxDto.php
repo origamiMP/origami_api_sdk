@@ -8,16 +8,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Taxes\TaxDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 
 class TaxDto extends ApiResponseDto
 {
-    use HasAvailableIncludes;
-
-    protected static array $availableIncludes = [
-        // TODO: Add available includes if needed in the future
-    ];
-
     public int $id;
 
     public float $value;
@@ -25,6 +18,10 @@ class TaxDto extends ApiResponseDto
     public TaxTypeEnum $type;
 
     public ?int $idScsTax;
+
+    public bool $isDefault;
+
+    public ?int $moduleId;
 
     /**
      * @var Collection|TaxTranslationDto[]
@@ -44,6 +41,8 @@ class TaxDto extends ApiResponseDto
             'value'        => fn ($value) => $this->value = (float) $value,
             'type'         => fn ($type) => $this->type = TaxTypeEnum::from($type),
             'id_scs_tax'   => 'idScsTax',
+            'is_default'   => 'isDefault',
+            'module_id'    => 'moduleId',
             'translations' => fn ($translations) => $this->initTranslations($translations),
         ];
     }
@@ -57,6 +56,8 @@ class TaxDto extends ApiResponseDto
             'value'        => ['required', 'numeric'],
             'type'         => ['required', Rule::in($types)],
             'id_scs_tax'   => ['present', 'nullable', 'integer'],
+            'is_default'   => ['required', 'boolean'],
+            'module_id'    => ['present', 'nullable', 'integer'],
             'translations' => ['required', 'array'],
         ];
     }
