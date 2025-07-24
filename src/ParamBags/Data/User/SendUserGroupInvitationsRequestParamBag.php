@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationsResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationSendResponseDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class SendUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
@@ -28,14 +28,14 @@ class SendUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'emails'        => ['required', 'array', 'min:1'],
-            'emails.*'      => ['required', 'string', 'email'],
-            'onboardingUrl' => ['required', 'string', 'url'],
+            'emails'        => ['required', 'array', 'min:1', 'max:10'],
+            'emails.*'      => ['required', 'string', 'email', 'max:255'],
+            'onboardingUrl' => ['required', 'string', 'url', 'max:500'],
         ];
     }
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationsResponseDto::class;
+        return UserGroupInvitationSendResponseDto::class;
     }
 }

@@ -5,9 +5,9 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationsResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationsSendResponseDtoNotConstructableException;
 
-class UserGroupInvitationsResponseDto extends ApiResponseDto
+class UserGroupInvitationSendResponseDto extends ApiResponseDto
 {
     /**
      * @var Collection|UserGroupInvitationResultDto[]
@@ -43,7 +43,7 @@ class UserGroupInvitationsResponseDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationsResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationsSendResponseDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initData(array $data): void
