@@ -2,12 +2,12 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Guest\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationAcceptResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag
 {
-    public string $token = '';
+    public string $token;
 
     protected function getJsonRequestParamsList(): array
     {
@@ -19,12 +19,12 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'token' => ['required', 'string'],
+            'token' => ['required', 'string', 'size:64'],
         ];
     }
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationAcceptResponseDto::class;
+        return UserGroupInvitationDto::class;
     }
 }
