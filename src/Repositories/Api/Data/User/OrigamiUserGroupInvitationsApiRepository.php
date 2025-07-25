@@ -70,9 +70,9 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     public function resendInvitation(int $invitationId): UserGroupInvitationDto
     {
         $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend");
-        $responseContent = json_decode($response->getBody()->getContents())->data;
+        $responseContent = json_decode($response->getBody()->getContents());
 
-        return new UserGroupInvitationDto($responseContent);
+        return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
     /**
@@ -120,7 +120,6 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationHistoryResponseDto($responseContent);
     }
 
-    // TODO Onboarding seller : review
     /**
      * Check if an email address has any pending invitations
      *
@@ -131,9 +130,9 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     public function checkPending(CheckPendingUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationCheckPendingResponseDto
     {
         $response = $this->restClient->get('users/groups/invitations/check-pending', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents())->data;
+        $responseContent = json_decode($response->getBody()->getContents());
 
-        return new UserGroupInvitationCheckPendingResponseDto($responseContent);
+        return new UserGroupInvitationCheckPendingResponseDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
     /**
