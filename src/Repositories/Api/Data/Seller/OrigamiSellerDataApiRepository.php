@@ -26,18 +26,6 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
 
     // TODO Onboarding seller : review
     /**
-     * Create a new bank account for the seller
-     */
-    public function createBankAccount(CreateBankAccountRequestParamBag $paramBag): CreateBankAccountResponseDto
-    {
-        $response = $this->restClient->post('sellers/bank_accounts', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
-
-        return new CreateBankAccountResponseDto($responseContent);
-    }
-
-    // TODO Onboarding seller : review
-    /**
      * Get the list of required documents for a specific seller
      */
     public function getRequiredDocuments(int $sellerId): RequiredDocumentListDto

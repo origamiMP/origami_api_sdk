@@ -4,9 +4,9 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\BankAccountDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerBankAccountDtoNotConstructableException;
 
-class BankAccountDto extends ApiResponseDto
+class SellerBankAccountDto extends ApiResponseDto
 {
     public int $id;
 
@@ -60,14 +60,14 @@ class BankAccountDto extends ApiResponseDto
             'owner_address'        => ['required', 'string'],
             'iban'                 => ['required', 'string'],
             'bic'                  => ['required', 'string'],
-            'is_default'           => ['required'],
-            'is_active'            => ['required'],
-            'psp_validation_state' => ['required'],
+            'is_default'           => ['required', 'boolean'],
+            'is_active'            => ['required', 'boolean'],
+            'psp_validation_state' => ['required', 'boolean'],
         ];
     }
 
     protected static function getDefaultNotConstructableException(string $msg, ?\Throwable $previous = null): ApiResponseDtoNotConstructableException
     {
-        return new BankAccountDtoNotConstructableException($msg, previous: $previous);
+        return new SellerBankAccountDtoNotConstructableException($msg, previous: $previous);
     }
 }
