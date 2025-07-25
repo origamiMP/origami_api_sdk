@@ -9,7 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationDtoNotConstr
 use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\User\AcceptUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 
-class OrigamiGuestUserGroupInvitationsApiRepository extends OrigamiGuestApiRepository
+class OrigamiUserGroupInvitationGuestApiRepository extends OrigamiGuestApiRepository
 {
     /**
      * Accept an invitation using the token from the email (public endpoint)

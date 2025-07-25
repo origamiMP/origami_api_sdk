@@ -12,6 +12,7 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
 {
+    // TODO Onboarding seller : review
     /**
      * Get the list of legal types available for sellers
      */
@@ -23,6 +24,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         return new LegalTypeListDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Create a new bank account for the seller
      */
@@ -34,6 +36,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         return new CreateBankAccountResponseDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Get the list of required documents for a specific seller
      */
@@ -45,6 +48,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         return new RequiredDocumentListDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Create a new document for the seller
      */

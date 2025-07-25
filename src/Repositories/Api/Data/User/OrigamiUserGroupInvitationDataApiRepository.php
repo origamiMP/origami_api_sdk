@@ -27,7 +27,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationsRequestP
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ValidateUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
-class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
+class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiRepository
 {
     /**
      * Send invitations to multiple email addresses for seller onboarding
