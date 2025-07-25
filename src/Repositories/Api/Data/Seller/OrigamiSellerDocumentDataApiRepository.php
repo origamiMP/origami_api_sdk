@@ -2,8 +2,8 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSellerDocumentRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 

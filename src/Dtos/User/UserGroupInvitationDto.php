@@ -43,8 +43,6 @@ class UserGroupInvitationDto extends ApiResponseDto
      * UserGroup that was created using this invitation.
      *
      * May be undefined if the corresponding data was not included.
-     *
-     * @var UserGroupDto|null
      */
     public ?UserGroupDto $userGroup;
 

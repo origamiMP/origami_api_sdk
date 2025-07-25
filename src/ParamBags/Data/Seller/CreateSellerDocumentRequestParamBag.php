@@ -9,8 +9,6 @@ class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
 {
     /**
      * Unique page encodée en base64
-     *
-     * @var string
      */
     public string $content;
 

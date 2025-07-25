@@ -174,10 +174,10 @@ abstract class ApiResponseDto
         $summary = [];
 
         foreach ($e->errors() as $field => $fieldErrors) {
-            $fieldErrorsSummary = join(', ', $fieldErrors);
+            $fieldErrorsSummary = implode(', ', $fieldErrors);
             $summary[] = "$field ($fieldErrorsSummary)";
         }
 
-        return join(', ', $summary);
+        return implode(', ', $summary);
     }
 }
