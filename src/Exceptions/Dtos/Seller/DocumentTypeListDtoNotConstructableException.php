@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
-class RequiredDocumentListDtoNotConstructableException extends ApiResponseDtoNotConstructableException
+class DocumentTypeListDtoNotConstructableException extends ApiResponseDtoNotConstructableException
 {
     //
 }

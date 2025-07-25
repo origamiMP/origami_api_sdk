@@ -5,12 +5,12 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\RequiredDocumentListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeListDtoNotConstructableException;
 
-class RequiredDocumentListDto extends ApiResponseDto
+class DocumentTypeListDto extends ApiResponseDto
 {
     /**
-     * @var Collection|RequiredDocumentDto[]
+     * @var Collection|DocumentTypeDto[]
      */
     public Collection $data;
 
@@ -36,11 +36,11 @@ class RequiredDocumentListDto extends ApiResponseDto
 
     protected static function getDefaultNotConstructableException(string $msg, ?\Throwable $previous = null): ApiResponseDtoNotConstructableException
     {
-        return new RequiredDocumentListDtoNotConstructableException($msg, previous: $previous);
+        return new DocumentTypeListDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($document) => new RequiredDocumentDto($document));
+        $this->data = collect($data)->map(fn ($document) => new DocumentTypeDto($document));
     }
 }

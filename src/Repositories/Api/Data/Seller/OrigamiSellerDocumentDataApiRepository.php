@@ -3,22 +3,21 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\CreateDocumentResponseDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\Seller\RequiredDocumentListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateDocumentRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
 {
-    // TODO Onboarding seller : review
     /**
      * Get the list of required documents for a specific seller
      */
-    public function getRequiredDocuments(int $sellerId): RequiredDocumentListDto
+    public function getRequiredDocuments(int $sellerId): DocumentTypeListDto
     {
         $response = $this->restClient->get("sellers/{$sellerId}/required_documents");
         $responseContent = json_decode($response->getBody()->getContents());
 
-        return new RequiredDocumentListDto($responseContent);
+        return new DocumentTypeListDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
     // TODO Onboarding seller : review
