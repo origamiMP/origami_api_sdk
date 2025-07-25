@@ -90,7 +90,6 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationValidateResponseDto($responseContent);
     }
 
-    // TODO Onboarding seller : review
     /**
      * Retrieve system-wide invitation statistics
      *
@@ -101,9 +100,9 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
     public function getStats(): UserGroupInvitationStatsResponseDto
     {
         $response = $this->restClient->get('users/groups/invitations/stats');
-        $responseContent = json_decode($response->getBody()->getContents())->data;
+        $responseContent = json_decode($response->getBody()->getContents());
 
-        return new UserGroupInvitationStatsResponseDto($responseContent);
+        return new UserGroupInvitationStatsResponseDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
     // TODO Onboarding seller : review
