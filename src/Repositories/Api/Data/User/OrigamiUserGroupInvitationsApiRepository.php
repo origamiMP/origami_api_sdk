@@ -75,7 +75,6 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationDto($responseContent);
     }
 
-    // TODO Onboarding seller : review
     /**
      * Validate that an invitation was properly accepted when creating the seller account
      *
