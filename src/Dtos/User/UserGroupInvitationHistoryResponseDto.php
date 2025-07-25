@@ -10,7 +10,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationHistoryRespo
 class UserGroupInvitationHistoryResponseDto extends ApiResponseDto
 {
     /**
-     * @var Collection|UserGroupInvitationHistoryItemDto[]
+     * @var Collection|UserGroupInvitationDto[]
      */
     public Collection $data;
 
@@ -43,6 +43,6 @@ class UserGroupInvitationHistoryResponseDto extends ApiResponseDto
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationHistoryItemDto($invitationItem));
+        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationDto($invitationItem));
     }
 }

@@ -105,7 +105,6 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationStatsResponseDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
-    // TODO Onboarding seller : review
     /**
      * Retrieve all invitations sent to a specific email address
      *
