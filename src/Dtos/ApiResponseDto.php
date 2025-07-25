@@ -3,6 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use OrigamiMp\OrigamiApiSdk\Enums\Json\JsonResponseErrorEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -89,8 +90,11 @@ abstract class ApiResponseDto
         try {
             $this->validateApiResponseRawValues();
         } catch (ValidationException $e) {
+            $summary = self::getSummaryFromValidationException($e);
+            $classShortName = $this->getClassShortName();
+
             throw $this->getDefaultNotConstructableException(
-                'Api response data failed to be validated.',
+                "[$classShortName] Api response data failed to be validated : {$summary}",
                 $e,
             );
         }
@@ -124,8 +128,10 @@ abstract class ApiResponseDto
                 $propertyCaster($dataToHave);
             }
         } catch (\Throwable $e) {
+            $classShortName = $this->getClassShortName();
+
             throw $this->getDefaultNotConstructableException(
-                "Could not assign data '$dottedPath' to property : {$e->getMessage()}",
+                "[$classShortName] Could not assign data '$dottedPath' to property : {$e->getMessage()}",
                 $e,
             );
         }
@@ -150,9 +156,28 @@ abstract class ApiResponseDto
     protected function throwIfDataFieldOnObjectIsEmpty(object $object): void
     {
         if (! isset($object->data)) {
+            $classShortName = $this->getClassShortName();
+
             throw $this->getDefaultNotConstructableException(
-                'Object part from API response does not have mandatory "data" field.',
+                "[$classShortName] Object part from API response does not have mandatory `data` field.",
             );
         }
+    }
+
+    protected function getClassShortName(): string
+    {
+        return Str::afterLast(get_class($this), '\\');
+    }
+
+    protected static function getSummaryFromValidationException(ValidationException $e): string
+    {
+        $summary = [];
+
+        foreach ($e->errors() as $field => $fieldErrors) {
+            $fieldErrorsSummary = implode(', ', $fieldErrors);
+            $summary[] = "$field ($fieldErrorsSummary)";
+        }
+
+        return implode(', ', $summary);
     }
 }

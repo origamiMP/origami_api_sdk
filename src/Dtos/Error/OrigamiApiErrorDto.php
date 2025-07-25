@@ -31,7 +31,7 @@ class OrigamiApiErrorDto extends ApiResponseDto
         $this->validateAndFill();
     }
 
-    public function getCorrespondingException(): OrigamiApiSingleException
+    public function getCorrespondingException(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
         return $this->getCorrespondingExceptionToErrorCode()
             ?: $this->getCorrespondingExceptionToHttpStatusCode();
