@@ -75,6 +75,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Validate that an invitation was properly accepted when creating the seller account
      *
@@ -90,6 +91,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationValidateResponseDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Retrieve system-wide invitation statistics
      *
@@ -105,6 +107,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationStatsResponseDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Retrieve all invitations sent to a specific email address
      *
@@ -120,6 +123,7 @@ class OrigamiUserGroupInvitationsApiRepository extends OrigamiDataApiRepository
         return new UserGroupInvitationHistoryResponseDto($responseContent);
     }
 
+    // TODO Onboarding seller : review
     /**
      * Check if an email address has any pending invitations
      *

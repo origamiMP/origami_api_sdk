@@ -7,13 +7,16 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBag
 {
-    public string $email = '';
+    public string $email;
 
     protected function getQueryRequestParamsList(): array
     {
-        return [
-            'email',
-        ];
+        return array_merge(
+            parent::getQueryRequestParamsList(),
+            [
+                'email',
+            ],
+        );
     }
 
     protected function validationRulesForProperties(): array

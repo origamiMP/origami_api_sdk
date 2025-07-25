@@ -9,6 +9,7 @@ use Illuminate\Contracts\Translation\Translator;
  */
 class DummyTranslator implements Translator
 {
+    // TODO DEV : Add real translation to validator
     public function get($key, array $replace = [], $locale = null)
     {
         return $key;

@@ -10,9 +10,11 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationListResponse
 class UserGroupInvitationListResponseDto extends ApiResponseDto
 {
     /**
-     * @var Collection|UserGroupInvitationListItemDto[]
+     * @var Collection|UserGroupInvitationDto[]
      */
     public Collection $data;
+
+    // TODO Onboarding seller : Use trait for pagination (use it on every list dto)
 
     public int $total;
 
@@ -75,7 +77,7 @@ class UserGroupInvitationListResponseDto extends ApiResponseDto
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationListItemDto($invitationItem));
+        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationDto($invitationItem));
     }
 
     protected function initLinks(object|array $links): void

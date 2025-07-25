@@ -2,29 +2,35 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationListResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class GetUserGroupInvitationsListRequestParamBag extends DataApiRequestParamBag
 {
-    public string $filterEmail = '';
+    // TODO Onboarding seller : Use trait for filtering (use it on every list param bag)
+    public string $filterEmail;
 
-    public string $filterStatus = '';
+    public string $filterStatus;
 
+    // TODO Onboarding seller : Use trait for pagination (use it on every list param bag)
     public int $page = 1;
 
-    public int $perPage = 20;
+    public int $itemPerPage = 20;
 
-    public string $search = '';
+    // TODO Onboarding seller : Use trait for searching (use it on every list param bag)
+    public string $search;
 
     protected function getQueryRequestParamsList(): array
     {
-        return [
-            'filter',
-            'page',
-            'per_page',
-            'search',
-        ];
+        return array_merge(
+            parent::getQueryRequestParamsList(),
+            [
+                'filter',
+                'page',
+                'item_per_page',
+                'search',
+            ],
+        );
     }
 
     protected function validationRulesForProperties(): array
@@ -40,7 +46,7 @@ class GetUserGroupInvitationsListRequestParamBag extends DataApiRequestParamBag
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationListResponseDto::class;
+        return UserGroupInvitationDto::class;
     }
 
     protected function asEncodableArray(?array $propertiesList = null): array

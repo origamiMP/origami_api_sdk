@@ -6,11 +6,16 @@ use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class UserGroupInvitationDto extends ApiResponseDto
 {
-    use HasTimestamps;
+    use HasAvailableIncludes, HasTimestamps;
+
+    protected static array $availableIncludes = [
+        'user_group' => UserGroupDto::class,
+    ];
 
     public int $id;
 
@@ -34,6 +39,15 @@ class UserGroupInvitationDto extends ApiResponseDto
 
     public string $token;
 
+    /**
+     * UserGroup that was created using this invitation.
+     *
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var UserGroupDto|null
+     */
+    public ?UserGroupDto $userGroup;
+
     public function __construct(object $apiResponse)
     {
         parent::__construct($apiResponse);
@@ -54,6 +68,8 @@ class UserGroupInvitationDto extends ApiResponseDto
             'is_expired'     => 'isExpired',
             'is_valid'       => 'isValid',
             'token'          => 'token',
+
+            'user_group' => fn ($userGroup) => $this->initUserGroup($userGroup),
         ];
 
         return array_merge(
@@ -89,5 +105,12 @@ class UserGroupInvitationDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationDtoNotConstructableException($msg, previous: $previous);
+    }
+
+    protected function initUserGroup($userGroup): void
+    {
+        $this->throwIfDataFieldOnObjectIsEmpty($userGroup);
+
+        $this->userGroup = new UserGroupDto($userGroup->data);
     }
 }
