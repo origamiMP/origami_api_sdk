@@ -2,11 +2,18 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Seller\CreateDocumentResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
-class CreateDocumentRequestParamBag extends DataApiRequestParamBag
+class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
 {
+    /**
+     * Unique page encodée en base64
+     *
+     * @var string
+     */
+    public string $content;
+
     /**
      * Tableau de pages encodées en base64
      *
@@ -32,6 +39,7 @@ class CreateDocumentRequestParamBag extends DataApiRequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
+            'content',
             'pages',
             'documentTypeId',
             'name',
@@ -42,7 +50,8 @@ class CreateDocumentRequestParamBag extends DataApiRequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'pages'          => ['required', 'array', 'min:1'],
+            'content'        => ['string'],
+            'pages'          => ['missing_with:content', 'array', 'min:1'],
             'pages.*'        => ['required', 'string'],
             'documentTypeId' => ['required', 'integer'],
             'name'           => ['required', 'string', 'max:255'],
@@ -52,6 +61,6 @@ class CreateDocumentRequestParamBag extends DataApiRequestParamBag
 
     protected static function getRequestMainDto(): string
     {
-        return CreateDocumentResponseDto::class;
+        return SellerDocumentDto::class;
     }
 }

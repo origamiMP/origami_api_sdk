@@ -4,10 +4,10 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDocumentDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-class DocumentDto extends ApiResponseDto
+class SellerDocumentDto extends ApiResponseDto
 {
     use HasTimestamps;
 
@@ -67,6 +67,6 @@ class DocumentDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new DocumentDtoNotConstructableException($msg, previous: $previous);
+        return new SellerDocumentDtoNotConstructableException($msg, previous: $previous);
     }
 }

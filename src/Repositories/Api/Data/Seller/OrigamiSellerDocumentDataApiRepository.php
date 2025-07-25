@@ -2,9 +2,9 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Seller\CreateDocumentResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeListDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateDocumentRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSellerDocumentRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
@@ -20,15 +20,14 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
         return new DocumentTypeListDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
-    // TODO Onboarding seller : review
     /**
      * Create a new document for the seller
      */
-    public function createDocument(CreateDocumentRequestParamBag $paramBag): CreateDocumentResponseDto
+    public function createDocument(CreateSellerDocumentRequestParamBag $paramBag): SellerDocumentDto
     {
         $response = $this->restClient->post('sellers/documents', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());
 
-        return new CreateDocumentResponseDto($responseContent);
+        return new SellerDocumentDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 }
