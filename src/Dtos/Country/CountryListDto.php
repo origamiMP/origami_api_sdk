@@ -52,15 +52,15 @@ class CountryListDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'data' => ['required', 'array'],
-            'meta' => ['required', 'array'],
-            'meta.pagination' => ['required', 'array'],
-            'meta.pagination.total' => ['required', 'integer'],
-            'meta.pagination.count' => ['required', 'integer'],
-            'meta.pagination.per_page' => ['required', 'integer'],
+            'data'                         => ['required', 'array'],
+            'meta'                         => ['required', 'array'],
+            'meta.pagination'              => ['required', 'array'],
+            'meta.pagination.total'        => ['required', 'integer'],
+            'meta.pagination.count'        => ['required', 'integer'],
+            'meta.pagination.per_page'     => ['required', 'integer'],
             'meta.pagination.current_page' => ['required', 'integer'],
-            'meta.pagination.total_pages' => ['required', 'integer'],
-            'meta.pagination.links' => ['present'],
+            'meta.pagination.total_pages'  => ['required', 'integer'],
+            'meta.pagination.links'        => ['present'],
         ];
     }
 
@@ -84,4 +84,4 @@ class CountryListDto extends ApiResponseDto
             $this->links = $links;
         }
     }
-} 
+}

@@ -25,4 +25,4 @@ class OrigamiCountryGuestApiRepository extends OrigamiGuestApiRepository
 
         return new CountryListDto($responseContent);
     }
-} 
+}

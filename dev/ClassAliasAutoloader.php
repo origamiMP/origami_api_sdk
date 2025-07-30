@@ -40,8 +40,6 @@ class ClassAliasAutoloader
      * Register a new alias loader instance.
      *
      * @param  string  $classMapPath
-     * @param  array  $includedAliases
-     * @param  array  $excludedAliases
      * @return static
      */
     public static function register($classMapPath, array $includedAliases = [], array $excludedAliases = [])
@@ -55,8 +53,6 @@ class ClassAliasAutoloader
      * Create a new alias loader instance.
      *
      * @param  string  $classMapPath
-     * @param  array  $includedAliases
-     * @param  array  $excludedAliases
      * @return void
      */
     public function __construct($classMapPath, array $includedAliases = [], array $excludedAliases = [])

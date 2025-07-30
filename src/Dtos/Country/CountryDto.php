@@ -48,4 +48,4 @@ class CountryDto extends ApiResponseDto
     ): ApiResponseDtoNotConstructableException {
         return new CountryDtoNotConstructableException($msg, previous: $previous);
     }
-} 
+}

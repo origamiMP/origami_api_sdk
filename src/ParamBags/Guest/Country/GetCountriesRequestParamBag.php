@@ -30,13 +30,13 @@ class GetCountriesRequestParamBag extends RequestParamBag
     protected function asEncodableArray(?array $propertiesList = null): array
     {
         $array = parent::asEncodableArray($propertiesList);
-        
+
         if ($this->withoutPagination) {
             $array['without_pagination'] = 'true';
         } else {
             unset($array['without_pagination']);
         }
-        
+
         return $array;
     }
-} 
+}
