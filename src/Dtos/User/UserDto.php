@@ -18,10 +18,10 @@ class UserDto extends ApiResponseDto
 
     protected static array $availableIncludes = [
         'user_groups' => UserGroupDto::class,
-        // TODO 'roles',
-        // TODO 'user_group_users',
-        // TODO 'module',
-        // TODO 'user_reports_received',
+        // 'roles',
+        // 'user_group_users',
+        // 'module',
+        // 'user_reports_received',
     ];
 
     public int $id;
