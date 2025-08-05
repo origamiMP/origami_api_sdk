@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Country;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class GetCountriesRequestParamBag extends RequestParamBag
+class ListCountriesRequestParamBag extends RequestParamBag
 {
     public bool $withoutPagination = false;
 

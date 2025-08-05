@@ -23,7 +23,7 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
     /**
      * Create a new document for the seller
      */
-    public function createDocument(CreateSellerDocumentRequestParamBag $paramBag): SellerDocumentDto
+    public function create(CreateSellerDocumentRequestParamBag $paramBag): SellerDocumentDto
     {
         $response = $this->restClient->post('sellers/documents', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());

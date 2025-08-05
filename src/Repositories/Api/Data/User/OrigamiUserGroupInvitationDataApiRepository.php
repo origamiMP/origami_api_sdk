@@ -22,7 +22,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationStatsRespons
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationValidateResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\CheckPendingUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationHistoryRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationsListRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationsRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationsRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ValidateUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
@@ -36,7 +36,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationsSendResponseDtoNotConstructableException
      */
-    public function sendInvitations(SendUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationSendResponseDto
+    public function send(SendUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationSendResponseDto
     {
         $response = $this->restClient->post('users/groups/invitations/send', $paramBag);
 
@@ -52,7 +52,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationCancelResponseDtoNotConstructableException
      */
-    public function cancelInvitation(int $invitationId): UserGroupInvitationCancelResponseDto
+    public function cancel(int $invitationId): UserGroupInvitationCancelResponseDto
     {
         $response = $this->restClient->delete("users/groups/invitations/{$invitationId}");
         $responseContent = json_decode($response->getBody()->getContents());
@@ -67,7 +67,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationDtoNotConstructableException
      */
-    public function resendInvitation(int $invitationId): UserGroupInvitationDto
+    public function resend(int $invitationId): UserGroupInvitationDto
     {
         $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend");
         $responseContent = json_decode($response->getBody()->getContents());
@@ -82,7 +82,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationValidateResponseDtoNotConstructableException
      */
-    public function validateInvitation(ValidateUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationValidateResponseDto
+    public function validate(ValidateUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationValidateResponseDto
     {
         $response = $this->restClient->post('users/groups/invitations/validate', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());
@@ -142,7 +142,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationListResponseDtoNotConstructableException
      */
-    public function getList(GetUserGroupInvitationsListRequestParamBag $paramBag): UserGroupInvitationListResponseDto
+    public function list(ListUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationListResponseDto
     {
         $response = $this->restClient->get('users/groups/invitations', $paramBag);
         $responseContent = json_decode($response->getBody()->getContents());
