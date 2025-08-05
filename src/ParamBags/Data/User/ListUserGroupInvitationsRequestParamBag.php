@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
-class GetUserGroupInvitationsListRequestParamBag extends DataApiRequestParamBag
+class ListUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
 {
     // TODO Onboarding seller : Use trait for filtering (use it on every list param bag)
     public string $filterEmail;

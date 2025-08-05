@@ -10,7 +10,7 @@ class OrigamiTaxGuestApiRepository extends OrigamiGuestApiRepository
     /**
      * Get the list of available taxes (public endpoint)
      */
-    public function getTaxes(): TaxListDto
+    public function list(): TaxListDto
     {
         $response = $this->restClient->get('taxes');
         $responseContent = json_decode($response->getBody()->getContents());

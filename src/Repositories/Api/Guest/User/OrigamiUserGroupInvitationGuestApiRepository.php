@@ -18,7 +18,7 @@ class OrigamiUserGroupInvitationGuestApiRepository extends OrigamiGuestApiReposi
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationDtoNotConstructableException
      */
-    public function acceptInvitation(AcceptUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationDto
+    public function accept(AcceptUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationDto
     {
         $response = $this->restClient->post('users/groups/invitations/accept', $paramBag);
 
