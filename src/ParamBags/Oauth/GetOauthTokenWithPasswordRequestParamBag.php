@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Oauth;
 
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\GetOauthTokenGrantTypeParamEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth\GetOauthTokenGrantTypeParamEnum;
 
 class GetOauthTokenWithPasswordRequestParamBag extends GetOauthTokenRequestParamBag
 {
