@@ -2,7 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Country;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;

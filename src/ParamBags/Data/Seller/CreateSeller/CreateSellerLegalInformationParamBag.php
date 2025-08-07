@@ -37,7 +37,6 @@ class CreateSellerLegalInformationParamBag extends ParamBag
 
     protected function validationRulesForProperties(): array
     {
-
         $requiredIfCompanyLegalTypeRules = Rule::requiredIf(in_array($this->legalType, [
             CreateSellerLegalInformationLegalTypeParamEnum::COMPANY,
             CreateSellerLegalInformationLegalTypeParamEnum::SOLE_TRADER,

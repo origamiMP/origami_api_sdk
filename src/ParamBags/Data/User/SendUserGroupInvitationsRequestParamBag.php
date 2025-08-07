@@ -2,9 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationSendDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
-use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
 class SendUserGroupInvitationsRequestParamBag extends RequestParamBag
 {

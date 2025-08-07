@@ -35,7 +35,7 @@ trait HasIncludes
     protected function getIncludeValidationRules(): array
     {
         return [
-            'include' => ['array']
+            'include' => ['array'],
         ];
     }
 

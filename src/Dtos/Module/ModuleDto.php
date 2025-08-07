@@ -2,16 +2,10 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Module;
 
-use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class ModuleDto extends ApiResponseDto
