@@ -5,6 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\RequiredIf;
 
 abstract class ParamBag
 {
@@ -67,7 +68,7 @@ abstract class ParamBag
 
     protected function castCarbonToEncodableType(Carbon $dateTime): string|int
     {
-        return $dateTime->format('Y-m-d');
+        return $dateTime->format('Y-m-d H:i:s');
     }
 
     protected function getCustomCastMethodNameForProperty(string $propertyName): string
@@ -94,9 +95,22 @@ abstract class ParamBag
         $newPropertyList = [];
 
         foreach ($propertyList as $propertyName => $propertyValue) {
-            $newPropertyList[camelCaseToSnakeCase($propertyName)] = $propertyValue;
+            $newPropertyList[Str::snake($propertyName)] = $propertyValue;
         }
 
         return $newPropertyList;
+    }
+
+    /**
+     * $rules should be an array of rules that are applied to an attribute. If $condition is true,
+     * any 'required' rule (any rule that contains the word 'required') in $rules will be removed.
+     */
+    protected function removeRequiredRuleIf(array $rules, bool $condition): array
+    {
+        if (! $condition) {
+            return $rules;
+        }
+
+        return array_filter($rules, fn ($rule) => ! $rule instanceof RequiredIf && (! is_string($rule) || ! Str::contains($rule, 'required')));
     }
 }
