@@ -21,16 +21,6 @@ class OauthTokenDto extends ApiResponseDto implements OauthToken
 
     public Carbon $expiresAt;
 
-    /**
-     * @throws OauthTokenDtoNotConstructableException
-     */
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-
-        $this->validateAndFill();
-    }
-
     public function getTokenType(): string
     {
         return $this->tokenType;

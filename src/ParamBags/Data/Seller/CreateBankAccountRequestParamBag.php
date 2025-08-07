@@ -2,10 +2,9 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class CreateBankAccountRequestParamBag extends DataApiRequestParamBag
+class CreateBankAccountRequestParamBag extends RequestParamBag
 {
     /**
      * Nom de la banque
@@ -59,10 +58,5 @@ class CreateBankAccountRequestParamBag extends DataApiRequestParamBag
             'bic'          => ['required', 'string', 'bic'],
             'isDefault'    => ['boolean'],
         ];
-    }
-
-    protected static function getRequestMainDto(): string
-    {
-        return SellerBankAccountDto::class;
     }
 }

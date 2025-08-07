@@ -1,13 +1,13 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\Taxes;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Taxes\TaxDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 
 class TaxDto extends ApiResponseDto
 {
@@ -27,12 +27,6 @@ class TaxDto extends ApiResponseDto
      * @var Collection|TaxTranslationDto[]
      */
     public Collection $translations;
-
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

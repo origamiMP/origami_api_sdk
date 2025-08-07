@@ -16,13 +16,6 @@ class CustomFieldGroupDto extends ApiResponseDto
      */
     public Collection $translations;
 
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-
-        $this->validateAndFill();
-    }
-
     protected function getDefaultDataStructureToProperties(): array
     {
         return [

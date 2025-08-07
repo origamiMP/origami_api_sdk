@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\Tax;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Taxes\TaxListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 
 class OrigamiTaxGuestApiRepository extends OrigamiGuestApiRepository

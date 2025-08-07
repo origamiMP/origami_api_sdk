@@ -21,16 +21,6 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     public string $errorCode;
 
-    /**
-     * @throws OrigamiApiErrorDtoNotConstructableException
-     */
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-
-        $this->validateAndFill();
-    }
-
     public function getCorrespondingException(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
         return $this->getCorrespondingExceptionToErrorCode()

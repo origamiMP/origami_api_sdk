@@ -14,12 +14,6 @@ class DocumentTypeListDto extends ApiResponseDto
      */
     public Collection $data;
 
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
-
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
@@ -30,7 +24,7 @@ class DocumentTypeListDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'data' => ['required', 'array'],
+            'data' => ['present', 'array'],
         ];
     }
 

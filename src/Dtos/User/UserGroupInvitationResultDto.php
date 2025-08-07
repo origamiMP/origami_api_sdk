@@ -20,13 +20,6 @@ class UserGroupInvitationResultDto extends ApiResponseDto
 
     public ?string $error;
 
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-
-        $this->validateAndFill();
-    }
-
     protected function getDefaultDataStructureToProperties(): array
     {
         return [

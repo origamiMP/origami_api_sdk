@@ -4,19 +4,13 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationValidateResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCancelResponseDtoNotConstructableException;
 
-class UserGroupInvitationValidateResponseDto extends ApiResponseDto
+class UserGroupInvitationCancelDto extends ApiResponseDto
 {
     public bool $success;
 
     public string $message;
-
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
 
     protected function getDefaultDataStructureToProperties(): array
     {
@@ -38,6 +32,6 @@ class UserGroupInvitationValidateResponseDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationValidateResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationCancelResponseDtoNotConstructableException($msg, previous: $previous);
     }
 }

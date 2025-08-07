@@ -2,17 +2,21 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryResponseDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryDto;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBag
+class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag
 {
+    use HasIncludes;
+
     public string $email;
 
     protected function getQueryRequestParamsList(): array
     {
         return array_merge(
             parent::getQueryRequestParamsList(),
+            $this->getIncludeParamsList(),
             [
                 'email',
             ],
@@ -21,13 +25,18 @@ class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBa
 
     protected function validationRulesForProperties(): array
     {
-        return [
+        $rules = [
             'email' => ['required', 'string', 'email'],
         ];
+
+        return array_merge(
+            $rules,
+            $this->getIncludeValidationRules(),
+        );
     }
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationHistoryResponseDto::class;
+        return UserGroupInvitationHistoryDto::class;
     }
 }

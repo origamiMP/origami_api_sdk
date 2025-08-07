@@ -5,11 +5,17 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDocumentDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class SellerDocumentDto extends ApiResponseDto
 {
-    use HasTimestamps;
+    use HasAvailableIncludes, HasTimestamps;
+
+    protected static array $availableIncludes = [
+        // document_type,
+        // payment_psp_documents,
+    ];
 
     public int $id;
 
@@ -22,12 +28,6 @@ class SellerDocumentDto extends ApiResponseDto
     public bool $validate;
 
     public string $url;
-
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

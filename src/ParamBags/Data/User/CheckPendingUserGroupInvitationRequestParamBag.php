@@ -2,10 +2,9 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCheckPendingResponseDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class CheckPendingUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
+class CheckPendingUserGroupInvitationRequestParamBag extends RequestParamBag
 {
     public string $email;
 
@@ -24,10 +23,5 @@ class CheckPendingUserGroupInvitationRequestParamBag extends DataApiRequestParam
         return [
             'email' => ['required', 'string', 'email'],
         ];
-    }
-
-    protected static function getRequestMainDto(): string
-    {
-        return UserGroupInvitationCheckPendingResponseDto::class;
     }
 }

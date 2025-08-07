@@ -1,10 +1,8 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data;
+namespace OrigamiMp\OrigamiApiSdk\Traits\ParamBags;
 
-use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
-
-abstract class DataApiRequestParamBag extends RequestParamBag
+trait HasIncludes
 {
     public array $include = [];
 
@@ -29,12 +27,16 @@ abstract class DataApiRequestParamBag extends RequestParamBag
             ->toArray();
     }
 
-    protected function getQueryRequestParamsList(): array
+    protected function getIncludeParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            ['include'],
-        );
+        return ['include'];
+    }
+
+    protected function getIncludeValidationRules(): array
+    {
+        return [
+            'include' => ['array'],
+        ];
     }
 
     /**

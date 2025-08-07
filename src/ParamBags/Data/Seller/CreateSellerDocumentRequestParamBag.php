@@ -3,10 +3,13 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
+class CreateSellerDocumentRequestParamBag extends RequestParamBag
 {
+    use HasIncludes;
+
     /**
      * Unique page encodée en base64
      */
@@ -34,6 +37,11 @@ class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
      */
     public ?int $userGroupId = null;
 
+    protected function getQueryRequestParamsList(): array
+    {
+        return $this->getIncludeParamsList();
+    }
+
     protected function getJsonRequestParamsList(): array
     {
         return [
@@ -47,7 +55,7 @@ class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
 
     protected function validationRulesForProperties(): array
     {
-        return [
+        $rules = [
             'content'        => ['string'],
             'pages'          => ['missing_with:content', 'array', 'min:1'],
             'pages.*'        => ['required', 'string'],
@@ -55,6 +63,11 @@ class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
             'name'           => ['required', 'string', 'max:255'],
             'userGroupId'    => ['nullable', 'integer'],
         ];
+
+        return array_merge(
+            $rules,
+            $this->getIncludeValidationRules(),
+        );
     }
 
     protected static function getRequestMainDto(): string

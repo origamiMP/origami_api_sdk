@@ -3,65 +3,49 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListUserGroupInvitationsRequestParamBag extends DataApiRequestParamBag
+class ListUserGroupInvitationsRequestParamBag extends RequestParamBag
 {
-    // TODO Onboarding seller : Use trait for filtering (use it on every list param bag)
-    public string $filterEmail;
+    use HasFilters, HasIncludes, HasPagination, HasSearch;
 
-    public string $filterStatus;
-
-    // TODO Onboarding seller : Use trait for pagination (use it on every list param bag)
-    public int $page = 1;
-
-    public int $itemPerPage = 20;
-
-    // TODO Onboarding seller : Use trait for searching (use it on every list param bag)
-    public string $search;
+    protected static array $availableFilters = [
+        'user_group_id',
+        'status',
+        'email',
+        'token_expires_at',
+        'onboarding_url',
+        'sent_at',
+        'accepted_at',
+    ];
 
     protected function getQueryRequestParamsList(): array
     {
         return array_merge(
             parent::getQueryRequestParamsList(),
-            [
-                'filter',
-                'page',
-                'itemPerPage',
-                'search',
-            ],
+            $this->getFiltersParamsList(),
+            $this->getPaginationParamsList(),
+            $this->getSearchParamsList(),
+            $this->getIncludeParamsList(),
         );
     }
 
     protected function validationRulesForProperties(): array
     {
-        return [
-            'filterEmail'  => ['string', 'email'],
-            'filterStatus' => ['string', 'in:pending,accepted,cancelled,expired'],
-            'page'         => ['integer', 'min:1'],
-            'itemPerPage'  => ['integer', 'min:1', 'max:100'],
-            'search'       => ['string', 'nullable'],
-        ];
+        return array_merge(
+            $this->getFiltersValidationRules(),
+            $this->getPaginationValidationRules(),
+            $this->getSearchValidationRules(),
+            $this->getIncludeValidationRules(),
+        );
     }
 
     protected static function getRequestMainDto(): string
     {
         return UserGroupInvitationDto::class;
-    }
-
-    protected function asEncodableArray(?array $propertiesList = null): array
-    {
-        $array = parent::asEncodableArray($propertiesList);
-
-        // Handle filter parameters
-        if (! empty($this->filterEmail)) {
-            $array['filter']['email'] = $this->filterEmail;
-        }
-
-        if (! empty($this->filterStatus)) {
-            $array['filter']['status'] = $this->filterStatus;
-        }
-
-        return $array;
     }
 }

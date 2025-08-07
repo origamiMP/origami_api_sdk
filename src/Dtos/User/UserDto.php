@@ -18,10 +18,10 @@ class UserDto extends ApiResponseDto
 
     protected static array $availableIncludes = [
         'user_groups' => UserGroupDto::class,
-        // TODO 'roles',
-        // TODO 'user_group_users',
-        // TODO 'module',
-        // TODO 'user_reports_received',
+        // 'roles',
+        // 'user_group_users',
+        // 'module',
+        // 'user_reports_received',
     ];
 
     public int $id;
@@ -84,16 +84,6 @@ class UserDto extends ApiResponseDto
      * @var UserGroupDto[]|Collection
      */
     public Collection $userGroups;
-
-    /**
-     * @throws UserDtoNotConstructableException
-     */
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-
-        $this->validateAndFill();
-    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

@@ -6,17 +6,11 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCheckPendingResponseDtoNotConstructableException;
 
-class UserGroupInvitationCheckPendingResponseDto extends ApiResponseDto
+class UserGroupInvitationCheckPendingDto extends ApiResponseDto
 {
     public string $email;
 
     public bool $hasPendingInvitation;
-
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

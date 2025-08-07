@@ -14,16 +14,6 @@ class CountryDto extends ApiResponseDto
 
     public string $iso2;
 
-    /**
-     * @throws CountryDtoNotConstructableException
-     */
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-
-        $this->validateAndFill();
-    }
-
     protected function getDefaultDataStructureToProperties(): array
     {
         return [

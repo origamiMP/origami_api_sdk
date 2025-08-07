@@ -2,41 +2,28 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Country;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
 class ListCountriesRequestParamBag extends RequestParamBag
 {
-    public bool $withoutPagination = false;
-
-    public function setWithoutPagination(bool $withoutPagination): void
-    {
-        $this->withoutPagination = $withoutPagination;
-    }
+    use HasPagination, HasSearch;
 
     protected function getQueryRequestParamsList(): array
     {
         return array_merge(
             parent::getQueryRequestParamsList(),
-            ['withoutPagination'],
+            $this->getPaginationParamsList(),
+            $this->getSearchParamsList(),
         );
     }
 
-    protected static function getRequestMainDto(): string
+    protected function validationRulesForProperties(): array
     {
-        return CountryListDto::class;
-    }
-
-    protected function asEncodableArray(?array $propertiesList = null): array
-    {
-        $array = parent::asEncodableArray($propertiesList);
-
-        if ($this->withoutPagination) {
-            $array['without_pagination'] = 'true';
-        } else {
-            unset($array['without_pagination']);
-        }
-
-        return $array;
+        return array_merge(
+            $this->getPaginationValidationRules(),
+            $this->getSearchValidationRules(),
+        );
     }
 }

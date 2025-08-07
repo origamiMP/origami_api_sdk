@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags;
+namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth;
 
 enum GetOauthTokenGrantTypeParamEnum: string
 {

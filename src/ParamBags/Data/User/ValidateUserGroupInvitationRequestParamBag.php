@@ -2,10 +2,9 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationValidateResponseDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
+class ValidateUserGroupInvitationRequestParamBag extends RequestParamBag
 {
     public string $token;
 
@@ -25,10 +24,5 @@ class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
             'token'       => ['required', 'string'],
             'userGroupId' => ['required', 'integer'],
         ];
-    }
-
-    protected static function getRequestMainDto(): string
-    {
-        return UserGroupInvitationValidateResponseDto::class;
     }
 }

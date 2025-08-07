@@ -5,32 +5,30 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationHistoryResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationsSendResponseDtoNotConstructableException;
 
-class UserGroupInvitationHistoryResponseDto extends ApiResponseDto
+class UserGroupInvitationSendDto extends ApiResponseDto
 {
     /**
-     * @var Collection|UserGroupInvitationDto[]
+     * @var Collection|UserGroupInvitationResultDto[]
      */
     public Collection $data;
 
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
+    public string $message;
 
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'data' => fn ($data) => $this->initData($data),
+            'data'    => fn ($data) => $this->initData($data),
+            'message' => 'message',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'data' => ['required', 'array'],
+            'data'    => ['present', 'array'],
+            'message' => ['required', 'string'],
         ];
     }
 
@@ -38,11 +36,11 @@ class UserGroupInvitationHistoryResponseDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationHistoryResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationsSendResponseDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationDto($invitationItem));
+        $this->data = collect($data)->map(fn ($invitationResult) => new UserGroupInvitationResultDto($invitationResult));
     }
 }
