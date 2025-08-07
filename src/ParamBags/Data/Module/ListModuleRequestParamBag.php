@@ -1,18 +1,21 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
+namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Module;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class GetCurrentUserRequestParamBag extends RequestParamBag
+class ListModuleRequestParamBag extends RequestParamBag
 {
     use HasIncludes;
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
+        return array_merge(
+            parent::getQueryRequestParamsList(),
+            $this->getIncludeParamsList(),
+        );
     }
 
     protected function validationRulesForProperties(): array
@@ -22,6 +25,6 @@ class GetCurrentUserRequestParamBag extends RequestParamBag
 
     protected static function getRequestMainDto(): string
     {
-        return UserDto::class;
+        return ModuleListDto::class;
     }
 }

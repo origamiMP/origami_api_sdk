@@ -16,6 +16,7 @@ class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag
     {
         return array_merge(
             parent::getQueryRequestParamsList(),
+            $this->getIncludeParamsList(),
             [
                 'email',
             ],
@@ -24,9 +25,14 @@ class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag
 
     protected function validationRulesForProperties(): array
     {
-        return [
+        $rules = [
             'email' => ['required', 'string', 'email'],
         ];
+
+        return array_merge(
+            $rules,
+            $this->getIncludeValidationRules(),
+        );
     }
 
     protected static function getRequestMainDto(): string

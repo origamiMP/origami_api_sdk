@@ -30,6 +30,7 @@ class ListUserGroupInvitationsRequestParamBag extends RequestParamBag
             $this->getFiltersParamsList(),
             $this->getPaginationParamsList(),
             $this->getSearchParamsList(),
+            $this->getIncludeParamsList(),
         );
     }
 
@@ -39,6 +40,7 @@ class ListUserGroupInvitationsRequestParamBag extends RequestParamBag
             $this->getFiltersValidationRules(),
             $this->getPaginationValidationRules(),
             $this->getSearchValidationRules(),
+            $this->getIncludeValidationRules(),
         );
     }
 

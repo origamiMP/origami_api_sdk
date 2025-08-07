@@ -27,12 +27,16 @@ trait HasIncludes
             ->toArray();
     }
 
-    protected function getQueryRequestParamsList(): array
+    protected function getIncludeParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            ['include'],
-        );
+        return ['include'];
+    }
+
+    protected function getIncludeValidationRules(): array
+    {
+        return [
+            'include' => ['array']
+        ];
     }
 
     /**

@@ -69,6 +69,11 @@ class CreateSellerRequestParamBag extends RequestParamBag
 
     public CreateSellerLegalInformationParamBag $legalInformation;
 
+    protected function getQueryRequestParamsList(): array
+    {
+        return $this->getIncludeParamsList();
+    }
+
     protected function getJsonRequestParamsList(): array
     {
         return [
@@ -103,7 +108,7 @@ class CreateSellerRequestParamBag extends RequestParamBag
     {
         $hasCustomerId = isset($this->customerId);
 
-        return [
+        $rules = [
             'userGroupParentId'     => ['integer', 'missing_with:customerId'],
             'customerId'            => ['integer'],
             'name'                  => $this->removeRequiredRuleIf(['string', 'required_without:firstname,lastname', 'max:255'], $hasCustomerId),
@@ -125,6 +130,11 @@ class CreateSellerRequestParamBag extends RequestParamBag
             'sellerFeesProfileId'   => ['integer'],
             'customerFeesProfileId' => ['integer'],
         ];
+
+        return array_merge(
+            $rules,
+            $this->getIncludeValidationRules(),
+        );
     }
 
     protected static function getRequestMainDto(): string

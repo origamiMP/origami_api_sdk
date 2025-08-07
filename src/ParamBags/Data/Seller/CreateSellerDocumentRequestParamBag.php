@@ -37,6 +37,11 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag
      */
     public ?int $userGroupId = null;
 
+    protected function getQueryRequestParamsList(): array
+    {
+        return $this->getIncludeParamsList();
+    }
+
     protected function getJsonRequestParamsList(): array
     {
         return [
@@ -50,7 +55,7 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag
 
     protected function validationRulesForProperties(): array
     {
-        return [
+        $rules = [
             'content'        => ['string'],
             'pages'          => ['missing_with:content', 'array', 'min:1'],
             'pages.*'        => ['required', 'string'],
@@ -58,6 +63,11 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag
             'name'           => ['required', 'string', 'max:255'],
             'userGroupId'    => ['nullable', 'integer'],
         ];
+
+        return array_merge(
+            $rules,
+            $this->getIncludeValidationRules(),
+        );
     }
 
     protected static function getRequestMainDto(): string
