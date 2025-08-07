@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\Taxes;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
