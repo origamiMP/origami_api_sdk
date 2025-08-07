@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Taxes\TaxListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
 
 class TaxListDto extends ApiResponseDto
 {

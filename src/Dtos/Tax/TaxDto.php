@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Taxes\TaxDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 
 class TaxDto extends ApiResponseDto
 {

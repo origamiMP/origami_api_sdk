@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Taxes\TaxTranslationDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxTranslationDtoNotConstructableException;
 
 class TaxTranslationDto extends ApiResponseDto
 {

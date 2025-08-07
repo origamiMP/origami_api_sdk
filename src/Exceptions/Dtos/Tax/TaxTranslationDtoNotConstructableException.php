@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Taxes;
+namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
