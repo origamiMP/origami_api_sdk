@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCheckPendingResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationCheckPendingDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class CheckPendingUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
@@ -28,6 +28,6 @@ class CheckPendingUserGroupInvitationRequestParamBag extends DataApiRequestParam
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationCheckPendingResponseDto::class;
+        return UserGroupInvitationCheckPendingDto::class;
     }
 }

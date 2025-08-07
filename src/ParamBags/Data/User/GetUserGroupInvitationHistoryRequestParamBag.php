@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBag
@@ -28,6 +28,6 @@ class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBa
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationHistoryResponseDto::class;
+        return UserGroupInvitationHistoryDto::class;
     }
 }

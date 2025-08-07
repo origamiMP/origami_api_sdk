@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCheckPendingResponseDtoNotConstructableException;
 
-class UserGroupInvitationCheckPendingResponseDto extends ApiResponseDto
+class UserGroupInvitationCheckPendingDto extends ApiResponseDto
 {
     public string $email;
 

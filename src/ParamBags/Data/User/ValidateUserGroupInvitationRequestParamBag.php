@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationValidateResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationValidateDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
 
 class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
@@ -29,6 +29,6 @@ class ValidateUserGroupInvitationRequestParamBag extends DataApiRequestParamBag
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationValidateResponseDto::class;
+        return UserGroupInvitationValidateDto::class;
     }
 }

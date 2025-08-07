@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationCancelResponseDtoNotConstructableException;
 
-class UserGroupInvitationCancelResponseDto extends ApiResponseDto
+class UserGroupInvitationCancelDto extends ApiResponseDto
 {
     public bool $success;
 

@@ -7,7 +7,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationListResponseDtoNotConstructableException;
 
-class UserGroupInvitationListResponseDto extends ApiResponseDto
+class UserGroupInvitationListDto extends ApiResponseDto
 {
     /**
      * @var Collection|UserGroupInvitationDto[]

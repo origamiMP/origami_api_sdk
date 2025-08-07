@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationStatsResponseDtoNotConstructableException;
 
-class UserGroupInvitationStatsResponseDto extends ApiResponseDto
+class UserGroupInvitationStatsDto extends ApiResponseDto
 {
     public int $total;
 
