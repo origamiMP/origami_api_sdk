@@ -17,6 +17,8 @@ abstract class ApiResponseDto
     public function __construct(object $apiResponse)
     {
         $this->apiResponse = $apiResponse;
+
+        $this->validateAndFill();
     }
 
     public function getApiResponse(): object

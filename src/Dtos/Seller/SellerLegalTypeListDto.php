@@ -22,7 +22,6 @@ class SellerLegalTypeListDto extends ApiResponseDto
         }
 
         parent::__construct($apiResponse);
-        $this->validateAndFill();
     }
 
     protected function getDefaultDataStructureToProperties(): array

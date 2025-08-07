@@ -26,12 +26,6 @@ class CountryListDto extends ApiResponseDto
 
     public array $links;
 
-    public function __construct(object $apiResponse)
-    {
-        parent::__construct($apiResponse);
-        $this->validateAndFill();
-    }
-
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
