@@ -7,10 +7,16 @@ use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerStateParamEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerTypeParamEnum;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerAddressParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerTranslationParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class CreateSellerRequestParamBag extends DataApiRequestParamBag
+class CreateSellerRequestParamBag extends RequestParamBag
 {
+    use HasIncludes;
+
     public int $userGroupParentId;
 
     public int $customerId;

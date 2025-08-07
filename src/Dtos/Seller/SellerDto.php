@@ -157,7 +157,7 @@ class SellerDto extends ApiResponseDto
             'external_uid'             => 'externalUid',
             'email_validated'          => 'emailValidated',
             'phone_validated'          => 'phoneValidated',
-            'mangopay_sca_status'      => fn ($mangopayScaStatus) => $this->mangopayScaStatus = SellerDtoMangopayScaStatusEnum::tryFrom($mangopayScaStatus),
+            'mangopay_sca_status'      => fn ($mangopayScaStatus) => $this->mangopayScaStatus = SellerDtoMangopayScaStatusEnum::tryFrom($mangopayScaStatus ?? ''),
             'seller_type'              => fn ($sellerType) => $this->type = SellerDtoTypeEnum::tryFrom($sellerType),
             'state'                    => fn ($state) => $this->state = SellerDtoStateEnum::tryFrom($state),
             'default_tax_id'           => 'defaultTaxId',

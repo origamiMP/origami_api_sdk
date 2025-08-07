@@ -3,10 +3,13 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class CreateSellerDocumentRequestParamBag extends DataApiRequestParamBag
+class CreateSellerDocumentRequestParamBag extends RequestParamBag
 {
+    use HasIncludes;
+
     /**
      * Unique page encodée en base64
      */

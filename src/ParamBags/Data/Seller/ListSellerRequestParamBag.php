@@ -1,26 +1,25 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
+namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListUserGroupInvitationsRequestParamBag extends RequestParamBag
+class ListSellerRequestParamBag extends RequestParamBag
 {
     use HasFilters, HasIncludes, HasPagination, HasSearch;
 
     protected static array $availableFilters = [
-        'user_group_id',
-        'status',
-        'email',
-        'token_expires_at',
-        'onboarding_url',
-        'sent_at',
-        'accepted_at',
+        'without_phone',
+        'address_city',
+        'external_uid',
+        'seller_type',
+        'legal_type',
+        'siret',
     ];
 
     protected function getQueryRequestParamsList(): array
@@ -44,6 +43,6 @@ class ListUserGroupInvitationsRequestParamBag extends RequestParamBag
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationDto::class;
+        return SellerListDto::class;
     }
 }

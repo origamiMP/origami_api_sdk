@@ -3,10 +3,13 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationHistoryDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\DataApiRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class GetUserGroupInvitationHistoryRequestParamBag extends DataApiRequestParamBag
+class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag
 {
+    use HasIncludes;
+
     public string $email;
 
     protected function getQueryRequestParamsList(): array

@@ -6,9 +6,16 @@ use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationHistoryResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 
 class UserGroupInvitationHistoryDto extends ApiResponseDto
 {
+    use HasAvailableIncludes;
+
+    protected static array $availableIncludes = [
+        'user_group' => UserGroupDto::class,
+    ];
+
     /**
      * @var Collection|UserGroupInvitationDto[]
      */
@@ -24,7 +31,7 @@ class UserGroupInvitationHistoryDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'data' => ['required', 'array'],
+            'data' => ['present', 'array'],
         ];
     }
 

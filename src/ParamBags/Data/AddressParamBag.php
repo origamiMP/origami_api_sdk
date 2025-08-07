@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data;
 
-class AddressParamBag
+abstract class AddressParamBag
 {
     public string $addressLine1;
 

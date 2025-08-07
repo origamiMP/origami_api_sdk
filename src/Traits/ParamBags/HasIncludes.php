@@ -1,10 +1,8 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data;
+namespace OrigamiMp\OrigamiApiSdk\Traits\ParamBags;
 
-use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
-
-abstract class DataApiRequestParamBag extends RequestParamBag
+trait HasIncludes
 {
     public array $include = [];
 

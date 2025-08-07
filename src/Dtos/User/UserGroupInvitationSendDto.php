@@ -27,7 +27,7 @@ class UserGroupInvitationSendDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'data'    => ['required', 'array'],
+            'data'    => ['present', 'array'],
             'message' => ['required', 'string'],
         ];
     }

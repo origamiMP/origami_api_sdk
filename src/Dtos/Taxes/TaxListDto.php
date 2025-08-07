@@ -24,7 +24,7 @@ class TaxListDto extends ApiResponseDto
     protected function validationRulesForProperties(): array
     {
         return [
-            'data' => ['required', 'array'],
+            'data' => ['present', 'array'],
         ];
     }
 
