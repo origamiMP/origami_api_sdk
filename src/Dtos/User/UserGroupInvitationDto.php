@@ -3,7 +3,9 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitationStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
@@ -21,7 +23,7 @@ class UserGroupInvitationDto extends ApiResponseDto
 
     public ?int $userGroupId;
 
-    public string $status;
+    public UserGroupInvitationStatusEnum $status;
 
     public string $email;
 
@@ -52,7 +54,7 @@ class UserGroupInvitationDto extends ApiResponseDto
             'id'             => 'id',
             'user_group_id'  => 'userGroupId',
             'email'          => 'email',
-            'status'         => 'status',
+            'status'         => fn ($status) => $this->status = UserGroupInvitationStatusEnum::from($status),
             'onboarding_url' => 'onboardingUrl',
             'sent_at'        => fn ($date) => $this->sentAt = is_null($date) ? null : Carbon::parse($date),
             'accepted_at'    => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
@@ -72,11 +74,13 @@ class UserGroupInvitationDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
+        $statuses = collect(UserGroupInvitationStatusEnum::cases())->pluck('value');
+
         $rules = [
             'id'             => ['required', 'integer'],
             'user_group_id'  => ['present', 'nullable', 'integer'],
             'email'          => ['required', 'string', 'email'],
-            'status'         => ['required', 'string'],
+            'status'         => ['required', Rule::in($statuses)],
             'onboarding_url' => ['required', 'string', 'url'],
             'sent_at'        => ['present', 'nullable', 'date'],
             'accepted_at'    => ['present', 'nullable', 'date'],
