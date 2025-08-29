@@ -9,4 +9,6 @@ enum UserGroupLegalInformationDtoLegalTypeEnum: string
     case SOLE_TRADER = 'SOLE_TRADER';
 
     case INDIVIDUAL = 'INDIVIDUAL';
+
+    case NON_PROFIT = 'NON_PROFIT';
 }
