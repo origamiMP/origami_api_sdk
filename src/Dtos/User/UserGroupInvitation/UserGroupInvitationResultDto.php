@@ -1,12 +1,12 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitationResultDtoActionEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoActionEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationResultDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoNotConstructableException;
 
 class UserGroupInvitationResultDto extends ApiResponseDto
 {

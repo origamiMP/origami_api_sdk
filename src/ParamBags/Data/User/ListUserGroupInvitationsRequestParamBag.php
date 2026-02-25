@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;

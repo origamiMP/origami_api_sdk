@@ -1,10 +1,10 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationListResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationListResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
 class UserGroupInvitationListDto extends ApiResponseDto

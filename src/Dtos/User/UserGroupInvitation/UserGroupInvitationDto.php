@@ -1,13 +1,14 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitationStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 

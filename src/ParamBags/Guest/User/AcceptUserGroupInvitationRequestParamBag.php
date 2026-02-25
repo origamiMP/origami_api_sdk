@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Guest\User;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitationDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag

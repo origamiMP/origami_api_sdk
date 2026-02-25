@@ -1,11 +1,11 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitationsSendResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationsSendResponseDtoNotConstructableException;
 
 class UserGroupInvitationSendDto extends ApiResponseDto
 {
