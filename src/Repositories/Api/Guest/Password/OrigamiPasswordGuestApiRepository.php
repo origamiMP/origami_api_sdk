@@ -12,7 +12,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Password\ResetPasswordRequestParamBa
 use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Password\SendResetPasswordEmailRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 
-class OrigamiPasswordApiGuestRepository extends OrigamiGuestApiRepository
+class OrigamiPasswordGuestApiRepository extends OrigamiGuestApiRepository
 {
     /**
      * @throws HttpClientException
