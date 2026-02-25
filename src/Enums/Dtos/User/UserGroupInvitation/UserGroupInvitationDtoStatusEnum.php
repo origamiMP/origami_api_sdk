@@ -1,8 +1,8 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\User;
+namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation;
 
-enum UserGroupInvitationStatusEnum: string
+enum UserGroupInvitationDtoStatusEnum: string
 {
     case PENDING = 'pending';
 

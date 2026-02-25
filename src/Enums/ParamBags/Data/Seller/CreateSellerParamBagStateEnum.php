@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller;
 
-enum CreateSellerStateParamEnum: string
+enum CreateSellerParamBagStateEnum: string
 {
     case VALIDATED = 'VALIDATED';
 }

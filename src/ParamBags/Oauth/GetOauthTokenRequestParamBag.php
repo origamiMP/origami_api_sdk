@@ -2,19 +2,19 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Oauth;
 
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth\GetOauthTokenGrantTypeParamEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth\GetOauthTokenParamBagGrantTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 abstract class GetOauthTokenRequestParamBag extends RequestParamBag
 {
-    public GetOauthTokenGrantTypeParamEnum $grantType;
+    public GetOauthTokenParamBagGrantTypeEnum $grantType;
 
     public string $clientId;
 
     public string $clientSecret;
 
     public function __construct(
-        GetOauthTokenGrantTypeParamEnum $grantType,
+        GetOauthTokenParamBagGrantTypeEnum $grantType,
     ) {
         $this->grantType = $grantType;
     }

@@ -26,10 +26,7 @@
     "autoload": {
         "psr-4": {
             "OrigamiMp\\OrigamiApiSdk\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "config": {
         "optimize-autoloader": true

@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\User;
+namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation;
 
 enum UserGroupInvitationResultDtoActionEnum: string
 {

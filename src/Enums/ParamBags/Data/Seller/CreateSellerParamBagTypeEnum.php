@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller;
 
-enum CreateSellerTypeParamEnum: string
+enum CreateSellerParamBagTypeEnum: string
 {
     case MARKETPLACE = 'marketplace';
 

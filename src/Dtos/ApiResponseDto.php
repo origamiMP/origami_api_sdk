@@ -144,7 +144,7 @@ abstract class ApiResponseDto
      */
     protected function validateApiResponseRawValues(): void
     {
-        $responseRawValuesIndexedByDottedPaths = objectToArray($this->getDataToValidateAndFillFrom());
+        $responseRawValuesIndexedByDottedPaths = Obj::toArray(($this->getDataToValidateAndFillFrom()));
         $rules = $this->validationRulesForProperties();
 
         $validator = new Validator($responseRawValuesIndexedByDottedPaths, $rules);
