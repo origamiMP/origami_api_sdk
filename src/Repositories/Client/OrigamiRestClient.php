@@ -8,6 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Helpers\OrigamiApiSdk;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 abstract class OrigamiRestClient extends RestClientRepository
@@ -56,7 +57,7 @@ abstract class OrigamiRestClient extends RestClientRepository
     protected function initUserAgent(?string $userAgent = null): void
     {
         $defaultPrefix = self::DEFAULT_USER_AGENT_PREFIX;
-        $sdkVersion = getOrigamiApiSdkVersion();
+        $sdkVersion = OrigamiApiSdk::getVersion();
         $defaultUserAgent = "$defaultPrefix/$sdkVersion";
 
         $this->userAgent = ! is_null($userAgent)

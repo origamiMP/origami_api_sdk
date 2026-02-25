@@ -7,6 +7,16 @@ use Illuminate\Support\Collection;
 
 class Obj
 {
+    public static function toArray(object $object): array
+    {
+        return json_decode(json_encode($object), true);
+    }
+
+    public static function fromArray(array $array): object
+    {
+        return json_decode(json_encode($array));
+    }
+
     /**
      * This method was created from Laravel data_get() helper, to fix an issue in the original :
      *
