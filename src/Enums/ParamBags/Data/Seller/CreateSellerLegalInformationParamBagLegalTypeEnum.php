@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller;
 
-enum CreateSellerLegalInformationLegalTypeParamEnum: string
+enum CreateSellerLegalInformationParamBagLegalTypeEnum: string
 {
     case INDIVIDUAL = 'INDIVIDUAL';
 

@@ -4,12 +4,12 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller;
 
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerLegalInformationLegalTypeParamEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerLegalInformationParamBagLegalTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
 class CreateSellerLegalInformationParamBag extends ParamBag
 {
-    public CreateSellerLegalInformationLegalTypeParamEnum $legalType;
+    public CreateSellerLegalInformationParamBagLegalTypeEnum $legalType;
 
     public string $managerFirstName;
 
@@ -38,8 +38,8 @@ class CreateSellerLegalInformationParamBag extends ParamBag
     protected function validationRulesForProperties(): array
     {
         $requiredIfCompanyLegalTypeRules = Rule::requiredIf(in_array($this->legalType, [
-            CreateSellerLegalInformationLegalTypeParamEnum::COMPANY,
-            CreateSellerLegalInformationLegalTypeParamEnum::SOLE_TRADER,
+            CreateSellerLegalInformationParamBagLegalTypeEnum::COMPANY,
+            CreateSellerLegalInformationParamBagLegalTypeEnum::SOLE_TRADER,
         ]));
 
         return [

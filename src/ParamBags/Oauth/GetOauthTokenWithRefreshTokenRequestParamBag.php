@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Oauth;
 
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth\GetOauthTokenGrantTypeParamEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth\GetOauthTokenParamBagGrantTypeEnum;
 
 class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestParamBag
 {
@@ -13,7 +13,7 @@ class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestP
 
     public function __construct()
     {
-        parent::__construct(GetOauthTokenGrantTypeParamEnum::REFRESH);
+        parent::__construct(GetOauthTokenParamBagGrantTypeEnum::REFRESH);
     }
 
     protected function getJsonRequestParamsList(): array

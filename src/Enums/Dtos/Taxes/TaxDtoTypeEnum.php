@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes;
 
-enum TaxTypeEnum: string
+enum TaxDtoTypeEnum: string
 {
     case PERCENTAGE = 'percentage';
 

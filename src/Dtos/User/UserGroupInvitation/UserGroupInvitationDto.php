@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
@@ -24,7 +24,7 @@ class UserGroupInvitationDto extends ApiResponseDto
 
     public ?int $userGroupId;
 
-    public UserGroupInvitationStatusEnum $status;
+    public UserGroupInvitationDtoStatusEnum $status;
 
     public string $email;
 
@@ -55,7 +55,7 @@ class UserGroupInvitationDto extends ApiResponseDto
             'id'             => 'id',
             'user_group_id'  => 'userGroupId',
             'email'          => 'email',
-            'status'         => fn ($status) => $this->status = UserGroupInvitationStatusEnum::from($status),
+            'status'         => fn ($status) => $this->status = UserGroupInvitationDtoStatusEnum::from($status),
             'onboarding_url' => 'onboardingUrl',
             'sent_at'        => fn ($date) => $this->sentAt = is_null($date) ? null : Carbon::parse($date),
             'accepted_at'    => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
@@ -75,7 +75,7 @@ class UserGroupInvitationDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $statuses = collect(UserGroupInvitationStatusEnum::cases())->pluck('value');
+        $statuses = collect(UserGroupInvitationDtoStatusEnum::cases())->pluck('value');
 
         $rules = [
             'id'             => ['required', 'integer'],

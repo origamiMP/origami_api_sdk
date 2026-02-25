@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 
@@ -15,7 +15,7 @@ class TaxDto extends ApiResponseDto
 
     public float $value;
 
-    public TaxTypeEnum $type;
+    public TaxDtoTypeEnum $type;
 
     public ?int $idScsTax;
 
@@ -33,7 +33,7 @@ class TaxDto extends ApiResponseDto
         return [
             'id'           => 'id',
             'value'        => fn ($value) => $this->value = (float) $value,
-            'type'         => fn ($type) => $this->type = TaxTypeEnum::from($type),
+            'type'         => fn ($type) => $this->type = TaxDtoTypeEnum::from($type),
             'id_scs_tax'   => 'idScsTax',
             'is_default'   => 'isDefault',
             'module_id'    => 'moduleId',
@@ -43,7 +43,7 @@ class TaxDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(TaxTypeEnum::cases())->pluck('value');
+        $types = collect(TaxDtoTypeEnum::cases())->pluck('value');
 
         return [
             'id'           => ['required', 'integer'],

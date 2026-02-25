@@ -5,8 +5,8 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerStateParamEnum;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerTypeParamEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagStateEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerAddressParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerTranslationParamBag;
@@ -37,9 +37,9 @@ class CreateSellerRequestParamBag extends RequestParamBag
 
     public string $languageIso;
 
-    public CreateSellerTypeParamEnum $sellerType;
+    public CreateSellerParamBagTypeEnum $sellerType;
 
-    public CreateSellerStateParamEnum $state = CreateSellerStateParamEnum::VALIDATED;
+    public CreateSellerParamBagStateEnum $state = CreateSellerParamBagStateEnum::VALIDATED;
 
     public int $defaultTaxId;
 
@@ -119,8 +119,8 @@ class CreateSellerRequestParamBag extends RequestParamBag
             'externalUid'           => ['string', 'max:255'],
             'phoneAreaCode'         => ['string', 'max:255'],
             'languageIso'           => ['string', 'max:2'],
-            'sellerType'            => ['string', Rule::in([CreateSellerTypeParamEnum::MARKETPLACE, CreateSellerTypeParamEnum::DROPSHIPPING])],
-            'state'                 => ['string', Rule::in([CreateSellerStateParamEnum::VALIDATED])],
+            'sellerType'            => ['string', Rule::in([CreateSellerParamBagTypeEnum::MARKETPLACE, CreateSellerParamBagTypeEnum::DROPSHIPPING])],
+            'state'                 => ['string', Rule::in([CreateSellerParamBagStateEnum::VALIDATED])],
             'defaultTaxId'          => ['integer'],
             'isActive'              => ['boolean'],
             'invoiceTaxId'          => ['integer'],
