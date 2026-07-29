@@ -4,11 +4,11 @@ namespace OrigamiMp\OrigamiApiSdk\Traits\ParamBags;
 
 trait HasPagination
 {
-    public bool $withoutPagination;
+    private bool $withoutPagination;
 
-    public int $page = 1;
+    private int $page = 1;
 
-    public int $itemPerPage = 20;
+    private int $itemPerPage = 20;
 
     public function withoutPagination(bool $withoutPagination = true): void
     {
