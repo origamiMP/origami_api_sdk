@@ -16,10 +16,6 @@ class UserGroupInvitationDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasTimestamps;
 
-    protected static array $availableIncludes = [
-        'user_group' => UserGroupDto::class,
-    ];
-
     public int $id;
 
     public ?int $userGroupId;
@@ -48,6 +44,13 @@ class UserGroupInvitationDto extends ApiResponseDto
      * May be undefined if the corresponding data was not included.
      */
     public ?UserGroupDto $userGroup;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            'user_group' => UserGroupDto::class,
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

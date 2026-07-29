@@ -27,15 +27,12 @@ trait HasAvailableIncludes
 
     /**
      * Available includes on this specific DTO. They should be declared this way :
-     * protected static array $availableIncludes = [
+     * return [
      *      'users'       => UserDto::class,
      *      'user_groups' => UserGroup::class,
      * ]
      *
      * @return string[]
      */
-    public static function getAvailableIncludes(): array
-    {
-        return self::$availableIncludes ?? [];
-    }
+    abstract public static function getAvailableIncludes(): array;
 }

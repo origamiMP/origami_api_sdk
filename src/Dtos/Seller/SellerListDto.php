@@ -12,31 +12,34 @@ class SellerListDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasPagination;
 
-    protected static array $availableIncludes = [
-        // 'shipping_offers',
-        // 'product_offers',
-        // 'tickets',
-        // 'documents',
-        // 'default_tax',
-        // 'payment_reports',
-        // 'bank_accounts',
-        // 'invoices',
-        // 'subscriptions',
-        // 'legal_information',
-        // 'psp_wallets',
-        // 'required_documents',
-        // 'visibilities',
-        // 'users',
-        // 'user_group_users',
-        // 'reviews',
-        // 'psp_users',
-        // 'notifications_sent',
-        // 'invoice_tax',
-        // 'psp_ubos',
-        // 'subscription_lines',
-        // 'warehouses',
-        // 'translations',
-    ];
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            // 'shipping_offers',
+            // 'product_offers',
+            // 'tickets',
+            // 'documents',
+            // 'default_tax',
+            // 'payment_reports',
+            // 'bank_accounts',
+            // 'invoices',
+            // 'subscriptions',
+            // 'legal_information',
+            // 'psp_wallets',
+            // 'required_documents',
+            // 'visibilities',
+            // 'users',
+            // 'user_group_users',
+            // 'reviews',
+            // 'psp_users',
+            // 'notifications_sent',
+            // 'invoice_tax',
+            // 'psp_ubos',
+            // 'subscription_lines',
+            // 'warehouses',
+            // 'translations',
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

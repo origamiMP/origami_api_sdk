@@ -12,11 +12,6 @@ class SellerDocumentDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasTimestamps;
 
-    protected static array $availableIncludes = [
-        // document_type,
-        // payment_psp_documents,
-    ];
-
     public int $id;
 
     public int $sellerId;
@@ -28,6 +23,14 @@ class SellerDocumentDto extends ApiResponseDto
     public bool $validate;
 
     public string $url;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            // document_type,
+            // payment_psp_documents,
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

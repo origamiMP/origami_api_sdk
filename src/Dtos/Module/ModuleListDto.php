@@ -17,11 +17,14 @@ class ModuleListDto extends ApiResponseDto
      */
     public Collection $data;
 
-    protected static array $availableIncludes = [
-        // 'payment_psp',
-        // 'webhooks',
-        // 'logs',
-    ];
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            // 'payment_psp',
+            // 'webhooks',
+            // 'logs',
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

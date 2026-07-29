@@ -13,15 +13,18 @@ class ListUserGroupInvitationsRequestParamBag extends RequestParamBag
 {
     use HasFilters, HasIncludes, HasPagination, HasSearch;
 
-    protected static array $availableFilters = [
-        'user_group_id',
-        'status',
-        'email',
-        'token_expires_at',
-        'onboarding_url',
-        'sent_at',
-        'accepted_at',
-    ];
+    protected static function getAdditionalAvailableFilters(): array
+    {
+        return [
+            'user_group_id',
+            'status',
+            'email',
+            'token_expires_at',
+            'onboarding_url',
+            'sent_at',
+            'accepted_at',
+        ];
+    }
 
     protected function getQueryRequestParamsList(): array
     {

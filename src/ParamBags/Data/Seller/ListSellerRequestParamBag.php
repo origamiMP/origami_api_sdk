@@ -13,14 +13,17 @@ class ListSellerRequestParamBag extends RequestParamBag
 {
     use HasFilters, HasIncludes, HasPagination, HasSearch;
 
-    protected static array $availableFilters = [
-        'without_phone',
-        'address_city',
-        'external_uid',
-        'seller_type',
-        'legal_type',
-        'siret',
-    ];
+    protected static function getAdditionalAvailableFilters(): array
+    {
+        return [
+            'without_phone',
+            'address_city',
+            'external_uid',
+            'seller_type',
+            'legal_type',
+            'siret',
+        ];
+    }
 
     protected function getQueryRequestParamsList(): array
     {

@@ -14,26 +14,6 @@ class UserGroupDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasTimestamps;
 
-    protected static array $availableIncludes = [
-        // 'shipping_offers',
-        // 'product_offers',
-        // 'tickets',
-        // 'documents',
-        // 'payment_reports',
-        // 'bank_accounts',
-        // 'invoices',
-        // 'subscriptions',
-        // 'subscription_lines',
-        // 'users',
-        // 'legal_information',
-        // 'psp_wallets',
-        // 'psp_users',
-        // 'translations',
-        // 'user_group_users',
-        // 'mandates',
-        // 'customer_groups',
-    ];
-
     public int $id;
 
     public UserGroupDtoTypeEnum $type;
@@ -91,6 +71,29 @@ class UserGroupDto extends ApiResponseDto
     public bool $emailValidated;
 
     public bool $phoneValidated;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            // 'shipping_offers',
+            // 'product_offers',
+            // 'tickets',
+            // 'documents',
+            // 'payment_reports',
+            // 'bank_accounts',
+            // 'invoices',
+            // 'subscriptions',
+            // 'subscription_lines',
+            // 'users',
+            // 'legal_information',
+            // 'psp_wallets',
+            // 'psp_users',
+            // 'translations',
+            // 'user_group_users',
+            // 'mandates',
+            // 'customer_groups',
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

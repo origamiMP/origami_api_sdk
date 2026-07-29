@@ -13,14 +13,17 @@ class UserGroupInvitationHistoryDto extends ApiResponseDto
 {
     use HasAvailableIncludes;
 
-    protected static array $availableIncludes = [
-        'user_group' => UserGroupDto::class,
-    ];
-
     /**
      * @var Collection|UserGroupInvitationDto[]
      */
     public Collection $data;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            'user_group' => UserGroupDto::class,
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

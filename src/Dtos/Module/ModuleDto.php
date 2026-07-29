@@ -12,12 +12,6 @@ class ModuleDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasTimestamps;
 
-    protected static array $availableIncludes = [
-        // 'payment_psp',
-        // 'webhooks',
-        // 'logs',
-    ];
-
     public int $id;
 
     public string $name;
@@ -39,6 +33,15 @@ class ModuleDto extends ApiResponseDto
     public string $imageUrl;
 
     public object $availableConfigurations;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            // 'payment_psp',
+            // 'webhooks',
+            // 'logs',
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

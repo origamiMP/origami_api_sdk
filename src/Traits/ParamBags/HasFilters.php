@@ -26,7 +26,7 @@ trait HasFilters
     {
         return array_merge(
             self::BASE_FILTERS,
-            static::$availableFilters ?? [],
+            self::getAdditionalAvailableFilters(),
         );
     }
 
@@ -48,4 +48,6 @@ trait HasFilters
             'filter' => ['array'],
         ];
     }
+
+    abstract protected static function getAdditionalAvailableFilters(): array;
 }

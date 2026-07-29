@@ -16,14 +16,6 @@ class UserDto extends ApiResponseDto
 {
     use HasAvailableIncludes, HasCustomFields, HasTimestamps;
 
-    protected static array $availableIncludes = [
-        'user_groups' => UserGroupDto::class,
-        // 'roles',
-        // 'user_group_users',
-        // 'module',
-        // 'user_reports_received',
-    ];
-
     public int $id;
 
     public string $firstName;
@@ -84,6 +76,17 @@ class UserDto extends ApiResponseDto
      * @var UserGroupDto[]|Collection
      */
     public Collection $userGroups;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            'user_groups' => UserGroupDto::class,
+            // 'roles',
+            // 'user_group_users',
+            // 'module',
+            // 'user_reports_received',
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {
