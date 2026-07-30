@@ -4,6 +4,8 @@ namespace OrigamiMp\OrigamiApiSdk\Traits\ParamBags;
 
 trait HasFilters
 {
+    // TODO Contract : Add contracts for traits, so they can be used as types
+
     const BASE_FILTERS = [
         'createdBefore',
         'createdAfter',
