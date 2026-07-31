@@ -1,10 +1,8 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Contracts;
+namespace OrigamiMp\OrigamiApiSdk\Contracts\Dtos\Oauth;
 
 use Carbon\Carbon;
-
-// TODO Contract : move to Dto/Oauth directory
 
 interface OauthToken
 {

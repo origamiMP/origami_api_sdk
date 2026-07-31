@@ -2,11 +2,12 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class CreateSellerDocumentRequestParamBag extends RequestParamBag
+class CreateSellerDocumentRequestParamBag extends RequestParamBag implements HasIncludesContract
 {
     use HasIncludes;
 

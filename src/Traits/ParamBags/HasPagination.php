@@ -29,6 +29,21 @@ trait HasPagination
         $this->itemPerPage = min(100, $perPage);
     }
 
+    public function getPage(): int
+    {
+        return $this->page;
+    }
+
+    public function getPerPage(): int
+    {
+        return $this->itemPerPage;
+    }
+
+    public function isWithoutPagination(): bool
+    {
+        return isset($this->withoutPagination) && $this->withoutPagination;
+    }
+
     protected function getPaginationParamsList(): array
     {
         return ['page', 'itemPerPage', 'withoutPagination'];

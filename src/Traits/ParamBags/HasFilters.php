@@ -4,8 +4,6 @@ namespace OrigamiMp\OrigamiApiSdk\Traits\ParamBags;
 
 trait HasFilters
 {
-    // TODO Contract : Add contracts for traits, so they can be used as types
-
     const BASE_FILTERS = [
         'createdBefore',
         'createdAfter',
@@ -13,7 +11,7 @@ trait HasFilters
         'updatedAfter',
     ];
 
-    public array $filter;
+    private array $filter;
 
     /**
      * Available filters for this specific request. They should be declared this way :
@@ -37,6 +35,11 @@ trait HasFilters
         $this->filter = collect($filters)
             ->filter(fn ($filterValue, $filterKey) => in_array($filterKey, static::getAvailableFilters()))
             ->toArray();
+    }
+
+    public function getFilters(): array
+    {
+        return $this->filter;
     }
 
     protected function getFiltersParamsList(): array

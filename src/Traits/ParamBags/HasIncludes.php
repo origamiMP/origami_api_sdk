@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Traits\ParamBags;
 
 trait HasIncludes
 {
-    public array $include = [];
+    private array $include = [];
 
     /**
      * @param  string[]  $includes  Array of includes as strings. Ex : ['products', 'offers.seller']
@@ -25,6 +25,11 @@ trait HasIncludes
             ->unique()
             ->filter(fn ($include) => $requestMainDto::isIncludeAvailable($include))
             ->toArray();
+    }
+
+    public function getIncludes(): array
+    {
+        return $this->include;
     }
 
     protected function getIncludeParamsList(): array
