@@ -2,11 +2,12 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class GetCurrentUserRequestParamBag extends RequestParamBag
+class GetCurrentUserRequestParamBag extends RequestParamBag implements HasIncludesContract
 {
     use HasIncludes;
 

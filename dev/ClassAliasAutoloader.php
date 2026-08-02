@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -25,14 +26,14 @@ class ClassAliasAutoloader
     /**
      * Explicitly included namespaces/classes.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $includedAliases;
 
     /**
      * Excluded namespaces/classes.
      *
-     * @var \Illuminate\Support\Collection
+     * @var Collection
      */
     protected $excludedAliases;
 

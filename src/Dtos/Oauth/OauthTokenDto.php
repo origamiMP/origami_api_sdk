@@ -3,7 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Oauth;
 
 use Carbon\Carbon;
-use OrigamiMp\OrigamiApiSdk\Contracts\OauthToken;
+use OrigamiMp\OrigamiApiSdk\Contracts\Dtos\Oauth\OauthToken;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;

@@ -4,6 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagStateEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagTypeEnum;
@@ -13,7 +14,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerTrans
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class CreateSellerRequestParamBag extends RequestParamBag
+class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludesContract
 {
     use HasIncludes;
 
