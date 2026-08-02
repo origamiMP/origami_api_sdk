@@ -4,7 +4,7 @@ A lightweight package to interact easily with Origami API.
 
 ## 🚀 Tech Stack
 
-- PHP 8.2+
+- PHP 8.4+
 
 ## ✨ Features
 
@@ -15,5 +15,5 @@ A lightweight package to interact easily with Origami API.
 
 ## 🛠️ Prerequisites
 
-- PHP 8.2 or higher
+- PHP 8.4 or higher
 - Composer
