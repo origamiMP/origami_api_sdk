@@ -14,7 +14,7 @@ class CustomFieldTranslationDto extends ApiResponseDto
 
     public string $name;
 
-    public string $description;
+    public ?string $description;
 
     protected function getDefaultDataStructureToProperties(): array
     {
@@ -32,7 +32,7 @@ class CustomFieldTranslationDto extends ApiResponseDto
             'language_id' => ['required', 'integer'],
             'locale'      => ['required', 'string'],
             'name'        => ['present', 'string'],
-            'description' => ['present', 'string'],
+            'description' => ['present', 'nullable', 'string'],
         ];
     }
 
