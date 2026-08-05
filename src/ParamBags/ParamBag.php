@@ -3,6 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\RequiredIf;
@@ -11,7 +12,7 @@ abstract class ParamBag
 {
     protected function asEncodableArray(?array $propertiesList = null): array
     {
-        $allProperties = get_object_vars($this);
+        $allProperties = $this->getAllObjectVars();
 
         $properties = is_null($propertiesList) ? $allProperties : Arr::only($allProperties, $propertiesList);
         $propertiesAsSnakeCase = $this->propertyNamesToSnakeCase($properties);
@@ -27,6 +28,17 @@ abstract class ParamBag
         }
 
         return $encodableArray;
+    }
+
+    /**
+     * get_object_vars() only returns properties visible from the calling scope. Called directly here,
+     * it would miss private properties declared by traits used on subclasses (ex: HasIncludes::$include),
+     * since those are private to the subclass, not to this parent class. Binding the call to the object's
+     * own scope at runtime restores visibility of those properties.
+     */
+    private function getAllObjectVars(): array
+    {
+        return Closure::bind(fn () => get_object_vars($this), $this, $this)();
     }
 
     protected function castPropertyToEncodableType(mixed $propertyValue): int|string|array
