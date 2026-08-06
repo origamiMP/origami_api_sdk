@@ -1,32 +1,24 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
+namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\CustomField;
 
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersContract;
-use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
-use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDefinitionListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
-use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
+class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFiltersContract, HasPaginationContract, HasSearchContract
 {
-    use HasFilters, HasIncludes, HasPagination, HasSearch;
+    use HasFilters, HasPagination, HasSearch;
 
     protected static function getAdditionalAvailableFilters(): array
     {
         return [
-            'without_phone',
-            'address_city',
-            'external_uid',
-            'seller_type',
-            'legal_type',
-            'siret',
-            'additional_information',
+            'model_type',
         ];
     }
 
@@ -37,7 +29,6 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
             $this->getFiltersParamsList(),
             $this->getPaginationParamsList(),
             $this->getSearchParamsList(),
-            $this->getIncludeParamsList(),
         );
     }
 
@@ -47,12 +38,11 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
             $this->getFiltersValidationRules(),
             $this->getPaginationValidationRules(),
             $this->getSearchValidationRules(),
-            $this->getIncludeValidationRules(),
         );
     }
 
     protected static function getRequestMainDto(): string
     {
-        return SellerListDto::class;
+        return CustomFieldDefinitionListDto::class;
     }
 }
