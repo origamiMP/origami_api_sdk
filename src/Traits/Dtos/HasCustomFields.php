@@ -3,12 +3,12 @@
 namespace OrigamiMp\OrigamiApiSdk\Traits\Dtos;
 
 use Illuminate\Support\Collection;
-use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldModelValueDto;
 
 trait HasCustomFields
 {
     /**
-     * @var Collection|CustomFieldDto[]
+     * @var Collection|CustomFieldModelValueDto[]
      */
     public Collection $additionalInformation;
 
@@ -32,6 +32,6 @@ trait HasCustomFields
             $this->additionalInformation = collect();
         }
 
-        $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldDto($customField));
+        $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldModelValueDto($customField));
     }
 }

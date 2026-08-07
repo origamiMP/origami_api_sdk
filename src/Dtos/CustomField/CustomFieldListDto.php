@@ -4,10 +4,10 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\CustomField;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldDefinitionListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
-class CustomFieldDefinitionListDto extends ApiResponseDto
+class CustomFieldListDto extends ApiResponseDto
 {
     use HasPagination;
 
@@ -25,11 +25,11 @@ class CustomFieldDefinitionListDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new CustomFieldDefinitionListDtoNotConstructableException($msg, previous: $previous);
+        return new CustomFieldListDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($customField) => new CustomFieldDefinitionDto($customField));
+        $this->data = collect($data)->map(fn ($customField) => new CustomFieldDto($customField));
     }
 }

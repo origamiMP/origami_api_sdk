@@ -4,4 +4,4 @@ namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField;
 
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
-class CustomFieldDefinitionDtoNotConstructableException extends ApiResponseDtoNotConstructableException {}
+class CustomFieldListDtoNotConstructableException extends ApiResponseDtoNotConstructableException {}
