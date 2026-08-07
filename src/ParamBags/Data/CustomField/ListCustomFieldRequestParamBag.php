@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\CustomField;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
-use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDefinitionListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
@@ -43,6 +43,6 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
 
     protected static function getRequestMainDto(): string
     {
-        return CustomFieldDefinitionListDto::class;
+        return CustomFieldListDto::class;
     }
 }
