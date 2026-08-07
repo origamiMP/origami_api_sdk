@@ -41,7 +41,7 @@ abstract class ParamBag
         return Closure::bind(fn () => get_object_vars($this), $this, $this)();
     }
 
-    protected function castPropertyToEncodableType(mixed $propertyValue): int|string|array
+    protected function castPropertyToEncodableType(mixed $propertyValue): bool|int|float|string|array
     {
         if ($propertyValue instanceof ParamBag) {
             return $propertyValue->asEncodableArray();
