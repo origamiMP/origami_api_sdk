@@ -2,7 +2,9 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use OrigamiMp\OrigamiApiSdk\Enums\Json\JsonResponseErrorEnum;
@@ -169,6 +171,43 @@ abstract class ApiResponseDto
     protected function getClassShortName(): string
     {
         return Str::afterLast(get_class($this), '\\');
+    }
+
+    /**
+     * Builds an array from this DTO's public, initialized properties, for use in an
+     * `Arrayable::toArray()` implementation. Keys default to the property's own (camelCase)
+     * name, unchanged; pass $keyOverrides for the rare property that should be exposed under
+     * a different key.
+     *
+     * @param  array<string, string>  $keyOverrides  propertyName => arrayKey
+     */
+    protected function arrayFromPublicProperties(array $keyOverrides = []): array
+    {
+        $array = [];
+
+        foreach ((new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+            if (! $property->isInitialized($this)) {
+                continue;
+            }
+
+            $name = $property->getName();
+            $key = $keyOverrides[$name] ?? $name;
+
+            $array[$key] = $this->serializeValueForArray($property->getValue($this));
+        }
+
+        return $array;
+    }
+
+    protected function serializeValueForArray(mixed $value): mixed
+    {
+        return match (true) {
+            $value instanceof \BackedEnum => $value->value,
+            $value instanceof \DateTimeInterface => $value->format(DATE_ATOM),
+            $value instanceof Collection => $value->map(fn ($item) => $this->serializeValueForArray($item))->all(),
+            $value instanceof Arrayable => $value->toArray(),
+            default => $value,
+        };
     }
 
     protected static function getSummaryFromValidationException(ValidationException $e): string
