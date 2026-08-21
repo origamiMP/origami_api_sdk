@@ -202,11 +202,11 @@ abstract class ApiResponseDto
     protected function serializeValueForArray(mixed $value): mixed
     {
         return match (true) {
-            $value instanceof \BackedEnum => $value->value,
+            $value instanceof \BackedEnum        => $value->value,
             $value instanceof \DateTimeInterface => $value->format(DATE_ATOM),
-            $value instanceof Collection => $value->map(fn ($item) => $this->serializeValueForArray($item))->all(),
-            $value instanceof Arrayable => $value->toArray(),
-            default => $value,
+            $value instanceof Collection         => $value->map(fn ($item) => $this->serializeValueForArray($item))->all(),
+            $value instanceof Arrayable          => $value->toArray(),
+            default                              => $value,
         };
     }
 
