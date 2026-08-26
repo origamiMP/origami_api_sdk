@@ -48,5 +48,21 @@ trait HasPagination
         ];
     }
 
+    public function toArray(): array
+    {
+        return [
+            'data' => $this->serializeValueForArray($this->data),
+            'meta' => [
+                'pagination' => [
+                    'total'       => $this->total,
+                    'count'       => $this->count,
+                    'perPage'     => $this->perPage,
+                    'currentPage' => $this->currentPage,
+                    'totalPages'  => $this->totalPages,
+                ],
+            ],
+        ];
+    }
+
     abstract protected function initData(array $data): void;
 }

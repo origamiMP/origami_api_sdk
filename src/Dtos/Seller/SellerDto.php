@@ -3,6 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoMangopayScaStatusEnum;
@@ -14,7 +15,7 @@ use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-class SellerDto extends ApiResponseDto
+class SellerDto extends ApiResponseDto implements Arrayable
 {
     use HasAvailableIncludes, HasCustomFields, HasTimestamps;
 
@@ -245,5 +246,10 @@ class SellerDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new SellerDtoNotConstructableException($msg, previous: $previous);
+    }
+
+    public function toArray(): array
+    {
+        return $this->arrayFromPublicProperties();
     }
 }
