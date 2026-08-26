@@ -45,4 +45,20 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
 
         return new SellerLegalTypeListDto($responseContent);
     }
+
+    /**
+     * Activate a seller
+     */
+    public function activate(int $id): void
+    {
+        $this->restClient->post("sellers/{$id}/activate");
+    }
+
+    /**
+     * Deactivate a seller
+     */
+    public function deactivate(int $id): void
+    {
+        $this->restClient->post("sellers/{$id}/deactivate");
+    }
 }
