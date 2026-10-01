@@ -6,9 +6,6 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\OptionFlag\OptionFlagListDtoNotConstructableException;
 
-/**
- * Wraps `GET option_flags`, a flat object of flag names to booleans (`{"<flag>": true, ...}`) without a `data` key.
- */
 class OptionFlagListDto extends ApiResponseDto
 {
     /** @var array<string, bool> */
