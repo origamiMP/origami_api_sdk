@@ -1,12 +1,12 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Dtos\OptionFlag;
+namespace OrigamiMp\OrigamiApiSdk\Dtos\FeatureFlag;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\OptionFlag\OptionFlagListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\FeatureFlag\FeatureFlagListDtoNotConstructableException;
 
-class OptionFlagListDto extends ApiResponseDto
+class FeatureFlagListDto extends ApiResponseDto
 {
     /** @var array<string, bool> */
     public array $flags;
@@ -40,6 +40,6 @@ class OptionFlagListDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new OptionFlagListDtoNotConstructableException($msg, previous: $previous);
+        return new FeatureFlagListDtoNotConstructableException($msg, previous: $previous);
     }
 }
