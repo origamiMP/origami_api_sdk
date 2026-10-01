@@ -21,6 +21,8 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     public string $errorCode;
 
+    public ?string $field = null;
+
     public function getCorrespondingException(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
         return $this->getCorrespondingExceptionToErrorCode()
@@ -44,6 +46,7 @@ class OrigamiApiErrorDto extends ApiResponseDto
             'status' => 'httpStatusCode',
             'detail' => 'message',
             'code'   => 'errorCode',
+            'data'   => fn (?object $data) => $this->field = $data->field ?? null,
         ];
     }
 
@@ -53,6 +56,7 @@ class OrigamiApiErrorDto extends ApiResponseDto
             'status' => ['required', 'integer'],
             'detail' => ['required', 'string'],
             'code'   => ['required', 'string'],
+            'data'   => ['sometimes', 'nullable'],
         ];
     }
 
