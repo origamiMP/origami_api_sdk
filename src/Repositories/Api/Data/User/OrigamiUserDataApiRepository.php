@@ -7,6 +7,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetCurrentUserRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\UpdateUserRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
@@ -23,5 +24,14 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
         $responseContent = json_decode($response->getBody()->getContents());
 
         return new UserDto($this->getResponseContentDataOrEmptyObject($responseContent));
+    }
+
+    /**
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     */
+    public function update(int $id, UpdateUserRequestParamBag $paramBag): void
+    {
+        $this->restClient->patch("users/$id", $paramBag);
     }
 }
