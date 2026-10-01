@@ -22,7 +22,7 @@ class OrigamiApiErrorDto extends ApiResponseDto
     public string $errorCode;
 
     /**
-     * The field a business error concerns, read from `data.field` (sent by the API form builder).
+     * Name of the request field this error is about, when the API provides it in `data.field`.
      */
     public ?string $field = null;
 
