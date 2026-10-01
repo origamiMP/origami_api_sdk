@@ -77,11 +77,20 @@ class UserDto extends ApiResponseDto
      */
     public Collection $userGroups;
 
+    /**
+     * Roles assigned to this User, regardless of the UserGroup context.
+     *
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var RoleDto[]|Collection
+     */
+    public Collection $roles;
+
     public static function getAvailableIncludes(): array
     {
         return [
             'user_groups' => UserGroupDto::class,
-            // 'roles',
+            'roles'       => RoleDto::class,
             // 'user_group_users',
             // 'module',
             // 'user_reports_received',
@@ -105,6 +114,7 @@ class UserDto extends ApiResponseDto
             'is_account_validated'          => 'isAccountValidated',
 
             'user_groups' => fn ($userGroups) => $this->initUserGroups($userGroups),
+            'roles'       => fn ($roles) => $this->initRoles($roles),
         ];
 
         return array_merge(
@@ -152,5 +162,12 @@ class UserDto extends ApiResponseDto
         $this->throwIfDataFieldOnObjectIsEmpty($userGroups);
 
         $this->userGroups = collect($userGroups->data)->map(fn ($userGroup) => new UserGroupDto($userGroup));
+    }
+
+    protected function initRoles($roles): void
+    {
+        $this->throwIfDataFieldOnObjectIsEmpty($roles);
+
+        $this->roles = collect($roles->data)->map(fn ($role) => new RoleDto($role));
     }
 }
