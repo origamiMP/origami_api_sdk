@@ -16,13 +16,7 @@ class OptionFlagListDto extends ApiResponseDto
 
     public function __construct(array|object $apiResponse)
     {
-        if (is_array($apiResponse)) {
-            $apiResponse = (object) $apiResponse;
-        }
-
-        parent::__construct($apiResponse);
-
-        $this->flags = array_map('boolval', (array) $apiResponse);
+        parent::__construct((object) ['flags' => (array) $apiResponse]);
     }
 
     public function isActive(string $name): bool
@@ -32,12 +26,17 @@ class OptionFlagListDto extends ApiResponseDto
 
     protected function getDefaultDataStructureToProperties(): array
     {
-        return [];
+        return [
+            'flags' => 'flags',
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        return [];
+        return [
+            'flags'   => ['present', 'array'],
+            'flags.*' => ['boolean'],
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

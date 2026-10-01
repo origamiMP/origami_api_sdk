@@ -21,6 +21,9 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     public string $errorCode;
 
+    /**
+     * The field a business error concerns, read from `data.field` (sent by the API form builder).
+     */
     public ?string $field = null;
 
     public function getCorrespondingException(): OrigamiApiSingleException|OrigamiApiUnknownException
@@ -37,7 +40,13 @@ class OrigamiApiErrorDto extends ApiResponseDto
             $msg .= " Error code {$this->errorCode} -";
         }
 
-        return "$msg {$this->message}";
+        $msg .= " {$this->message}";
+
+        if (! is_null($this->field)) {
+            $msg .= " (field: {$this->field})";
+        }
+
+        return $msg;
     }
 
     protected function getDefaultDataStructureToProperties(): array
@@ -46,17 +55,19 @@ class OrigamiApiErrorDto extends ApiResponseDto
             'status' => 'httpStatusCode',
             'detail' => 'message',
             'code'   => 'errorCode',
-            'data'   => fn (?object $data) => $this->field = $data->field ?? null,
+            'data'   => [
+                'field' => 'field',
+            ],
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'status' => ['required', 'integer'],
-            'detail' => ['required', 'string'],
-            'code'   => ['required', 'string'],
-            'data'   => ['sometimes', 'nullable'],
+            'status'     => ['required', 'integer'],
+            'detail'     => ['required', 'string'],
+            'code'       => ['required', 'string'],
+            'data.field' => ['sometimes', 'nullable', 'string'],
         ];
     }
 
