@@ -16,7 +16,7 @@ class FeatureFlagListDto extends ApiResponseDto
         parent::__construct((object) ['flags' => (array) $apiResponse]);
     }
 
-    public function isActive(string $name): bool
+    public function isFlagActive(string $name): bool
     {
         return $this->flags[$name] ?? false;
     }

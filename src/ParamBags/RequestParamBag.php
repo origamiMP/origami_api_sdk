@@ -68,12 +68,6 @@ abstract class RequestParamBag extends ParamBag
             Arr::except($requestParamsList, self::propertiesToExcludeFromGuzzleParams())
         );
 
-        // Only JSON carries a faithful null : Guzzle sends a null query value as a bare key
-        // (read as an empty string by PHP) and drops it from form params.
-        if ($requestParamsTypeEnum !== HttpRequestParamsTypeEnum::JSON) {
-            $paramsAsEncodableArray = array_filter($paramsAsEncodableArray, fn ($value) => ! is_null($value));
-        }
-
         return ! empty($paramsAsEncodableArray)
             ? [$requestParamsTypeEnum->value => $paramsAsEncodableArray]
             : [];
