@@ -9,8 +9,6 @@ use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class RolePermissionDto extends ApiResponseDto
 {
-    use HasTimestamps;
-
     public int $id;
 
     /**
@@ -27,31 +25,21 @@ class RolePermissionDto extends ApiResponseDto
 
     protected function getDefaultDataStructureToProperties(): array
     {
-        $structure = [
+        return [
             'id'                     => 'id',
             'permission'             => 'permission',
             'associated_permissions' => 'associatedPermissions',
         ];
-
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
     }
 
     protected function validationRulesForProperties(): array
     {
-        $rules = [
+        return [
             'id'                       => ['required', 'integer'],
             'permission'               => ['required', 'string'],
             'associated_permissions'   => ['present', 'array'],
             'associated_permissions.*' => ['string'],
         ];
-
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
     }
 
     protected static function getDefaultNotConstructableException(
