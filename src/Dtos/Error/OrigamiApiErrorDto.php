@@ -5,9 +5,15 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Error;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Error\OrigamiApiErrorCodeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\Oauth\OrigamiApiUnauthorizedException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiBadRequestException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiClientErrorException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiConflictException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiForbiddenException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiNotFoundException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiTooManyRequestsException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnprocessableEntityException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Error\OrigamiApiErrorDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCorrespondingException;
@@ -91,7 +97,14 @@ class OrigamiApiErrorDto extends ApiResponseDto
     protected function getCorrespondingExceptionToHttpStatusCode(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
         return match (true) {
-            $this->httpStatusCode === 401                               => new OrigamiApiUnauthorizedException($this),
+            $this->httpStatusCode === 400 => new OrigamiApiBadRequestException($this),
+            $this->httpStatusCode === 401 => new OrigamiApiUnauthorizedException($this),
+            $this->httpStatusCode === 403 => new OrigamiApiForbiddenException($this),
+            $this->httpStatusCode === 404 => new OrigamiApiNotFoundException($this),
+            $this->httpStatusCode === 409 => new OrigamiApiConflictException($this),
+            $this->httpStatusCode === 422 => new OrigamiApiUnprocessableEntityException($this),
+            $this->httpStatusCode === 429 => new OrigamiApiTooManyRequestsException($this),
+
             $this->httpStatusCode >= 400 && $this->httpStatusCode < 500 => new OrigamiApiClientErrorException($this),
 
             default => OrigamiApiUnknownException::createFromUnknownOrigamiApiHttpStatusCode($this),
