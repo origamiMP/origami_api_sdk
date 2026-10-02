@@ -21,6 +21,10 @@ class RoleDto extends ApiResponseDto
 
     public RoleDtoTypeEnum $type;
 
+    public string $color;
+
+    public string $textColor;
+
     /**
      * Permissions granted by this Role.
      *
@@ -41,9 +45,11 @@ class RoleDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         $structure = [
-            'id'   => 'id',
-            'name' => 'name',
-            'type' => fn ($type) => $this->type = RoleDtoTypeEnum::from($type),
+            'id'         => 'id',
+            'name'       => 'name',
+            'type'       => fn ($type) => $this->type = RoleDtoTypeEnum::from($type),
+            'color'      => 'color',
+            'text_color' => 'textColor',
 
             'permissions' => fn ($permissions) => $this->initPermissions($permissions),
         ];
@@ -59,9 +65,11 @@ class RoleDto extends ApiResponseDto
         $types = collect(RoleDtoTypeEnum::cases())->pluck('value');
 
         $rules = [
-            'id'   => ['required', 'integer'],
-            'name' => ['required', 'string'],
-            'type' => ['required', Rule::in($types)],
+            'id'         => ['required', 'integer'],
+            'name'       => ['required', 'string'],
+            'type'       => ['required', Rule::in($types)],
+            'color'      => ['required', 'string'],
+            'text_color' => ['required', 'string'],
         ];
 
         return array_merge(
