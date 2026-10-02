@@ -5,8 +5,15 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Error;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Error\OrigamiApiErrorCodeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\Oauth\OrigamiApiUnauthorizedException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiBadRequestException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiClientErrorException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiConflictException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiForbiddenException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiNotFoundException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiTooManyRequestsException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnprocessableEntityException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Error\OrigamiApiErrorDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCorrespondingException;
@@ -20,6 +27,11 @@ class OrigamiApiErrorDto extends ApiResponseDto
     public string $message;
 
     public string $errorCode;
+
+    /**
+     * Name of the request field this error is about, when the API provides it in `data.field`.
+     */
+    public ?string $field = null;
 
     public function getCorrespondingException(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
@@ -35,7 +47,13 @@ class OrigamiApiErrorDto extends ApiResponseDto
             $msg .= " Error code {$this->errorCode} -";
         }
 
-        return "$msg {$this->message}";
+        $msg .= " {$this->message}";
+
+        if (! is_null($this->field)) {
+            $msg .= " (field: {$this->field})";
+        }
+
+        return $msg;
     }
 
     protected function getDefaultDataStructureToProperties(): array
@@ -44,15 +62,19 @@ class OrigamiApiErrorDto extends ApiResponseDto
             'status' => 'httpStatusCode',
             'detail' => 'message',
             'code'   => 'errorCode',
+            'data'   => [
+                'field' => 'field',
+            ],
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'status' => ['required', 'integer'],
-            'detail' => ['required', 'string'],
-            'code'   => ['required', 'string'],
+            'status'     => ['required', 'integer'],
+            'detail'     => ['required', 'string'],
+            'code'       => ['required', 'string'],
+            'data.field' => ['sometimes', 'nullable', 'string'],
         ];
     }
 
@@ -74,8 +96,16 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     protected function getCorrespondingExceptionToHttpStatusCode(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
-        return match ($this->httpStatusCode) {
-            401 => new OrigamiApiUnauthorizedException($this),
+        return match (true) {
+            $this->httpStatusCode === 400 => new OrigamiApiBadRequestException($this),
+            $this->httpStatusCode === 401 => new OrigamiApiUnauthorizedException($this),
+            $this->httpStatusCode === 403 => new OrigamiApiForbiddenException($this),
+            $this->httpStatusCode === 404 => new OrigamiApiNotFoundException($this),
+            $this->httpStatusCode === 409 => new OrigamiApiConflictException($this),
+            $this->httpStatusCode === 422 => new OrigamiApiUnprocessableEntityException($this),
+            $this->httpStatusCode === 429 => new OrigamiApiTooManyRequestsException($this),
+
+            $this->httpStatusCode >= 400 && $this->httpStatusCode < 500 => new OrigamiApiClientErrorException($this),
 
             default => OrigamiApiUnknownException::createFromUnknownOrigamiApiHttpStatusCode($this),
         };
