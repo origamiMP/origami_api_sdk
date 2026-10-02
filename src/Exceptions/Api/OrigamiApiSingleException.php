@@ -11,6 +11,11 @@ abstract class OrigamiApiSingleException extends OrigamiApiException
         parent::__construct($this->errorDto->toString(), previous: $previous);
     }
 
+    public function getErrorDto(): OrigamiApiErrorDto
+    {
+        return $this->errorDto;
+    }
+
     public function getOrigamiApiErrorCode(): string
     {
         return $this->errorDto->errorCode;

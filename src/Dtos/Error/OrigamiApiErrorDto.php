@@ -5,6 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Error;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Error\OrigamiApiErrorCodeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\Oauth\OrigamiApiUnauthorizedException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiClientErrorException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -89,8 +90,9 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     protected function getCorrespondingExceptionToHttpStatusCode(): OrigamiApiSingleException|OrigamiApiUnknownException
     {
-        return match ($this->httpStatusCode) {
-            401 => new OrigamiApiUnauthorizedException($this),
+        return match (true) {
+            $this->httpStatusCode === 401                               => new OrigamiApiUnauthorizedException($this),
+            $this->httpStatusCode >= 400 && $this->httpStatusCode < 500 => new OrigamiApiClientErrorException($this),
 
             default => OrigamiApiUnknownException::createFromUnknownOrigamiApiHttpStatusCode($this),
         };
