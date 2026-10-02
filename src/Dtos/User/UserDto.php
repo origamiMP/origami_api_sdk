@@ -78,7 +78,12 @@ class UserDto extends ApiResponseDto
     public Collection $userGroups;
 
     /**
-     * Roles assigned to this User, regardless of the UserGroup context.
+     * Roles assigned to this User.
+     *
+     * When the request is filtered on a UserGroup (filter[user_group_id] or
+     * filter[roles_user_group_id]), only the roles of the User in that UserGroup are returned.
+     * Otherwise, the roles of the User in all their UserGroups are returned, and a role
+     * shared by several UserGroups may appear more than once.
      *
      * May be undefined if the corresponding data was not included.
      *
