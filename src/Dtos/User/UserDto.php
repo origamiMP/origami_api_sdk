@@ -77,11 +77,25 @@ class UserDto extends ApiResponseDto
      */
     public Collection $userGroups;
 
+    /**
+     * Roles assigned to this User.
+     *
+     * When the request is filtered on a UserGroup (filter[user_group_id] or
+     * filter[roles_user_group_id]), only the roles of the User in that UserGroup are returned.
+     * Otherwise, the roles of the User in all their UserGroups are returned, and a role
+     * shared by several UserGroups may appear more than once.
+     *
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var RoleDto[]|Collection
+     */
+    public Collection $roles;
+
     public static function getAvailableIncludes(): array
     {
         return [
             'user_groups' => UserGroupDto::class,
-            // 'roles',
+            'roles'       => RoleDto::class,
             // 'user_group_users',
             // 'module',
             // 'user_reports_received',
@@ -105,6 +119,7 @@ class UserDto extends ApiResponseDto
             'is_account_validated'          => 'isAccountValidated',
 
             'user_groups' => fn ($userGroups) => $this->initUserGroups($userGroups),
+            'roles'       => fn ($roles) => $this->initRoles($roles),
         ];
 
         return array_merge(
@@ -152,5 +167,12 @@ class UserDto extends ApiResponseDto
         $this->throwIfDataFieldOnObjectIsEmpty($userGroups);
 
         $this->userGroups = collect($userGroups->data)->map(fn ($userGroup) => new UserGroupDto($userGroup));
+    }
+
+    protected function initRoles($roles): void
+    {
+        $this->throwIfDataFieldOnObjectIsEmpty($roles);
+
+        $this->roles = collect($roles->data)->map(fn ($role) => new RoleDto($role));
     }
 }
