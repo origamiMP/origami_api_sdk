@@ -3,7 +3,9 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\RoleDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\RoleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
@@ -17,7 +19,7 @@ class RoleDto extends ApiResponseDto
 
     public string $name;
 
-    public string $type;
+    public RoleDtoTypeEnum $type;
 
     /**
      * Permissions granted by this Role.
@@ -41,7 +43,7 @@ class RoleDto extends ApiResponseDto
         $structure = [
             'id'   => 'id',
             'name' => 'name',
-            'type' => 'type',
+            'type' => fn ($type) => $this->type = RoleDtoTypeEnum::from($type),
 
             'permissions' => fn ($permissions) => $this->initPermissions($permissions),
         ];
@@ -54,10 +56,12 @@ class RoleDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
+        $types = collect(RoleDtoTypeEnum::cases())->pluck('value');
+
         $rules = [
             'id'   => ['required', 'integer'],
             'name' => ['required', 'string'],
-            'type' => ['required', 'string'],
+            'type' => ['required', Rule::in($types)],
         ];
 
         return array_merge(
