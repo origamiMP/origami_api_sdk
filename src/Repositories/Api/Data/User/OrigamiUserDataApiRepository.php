@@ -27,11 +27,13 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
     }
 
     /**
+     * Update an existing user
+     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      */
     public function update(int $id, UpdateUserRequestParamBag $paramBag): void
     {
-        $this->restClient->patch("users/$id", $paramBag);
+        $this->restClient->patch("users/{$id}", $paramBag);
     }
 }
