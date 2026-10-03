@@ -40,7 +40,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     {
         $response = $this->restClient->post('users/groups/invitations/send', $paramBag);
 
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationSendDto($responseContent);
     }
@@ -55,7 +55,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function cancel(int $invitationId): UserGroupInvitationCancelDto
     {
         $response = $this->restClient->delete("users/groups/invitations/{$invitationId}");
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationCancelDto($responseContent);
     }
@@ -70,7 +70,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function resend(int $invitationId): UserGroupInvitationDto
     {
         $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend");
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -85,7 +85,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function validate(ValidateUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationValidateDto
     {
         $response = $this->restClient->post('users/groups/invitations/validate', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationValidateDto($responseContent);
     }
@@ -100,7 +100,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function getStats(): UserGroupInvitationStatsDto
     {
         $response = $this->restClient->get('users/groups/invitations/stats');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationStatsDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -115,7 +115,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function getHistory(GetUserGroupInvitationHistoryRequestParamBag $paramBag): UserGroupInvitationHistoryDto
     {
         $response = $this->restClient->get('users/groups/invitations/history', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationHistoryDto($responseContent);
     }
@@ -130,7 +130,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function checkPending(CheckPendingUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationCheckPendingDto
     {
         $response = $this->restClient->get('users/groups/invitations/check-pending', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationCheckPendingDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -145,7 +145,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function list(ListUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationListDto
     {
         $response = $this->restClient->get('users/groups/invitations', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationListDto($responseContent);
     }

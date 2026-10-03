@@ -22,7 +22,7 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
     public function create(CreateTaxRequestParamBag $paramBag): TaxDto
     {
         $response = $this->restClient->post('taxes', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new TaxDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
