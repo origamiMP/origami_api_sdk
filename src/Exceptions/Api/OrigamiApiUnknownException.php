@@ -4,6 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Exceptions\Api;
 
 use GuzzleHttp\Exception\BadResponseException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
+use Psr\Http\Message\ResponseInterface;
 
 class OrigamiApiUnknownException extends OrigamiApiException
 {
@@ -28,5 +29,12 @@ class OrigamiApiUnknownException extends OrigamiApiException
         $msg = "Error from Origami API with unregistered error code or http code : {$errorDto->toString()}";
 
         return new OrigamiApiUnknownException($msg, errorDto: $errorDto);
+    }
+
+    public static function createFromUnreadableResponse(ResponseInterface $response, ?\Throwable $previous = null): self
+    {
+        $msg = "Unreadable response from Origami API : HTTP {$response->getStatusCode()}, the body is not a JSON object";
+
+        return new OrigamiApiUnknownException($msg, previous: $previous);
     }
 }

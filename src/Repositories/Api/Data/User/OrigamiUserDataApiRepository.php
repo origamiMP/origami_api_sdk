@@ -21,7 +21,7 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
     {
         $response = $this->restClient->get('me', $paramBag);
 
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new UserDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
