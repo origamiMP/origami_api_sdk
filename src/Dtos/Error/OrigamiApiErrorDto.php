@@ -4,7 +4,6 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Error;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Error\OrigamiApiErrorCodeEnum;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Api\Oauth\OrigamiApiUnauthorizedException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiBadRequestException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiClientErrorException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiConflictException;
@@ -12,6 +11,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiForbiddenException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiNotFoundException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiSingleException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiTooManyRequestsException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnauthorizedException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnprocessableEntityException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
