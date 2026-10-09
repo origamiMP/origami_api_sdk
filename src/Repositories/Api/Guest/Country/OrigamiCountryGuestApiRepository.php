@@ -21,7 +21,7 @@ class OrigamiCountryGuestApiRepository extends OrigamiGuestApiRepository
     public function list(ListCountriesRequestParamBag $paramBag): CountryListDto
     {
         $response = $this->restClient->get('countries', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new CountryListDto($responseContent);
     }

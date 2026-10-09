@@ -14,7 +14,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
     public function list(ListSellerRequestParamBag $paramBag): SellerListDto
     {
         $response = $this->restClient->get('sellers', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SellerListDto($responseContent);
     }
@@ -22,7 +22,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
     public function get(int $id): SellerDto
     {
         $response = $this->restClient->get("sellers/$id");
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -30,7 +30,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
     public function create(CreateSellerRequestParamBag $paramBag): SellerDto
     {
         $response = $this->restClient->post('sellers', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -41,7 +41,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
     public function getLegalTypes(): SellerLegalTypeListDto
     {
         $response = $this->restClient->get('sellers/legal_types');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SellerLegalTypeListDto($responseContent);
     }

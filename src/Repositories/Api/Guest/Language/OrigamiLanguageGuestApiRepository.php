@@ -20,7 +20,7 @@ class OrigamiLanguageGuestApiRepository extends OrigamiGuestApiRepository
     public function list(): LanguageListDto
     {
         $response = $this->restClient->get('languages');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new LanguageListDto($responseContent);
     }

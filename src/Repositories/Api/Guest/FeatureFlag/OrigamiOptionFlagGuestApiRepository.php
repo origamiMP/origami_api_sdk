@@ -20,7 +20,7 @@ class OrigamiOptionFlagGuestApiRepository extends OrigamiGuestApiRepository
     public function list(): FeatureFlagListDto
     {
         $response = $this->restClient->get('option_flags');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FeatureFlagListDto($responseContent);
     }
