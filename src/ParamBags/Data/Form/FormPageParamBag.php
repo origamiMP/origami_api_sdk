@@ -25,7 +25,7 @@ class FormPageParamBag extends ParamBag
         return [
             'id'           => ['integer'],
             'translations' => ['required', 'array'],
-            'sections'     => ['required', 'array'],
+            'sections'     => ['array'],
         ];
     }
 }

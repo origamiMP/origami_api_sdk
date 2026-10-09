@@ -28,8 +28,8 @@ class FormFieldParamsParamBag extends ParamBag
     {
         return [
             'extensions'  => ['array'],
-            'max_size_kb' => ['integer', 'min:1', 'max:10240'],
-            'max_files'   => ['integer', 'min:1', 'max:10'],
+            'max_size_kb' => ['integer', 'min:1'],
+            'max_files'   => ['integer', 'min:1'],
             'unit'        => ['string', 'max:8'],
             'min'         => ['numeric'],
             'max'         => ['numeric'],

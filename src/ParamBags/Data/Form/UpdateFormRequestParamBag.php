@@ -20,6 +20,9 @@ class UpdateFormRequestParamBag extends RequestParamBag
     public array $translations;
 
     /**
+     * The Origami API replaces the whole tree with it: nodes sent without an id are created,
+     * existing nodes left out are deleted.
+     *
      * @var FormPageParamBag[]
      */
     public array $pages;
