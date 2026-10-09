@@ -6,7 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Forms\FormFieldDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormFieldDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludedCollections;

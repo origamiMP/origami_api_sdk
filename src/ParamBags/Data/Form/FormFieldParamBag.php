@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form;
 
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Forms\FormFieldDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
 class FormFieldParamBag extends ParamBag

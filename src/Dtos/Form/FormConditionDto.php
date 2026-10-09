@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Forms\FormConditionDtoOperatorEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormConditionDtoNotConstructableException;
 

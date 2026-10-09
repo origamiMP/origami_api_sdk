@@ -24,13 +24,12 @@ class FormDto extends ApiResponseDto implements Arrayable
 
     public bool $isStandaloneEnabled;
 
-    /** Only sent with `with_count=fields`. */
     public ?int $fieldsCount = null;
 
     /** @var Collection<int, FormTranslationDto> */
     public Collection $translations;
 
-    /** Null when the `pages` include is absent (list responses). @var Collection<int, FormPageDto>|null */
+    /** @var Collection<int, FormPageDto>|null */
     public ?Collection $pages = null;
 
     protected function getDefaultDataStructureToProperties(): array

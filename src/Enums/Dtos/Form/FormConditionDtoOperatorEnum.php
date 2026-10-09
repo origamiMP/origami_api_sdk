@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\Forms;
+namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form;
 
 enum FormConditionDtoOperatorEnum: string
 {

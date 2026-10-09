@@ -8,9 +8,6 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormTypesDtoNotConstructableException;
 
-/**
- * Reads the `data` key of the response of `GET forms/types` (or the payload itself when already unwrapped).
- */
 class FormTypesDto extends ApiResponseDto implements Arrayable
 {
     /** @var Collection<int, FormTypeDto> */
@@ -29,15 +26,10 @@ class FormTypesDto extends ApiResponseDto implements Arrayable
     /** @var array<string, int> */
     public array $limits;
 
-    protected function getDataToValidateAndFillFrom(): object
-    {
-        return $this->apiResponse->data ?? $this->apiResponse;
-    }
-
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'types'            => fn (array $types) => $this->types = collect($types)->map(fn (object $type) => new FormTypeDto($type))->values(),
+            'types'            => fn (array $types) => $this->types = collect($types)->map(fn (object $type) => new FormTypeDto($type)),
             'file.extensions'  => 'fileExtensions',
             'file.max_size_kb' => 'fileMaxSizeKb',
             'file.max_files'   => 'fileMaxFiles',

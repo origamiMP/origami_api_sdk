@@ -15,9 +15,7 @@ class FormListDto extends ApiResponseDto implements Arrayable
 
     public static function getAvailableIncludes(): array
     {
-        return [
-            'pages' => FormPageDto::class,
-        ];
+        return [];
     }
 
     protected function getDefaultDataStructureToProperties(): array

@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form;
 
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Forms\FormConditionDtoOperatorEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
 class FormConditionParamBag extends ParamBag

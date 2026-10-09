@@ -8,9 +8,6 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormPrefillSourcesDtoNotConstructableException;
 
-/**
- * Reads the `data` key of the response of `GET forms/prefill-sources` (or the payload itself when already unwrapped).
- */
 class FormPrefillSourcesDto extends ApiResponseDto implements Arrayable
 {
     /** @var Collection<int, FormPrefillSourceDto> */
@@ -18,11 +15,6 @@ class FormPrefillSourcesDto extends ApiResponseDto implements Arrayable
 
     /** @var Collection<int, FormPrefillSourceDto> */
     public Collection $customFields;
-
-    protected function getDataToValidateAndFillFrom(): object
-    {
-        return $this->apiResponse->data ?? $this->apiResponse;
-    }
 
     protected function getDefaultDataStructureToProperties(): array
     {
@@ -55,6 +47,6 @@ class FormPrefillSourcesDto extends ApiResponseDto implements Arrayable
     /** @return Collection<int, FormPrefillSourceDto> */
     private function mapSources(array $sources): Collection
     {
-        return collect($sources)->map(fn (object $source) => new FormPrefillSourceDto($source))->values();
+        return collect($sources)->map(fn (object $source) => new FormPrefillSourceDto($source));
     }
 }

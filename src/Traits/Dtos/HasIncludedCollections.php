@@ -18,6 +18,6 @@ trait HasIncludedCollections
     {
         $this->throwIfDataFieldOnObjectIsEmpty($included);
 
-        return collect($included->data)->map(fn (object $item) => new $dtoClass($item))->values();
+        return collect($included->data)->map(fn (object $item) => new $dtoClass($item));
     }
 }

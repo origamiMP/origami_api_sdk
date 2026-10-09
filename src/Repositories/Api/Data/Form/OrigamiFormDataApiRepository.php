@@ -108,7 +108,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get('forms/types');
         $responseContent = json_decode($response->getBody()->getContents());
 
-        return new FormTypesDto($responseContent);
+        return new FormTypesDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 
     /**
@@ -121,6 +121,6 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get('forms/prefill-sources');
         $responseContent = json_decode($response->getBody()->getContents());
 
-        return new FormPrefillSourcesDto($responseContent);
+        return new FormPrefillSourcesDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 }

@@ -5,13 +5,10 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Forms\FormFieldParamsDtoWidthEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormFieldParamsDtoNotConstructableException;
 
-/**
- * Type-specific field params; the API sends `{}` when a field has none, so every param is optional.
- */
 class FormFieldParamsDto extends ApiResponseDto implements Arrayable
 {
     /** @var string[]|null */
@@ -36,8 +33,8 @@ class FormFieldParamsDto extends ApiResponseDto implements Arrayable
             'max_size_kb' => 'maxSizeKb',
             'max_files'   => 'maxFiles',
             'unit'        => 'unit',
-            'min'         => fn (?float $min) => $this->min = $min,
-            'max'         => fn (?float $max) => $this->max = $max,
+            'min'         => 'min',
+            'max'         => 'max',
             'width'       => fn (?string $width) => $this->width = $width === null ? null : FormFieldParamsDtoWidthEnum::from($width),
         ];
     }
