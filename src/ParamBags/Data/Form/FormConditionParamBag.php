@@ -11,14 +11,14 @@ class FormConditionParamBag extends ParamBag
 
     public FormConditionDtoOperatorEnum $operator;
 
-    public string $value;
+    public ?string $value;
 
     protected function validationRulesForProperties(): array
     {
         return [
             'field_key' => ['required', 'string'],
             'operator'  => ['required', 'string'],
-            'value'     => ['required', 'string', 'max:255'],
+            'value'     => ['nullable', 'string', 'max:255'],
         ];
     }
 }
