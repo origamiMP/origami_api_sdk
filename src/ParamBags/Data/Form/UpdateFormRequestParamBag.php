@@ -21,8 +21,10 @@ class UpdateFormRequestParamBag extends RequestParamBag
 
     /**
      * The Origami API replaces the whole tree with it: nodes sent without an id are created,
-     * existing nodes left out are deleted. Each node sent is written as a whole: a property left
-     * unset takes the API default (no condition, no params, no options).
+     * existing nodes left out are deleted. Each node sent is rewritten, except its translations
+     * (only the languages sent are written) and the key of an existing field (kept when not
+     * sent): any other property left unset takes the API default (no condition, no params,
+     * no options).
      *
      * @var FormPageParamBag[]
      */
