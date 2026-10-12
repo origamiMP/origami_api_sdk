@@ -7,7 +7,6 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestMethodEnum;
-use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use Psr\Http\Message\ResponseInterface;
@@ -183,16 +182,6 @@ abstract class RestClientRepository
     }
 
     abstract protected function handleRequestError(BadResponseException $guzzleException): void;
-
-    protected function getRequestParamsTypeDependingOnRequestMethod(
-        HttpRequestMethodEnum $method
-    ): HttpRequestParamsTypeEnum {
-        return match ($method) {
-            HttpRequestMethodEnum::GET,
-            HttpRequestMethodEnum::DELETE => HttpRequestParamsTypeEnum::QUERY,
-            default                       => HttpRequestParamsTypeEnum::JSON,
-        };
-    }
 
     protected function getUrlResourcePart(string $resource): string
     {

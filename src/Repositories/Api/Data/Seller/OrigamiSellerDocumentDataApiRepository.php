@@ -17,7 +17,7 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get("sellers/{$sellerId}/required_documents");
         $responseContent = json_decode($response->getBody()->getContents());
 
-        return new DocumentTypeListDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new DocumentTypeListDto($responseContent);
     }
 
     /**
