@@ -14,6 +14,13 @@ use Psr\Http\Message\ResponseInterface;
 
 abstract class RestClientRepository
 {
+    /**
+     * In seconds. Without them, Guzzle waits forever for a slow API.
+     */
+    const DEFAULT_CONNECT_TIMEOUT = 5;
+
+    const DEFAULT_TIMEOUT = 30;
+
     protected GuzzleClient $guzzleClient;
 
     /**
@@ -161,7 +168,11 @@ abstract class RestClientRepository
 
     protected function initDefaultGuzzleClient(): GuzzleClient
     {
-        return new GuzzleClient(['base_uri' => $this->getRestApiBaseUrl()]);
+        return new GuzzleClient([
+            'base_uri'        => $this->getRestApiBaseUrl(),
+            'connect_timeout' => static::DEFAULT_CONNECT_TIMEOUT,
+            'timeout'         => static::DEFAULT_TIMEOUT,
+        ]);
     }
 
     protected function beforeApiCall(
