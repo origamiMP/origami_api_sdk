@@ -45,7 +45,7 @@ abstract class OrigamiRestClient extends RestClientRepository
 
         $decodedResponseContent = json_decode($encodedResponseContent);
 
-        // Errors returned by a proxy or a maintenance page are not JSON
+        // Not an Origami API error at all (ex: a proxy's HTML error page)
         if (! is_object($decodedResponseContent)) {
             throw OrigamiApiUnknownException::createFromGuzzleBadResponse($guzzleException);
         }
