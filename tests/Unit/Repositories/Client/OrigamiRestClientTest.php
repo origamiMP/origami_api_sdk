@@ -96,16 +96,12 @@ class OrigamiRestClientTest extends TestCase
             $this->mockApiErrorsResponse($status, $this->mockApiErrorData($status, 'Some error.', '999999', 'email')),
         );
 
-        try {
-            $restClient->get('some_resource');
-            $this->fail("{$expectedExceptionClass} was not thrown.");
-        } catch (OrigamiApiSingleException $e) {
-            $this->assertInstanceOf($expectedExceptionClass, $e);
-            $this->assertSame($status, $e->getErrorDto()->httpStatusCode);
-            $this->assertSame('Some error.', $e->getErrorDto()->message);
-            $this->assertSame('999999', $e->getOrigamiApiErrorCode());
-            $this->assertSame('email', $e->getErrorDto()->field);
-        }
+        $exception = $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), $expectedExceptionClass);
+
+        $this->assertSame($status, $exception->getErrorDto()->httpStatusCode);
+        $this->assertSame('Some error.', $exception->getErrorDto()->message);
+        $this->assertSame('999999', $exception->getOrigamiApiErrorCode());
+        $this->assertSame('email', $exception->getErrorDto()->field);
     }
 
     public static function requestErrorByHttpStatusProvider(): array
@@ -132,9 +128,7 @@ class OrigamiRestClientTest extends TestCase
             $this->mockApiErrorData(400, 'Unauthorized.', OrigamiApiErrorCodeEnum::UNAUTHORIZED->value),
         ));
 
-        $this->expectException(OrigamiApiUnauthorizedException::class);
-
-        $restClient->get('some_resource');
+        $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiUnauthorizedException::class);
     }
 
     /**
@@ -148,12 +142,9 @@ class OrigamiRestClientTest extends TestCase
             $this->mockApiErrorData(422, 'Name is required.', '999999', 'name'),
         ));
 
-        try {
-            $restClient->get('some_resource');
-            $this->fail(OrigamiApiMultipleException::class.' was not thrown.');
-        } catch (OrigamiApiMultipleException $e) {
-            $this->assertSame(['email', 'name'], $e->getErrorDtos()->pluck('field')->all());
-        }
+        $exception = $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiMultipleException::class);
+
+        $this->assertSame(['email', 'name'], $exception->getErrorDtos()->pluck('field')->all());
     }
 
     /**
@@ -165,12 +156,9 @@ class OrigamiRestClientTest extends TestCase
             $this->mockApiErrorsResponse(500, $this->mockApiErrorData(500, 'Server error.', '999999')),
         );
 
-        try {
-            $restClient->get('some_resource');
-            $this->fail(OrigamiApiUnknownException::class.' was not thrown.');
-        } catch (OrigamiApiUnknownException $e) {
-            $this->assertSame('Server error.', $e->errorDto?->message);
-        }
+        $exception = $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiUnknownException::class);
+
+        $this->assertSame('Server error.', $exception->errorDto?->message);
     }
 
     /**
@@ -181,13 +169,10 @@ class OrigamiRestClientTest extends TestCase
     {
         $restClient = $this->mockGuestRestClientReturning(new Response(400, [], '{"message":"Bad request."}'));
 
-        try {
-            $restClient->get('some_resource');
-            $this->fail(OrigamiApiUnknownException::class.' was not thrown.');
-        } catch (OrigamiApiUnknownException $e) {
-            $this->assertNull($e->errorDto);
-            $this->assertSame('{"message":"Bad request."}', $e->getPrevious()->getResponse()->getBody()->getContents());
-        }
+        $exception = $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiUnknownException::class);
+
+        $this->assertNull($exception->errorDto);
+        $this->assertSame('{"message":"Bad request."}', $exception->getPrevious()->getResponse()->getBody()->getContents());
     }
 
     /**
@@ -197,9 +182,7 @@ class OrigamiRestClientTest extends TestCase
     {
         $restClient = $this->mockGuestRestClientReturning(new Response(502, [], '<html>Bad Gateway</html>'));
 
-        $this->expectException(OrigamiApiUnknownException::class);
-
-        $restClient->get('some_resource');
+        $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiUnknownException::class);
     }
 
     /**
@@ -211,8 +194,6 @@ class OrigamiRestClientTest extends TestCase
             new ConnectException('Connection refused.', new Request('GET', 'v1/some_resource')),
         );
 
-        $this->expectException(HttpClientException::class);
-
-        $restClient->get('some_resource');
+        $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), HttpClientException::class);
     }
 }

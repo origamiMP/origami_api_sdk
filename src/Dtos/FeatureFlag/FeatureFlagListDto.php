@@ -11,7 +11,7 @@ class FeatureFlagListDto extends ApiResponseDto
     /** @var array<string, bool> */
     public array $flags;
 
-    public function __construct(array|object $apiResponse)
+    public function __construct(object $apiResponse)
     {
         parent::__construct((object) ['flags' => (array) $apiResponse]);
     }

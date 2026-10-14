@@ -23,7 +23,7 @@ class OrigamiPasswordGuestApiRepository extends OrigamiGuestApiRepository
     {
         $response = $this->restClient->post('password/email', $requestParamBag);
 
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SendResetPasswordEmailDto($responseContent);
     }
@@ -37,7 +37,7 @@ class OrigamiPasswordGuestApiRepository extends OrigamiGuestApiRepository
     {
         $response = $this->restClient->post('password/reset', $requestParamBag);
 
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new ResetPasswordDto($responseContent);
     }

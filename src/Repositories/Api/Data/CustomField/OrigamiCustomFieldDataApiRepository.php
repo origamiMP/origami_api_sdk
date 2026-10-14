@@ -13,7 +13,7 @@ class OrigamiCustomFieldDataApiRepository extends OrigamiDataApiRepository
     public function list(ListCustomFieldRequestParamBag $paramBag): CustomFieldListDto
     {
         $response = $this->restClient->get('custom_fields', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new CustomFieldListDto($responseContent);
     }
@@ -24,7 +24,7 @@ class OrigamiCustomFieldDataApiRepository extends OrigamiDataApiRepository
     public function getValues(int $customFieldId, ListCustomFieldValueRequestParamBag $paramBag): CustomFieldValueListDto
     {
         $response = $this->restClient->get("custom_fields/$customFieldId/values", $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new CustomFieldValueListDto($responseContent);
     }
