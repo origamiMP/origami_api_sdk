@@ -39,7 +39,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Dependencies
-        run: composer install --prefer-dist
+        run: composer install --prefer-dist --no-interaction
 
       - name: PHPStan check
         run: ./vendor/bin/phpstan analyse -v
