@@ -11,7 +11,7 @@ trait HasFilters
         'updatedAfter',
     ];
 
-    private array $filter;
+    private array $filter = [];
 
     /**
      * Available filters for this specific request. They should be declared this way :

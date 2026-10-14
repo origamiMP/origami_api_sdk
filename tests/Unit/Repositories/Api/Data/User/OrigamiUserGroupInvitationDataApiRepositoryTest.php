@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories\Api\Data\User;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
@@ -148,6 +149,28 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
     }
 
     /**
+     * `GET users/groups/invitations/history` should send the includes available on an invitation as query, and read
+     * the included user group of each invitation.
+     */
+    public function test_get_history_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [
+            $this->mockUserGroupInvitationApiData(['user_group' => ['data' => $this->mockUserGroupApiData(['id' => 42])]]),
+        ]]));
+        $paramBag = new GetUserGroupInvitationHistoryRequestParamBag;
+        $paramBag->email = 'john@doe.com';
+        $paramBag->setIncludes(['user_group', 'unknown']);
+
+        $history = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->getHistory($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'users/groups/invitations/history');
+        $this->assertLastApiRequestQueryWas(['email' => 'john@doe.com', 'include' => ['user_group']]);
+        $this->assertInstanceOf(UserGroupInvitationHistoryDto::class, $history);
+        $this->assertInstanceOf(UserGroupDto::class, $history->data->first()->userGroup);
+        $this->assertSame(42, $history->data->first()->userGroup->id);
+    }
+
+    /**
      * `GET users/groups/invitations/check-pending` should send the email as query, and read the result from the
      * `data` key of the response.
      */
@@ -192,5 +215,30 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
         ]);
         $this->assertInstanceOf(UserGroupInvitationListDto::class, $invitations);
         $this->assertSame([1], $invitations->data->pluck('id')->all());
+    }
+
+    /**
+     * `GET users/groups/invitations` should send the includes available on an invitation as query, and read the
+     * included user group of each invitation.
+     */
+    public function test_list_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
+            $this->mockUserGroupInvitationApiData(['user_group' => ['data' => $this->mockUserGroupApiData(['id' => 42])]]),
+        ])));
+        $paramBag = new ListUserGroupInvitationsRequestParamBag;
+        $paramBag->setIncludes(['user_group', 'unknown']);
+
+        $invitations = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'users/groups/invitations');
+        $this->assertLastApiRequestQueryWas([
+            'page'          => '1',
+            'item_per_page' => '20',
+            'include'       => ['user_group'],
+        ]);
+        $this->assertInstanceOf(UserGroupInvitationListDto::class, $invitations);
+        $this->assertInstanceOf(UserGroupDto::class, $invitations->data->first()->userGroup);
+        $this->assertSame(42, $invitations->data->first()->userGroup->id);
     }
 }

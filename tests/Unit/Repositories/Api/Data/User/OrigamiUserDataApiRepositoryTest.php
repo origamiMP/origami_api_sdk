@@ -29,6 +29,25 @@ class OrigamiUserDataApiRepositoryTest extends TestCase
     }
 
     /**
+     * `GET me` should send the includes available on a user as query, and read the included roles.
+     */
+    public function test_get_current_authenticated_user_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData([
+            'roles' => ['data' => [$this->mockRoleApiData(['id' => 42])]],
+        ])]));
+        $paramBag = new GetCurrentUserRequestParamBag;
+        $paramBag->setIncludes(['roles', 'unknown', 'user_groups']);
+
+        $user = (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'me');
+        $this->assertLastApiRequestQueryWas(['include' => ['roles', 'user_groups']]);
+        $this->assertInstanceOf(UserDto::class, $user);
+        $this->assertSame([42], $user->roles->pluck('id')->all());
+    }
+
+    /**
      * `PATCH users/{id}` should send the external configuration as JSON.
      */
     public function test_update_case_1(): void

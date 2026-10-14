@@ -1,0 +1,52 @@
+---
+name: sdk-conventions
+description: "Conventions de code du SDK PHP de l'API Origami (origami_api_sdk / origami-mp/origami-api-sdk). Pour l'instant, seuls les tests unitaires (PHPUnit) sont documentés : arborescence et nommage, structure d'un test, assertions, données mockées (traits Tests<Domaine>Dtos), faux client HTTP (TestsRestClient), exceptions (assertThatExceptionWasThrown), fixtures et data providers. À utiliser dès qu'on travaille sur ce SDK, et en particulier dès qu'on écrit, complète, corrige ou relit un test — tests d'un repository (Data, Guest, Oauth), d'un DTO, d'un client REST, d'un trait ou d'un comportement partagé — même si l'utilisateur dit seulement « ajoute les TUs », « teste ce repo » ou « couvre ce code », et avant d'ajouter un helper ou des données de test dans tests/TestUtils."
+---
+
+# Conventions — SDK de l'API Origami
+
+## Contexte du projet
+
+- SDK PHP (`origami-mp/origami-api-sdk`) qui appelle l'API centrale Origami. Il est consommé notamment par origami_admin_v2.
+- Organisation du code : des **repositories** (un appel HTTP en entrée, un DTO en sortie) répartis entre `Data` (authentifié), `Guest` (public) et `Oauth`, des **param bags** (les paramètres envoyés), des **DTO** (lecture et validation de la réponse de l'API), des **clients REST**, et des **traits** qui portent un comportement commun.
+- Le code de l'API (pour vérifier le format réel de ses réponses) est dans le repo voisin `origami_api`.
+
+## Comment utiliser ce skill
+
+Le skill est découpé par domaine, chacun dans son sous-dossier de `references/`.
+
+### Tests (documenté)
+
+Commencez toujours par `references/tests/README.md` (les règles essentielles), puis lisez le fichier du type de test que vous écrivez :
+
+| Fichier | À consulter quand… |
+|---|---|
+| `references/tests/README.md` | **Toujours, en premier** : ce qu'on teste, les règles essentielles |
+| `references/tests/structure.md` | Vous créez un fichier de test, une fixture ou un trait de helpers : où le ranger, comment le nommer, comment l'enregistrer dans `TestCase` |
+| `references/tests/writing-tests.md` | Vous écrivez n'importe quel test : nommage des méthodes, docblocks, découpage du corps, assertions, exceptions, data providers, valeurs utilisées |
+| `references/tests/repositories.md` | Vous testez un repository (`Repositories/Api/...`) ou un client REST : faux client HTTP, ce qu'il faut vérifier, couverture attendue, exemples par type d'endpoint |
+| `references/tests/mock-data.md` | Vous avez besoin de données de réponse de l'API ou d'un DTO tout fait : traits `Tests<Domaine>Dtos`, méthodes `mock…ApiData()` et `mock…Dto()`, format réel de l'API |
+| `references/tests/dtos-and-shared-behavior.md` | Vous testez un DTO, un trait, une classe abstraite ou une convention transverse : fixtures, tests de garde |
+
+En cas de doute, lisez plusieurs fichiers : ils sont courts et se complètent. Par exemple, un test de repository touche `repositories.md`, `writing-tests.md` et `mock-data.md`.
+
+### Reste du code (pas encore documenté)
+
+🚧 TODO — les conventions du code du SDK lui-même (repositories, param bags, DTO, exceptions, enums…) ne sont pas encore écrites. En attendant :
+- n'inventez pas de convention ;
+- suivez le pattern le plus proche déjà présent dans `src/`, et signalez à l'utilisateur que le point n'est pas documenté.
+
+## Règles générales
+
+- Préférez les vérifications explicites (`is_null($x)`, `array_is_list($x)`) à une logique implicite justifiée par un commentaire.
+- Le style est vérifié par Pint (`pint.json`, preset Laravel, `=>` alignés).
+- Quand une convention n'est pas couverte ici, suivez le pattern le plus proche dans le code existant et signalez-le à l'utilisateur.
+
+## Comment contribuer
+
+Ce skill est versionné avec le code du SDK. Toute modification passe par une PR, comme pour du code.
+
+- **Éditer le bon fichier** : chaque fichier de `references/` couvre un thème. Modifiez celui qui est concerné plutôt que de dupliquer une règle.
+- **Résoudre un `🚧 TODO`** : remplacez le TODO par la règle définitive, dans le même fichier.
+- **Ajouter un domaine** (ex : les conventions des repositories ou des DTO) : créez son sous-dossier dans `references/` (ex : `references/code/`) et ajoutez ses fichiers dans ce SKILL.md, sinon ils risquent de ne jamais être lus.
+- **Changer le périmètre** : relisez et mettez à jour la `description` du frontmatter. C'est elle qui décide quand Claude consulte le skill.
