@@ -196,4 +196,28 @@ class OrigamiRestClientTest extends TestCase
 
         $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), HttpClientException::class);
     }
+
+    /**
+     * Each request helper of the client should send its http verb.
+     */
+    #[DataProvider('httpMethodProvider')]
+    public function test_http_method_case_1(string $method): void
+    {
+        $restClient = $this->mockGuestRestClientReturning($this->jsonResponse([]));
+
+        $restClient->{$method}('some_resource');
+
+        $this->assertLastApiRequestWas(strtoupper($method), 'some_resource');
+    }
+
+    public static function httpMethodProvider(): array
+    {
+        return [
+            'get'    => ['get'],
+            'post'   => ['post'],
+            'put'    => ['put'],
+            'patch'  => ['patch'],
+            'delete' => ['delete'],
+        ];
+    }
 }

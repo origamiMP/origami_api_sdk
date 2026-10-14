@@ -271,4 +271,23 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(SellerDto::class, $seller);
         $this->assertSame(42, $seller->users->first()->id);
     }
+
+    /**
+     * `POST sellers` should send both holiday dates without their time, in the format the API expects.
+     */
+    public function test_create_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockSellerApiData()]));
+        $paramBag = new CreateSellerRequestParamBag;
+        $paramBag->holidayDepartureDate = Carbon::parse('2024-07-01 08:00:00');
+        $paramBag->holidayReturnDate = Carbon::parse('2024-07-31 18:00:00');
+
+        (new OrigamiSellerDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestJsonWas([
+            'state'                  => 'VALIDATED',
+            'holiday_departure_date' => '2024-07-01',
+            'holiday_return_date'    => '2024-07-31',
+        ]);
+    }
 }

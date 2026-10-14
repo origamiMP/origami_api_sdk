@@ -39,6 +39,28 @@ public function test_roles_case_3(): void
 
 Here, the test only has two blocks (building, assertions), since building is the tested action.
 
+## Error cases of every DTO
+
+Every DTO must reject an invalid API response with **its own** « NotConstructable » exception (`SellerDtoNotConstructableException` for `SellerDto`…), so that the caller knows which part of the response is wrong. This is checked for every DTO at once by a guard test in `tests/Unit/Dtos/ApiResponseDtoTest.php`:
+
+- `test_not_constructable_case_1` builds each DTO listed in `notConstructableProvider()` from an invalid response, and checks the exception class and that its message starts with `[<DtoName>]`;
+- `test_not_constructable_case_2` checks that every DTO of `src/Dtos/` is listed in the provider: it fails as soon as a new DTO is forgotten.
+
+**When you create a DTO**, add its line to the provider: the DTO, its exception, and an invalid response. An empty response (`(object) []`) is enough for any DTO with a required field; for a DTO without any required field, give a value of the wrong type:
+
+```php
+public static function notConstructableProvider(): array
+{
+    return [
+        'CountryDto'         => [CountryDto::class, CountryDtoNotConstructableException::class, (object) []],
+        'FeatureFlagListDto' => [FeatureFlagListDto::class, FeatureFlagListDtoNotConstructableException::class, (object) ['some_flag' => 'yes']],
+        // ...
+    ];
+}
+```
+
+The provider only checks that the DTO rejects an invalid response with the right exception. **The error cases specific to a DTO** (a malformed include, an unexpected enum value, a missing key that matters…) go in its own test file, as in the `test_roles_case_3` example above.
+
 ## Guard tests of a convention
 
 When a test guards a convention rather than a precise behavior, the class has a docblock explaining the convention and what breaks if it is not followed:
@@ -52,7 +74,7 @@ When a test guards a convention rather than a precise behavior, the class has a 
 class SellerDtoTest extends TestCase
 ```
 
-This is the case of `ApiResponseDtoTest` (the keys of `toArray()` stay camelCase, checked with `assertArrayKeysAreCamelCase()`).
+This is the case of `ApiResponseDtoTest`: the keys of `toArray()` stay camelCase (checked with `assertArrayKeysAreCamelCase()`), and every DTO has its error case (see above).
 
 ## Shared behavior: going through a fixture
 

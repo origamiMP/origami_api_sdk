@@ -21,7 +21,8 @@ Read before writing or reviewing any test of the SDK. Each rule is detailed in t
 9. **No network nor mocking library**: a real REST client of the SDK runs against queued Guzzle responses (`TestsRestClient`).
 10. **A shared behavior is tested through a fixture** (`tests/Fixtures/`), not through a concrete class picked at random.
 11. **Every public method of a repository has at least one test**, plus one case per notable variation (dropped filter, empty response…). **Every method accepting includes also has an include test** (`include` query sent and include read, see `repositories.md`).
-12. **To finish**: `vendor/bin/phpunit` must pass, and so must `vendor/bin/pint --test`.
+12. **Every DTO has an error case**: an invalid API response must make it not constructable, with its own exception. A new DTO is added to `notConstructableProvider()` in `ApiResponseDtoTest` (a guard test fails otherwise), and its specific error cases go in its own test file (see `dtos-and-shared-behavior.md`).
+13. **To finish**: `vendor/bin/phpunit` must pass, and so must `vendor/bin/pint --test`.
 
 ## Writing readable test code
 
