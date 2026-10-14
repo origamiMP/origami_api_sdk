@@ -4,14 +4,14 @@ namespace Tests\TestUtils;
 
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoActionEnum;
-use OrigamiMp\OrigamiApiSdk\Helpers\Support\Integer;
+use Tests\TestCase;
 
 trait TestsUserGroupInvitationDtos
 {
     protected function mockUserGroupInvitationApiData(array $override = []): array
     {
         $baseData = [
-            'id'             => Integer::unique(),
+            'id'             => TestCase::unique(),
             'user_group_id'  => null,
             'email'          => 'john@doe.com',
             'status'         => UserGroupInvitationDtoStatusEnum::PENDING->value,
@@ -34,7 +34,7 @@ trait TestsUserGroupInvitationDtos
         $baseData = [
             'email'         => 'john@doe.com',
             'success'       => true,
-            'invitation_id' => Integer::unique(),
+            'invitation_id' => TestCase::unique(),
             'action'        => UserGroupInvitationResultDtoActionEnum::CREATED->value,
             'error'         => null,
         ];

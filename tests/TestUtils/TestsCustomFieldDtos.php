@@ -3,14 +3,14 @@
 namespace Tests\TestUtils;
 
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
-use OrigamiMp\OrigamiApiSdk\Helpers\Support\Integer;
+use Tests\TestCase;
 
 trait TestsCustomFieldDtos
 {
     protected function mockCustomFieldApiData(array $override = []): array
     {
         $baseData = [
-            'id'                    => Integer::unique(),
+            'id'                    => TestCase::unique(),
             'key'                   => 'delivery_time',
             'type'                  => CustomFieldDtoTypeEnum::INPUT->value,
             'model_type'            => 'seller',
@@ -18,7 +18,7 @@ trait TestsCustomFieldDtos
             'params'                => null,
             'private'               => false,
             'translations'          => ['data' => [
-                ['locale' => 'en', 'language_id' => Integer::unique(), 'name' => 'Delivery time', 'description' => null],
+                ['locale' => 'en', 'language_id' => TestCase::unique(), 'name' => 'Delivery time', 'description' => null],
             ]],
             'created_at' => '2024-05-12 16:12:56',
             'updated_at' => '2024-05-12 16:12:56',
@@ -30,9 +30,9 @@ trait TestsCustomFieldDtos
     protected function mockCustomFieldValueApiData(array $override = []): array
     {
         $baseData = [
-            'id'              => Integer::unique(),
+            'id'              => TestCase::unique(),
             'value'           => 'express',
-            'custom_field_id' => Integer::unique(),
+            'custom_field_id' => TestCase::unique(),
             'created_at'      => '2024-05-12 16:12:56',
             'updated_at'      => '2024-05-12 16:12:56',
         ];

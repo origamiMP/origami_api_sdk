@@ -3,14 +3,14 @@
 namespace Tests\TestUtils;
 
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
-use OrigamiMp\OrigamiApiSdk\Helpers\Support\Integer;
+use Tests\TestCase;
 
 trait TestsUserDtos
 {
     protected function mockUserApiData(array $override = []): array
     {
         $baseData = [
-            'id'                            => Integer::unique(),
+            'id'                            => TestCase::unique(),
             'firstname'                     => 'John',
             'lastname'                      => 'Doe',
             'name'                          => 'John Doe',

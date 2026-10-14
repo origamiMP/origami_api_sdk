@@ -31,6 +31,23 @@ abstract class TestCase extends BaseTestCase
         TestsUserDtos,
         TestsUserGroupInvitationDtos;
 
+    private static int $uniqueCounter = 0;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        self::$uniqueCounter = 0;
+    }
+
+    /**
+     * Returns an incrementing integer, reset before each test so generated ids are deterministic.
+     */
+    public static function unique(): int
+    {
+        return ++self::$uniqueCounter;
+    }
+
     /**
      * Builds the "pagination" part of a paginated Origami API list response's "meta" field, single-page.
      */

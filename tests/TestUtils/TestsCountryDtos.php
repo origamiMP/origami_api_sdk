@@ -2,14 +2,14 @@
 
 namespace Tests\TestUtils;
 
-use OrigamiMp\OrigamiApiSdk\Helpers\Support\Integer;
+use Tests\TestCase;
 
 trait TestsCountryDtos
 {
     protected function mockCountryApiData(array $override = []): array
     {
         $baseData = [
-            'id'    => Integer::unique(),
+            'id'    => TestCase::unique(),
             'name'  => 'France',
             'iso_2' => 'FR',
         ];

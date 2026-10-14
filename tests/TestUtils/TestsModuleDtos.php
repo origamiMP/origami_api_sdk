@@ -2,14 +2,14 @@
 
 namespace Tests\TestUtils;
 
-use OrigamiMp\OrigamiApiSdk\Helpers\Support\Integer;
+use Tests\TestCase;
 
 trait TestsModuleDtos
 {
     protected function mockModuleApiData(array $override = []): array
     {
         $baseData = [
-            'id'              => Integer::unique(),
+            'id'              => TestCase::unique(),
             'name'            => 'payment',
             'current_version' => '1.0.0',
             // Associative (not a list) : encoded as a JSON object, so it decodes back into a stdClass

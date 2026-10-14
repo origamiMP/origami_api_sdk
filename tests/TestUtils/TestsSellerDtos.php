@@ -6,16 +6,16 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoTypeEnum;
-use OrigamiMp\OrigamiApiSdk\Helpers\Support\Integer;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
+use Tests\TestCase;
 
 trait TestsSellerDtos
 {
     protected function mockSellerApiData(array $override = []): array
     {
         $baseData = [
-            'id'                       => Integer::unique(),
-            'user_group_parent_id'     => Integer::unique(),
+            'id'                       => TestCase::unique(),
+            'user_group_parent_id'     => TestCase::unique(),
             'firstname'                => 'John',
             'lastname'                 => 'Doe',
             'name'                     => 'John Doe',
@@ -45,7 +45,7 @@ trait TestsSellerDtos
             'mangopay_sca_status'      => null,
             'seller_type'              => SellerDtoTypeEnum::MARKETPLACE->value,
             'state'                    => SellerDtoStateEnum::VALIDATED->value,
-            'default_tax_id'           => Integer::unique(),
+            'default_tax_id'           => TestCase::unique(),
             'fees_profile_id'          => null,
             'seller_fees_profile_id'   => null,
             'customer_fees_profile_id' => null,
@@ -75,8 +75,8 @@ trait TestsSellerDtos
     protected function mockSellerBankAccountApiData(array $override = []): array
     {
         $baseData = [
-            'id'                   => Integer::unique(),
-            'user_group_id'        => Integer::unique(),
+            'id'                   => TestCase::unique(),
+            'user_group_id'        => TestCase::unique(),
             'bank_name'            => 'Bank of Origami',
             'owner_name'           => 'John Doe',
             'owner_address'        => '10 rue de Rivoli, 75001 Paris',
@@ -93,9 +93,9 @@ trait TestsSellerDtos
     protected function mockSellerDocumentApiData(array $override = []): array
     {
         $baseData = [
-            'id'               => Integer::unique(),
-            'seller_id'        => Integer::unique(),
-            'document_type_id' => Integer::unique(),
+            'id'               => TestCase::unique(),
+            'seller_id'        => TestCase::unique(),
+            'document_type_id' => TestCase::unique(),
             'name'             => 'ID card',
             'validate'         => false,
             'url'              => 'https://example.com/document.pdf',
@@ -109,7 +109,7 @@ trait TestsSellerDtos
     protected function mockDocumentTypeApiData(array $override = []): array
     {
         $baseData = [
-            'id'           => Integer::unique(),
+            'id'           => TestCase::unique(),
             'type'         => 'identity',
             'mandatory_on' => 'seller',
             'format'       => 'pdf',
