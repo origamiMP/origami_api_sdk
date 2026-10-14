@@ -15,6 +15,7 @@ use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitat
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\CheckPendingUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationHistoryRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationsRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ResendUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationsRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ValidateUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\User\OrigamiUserGroupInvitationDataApiRepository;
@@ -240,5 +241,27 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(UserGroupInvitationListDto::class, $invitations);
         $this->assertInstanceOf(UserGroupDto::class, $invitations->data->first()->userGroup);
         $this->assertSame(42, $invitations->data->first()->userGroup->id);
+    }
+
+    /**
+     * `POST users/groups/invitations/{id}/resend` should send the includes available on an invitation as query,
+     * without any body, and read the included user group.
+     */
+    public function test_resend_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserGroupInvitationApiData([
+            'user_group' => ['data' => $this->mockUserGroupApiData(['id' => 42])],
+        ])]));
+        $paramBag = new ResendUserGroupInvitationRequestParamBag;
+        $paramBag->setIncludes(['user_group', 'unknown']);
+
+        $invitation = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->resend(1, $paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'users/groups/invitations/1/resend');
+        $this->assertLastApiRequestQueryWas(['include' => ['user_group']]);
+        $this->assertLastApiRequestHadNoBody();
+        $this->assertInstanceOf(UserGroupInvitationDto::class, $invitation);
+        $this->assertInstanceOf(UserGroupDto::class, $invitation->userGroup);
+        $this->assertSame(42, $invitation->userGroup->id);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Tests\Unit\Repositories\Api\Data\CustomField;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldValueDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldValueListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\CustomField\ListCustomFieldRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\CustomField\ListCustomFieldValueRequestParamBag;
@@ -55,5 +57,47 @@ class OrigamiCustomFieldDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestQueryWas(['search' => 's']);
         $this->assertInstanceOf(CustomFieldValueListDto::class, $values);
         $this->assertSame(['express', 'standard'], $values->data->pluck('value')->all());
+    }
+
+    /**
+     * `GET custom_fields` should send the includes available on a custom field as query, and read the included values
+     * of each custom field.
+     */
+    public function test_list_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
+            $this->mockCustomFieldApiData(['values' => ['data' => [$this->mockCustomFieldValueApiData(['id' => 42])]]]),
+        ])));
+        $paramBag = new ListCustomFieldRequestParamBag;
+        $paramBag->setIncludes(['values', 'translations', 'group', 'unknown']);
+
+        $customFields = (new OrigamiCustomFieldDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'custom_fields');
+        $this->assertLastApiRequestQueryWas(['page' => '1', 'item_per_page' => '20', 'include' => ['values', 'translations']]);
+        $this->assertInstanceOf(CustomFieldListDto::class, $customFields);
+        $this->assertInstanceOf(CustomFieldValueDto::class, $customFields->data->first()->values->first());
+        $this->assertSame(42, $customFields->data->first()->values->first()->id);
+    }
+
+    /**
+     * `GET custom_fields/{id}/values` should send the includes available on a custom field value as query, and read
+     * the included custom field of each value.
+     */
+    public function test_get_values_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [
+            $this->mockCustomFieldValueApiData(['custom_field' => ['data' => $this->mockCustomFieldApiData(['id' => 42])]]),
+        ]]));
+        $paramBag = new ListCustomFieldValueRequestParamBag;
+        $paramBag->setIncludes(['custom_field', 'translations', 'unknown']);
+
+        $values = (new OrigamiCustomFieldDataApiRepository($restClient))->getValues(12, $paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'custom_fields/12/values');
+        $this->assertLastApiRequestQueryWas(['include' => ['custom_field']]);
+        $this->assertInstanceOf(CustomFieldValueListDto::class, $values);
+        $this->assertInstanceOf(CustomFieldDto::class, $values->data->first()->customField);
+        $this->assertSame(42, $values->data->first()->customField->id);
     }
 }

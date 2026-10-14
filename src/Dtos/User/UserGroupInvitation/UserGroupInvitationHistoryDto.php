@@ -4,7 +4,6 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
@@ -20,9 +19,7 @@ class UserGroupInvitationHistoryDto extends ApiResponseDto
 
     public static function getAvailableIncludes(): array
     {
-        return [
-            'user_group' => UserGroupDto::class,
-        ];
+        return UserGroupInvitationDto::getAvailableIncludes();
     }
 
     protected function getDefaultDataStructureToProperties(): array

@@ -2,11 +2,16 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax;
 
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
+use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class CreateTaxRequestParamBag extends RequestParamBag
+class CreateTaxRequestParamBag extends RequestParamBag implements HasIncludesContract
 {
+    use HasIncludes;
+
     public TaxDtoTypeEnum $type;
 
     public float $value;
@@ -28,9 +33,14 @@ class CreateTaxRequestParamBag extends RequestParamBag
         ];
     }
 
+    protected function getQueryRequestParamsList(): array
+    {
+        return $this->getIncludeParamsList();
+    }
+
     protected function validationRulesForProperties(): array
     {
-        return [
+        $rules = [
             'type'                       => ['required', 'string'],
             'value'                      => ['required', 'numeric'],
             'is_default'                 => ['boolean'],
@@ -38,5 +48,15 @@ class CreateTaxRequestParamBag extends RequestParamBag
             'translations.*.language_id' => ['required', 'integer'],
             'translations.*.name'        => ['required', 'string'],
         ];
+
+        return array_merge(
+            $rules,
+            $this->getIncludeValidationRules(),
+        );
+    }
+
+    protected static function getRequestMainDto(): string
+    {
+        return TaxDto::class;
     }
 }

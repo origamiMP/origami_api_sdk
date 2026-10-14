@@ -3,17 +3,19 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\CustomField;
 
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFiltersContract, HasPaginationContract, HasSearchContract
+class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
 {
-    use HasFilters, HasPagination, HasSearch;
+    use HasFilters, HasIncludes, HasPagination, HasSearch;
 
     protected static function getAdditionalAvailableFilters(): array
     {
@@ -29,6 +31,7 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
             $this->getFiltersParamsList(),
             $this->getPaginationParamsList(),
             $this->getSearchParamsList(),
+            $this->getIncludeParamsList(),
         );
     }
 
@@ -38,6 +41,7 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
             $this->getFiltersValidationRules(),
             $this->getPaginationValidationRules(),
             $this->getSearchValidationRules(),
+            $this->getIncludeValidationRules(),
         );
     }
 

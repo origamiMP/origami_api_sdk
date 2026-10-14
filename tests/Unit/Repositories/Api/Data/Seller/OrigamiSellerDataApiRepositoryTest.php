@@ -3,9 +3,14 @@
 namespace Tests\Unit\Repositories\Api\Data\Seller;
 
 use Carbon\Carbon;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerLegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupLegalInformationDtoLegalTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerLegalInformationParamBagLegalTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagTypeEnum;
@@ -13,6 +18,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerAddre
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerTranslationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSellerRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\GetSellerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\ListSellerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller\OrigamiSellerDataApiRepository;
 use Tests\TestCase;
@@ -184,5 +190,85 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('POST', 'sellers/42/deactivate');
         $this->assertLastApiRequestHadNoBody();
+    }
+
+    /**
+     * `GET sellers` should send the includes available on a seller as query (the commented ones being dropped), and
+     * read the included bank accounts and required documents of each seller.
+     */
+    public function test_list_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
+            $this->mockSellerApiData([
+                'bank_accounts'      => ['data' => [$this->mockSellerBankAccountApiData(['id' => 42])]],
+                'required_documents' => ['data' => [$this->mockDocumentTypeApiData(['id' => 43])]],
+            ]),
+        ])));
+        $paramBag = new ListSellerRequestParamBag;
+        $paramBag->setIncludes(['bank_accounts', 'required_documents', 'warehouses', 'unknown']);
+
+        $sellers = (new OrigamiSellerDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'sellers');
+        $this->assertLastApiRequestQueryWas([
+            'page'          => '1',
+            'item_per_page' => '20',
+            'include'       => ['bank_accounts', 'required_documents'],
+        ]);
+        $this->assertInstanceOf(SellerListDto::class, $sellers);
+
+        $seller = $sellers->data->first();
+        $this->assertInstanceOf(SellerBankAccountDto::class, $seller->bankAccounts->first());
+        $this->assertSame(42, $seller->bankAccounts->first()->id);
+        $this->assertInstanceOf(DocumentTypeDto::class, $seller->requiredDocuments->first());
+        $this->assertSame(43, $seller->requiredDocuments->first()->id);
+    }
+
+    /**
+     * `GET sellers/{id}` should send the includes available on a seller as query, and read the included documents,
+     * default tax and users.
+     */
+    public function test_get_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockSellerApiData([
+            'documents'   => ['data' => [$this->mockSellerDocumentApiData(['id' => 42])]],
+            'default_tax' => ['data' => $this->mockTaxApiData(['id' => 43])],
+            'users'       => ['data' => [$this->mockUserApiData(['id' => 44])]],
+        ])]));
+        $paramBag = new GetSellerRequestParamBag;
+        $paramBag->setIncludes(['documents', 'default_tax', 'users', 'reviews']);
+
+        $seller = (new OrigamiSellerDataApiRepository($restClient))->get(1, $paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'sellers/1');
+        $this->assertLastApiRequestQueryWas(['include' => ['documents', 'default_tax', 'users']]);
+        $this->assertInstanceOf(SellerDto::class, $seller);
+        $this->assertInstanceOf(SellerDocumentDto::class, $seller->documents->first());
+        $this->assertSame(42, $seller->documents->first()->id);
+        $this->assertInstanceOf(TaxDto::class, $seller->defaultTax);
+        $this->assertSame(43, $seller->defaultTax->id);
+        $this->assertInstanceOf(UserDto::class, $seller->users->first());
+        $this->assertSame(44, $seller->users->first()->id);
+    }
+
+    /**
+     * `POST sellers` should send the includes available on a seller as query, along with the seller as JSON, and read
+     * the included users of the created seller.
+     */
+    public function test_create_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockSellerApiData([
+            'users' => ['data' => [$this->mockUserApiData(['id' => 42])]],
+        ])]));
+        $paramBag = new CreateSellerRequestParamBag;
+        $paramBag->email = 'john@doe.com';
+        $paramBag->setIncludes(['users', 'unknown']);
+
+        $seller = (new OrigamiSellerDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'sellers');
+        $this->assertLastApiRequestQueryWas(['include' => ['users']]);
+        $this->assertInstanceOf(SellerDto::class, $seller);
+        $this->assertSame(42, $seller->users->first()->id);
     }
 }

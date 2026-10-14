@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories\Api\Data\Seller;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSellerDocumentRequestParamBag;
@@ -57,5 +58,29 @@ class OrigamiSellerDocumentDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(SellerDocumentDto::class, $document);
         $this->assertSame(42, $document->id);
         $this->assertSame('id_card.pdf', $document->name);
+    }
+
+    /**
+     * `POST sellers/documents` should send the includes available on a document as query (the commented ones being
+     * dropped), along with the document as JSON, and read the included document type.
+     */
+    public function test_create_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockSellerDocumentApiData([
+            'document_type' => ['data' => $this->mockDocumentTypeApiData(['id' => 42])],
+        ])]));
+        $paramBag = new CreateSellerDocumentRequestParamBag;
+        $paramBag->content = 'YmFzZTY0';
+        $paramBag->documentTypeId = 42;
+        $paramBag->name = 'id_card.pdf';
+        $paramBag->setIncludes(['document_type', 'payment_psp_documents']);
+
+        $document = (new OrigamiSellerDocumentDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'sellers/documents');
+        $this->assertLastApiRequestQueryWas(['include' => ['document_type']]);
+        $this->assertInstanceOf(SellerDocumentDto::class, $document);
+        $this->assertInstanceOf(DocumentTypeDto::class, $document->documentType);
+        $this->assertSame(42, $document->documentType->id);
     }
 }

@@ -34,11 +34,20 @@ class RoleDto extends ApiResponseDto
      */
     public Collection $permissions;
 
+    /**
+     * Users having this Role.
+     *
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var UserDto[]|Collection
+     */
+    public Collection $users;
+
     public static function getAvailableIncludes(): array
     {
         return [
             'permissions' => RolePermissionDto::class,
-            // 'users',
+            'users'       => UserDto::class,
         ];
     }
 
@@ -52,6 +61,7 @@ class RoleDto extends ApiResponseDto
             'text_color' => 'textColor',
 
             'permissions' => fn (object $permissions) => $this->permissions = $this->collectIncluded($permissions, RolePermissionDto::class),
+            'users'       => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
         return array_merge(

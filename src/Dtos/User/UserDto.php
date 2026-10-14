@@ -5,6 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
@@ -91,13 +92,22 @@ class UserDto extends ApiResponseDto
      */
     public Collection $roles;
 
+    /**
+     * Module linked to this User (see $moduleId).
+     *
+     * May be undefined if the corresponding data was not included, if this User has no module, or if the
+     * authenticated User is not allowed to see it (only roots, connectors and operators are).
+     */
+    public ModuleDto $module;
+
     public static function getAvailableIncludes(): array
     {
         return [
-            'user_groups' => UserGroupDto::class,
-            'roles'       => RoleDto::class,
+            'roles' => RoleDto::class,
             // 'user_group_users',
-            // 'module',
+            'user_groups' => UserGroupDto::class,
+            'module'      => ModuleDto::class,
+            // 'user_group_count',
             // 'user_reports_received',
         ];
     }
@@ -120,6 +130,7 @@ class UserDto extends ApiResponseDto
 
             'user_groups' => fn (object $userGroups) => $this->userGroups = $this->collectIncluded($userGroups, UserGroupDto::class),
             'roles'       => fn (object $roles) => $this->roles = $this->collectIncluded($roles, RoleDto::class),
+            'module'      => fn (object $module) => $this->module = $this->makeIncluded($module, ModuleDto::class),
         ];
 
         return array_merge(

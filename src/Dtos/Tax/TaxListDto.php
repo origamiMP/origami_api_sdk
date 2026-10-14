@@ -6,13 +6,21 @@ use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
 class TaxListDto extends ApiResponseDto
 {
+    use HasIncludes;
+
     /**
      * @var Collection|TaxDto[]
      */
     public Collection $data;
+
+    public static function getAvailableIncludes(): array
+    {
+        return TaxDto::getAvailableIncludes();
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

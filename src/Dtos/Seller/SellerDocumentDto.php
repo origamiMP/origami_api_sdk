@@ -24,11 +24,16 @@ class SellerDocumentDto extends ApiResponseDto
 
     public string $url;
 
+    /**
+     * May be undefined if the corresponding data was not included.
+     */
+    public DocumentTypeDto $documentType;
+
     public static function getAvailableIncludes(): array
     {
         return [
-            // document_type,
-            // payment_psp_documents,
+            'document_type' => DocumentTypeDto::class,
+            // 'payment_psp_documents',
         ];
     }
 
@@ -41,6 +46,8 @@ class SellerDocumentDto extends ApiResponseDto
             'name'             => 'name',
             'validate'         => fn ($value) => $this->validate = (bool) $value,
             'url'              => 'url',
+
+            'document_type' => fn (object $documentType) => $this->documentType = $this->makeIncluded($documentType, DocumentTypeDto::class),
         ];
 
         return array_merge(

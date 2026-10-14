@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories\Api\Data\User;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetCurrentUserRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\UpdateUserRequestParamBag;
@@ -60,5 +61,26 @@ class OrigamiUserDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('PATCH', 'users/42');
         $this->assertLastApiRequestJsonWas(['external_configuration' => '{"theme":"dark"}']);
+    }
+
+    /**
+     * `GET me` should send the includes available on a user as query (the commented ones being dropped), and read the
+     * included module.
+     */
+    public function test_get_current_authenticated_user_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData([
+            'module' => ['data' => $this->mockModuleApiData(['id' => 42])],
+        ])]));
+        $paramBag = new GetCurrentUserRequestParamBag;
+        $paramBag->setIncludes(['module', 'user_group_count']);
+
+        $user = (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'me');
+        $this->assertLastApiRequestQueryWas(['include' => ['module']]);
+        $this->assertInstanceOf(UserDto::class, $user);
+        $this->assertInstanceOf(ModuleDto::class, $user->module);
+        $this->assertSame(42, $user->module->id);
     }
 }
