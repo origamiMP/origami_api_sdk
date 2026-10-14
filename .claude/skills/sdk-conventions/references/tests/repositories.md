@@ -1,37 +1,37 @@
-# Tests — Repositories et clients REST
+# Tests — Repositories and REST clients
 
-Un test de repository vérifie les deux côtés de l'appel : **la requête HTTP que le SDK envoie** (verbe, chemin, query, body) et **le DTO qu'il construit** à partir de la réponse. Les deux sont du contrat public du SDK : une erreur sur l'un ou l'autre casse les applications qui l'utilisent.
+A repository test checks both sides of the call: **the HTTP request the SDK sends** (verb, path, query, body) and **the DTO it builds** from the response. Both are part of the public contract of the SDK: a mistake on either side breaks the applications using it.
 
-## Le faux client HTTP (`TestsRestClient`)
+## The fake HTTP client (`TestsRestClient`)
 
-Aucun test n'appelle le réseau et aucun n'utilise `createMock()` ou Mockery. On utilise un **vrai** client REST du SDK, dont le client Guzzle répond avec des réponses mises en file. Toute la logique du client (headers, préfixe `v1/`, gestion d'erreurs) s'exécute donc vraiment.
+No test calls the network and none uses `createMock()` or Mockery. A **real** REST client of the SDK is used, whose Guzzle client answers with queued responses. All the client logic (headers, `v1/` prefix, error handling) therefore really runs.
 
-| Helper | Rôle |
+| Helper | Role |
 |---|---|
-| `mockDataRestClientReturning(...$responses)` | Client authentifié (repositories `Data`) |
-| `mockGuestRestClientReturning(...$responses)` | Client public (repositories `Guest`) |
-| `mockOauthRestClientReturning(...$responses)` | Client Oauth (pas de préfixe `v1/`) |
-| `jsonResponse(array $body, int $status = 200)` | Réponse JSON |
-| `emptyResponse(int $status = 204)` | Réponse sans body (actions qui ne renvoient rien) |
-| `new Response($status, [], $rawBody)` | Body brut (HTML, JSON invalide, `{}`…) |
-| un `\Throwable` à la place d'une réponse | Panne réseau (ex : `ConnectException`) |
-| `useMockedGuzzleClient($restClient, [$responses])` | Pour un client construit à la main (user agent personnalisé, contexte de user group…) |
+| `mockDataRestClientReturning(...$responses)` | Authenticated client (`Data` repositories) |
+| `mockGuestRestClientReturning(...$responses)` | Public client (`Guest` repositories) |
+| `mockOauthRestClientReturning(...$responses)` | Oauth client (no `v1/` prefix) |
+| `jsonResponse(array $body, int $status = 200)` | JSON response |
+| `emptyResponse(int $status = 204)` | Response without body (actions returning nothing) |
+| `new Response($status, [], $rawBody)` | Raw body (HTML, invalid JSON, `{}`…) |
+| a `\Throwable` instead of a response | Network failure (e.g. `ConnectException`) |
+| `useMockedGuzzleClient($restClient, [$responses])` | For a client built by hand (custom user agent, user group context…) |
 
-Choisissez le client qui correspond au repository : un repository `Data` reçoit `mockDataRestClientReturning()`, un repository `Guest` `mockGuestRestClientReturning()`.
+Pick the client matching the repository: a `Data` repository gets `mockDataRestClientReturning()`, a `Guest` repository `mockGuestRestClientReturning()`.
 
-## Ce qu'il faut vérifier, dans cet ordre
+## What to check, in this order
 
-1. **La requête** : `assertLastApiRequestWas('GET', 'sellers/42')`. Le chemin s'écrit sans `v1/` ; pour Oauth, on passe `prefix: ''`.
-2. **Ce qu'elle transporte** :
-   - `assertLastApiRequestQueryWas([...])` pour la query. Les valeurs y sont **toujours des chaînes** (`'page' => '2'`, un booléen `true` devient `'1'`).
-   - `assertLastApiRequestJsonWas([...])` pour le body JSON.
-   - `assertLastApiRequestHadNoBody()` quand la requête ne doit rien envoyer (`delete`, `activate`, `duplicate`…).
-3. **Le DTO** : `assertInstanceOf(XxxDto::class, $result)`.
-4. **Ses valeurs** : au minimum l'id (ou la clé qui identifie l'objet), puis les valeurs que le cas met en jeu (enums, dates, objets imbriqués…).
+1. **The request**: `assertLastApiRequestWas('GET', 'sellers/42')`. The path is written without `v1/`; for Oauth, pass `prefix: ''`.
+2. **What it carries**:
+   - `assertLastApiRequestQueryWas([...])` for the query. Its values are **always strings** (`'page' => '2'`, a `true` boolean becomes `'1'`).
+   - `assertLastApiRequestJsonWas([...])` for the JSON body.
+   - `assertLastApiRequestHadNoBody()` when the request must send nothing (`delete`, `activate`, `duplicate`…).
+3. **The DTO**: `assertInstanceOf(XxxDto::class, $result)`.
+4. **Its values**: at least the id (or the key identifying the object), then the values the case involves (enums, dates, nested objects…).
 
-### Le body attendu s'écrit avec les valeurs réelles de l'API
+### The expected body is written with the actual API values
 
-Le JSON attendu documente le format envoyé à l'API : écrivez les clés en snake_case et les **valeurs littérales**, pas les enums ni les objets du SDK.
+The expected JSON documents the format sent to the API: write the keys in snake_case and **literal values**, not the SDK enums or objects.
 
 ```php
 $paramBag->sellerType = CreateSellerParamBagTypeEnum::MARKETPLACE;
@@ -44,32 +44,32 @@ $this->assertLastApiRequestJsonWas([
 ]);
 ```
 
-Une propriété de param bag non définie n'est pas envoyée. Si un cas teste ça (mise à jour partielle, nœud sans `id` à créer), dites-le dans le docblock et vérifiez que la clé est absente du JSON attendu.
+An unset param bag property is not sent. If a case tests it (partial update, node without `id` to create), say so in the docblock and check that the key is missing from the expected JSON.
 
-## Couverture attendue
+## Expected coverage
 
-- **Au moins un test par méthode publique** du repository.
-- **Un cas en plus par variation notable**, par exemple :
-  - un filtre non disponible sur l'endpoint, qui ne doit pas être envoyé ;
-  - un paramètre optionnel non défini (`with_count` absent → `fieldsCount` à `null`) ;
-  - une réponse vide ou une forme particulière de réponse (`[]` pour une map vide, objet sans clé `data`) ;
-  - les valeurs par défaut du param bag face à celles qu'on définit (client id et secret Oauth).
-- **Un test d'include par méthode qui en accepte** (voir ci-dessous).
-- Inutile de retester dans chaque repository ce que les tests du client ou de `RestApiRepository` couvrent déjà (codes HTTP d'erreur, réponse illisible).
+- **At least one test per public method** of the repository.
+- **One more case per notable variation**, for instance:
+  - a filter not available on the endpoint, which must not be sent;
+  - an unset optional parameter (no `with_count` → `fieldsCount` is `null`);
+  - an empty response or a particular response shape (`[]` for an empty map, object without `data` key);
+  - the param bag defaults versus the values set (Oauth client id and secret).
+- **One include test per method accepting some** (see below).
+- No need to retest in each repository what the tests of the client or of `RestApiRepository` already cover (HTTP error codes, unreadable response).
 
-### Les includes : à vérifier pour chaque méthode qui en accepte
+### Includes: check every method accepting some
 
-Les includes sont facilement oubliés, parce que le premier test d'une méthode ne les utilise pas. Ils relient pourtant trois pièces qui peuvent casser séparément : le param bag (qui filtre et envoie les includes), le DTO renvoyé (qui déclare ceux qui sont disponibles) et sa lecture de la réponse.
+Includes are easily forgotten, because the first test of a method does not use them. Yet they link three pieces that can break separately: the param bag (filtering and sending the includes), the returned DTO (declaring the available ones) and its reading of the response.
 
-**Quand une méthode en accepte-t-elle ?** Son param bag utilise le trait `HasIncludes`, **et** le DTO renvoyé par son `getRequestMainDto()` déclare au moins un include dans `getAvailableIncludes()`. Si cette liste est vide (ou entièrement commentée), `setIncludes()` retire tout : il n'y a rien à tester tant qu'un include n'y est pas ajouté.
+**When does a method accept some?** Its param bag uses the `HasIncludes` trait, **and** the DTO returned by its `getRequestMainDto()` declares at least one include in `getAvailableIncludes()`. If this list is empty (or fully commented), `setIncludes()` drops everything: there is nothing to test until an include is added.
 
-**Vérifiez aussi l'inverse** : d'après `references/code/param-bags.md`, toute requête de l'API qui propose un include doit pouvoir le recevoir depuis le SDK. Si l'API propose des includes pour l'endpoint testé (transformer ou contrôleur) mais que la méthode ne prend pas de param bag avec `HasIncludes`, ou que le DTO ne déclare pas l'un de ces includes (même en commentaire), le code n'est pas conforme : signalez-le à l'utilisateur plutôt que d'écrire un test qui fige ce manque.
+**Also check the other way around**: according to `references/code/param-bags.md`, every API request offering an include must be able to receive it from the SDK. If the API offers includes for the tested endpoint (transformer or controller) but the method takes no param bag with `HasIncludes`, or the DTO does not declare one of these includes (even as a comment), the code is not compliant: tell the user rather than writing a test that freezes the gap.
 
-**Le test ajoute un cas à la méthode** (`test_<méthode>_case_<n>`), qui :
-1. demande les includes disponibles **plus un include inconnu** avec `setIncludes()` ;
-2. mocke une réponse qui contient l'include, enveloppé comme le fait Fractal (`['data' => …]`) ;
-3. vérifie que la query `include` ne contient que les includes disponibles ;
-4. vérifie que l'include est lu : type du DTO inclus et son id.
+**The test adds a case to the method** (`test_<method>_case_<n>`), which:
+1. requests the available includes **plus an unknown include** with `setIncludes()`;
+2. mocks a response containing the include, wrapped as Fractal does (`['data' => …]`);
+3. checks that the `include` query only holds the available includes;
+4. checks that the include is read: type of the included DTO and its id.
 
 ```php
 /**
@@ -95,13 +95,13 @@ public function test_get_history_case_2(): void
 }
 ```
 
-Le filtrage lui-même (doublons, includes imbriqués, DTO sans include) est testé une fois pour toutes dans `Traits/ParamBags/HasIncludesTest`. Le test du repository vérifie seulement que la méthode est bien reliée au bon DTO.
+The filtering itself (duplicates, nested includes, DTO without include) is tested once and for all in `Traits/ParamBags/HasIncludesTest`. The repository test only checks that the method is linked to the right DTO.
 
-Quand un include est ajouté (ou décommenté) dans le `getAvailableIncludes()` d'un DTO, ajoutez le test d'include de chaque méthode qui renvoie ce DTO.
+When an include is added (or uncommented) in the `getAvailableIncludes()` of a DTO, add the include test of every method returning this DTO.
 
-## Exemples par type d'endpoint
+## Examples per endpoint type
 
-### Liste paginée avec filtres
+### Paginated list with filters
 
 ```php
 /**
@@ -133,13 +133,13 @@ public function test_list_case_1(): void
 }
 ```
 
-Une liste non paginée se mocke avec `['data' => [...]]`, et le docblock le dit : « answers a non-paginated list: each of its items should be read as a module ».
+A non-paginated list is mocked with `['data' => [...]]`, and the docblock says so: « answers a non-paginated list: each of its items should be read as a module ».
 
-### Lecture d'un élément (clé `data`)
+### Reading an item (`data` key)
 
-Voir l'exemple de `test_get_case_1` dans `writing-tests.md`. Le docblock précise « read … from the `data` key of the response ».
+See the `test_get_case_1` example in `writing-tests.md`. The docblock specifies « read … from the `data` key of the response ».
 
-### Création (body JSON + réponse)
+### Creation (JSON body + response)
 
 ```php
 /**
@@ -178,9 +178,9 @@ public function test_create_case_1(): void
 }
 ```
 
-Pour un arbre de param bags volumineux, une ligne vide sépare la construction de chaque nœud.
+For a large tree of param bags, a blank line separates the building of each node.
 
-### Mise à jour ou action sans réponse (204)
+### Update or action without response (204)
 
 ```php
 /**
@@ -209,15 +209,15 @@ public function test_delete_case_1(): void
 }
 ```
 
-## Tests des clients REST
+## REST client tests
 
-Le comportement commun à tous les clients (headers, préfixe d'URL, conversion des erreurs en exceptions) est testé dans `OrigamiRestClientTest`, à travers le client Guest. Les tests propres à un client (header `Authorization` et `context` du client Data, absence de préfixe du client Oauth) sont dans le fichier de ce client. On y appelle directement `$restClient->get('some_resource')`, et on lit la requête avec `$this->lastApiRequest()` :
+The behavior shared by every client (headers, URL prefix, errors turned into exceptions) is tested in `OrigamiRestClientTest`, through the Guest client. Tests specific to one client (`Authorization` and `context` headers of the Data client, no prefix for the Oauth client) are in the file of this client. They directly call `$restClient->get('some_resource')`, and read the request with `$this->lastApiRequest()`:
 
 ```php
 $this->assertSame('Bearer some-access-token', $this->lastApiRequest()->getHeaderLine('Authorization'));
 ```
 
-Les réponses d'erreur de l'API se construisent avec `TestsErrorDtos` :
+API error responses are built with `TestsErrorDtos`:
 
 ```php
 $restClient = $this->mockGuestRestClientReturning($this->mockApiErrorsResponse(

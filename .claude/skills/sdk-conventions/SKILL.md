@@ -1,58 +1,58 @@
 ---
 name: sdk-conventions
-description: "Conventions de code du SDK PHP de l'API Origami (origami_api_sdk / origami-mp/origami-api-sdk). Documente les tests unitaires (PHPUnit) : arborescence et nommage, structure d'un test, assertions, données mockées (traits Tests<Domaine>Dtos), faux client HTTP (TestsRestClient), exceptions (assertThatExceptionWasThrown), fixtures et data providers ; et, pour le code, la gestion des includes dans les param bags et les DTO, et les param bags optionnels des méthodes de repository (le reste du code n'est pas encore documenté). À utiliser dès qu'on travaille sur ce SDK : quand on crée ou modifie un param bag, une méthode de repository ou un DTO, et en particulier dès qu'on écrit, complète, corrige ou relit un test — tests d'un repository (Data, Guest, Oauth), d'un DTO, d'un client REST, d'un trait ou d'un comportement partagé — même si l'utilisateur dit seulement « ajoute les TUs », « teste ce repo » ou « couvre ce code », et avant d'ajouter un helper ou des données de test dans tests/TestUtils."
+description: "Code conventions of the Origami API PHP SDK (origami_api_sdk / origami-mp/origami-api-sdk). Documents unit tests (PHPUnit): file layout and naming, test structure, assertions, mock data (Tests<Domain>Dtos traits), fake HTTP client (TestsRestClient), exceptions (assertThatExceptionWasThrown), fixtures and data providers; and, for the code, include handling in param bags and DTOs, and optional param bags of repository methods (the rest of the code is not documented yet). Use it whenever working on this SDK: when creating or changing a param bag, a repository method or a DTO, and above all whenever writing, completing, fixing or reviewing a test — tests of a repository (Data, Guest, Oauth), a DTO, a REST client, a trait or a shared behavior — even if the user only says « ajoute les TUs », « add tests », « test this repo » or « cover this code », and before adding a helper or test data in tests/TestUtils."
 ---
 
-# Conventions — SDK de l'API Origami
+# Conventions — Origami API SDK
 
-## Contexte du projet
+## Project context
 
-- SDK PHP (`origami-mp/origami-api-sdk`) qui appelle l'API centrale Origami. Il est consommé notamment par origami_admin_v2.
-- Organisation du code : des **repositories** (un appel HTTP en entrée, un DTO en sortie) répartis entre `Data` (authentifié), `Guest` (public) et `Oauth`, des **param bags** (les paramètres envoyés), des **DTO** (lecture et validation de la réponse de l'API), des **clients REST**, et des **traits** qui portent un comportement commun.
-- Le code de l'API (pour vérifier le format réel de ses réponses) est dans le repo voisin `origami_api`.
+- PHP SDK (`origami-mp/origami-api-sdk`) calling the central Origami API. It is used by origami_admin_v2, among others.
+- Code organization: **repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **REST clients**, and **traits** carrying shared behavior.
+- The API code (to check the actual format of its responses) lives in the sibling repo `origami_api`.
 
-## Comment utiliser ce skill
+## How to use this skill
 
-Le skill est découpé par domaine, chacun dans son sous-dossier de `references/`.
+The skill is split by domain, each in its own subfolder of `references/`.
 
-### Tests (documenté)
+### Tests (documented)
 
-Commencez toujours par `references/tests/README.md` (les règles essentielles), puis lisez le fichier du type de test que vous écrivez :
+Always start with `references/tests/README.md` (the essential rules), then read the file matching the kind of test you are writing:
 
-| Fichier | À consulter quand… |
+| File | Read it when… |
 |---|---|
-| `references/tests/README.md` | **Toujours, en premier** : ce qu'on teste, les règles essentielles |
-| `references/tests/structure.md` | Vous créez un fichier de test, une fixture ou un trait de helpers : où le ranger, comment le nommer, comment l'enregistrer dans `TestCase` |
-| `references/tests/writing-tests.md` | Vous écrivez n'importe quel test : nommage des méthodes, docblocks, découpage du corps, assertions, exceptions, data providers, valeurs utilisées |
-| `references/tests/repositories.md` | Vous testez un repository (`Repositories/Api/...`) ou un client REST : faux client HTTP, ce qu'il faut vérifier, couverture attendue, exemples par type d'endpoint |
-| `references/tests/mock-data.md` | Vous avez besoin de données de réponse de l'API ou d'un DTO tout fait : traits `Tests<Domaine>Dtos`, méthodes `mock…ApiData()` et `mock…Dto()`, format réel de l'API |
-| `references/tests/dtos-and-shared-behavior.md` | Vous testez un DTO, un trait, une classe abstraite ou une convention transverse : fixtures, tests de garde |
+| `references/tests/README.md` | **Always, first**: what we test, the essential rules |
+| `references/tests/structure.md` | You create a test file, a fixture or a helper trait: where to put it, how to name it, how to register it in `TestCase` |
+| `references/tests/writing-tests.md` | You write any test: method naming, docblocks, test body layout, assertions, exceptions, data providers, values used |
+| `references/tests/repositories.md` | You test a repository (`Repositories/Api/...`) or a REST client: fake HTTP client, what to check, expected coverage, examples per endpoint type |
+| `references/tests/mock-data.md` | You need API response data or a ready-made DTO: `Tests<Domain>Dtos` traits, `mock…ApiData()` and `mock…Dto()` methods, actual API format |
+| `references/tests/dtos-and-shared-behavior.md` | You test a DTO, a trait, an abstract class or a cross-cutting convention: fixtures, guard tests |
 
-En cas de doute, lisez plusieurs fichiers : ils sont courts et se complètent. Par exemple, un test de repository touche `repositories.md`, `writing-tests.md` et `mock-data.md`.
+When in doubt, read several files: they are short and complement each other. For instance, a repository test involves `repositories.md`, `writing-tests.md` and `mock-data.md`.
 
-### Code du SDK (en cours de documentation)
+### SDK code (being documented)
 
-| Fichier | À consulter quand… |
+| File | Read it when… |
 |---|---|
-| `references/code/param-bags.md` | Vous créez ou modifiez un param bag, ou une méthode de repository qui appelle l'API : la règle des includes et sa portée (seul point documenté pour l'instant) |
-| `references/code/repositories.md` | Vous créez ou modifiez une méthode de repository : quand son param bag peut être optionnel (seul point documenté pour l'instant) |
-| `references/code/dtos.md` | Vous créez ou modifiez un DTO : déclaration des includes (y compris en commentaire), DTO de liste (seul point documenté pour l'instant) |
+| `references/code/param-bags.md` | You create or change a param bag, or a repository method calling the API: the include rule and its scope (only documented topic so far) |
+| `references/code/repositories.md` | You create or change a repository method: when its param bag can be optional (only documented topic so far) |
+| `references/code/dtos.md` | You create or change a DTO: declaring includes (commented ones included), list DTOs (only documented topic so far) |
 
-🚧 TODO — le reste des conventions du code (clients REST, exceptions, enums… et le reste des repositories, param bags et DTO) n'est pas encore écrit. En attendant :
-- n'inventez pas de convention ;
-- suivez le pattern le plus proche déjà présent dans `src/`, et signalez à l'utilisateur que le point n'est pas documenté.
+🚧 TODO — the rest of the code conventions (REST clients, exceptions, enums… and the rest of repositories, param bags and DTOs) is not written yet. In the meantime:
+- do not invent a convention;
+- follow the closest pattern already in `src/`, and tell the user the point is not documented.
 
-## Règles générales
+## General rules
 
-- Préférez les vérifications explicites (`is_null($x)`, `array_is_list($x)`) à une logique implicite justifiée par un commentaire.
-- Le style est vérifié par Pint (`pint.json`, preset Laravel, `=>` alignés).
-- Quand une convention n'est pas couverte ici, suivez le pattern le plus proche dans le code existant et signalez-le à l'utilisateur.
+- Prefer explicit checks (`is_null($x)`, `array_is_list($x)`) over implicit logic explained by a comment.
+- Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
+- When a convention is not covered here, follow the closest pattern in the existing code and tell the user.
 
-## Comment contribuer
+## How to contribute
 
-Ce skill est versionné avec le code du SDK. Toute modification passe par une PR, comme pour du code.
+This skill is versioned with the SDK code. Any change goes through a PR, like code.
 
-- **Éditer le bon fichier** : chaque fichier de `references/` couvre un thème. Modifiez celui qui est concerné plutôt que de dupliquer une règle.
-- **Résoudre un `🚧 TODO`** : remplacez le TODO par la règle définitive, dans le même fichier.
-- **Ajouter un fichier ou un domaine** : un nouveau type de code (ex : les enums) va dans `references/code/`, un domaine entièrement nouveau dans son propre sous-dossier de `references/`. Ajoutez chaque nouveau fichier dans les tables de ce SKILL.md, sinon il risque de ne jamais être lu.
-- **Changer le périmètre** : relisez et mettez à jour la `description` du frontmatter. C'est elle qui décide quand Claude consulte le skill.
+- **Edit the right file**: each file of `references/` covers one topic. Change the relevant one rather than duplicating a rule.
+- **Resolve a `🚧 TODO`**: replace the TODO with the final rule, in the same file.
+- **Add a file or a domain**: a new kind of code (e.g. enums) goes in `references/code/`, an entirely new domain in its own subfolder of `references/`. Add every new file to the tables of this SKILL.md, otherwise it may never be read.
+- **Change the scope**: reread and update the frontmatter `description`. It is what decides when Claude reads the skill.

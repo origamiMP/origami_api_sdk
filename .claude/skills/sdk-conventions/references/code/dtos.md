@@ -1,19 +1,19 @@
-# Code — DTO
+# Code — DTOs
 
-Un DTO lit et valide une réponse de l'API, et expose ses valeurs en propriétés typées.
+A DTO reads and validates an API response, and exposes its values as typed properties.
 
-🚧 TODO — le reste des conventions des DTO (nommage, structure des données, validation, exceptions, `toArray()`…) n'est pas encore écrit. En attendant, suivez le pattern le plus proche dans `src/Dtos/` et signalez à l'utilisateur que le point n'est pas documenté.
+🚧 TODO — the rest of the DTO conventions (naming, data structure, validation, exceptions, `toArray()`…) is not written yet. In the meantime, follow the closest pattern in `src/Dtos/` and tell the user the point is not documented.
 
 ## Includes
 
-Un DTO dont la ressource a des includes côté API utilise le trait `OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes` et les déclare dans `getAvailableIncludes()`. La règle qui oblige à les déclarer, et à pouvoir les demander depuis un param bag, est dans `param-bags.md`.
+A DTO whose resource has includes on the API side uses the `OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes` trait and declares them in `getAvailableIncludes()`. The rule requiring to declare them, and to be able to request them from a param bag, is in `param-bags.md`.
 
-### Déclarer les includes
+### Declaring includes
 
-`getAvailableIncludes()` liste **tous** les includes que l'API propose pour la ressource, y compris ceux par défaut et ceux qui sont réservés à certains rôles ou soumis à un feature flag :
+`getAvailableIncludes()` lists **all** the includes the API offers for the resource, including default ones and those restricted to some roles or behind a feature flag:
 
-- un include dont le DTO existe dans le SDK est associé à ce DTO ;
-- un include dont le DTO n'existe pas encore est laissé **en commentaire**, pour garder le lien avec l'API.
+- an include whose DTO exists in the SDK is mapped to this DTO;
+- an include whose DTO does not exist yet is left **as a comment**, to keep the link with the API.
 
 ```php
 public static function getAvailableIncludes(): array
@@ -27,13 +27,13 @@ public static function getAvailableIncludes(): array
 }
 ```
 
-Quand le DTO d'un include commenté est créé, on décommente la ligne en l'associant à ce DTO, et on lit l'include dans `getDefaultDataStructureToProperties()` (avec `collectIncluded()` ou `makeIncluded()`).
+When the DTO of a commented include is created, uncomment the line mapping it to this DTO, and read the include in `getDefaultDataStructureToProperties()` (with `collectIncluded()` or `makeIncluded()`).
 
-### DTO de liste : reprendre les includes de l'élément
+### List DTOs: reuse the includes of the item
 
-**Est une liste tout DTO dont la réponse est une collection d'éléments**, quel que soit son nom et qu'elle soit paginée ou non : `SellerListDto` (paginée), `ModuleListDto` (non paginée), mais aussi `UserGroupInvitationHistoryDto`, dont la propriété `$data` contient des `UserGroupInvitationDto`. Pour le savoir, regardez la réponse de l'API (une collection Fractal) et la propriété qui porte les éléments dans le DTO, pas son nom.
+**Any DTO whose response is a collection of items is a list**, whatever its name and whether it is paginated or not: `SellerListDto` (paginated), `ModuleListDto` (not paginated), but also `UserGroupInvitationHistoryDto`, whose `$data` property holds `UserGroupInvitationDto`s. To tell, look at the API response (a Fractal collection) and at the DTO property holding the items, not at its name.
 
-Un DTO de liste propose les mêmes includes que son élément : l'API applique les includes demandés à chaque élément de la liste. Plutôt que de recopier la liste, le DTO de liste appelle celle de son élément :
+A list DTO offers the same includes as its item: the API applies the requested includes to each item of the list. Rather than copying the list, the list DTO calls the one of its item:
 
 ```php
 class SellerListDto extends ApiResponseDto
@@ -49,4 +49,4 @@ class SellerListDto extends ApiResponseDto
 }
 ```
 
-Les deux listes restent ainsi identiques : un include ajouté (ou décommenté) dans l'élément est aussitôt disponible dans la liste. Une liste recopiée finit par diverger.
+Both lists thus stay identical: an include added (or uncommented) in the item is immediately available in the list. A copied list ends up diverging.

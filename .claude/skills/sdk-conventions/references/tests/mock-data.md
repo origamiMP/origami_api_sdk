@@ -1,15 +1,15 @@
-# Tests — Données mockées
+# Tests — Mock data
 
-Les données qui imitent les réponses de l'API sont centralisées dans les traits `tests/TestUtils/Tests<Domaine>Dtos.php`. Un test ne contient que les valeurs qu'il vérifie, ce qui le rend court et montre ce qui compte. Quand le format de l'API change, on ne corrige qu'un endroit.
+The data imitating API responses is centralized in the `tests/TestUtils/Tests<Domain>Dtos.php` traits. A test only holds the values it checks, which keeps it short and shows what matters. When the API format changes, only one place needs fixing.
 
-## Un trait par domaine
+## One trait per domain
 
-- Nom : `Tests<Domaine>Dtos` (`TestsSellerDtos`, `TestsFormDtos`, `TestsUserDtos`…), avec un domaine qui suit les dossiers de `src/Dtos/`.
-- Un domaine nouveau → un nouveau trait, enregistré dans `TestCase` (voir `structure.md`). Un DTO nouveau dans un domaine existant → une méthode de plus dans le trait de ce domaine.
+- Name: `Tests<Domain>Dtos` (`TestsSellerDtos`, `TestsFormDtos`, `TestsUserDtos`…), with a domain following the folders of `src/Dtos/`.
+- A new domain → a new trait, registered in `TestCase` (see `structure.md`). A new DTO in an existing domain → one more method in the trait of this domain.
 
-## `mock<Dto>ApiData()` : la réponse brute
+## `mock<Dto>ApiData()`: the raw response
 
-Une méthode par DTO, qui renvoie un tableau au format de la réponse de l'API (clés snake_case). Le test passe en override les seules valeurs qui l'intéressent :
+One method per DTO, returning an array in the API response format (snake_case keys). The test overrides only the values it cares about:
 
 ```php
 protected function mockTaxApiData(array $override = []): array
@@ -30,32 +30,32 @@ protected function mockTaxApiData(array $override = []): array
 }
 ```
 
-- Signature : `protected function mock<Dto>ApiData(array $override = []): array`, avec le nom du DTO sans le suffixe `Dto` (`mockSellerBankAccountApiData`, `mockFormFieldOptionApiData`).
-- Corps : `$baseData = [...]`, puis `return array_merge($baseData, $override);`.
-- **Toutes les clés que le DTO valide** (`required` ou `present`) sont présentes, pour que les données par défaut construisent un DTO valide. Les clés optionnelles (includes, `fields_count`…) sont absentes par défaut, et le test les ajoute par override.
-- **Ids** : `TestCase::unique()`, y compris pour les clés étrangères (`user_group_id`, `language_id`).
-- **Enums** : `XxxEnum::CASE->value`, pour que les données suivent si une valeur change.
-- **Dates** : `'2024-05-12 16:12:56'`.
-- **Includes** : enveloppés comme le fait Fractal, `'translations' => ['data' => [...]]`, et `['data' => []]` pour une liste vide.
-- Un nœud enfant peut avoir sa propre méthode (`mockFormPageApiData()`, `mockFormSectionApiData()`…), que le test assemble par override pour construire un arbre.
-- Un **objet imbriqué qui n'est pas un DTO** peut aussi avoir sa méthode, quand les tests doivent en changer un champ. `array_merge` ne fusionne que le premier niveau : sans méthode dédiée, il faudrait réécrire tout l'objet, ou le modifier après coup (`$data['config']['id'] = 42`). On la nomme d'après le DTO et la clé (`mockCustomFieldModelValueConfigApiData()` pour la clé `config` de `CustomFieldModelValueDto`) :
+- Signature: `protected function mock<Dto>ApiData(array $override = []): array`, with the DTO name without the `Dto` suffix (`mockSellerBankAccountApiData`, `mockFormFieldOptionApiData`).
+- Body: `$baseData = [...]`, then `return array_merge($baseData, $override);`.
+- **Every key the DTO validates** (`required` or `present`) is there, so that the default data builds a valid DTO. Optional keys (includes, `fields_count`…) are missing by default, and the test adds them by override.
+- **Ids**: `TestCase::unique()`, foreign keys included (`user_group_id`, `language_id`).
+- **Enums**: `XxxEnum::CASE->value`, so that the data follows if a value changes.
+- **Dates**: `'2024-05-12 16:12:56'`.
+- **Includes**: wrapped as Fractal does, `'translations' => ['data' => [...]]`, and `['data' => []]` for an empty list.
+- A child node can have its own method (`mockFormPageApiData()`, `mockFormSectionApiData()`…), which the test assembles by override to build a tree.
+- A **nested object that is not a DTO** can also have its method, when tests need to change one of its fields. `array_merge` only merges the first level: without a dedicated method, the whole object would have to be rewritten, or changed afterwards (`$data['config']['id'] = 42`). Name it after the DTO and the key (`mockCustomFieldModelValueConfigApiData()` for the `config` key of `CustomFieldModelValueDto`):
 
 ```php
 $this->mockCustomFieldModelValueApiData([
     'config' => $this->mockCustomFieldModelValueConfigApiData(['type' => 'unknown']),
 ]);
 ```
-- Une réponse dont la forme n'a pas de DTO dédié (stats, `check-pending`) peut être écrite directement dans le test.
+- A response whose shape has no dedicated DTO (stats, `check-pending`) can be written directly in the test.
 
-Les ids viennent de `TestCase::unique()`, un compteur remis à zéro avant chaque test : les ids d'un test sont donc toujours les mêmes, quel que soit l'ordre d'exécution. Un id que le test vérifie est quand même passé en override (`['id' => 42]`), pour que le test se lise sans connaître l'ordre des appels à `unique()`.
+Ids come from `TestCase::unique()`, a counter reset before each test: the ids of a test are thus always the same, whatever the execution order. An id checked by the test is still passed by override (`['id' => 42]`), so that the test reads without knowing the order of the calls to `unique()`.
 
-### Respecter le format réel de l'API
+### Matching the actual API format
 
-Les données mockées doivent ressembler à ce que l'API renvoie vraiment, sinon le test passe alors que le SDK casserait en production. En cas de doute, lisez le transformer correspondant dans le repo `origami_api` (`app/Api/Core/Transformers/...`) avant d'écrire les données. Points connus :
+Mock data must look like what the API actually returns, otherwise the test passes while the SDK would break in production. When in doubt, read the matching transformer in the `origami_api` repo (`app/Api/Core/Transformers/...`) before writing the data. Known points:
 
-- **L'API est en PHP : une map vide est encodée `[]`**, pas `{}` (ex : aucun feature flag). Un test qui couvre ce cas utilise `jsonResponse([])`.
-- Inversement, pour obtenir `{}` dans la réponse, passez `(object) []` : `'params' => (object) []`.
-- Un tableau associatif est encodé en objet JSON et redevient un `stdClass` côté SDK. Si une donnée doit arriver en objet, utilisez un tableau associatif, et ajoutez un commentaire quand ce n'est pas évident :
+- **The API is in PHP: an empty map is encoded as `[]`**, not `{}` (e.g. no feature flag). A test covering this case uses `jsonResponse([])`.
+- Conversely, to get `{}` in the response, pass `(object) []`: `'params' => (object) []`.
+- An associative array is encoded as a JSON object and becomes a `stdClass` again on the SDK side. If a value must arrive as an object, use an associative array, and add a comment when it is not obvious:
 
 ```php
 // Associative (not a list) : encoded as a JSON object, so it decodes back into a stdClass
@@ -63,9 +63,9 @@ Les données mockées doivent ressembler à ce que l'API renvoie vraiment, sinon
 'configurations' => ['is_enabled' => true],
 ```
 
-## `mock<Dto>Dto()` : le DTO construit
+## `mock<Dto>Dto()`: the built DTO
 
-Quand un test a besoin du DTO lui-même (tests de DTO, client authentifié…), on ajoute à côté une méthode qui le construit à partir des données brutes :
+When a test needs the DTO itself (DTO tests, authenticated client…), add next to it a method building it from the raw data:
 
 ```php
 protected function mockSellerDto(array $override = []): SellerDto
@@ -74,11 +74,11 @@ protected function mockSellerDto(array $override = []): SellerDto
 }
 ```
 
-`Obj::fromArray()` convertit le tableau en objets, comme le ferait le décodage de la réponse JSON.
+`Obj::fromArray()` turns the array into objects, as decoding the JSON response would.
 
-### Tester une clé absente
+### Testing a missing key
 
-Un override ne peut pas retirer une clé (`array_merge` ajoute ou remplace, il ne supprime pas). Pour tester une réponse à laquelle il manque une clé obligatoire, on part des données brutes, on retire la clé avec `unset()`, puis on construit le DTO directement :
+An override cannot remove a key (`array_merge` adds or replaces, it does not delete). To test a response missing a mandatory key, start from the raw data, remove the key with `unset()`, then build the DTO directly:
 
 ```php
 public function test_value_case_3(): void
@@ -93,15 +93,15 @@ public function test_value_case_3(): void
 }
 ```
 
-C'est le seul cas où un test construit lui-même un DTO au lieu de passer par `mock<Dto>Dto()`.
+This is the only case where a test builds a DTO itself instead of going through `mock<Dto>Dto()`.
 
-## Réponses génériques
+## Generic responses
 
-Dans `TestCase` et `TestsErrorDtos` :
+In `TestCase` and `TestsErrorDtos`:
 
-| Helper | Pour |
+| Helper | For |
 |---|---|
-| `mockApiPaginatedListData(array $items)` | Liste paginée sur une seule page (`data` + `meta.pagination`) |
-| `mockApiPagination(int $count)` | La partie `pagination` seule |
-| `mockApiErrorData($status, $detail, $code, ?$field)` | Une erreur de la liste `errors` |
-| `mockApiErrorsResponse($status, ...$errors)` | Une réponse d'erreur complète |
+| `mockApiPaginatedListData(array $items)` | Single-page paginated list (`data` + `meta.pagination`) |
+| `mockApiPagination(int $count)` | The `pagination` part alone |
+| `mockApiErrorData($status, $detail, $code, ?$field)` | One error of the `errors` list |
+| `mockApiErrorsResponse($status, ...$errors)` | A full error response |

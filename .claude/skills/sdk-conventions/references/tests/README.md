@@ -1,29 +1,29 @@
-# Tests — Règles essentielles
+# Tests — Essential rules
 
-À lire avant d'écrire ou de relire n'importe quel test du SDK. Le détail de chaque règle est dans les autres fichiers de ce dossier (voir la table dans `SKILL.md`).
+Read before writing or reviewing any test of the SDK. Each rule is detailed in the other files of this folder (see the table in `SKILL.md`).
 
-## Ce qu'on teste, et comment
+## What we test, and how
 
-- Ce qu'on teste : les **repositories** (un appel HTTP en entrée, un DTO en sortie), les **DTO** (lecture et validation de la réponse de l'API), les **clients REST** (headers, URL, erreurs) et les **traits ou classes abstraites** qui portent un comportement commun.
-- Seuls des tests unitaires existent (`tests/Unit`, PHPUnit 12, PHP 8.4).
-- Les tests sont **sans réseau et sans librairie de mock** : un vrai client REST du SDK tourne contre une fausse API (des réponses Guzzle mises en file), puis on vérifie la requête partie et le DTO obtenu.
+- What we test: **repositories** (an HTTP call in, a DTO out), **DTOs** (reading and validating the API response), **REST clients** (headers, URL, errors) and the **traits or abstract classes** carrying a shared behavior.
+- Only unit tests exist (`tests/Unit`, PHPUnit 12, PHP 8.4).
+- Tests use **no network and no mocking library**: a real REST client of the SDK runs against a fake API (queued Guzzle responses), then we check the request sent and the DTO obtained.
 
-## Les règles
+## The rules
 
-1. **Un test = une méthode `test_<sujet>_case_<n>`** (snake_case, `n` à partir de 1 pour chaque sujet). Le sujet est la méthode testée (`test_get_legal_types_case_1`) ou le comportement transverse (`test_headers_case_2`).
-2. **Un docblock en anglais au-dessus du test** décrit le comportement attendu avec « should ». Pour un endpoint, il commence par `` `VERBE chemin` ``. On ne l'omet que si le nom et le corps disent déjà tout (ex : un `delete` sans body).
-3. **Préparation, appel, vérifications**, séparés par une ligne vide.
-4. **Vérifier d'abord la requête, puis la réponse** : `assertLastApiRequestWas()`, puis query, JSON ou absence de body, puis `assertInstanceOf()` du DTO, puis ses valeurs.
-5. **`assertSame` par défaut.** `assertEquals` seulement pour comparer des objets (`stdClass`).
-6. **Les exceptions passent toujours par `assertThatExceptionWasThrown()`**, jamais par `expectException()` ni par un `try` / `fail` / `catch`.
-7. **Les données de l'API viennent des traits `Tests<Domaine>Dtos`** (`mock…ApiData()`), avec un override limité aux valeurs que le test vérifie. On ne recopie pas une réponse complète dans le test.
-8. **Les ids viennent de `TestCase::unique()`** (un compteur remis à zéro avant chaque test, donc des ids fixes). Un id que le test vérifie est donné en dur (`42`).
-9. **Pas de réseau ni de librairie de mock** : un vrai client REST du SDK tourne contre des réponses Guzzle mises en file (`TestsRestClient`).
-10. **Un comportement commun se teste à travers une fixture** (`tests/Fixtures/`), pas à travers une classe concrète choisie au hasard.
-11. **Chaque méthode publique d'un repository a au moins un test**, plus un cas par variation notable (filtre ignoré, réponse vide…). **Chaque méthode qui accepte des includes a en plus un test d'include** (query `include` envoyée et include lu, voir `repositories.md`).
-12. **Pour finir** : `vendor/bin/phpunit` doit passer, et `vendor/bin/pint --test` aussi.
+1. **One test = one `test_<subject>_case_<n>` method** (snake_case, `n` starting at 1 for each subject). The subject is the tested method (`test_get_legal_types_case_1`) or the cross-cutting behavior (`test_headers_case_2`).
+2. **An English docblock above the test** describes the expected behavior with « should ». For an endpoint, it starts with `` `VERB path` ``. It is only left out when the name and the body already say everything (e.g. a `delete` without body).
+3. **Arrange, act, assert**, separated by a blank line.
+4. **Check the request first, then the response**: `assertLastApiRequestWas()`, then query, JSON or no body, then `assertInstanceOf()` of the DTO, then its values.
+5. **`assertSame` by default.** `assertEquals` only to compare objects (`stdClass`).
+6. **Exceptions always go through `assertThatExceptionWasThrown()`**, never `expectException()` nor a `try` / `fail` / `catch`.
+7. **API data comes from the `Tests<Domain>Dtos` traits** (`mock…ApiData()`), with an override limited to the values the test checks. A full response is never copied into the test.
+8. **Ids come from `TestCase::unique()`** (a counter reset before each test, hence fixed ids). An id checked by the test is hard-coded (`42`).
+9. **No network nor mocking library**: a real REST client of the SDK runs against queued Guzzle responses (`TestsRestClient`).
+10. **A shared behavior is tested through a fixture** (`tests/Fixtures/`), not through a concrete class picked at random.
+11. **Every public method of a repository has at least one test**, plus one case per notable variation (dropped filter, empty response…). **Every method accepting includes also has an include test** (`include` query sent and include read, see `repositories.md`).
+12. **To finish**: `vendor/bin/phpunit` must pass, and so must `vendor/bin/pint --test`.
 
-## Écrire du code de test lisible
+## Writing readable test code
 
-- Si un helper manque, ajoutez-le dans un trait de `tests/TestUtils/` plutôt que de répéter le code dans plusieurs tests (voir `structure.md`).
-- Quand une convention n'est pas couverte ici, suivez le pattern le plus proche dans les tests existants et signalez à l'utilisateur que le point n'est pas documenté. N'inventez pas de nouvelle convention.
+- If a helper is missing, add it to a trait of `tests/TestUtils/` rather than repeating the code in several tests (see `structure.md`).
+- When a convention is not covered here, follow the closest pattern in the existing tests and tell the user the point is not documented. Do not invent a new convention.

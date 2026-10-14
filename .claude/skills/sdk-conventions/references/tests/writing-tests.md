@@ -1,18 +1,18 @@
-# Tests — Écrire un test
+# Tests — Writing a test
 
-## Nommage des méthodes
+## Method naming
 
-`test_<sujet>_case_<n>`, en snake_case :
+`test_<subject>_case_<n>`, in snake_case:
 
-- `<sujet>` est **la méthode testée**, en snake_case (`getLegalTypes()` → `test_get_legal_types_case_1`), ou, pour un comportement transverse, **le nom de ce comportement** (`test_headers_case_1`, `test_url_case_2`, `test_request_error_case_3`, `test_state_case_1`, `test_roles_case_2`).
-- Quand l'effet testé ne s'observe qu'à travers une autre méthode, le sujet est **le nom de cet effet**, pas celui de la méthode appelée. Par exemple, l'envoi des includes en query se voit à travers `asGuzzleParams()` : le test s'appelle `test_query_case_1`, pas `test_as_guzzle_params_case_1`.
-- `<n>` commence à 1 pour chaque sujet et se suit sans trou. Le numéro ne porte pas de sens : c'est le docblock qui décrit le cas.
+- `<subject>` is **the tested method**, in snake_case (`getLegalTypes()` → `test_get_legal_types_case_1`), or, for a cross-cutting behavior, **the name of this behavior** (`test_headers_case_1`, `test_url_case_2`, `test_request_error_case_3`, `test_state_case_1`, `test_roles_case_2`).
+- When the tested effect can only be observed through another method, the subject is **the name of this effect**, not of the method called. For instance, sending includes as query is observed through `asGuzzleParams()`: the test is named `test_query_case_1`, not `test_as_guzzle_params_case_1`.
+- `<n>` starts at 1 for each subject and has no gaps. The number carries no meaning: the docblock describes the case.
 
-On n'utilise ni l'attribut `#[Test]`, ni l'annotation `@test`, ni des noms descriptifs en camelCase.
+Neither the `#[Test]` attribute, nor the `@test` annotation, nor descriptive camelCase names are used.
 
 ## Docblock
 
-Chaque test a un docblock **en anglais**, d'une à trois lignes, qui décrit le **comportement attendu** (pas les étapes du test), avec « should » :
+Each test has an **English** docblock, one to three lines long, describing the **expected behavior** (not the steps of the test), with « should »:
 
 ```php
 /**
@@ -21,12 +21,12 @@ Chaque test a un docblock **en anglais**, d'une à trois lignes, qui décrit le 
  */
 ```
 
-- Pour un endpoint, il commence par le verbe et le chemin entre backticks : `` `POST forms/{id}/duplicate` ``, `` `PATCH taxes/{id}` ``.
-- Il mentionne les particularités qui justifient le cas : « A filter not available on `GET sellers` should not be sent. », « (no `v1/` prefix) », « answers a flat object (no `data` key) ».
-- On peut l'omettre quand le nom et le corps suffisent, typiquement pour un appel sans body ni réponse (`test_delete_case_1`, `test_activate_case_1`) ou pour la variante triviale d'un cas déjà décrit (`test_collect_included_case_2` : la liste vide).
-- Les lignes s'arrêtent vers 120 caractères.
+- For an endpoint, it starts with the verb and the path between backticks: `` `POST forms/{id}/duplicate` ``, `` `PATCH taxes/{id}` ``.
+- It mentions the specifics justifying the case: « A filter not available on `GET sellers` should not be sent. », « (no `v1/` prefix) », « answers a flat object (no `data` key) ».
+- It can be left out when the name and the body are enough, typically for a call without body nor response (`test_delete_case_1`, `test_activate_case_1`) or for the trivial variant of a case already described (`test_collect_included_case_2`: the empty list).
+- Lines stop around 120 characters.
 
-La **classe** n'a de docblock que si elle teste à travers un intermédiaire ou si elle protège une convention :
+The **class** only has a docblock if it tests through an intermediary or guards a convention:
 
 ```php
 /**
@@ -34,9 +34,9 @@ La **classe** n'a de docblock que si elle teste à travers un intermédiaire ou 
  */
 ```
 
-## Corps du test
+## Test body
 
-Trois blocs séparés par une ligne vide : la préparation, l'appel, les vérifications.
+Three blocks separated by a blank line: arrange, act, assert.
 
 ```php
 public function test_get_case_1(): void
@@ -51,12 +51,12 @@ public function test_get_case_1(): void
 }
 ```
 
-- **Préparation** : d'abord le client (`$restClient = …`), puis les param bags. Un param bag est rempli propriété par propriété (`$paramBag->email = '…';`), dans l'ordre où l'API les attend. Pour un arbre de param bags, on construit les feuilles d'abord et la racine en dernier.
-- **Appel** : la classe testée est instanciée dans la même ligne que l'appel, et le résultat est rangé dans une variable nommée d'après ce qu'il contient (`$seller`, `$forms`, `$invitation`, `$legalTypes`). `$result` est réservé aux DTO génériques (succès, message). Pas de variable si la méthode ne renvoie rien.
-- **Vérifications** : d'abord la requête, puis la réponse (voir `repositories.md`).
-- Une ligne vide peut séparer des groupes de vérifications quand on descend dans un objet imbriqué ; on extrait alors le nœud dans une variable (`$page = $form->pages->first();`).
+- **Arrange**: the client first (`$restClient = …`), then the param bags. A param bag is filled property by property (`$paramBag->email = '…';`), in the order the API expects them. For a tree of param bags, build the leaves first and the root last.
+- **Act**: the tested class is instantiated on the same line as the call, and the result is stored in a variable named after what it holds (`$seller`, `$forms`, `$invitation`, `$legalTypes`). `$result` is kept for generic DTOs (success, message). No variable if the method returns nothing.
+- **Assert**: the request first, then the response (see `repositories.md`).
+- A blank line can separate groups of assertions when going down into a nested object; the node is then extracted into a variable (`$page = $form->pages->first();`).
 
-Quand il n'y a pas d'action à part, le test n'a que **deux blocs** : la construction, puis les vérifications. C'est le cas quand la construction est elle-même l'action testée (un DTO construit à partir d'une réponse, voir `dtos-and-shared-behavior.md`), ou quand on vérifie l'état par défaut d'un objet neuf :
+When there is no separate action, the test only has **two blocks**: building, then assertions. This is the case when building is itself the tested action (a DTO built from a response, see `dtos-and-shared-behavior.md`), or when checking the default state of a new object:
 
 ```php
 public function test_get_includes_case_1(): void
@@ -69,16 +69,16 @@ public function test_get_includes_case_1(): void
 
 ## Assertions
 
-- **`assertSame` par défaut**, pour les scalaires, les tableaux et les enums : `$this->assertSame(FormFieldDtoTypeEnum::SELECT, $field->type);`.
-- **`assertEquals`** seulement pour comparer des objets dont l'identité n'a pas d'importance (`stdClass` décodé : `assertEquals((object) [], $responseContent)`).
-- `assertTrue` / `assertFalse` / `assertNull` pour les booléens et `null`.
-- `assertInstanceOf` pour le type du DTO renvoyé, `assertContainsOnlyInstancesOf` pour le contenu d'une collection.
-- **Pour une liste**, on compare une projection plutôt que chaque élément : `$this->assertSame([1, 2], $sellers->data->pluck('id')->all());`. Ça vérifie à la fois le nombre, l'ordre et le type de chaque élément lu.
-- Une propriété non définie (include absent) se vérifie avec `$this->assertFalse(isset($userDto->roles));`.
+- **`assertSame` by default**, for scalars, arrays and enums: `$this->assertSame(FormFieldDtoTypeEnum::SELECT, $field->type);`.
+- **`assertEquals`** only to compare objects whose identity does not matter (decoded `stdClass`: `assertEquals((object) [], $responseContent)`).
+- `assertTrue` / `assertFalse` / `assertNull` for booleans and `null`.
+- `assertInstanceOf` for the type of the returned DTO, `assertContainsOnlyInstancesOf` for the content of a collection.
+- **For a list**, compare a projection rather than each item: `$this->assertSame([1, 2], $sellers->data->pluck('id')->all());`. It checks at once the count, the order and the type of each item read.
+- An undefined property (missing include) is checked with `$this->assertFalse(isset($userDto->roles));`.
 
 ## Exceptions
 
-Toujours `assertThatExceptionWasThrown()` (trait `TestsExceptions`). Il vérifie que l'exception est levée, sa classe et, si on le donne, son message exact. Il renvoie l'exception pour les vérifications suivantes :
+Always `assertThatExceptionWasThrown()` (`TestsExceptions` trait). It checks that the exception is thrown, its class and, if given, its exact message. It returns the exception for further assertions:
 
 ```php
 $exception = $this->assertThatExceptionWasThrown(
@@ -90,13 +90,13 @@ $exception = $this->assertThatExceptionWasThrown(
 $this->assertInstanceOf(\JsonException::class, $exception->getPrevious());
 ```
 
-Quand il tient sur une ligne : `$this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), HttpClientException::class);`.
+When it fits on one line: `$this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), HttpClientException::class);`.
 
-N'utilisez ni `expectException()` (il arrête le test au moment de l'exception, on ne peut plus rien vérifier ensuite) ni un `try` / `$this->fail()` / `catch` écrit à la main.
+Use neither `expectException()` (it stops the test when the exception is thrown, nothing can be checked afterwards) nor a hand-written `try` / `$this->fail()` / `catch`.
 
 ## Data providers
 
-Quand un même comportement doit être vérifié pour plusieurs entrées :
+When the same behavior must be checked for several inputs:
 
 ```php
 #[DataProvider('invalidJsonBodyProvider')]
@@ -115,26 +115,26 @@ public static function invalidJsonBodyProvider(): array
 }
 ```
 
-- L'attribut `#[DataProvider('…')]` (PHPUnit 12), jamais l'annotation `@dataProvider`.
-- Méthode `public static`, nommée `<ceQuiVarie>Provider`.
-- **Clés lisibles** en anglais (`'bad request'`, `'empty object'`) : c'est ce qu'affiche PHPUnit en cas d'échec.
-- Placée **juste après le test** qui l'utilise, ou **en fin de classe** si plusieurs tests la partagent.
-- Si un paramètre est une classe, typez-le en docblock : `@param  class-string<OrigamiApiSingleException>  $expectedExceptionClass`.
+- The `#[DataProvider('…')]` attribute (PHPUnit 12), never the `@dataProvider` annotation.
+- A `public static` method, named `<whatVaries>Provider`.
+- **Readable English keys** (`'bad request'`, `'empty object'`): PHPUnit displays them when a case fails.
+- Placed **right after the test** using it, or **at the end of the class** if several tests share it.
+- If a parameter is a class, type it in the docblock: `@param  class-string<OrigamiApiSingleException>  $expectedExceptionClass`.
 
-## Valeurs utilisées
+## Values used
 
-Les tests réutilisent les mêmes valeurs, pour qu'on reconnaisse tout de suite ce qui est une donnée de test :
+Tests reuse the same values, so that test data is recognized at once:
 
-| Besoin | Valeur |
+| Need | Value |
 |---|---|
-| Id vérifié par le test | `42` (puis `43`, ou `1`, `2`, `3` pour une liste) |
-| Id non vérifié | `TestCase::unique()` (dans les traits de données) |
+| Id checked by the test | `42` (then `43`, or `1`, `2`, `3` for a list) |
+| Id not checked | `TestCase::unique()` (in the data traits) |
 | Email | `john@doe.com`, `jane@doe.com` |
-| Personne | `John` / `Doe` |
+| Person | `John` / `Doe` |
 | Token, secret | `some-token`, `some-access-token`, `some-refresh-token` |
-| Ressource générique (tests de client) | `some_resource` |
-| URL de l'API | `http://api.test` (constante `TEST_API_BASE_URI`) |
-| URL externe | `https://example.com/...` |
-| Date | `'2024-05-12 16:12:56'` (timestamps des données mockées) |
+| Generic resource (client tests) | `some_resource` |
+| API URL | `http://api.test` (`TEST_API_BASE_URI` constant) |
+| External URL | `https://example.com/...` |
+| Date | `'2024-05-12 16:12:56'` (timestamps of the mock data) |
 
-Les valeurs métier restent réalistes (`'10 rue de Rivoli'`, `'FR7630006000011234567890189'`, `'Quote request'`) : elles servent aussi de documentation.
+Business values stay realistic (`'10 rue de Rivoli'`, `'FR7630006000011234567890189'`, `'Quote request'`): they also serve as documentation.

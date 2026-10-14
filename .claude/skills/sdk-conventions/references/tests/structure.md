@@ -1,21 +1,21 @@
-# Tests — Arborescence et nommage des fichiers
+# Tests — File layout and naming
 
-## Arborescence
+## Layout
 
 ```
 tests/
-├── TestCase.php          # classe de base de tous les tests, utilise tous les traits de TestUtils
-├── Fixtures/             # classes minimales pour tester un comportement commun
+├── TestCase.php          # base class of every test, uses every trait of TestUtils
+├── Fixtures/             # minimal classes to test a shared behavior
 │   ├── RestApiRepositoryFixture.php
 │   ├── IncludesDtoFixture.php
 │   └── IncludesParamBagFixture.php   # …
-├── TestUtils/            # traits de helpers et de données mockées
-│   ├── TestsRestClient.php        # faux client HTTP + assertions sur la requête
+├── TestUtils/            # helper and mock data traits
+│   ├── TestsRestClient.php        # fake HTTP client + assertions on the request
 │   ├── TestsExceptions.php        # assertThatExceptionWasThrown()
-│   ├── TestsErrorDtos.php         # réponses d'erreur de l'API
-│   ├── TestsArrayableDtos.php     # assertions sur toArray()
-│   └── Tests<Domaine>Dtos.php     # données mockées d'un domaine (Seller, Form, User…)
-└── Unit/                 # les tests, rangés comme src/
+│   ├── TestsErrorDtos.php         # API error responses
+│   ├── TestsArrayableDtos.php     # assertions on toArray()
+│   └── Tests<Domain>Dtos.php      # mock data of a domain (Seller, Form, User…)
+└── Unit/                 # the tests, laid out like src/
     ├── Dtos/User/UserDtoTest.php
     ├── Repositories/Api/Data/Seller/OrigamiSellerDataApiRepositoryTest.php
     ├── Repositories/Client/OrigamiRestClientTest.php
@@ -23,30 +23,30 @@ tests/
     └── Traits/ParamBags/HasIncludesTest.php
 ```
 
-## Fichiers de test
+## Test files
 
-- **Un fichier de test par classe testée**, à l'endroit qui correspond à la classe dans `src/` : `src/Repositories/Api/Data/Form/OrigamiFormDataApiRepository.php` est testé par `tests/Unit/Repositories/Api/Data/Form/OrigamiFormDataApiRepositoryTest.php`.
-- La classe s'appelle `<ClasseTestée>Test`, dans le namespace `Tests\Unit\...` correspondant, et étend `Tests\TestCase` (jamais directement `PHPUnit\Framework\TestCase`, pour avoir tous les helpers).
-- Un comportement commun à plusieurs classes est testé dans le fichier de la classe qui le porte : le comportement de tous les clients REST est dans `OrigamiRestClientTest`, celui de tous les repositories dans `RestApiRepositoryTest`, celui du trait `HasIncludes` dans `Traits/Dtos/HasIncludesTest`.
+- **One test file per tested class**, at the place matching the class in `src/`: `src/Repositories/Api/Data/Form/OrigamiFormDataApiRepository.php` is tested by `tests/Unit/Repositories/Api/Data/Form/OrigamiFormDataApiRepositoryTest.php`.
+- The class is named `<TestedClass>Test`, in the matching `Tests\Unit\...` namespace, and extends `Tests\TestCase` (never `PHPUnit\Framework\TestCase` directly, to get every helper).
+- A behavior shared by several classes is tested in the file of the class carrying it: the behavior of every REST client is in `OrigamiRestClientTest`, the one of every repository in `RestApiRepositoryTest`, the one of the `HasIncludes` trait in `Traits/Dtos/HasIncludesTest`.
 
 ## Fixtures (`tests/Fixtures/`)
 
-Une fixture est une classe minimale, écrite uniquement pour les tests, qui hérite d'une classe abstraite ou utilise un trait. Elle permet de tester un comportement général sans passer par une classe concrète du SDK, dont le comportement propre brouillerait le test.
+A fixture is a minimal class, written only for the tests, extending an abstract class or using a trait. It allows testing a general behavior without going through a concrete class of the SDK, whose own behavior would blur the test.
 
-- Nom : `<Sujet>Fixture` (ex : `RestApiRepositoryFixture`, `IncludesDtoFixture`), namespace `Tests\Fixtures`.
-- Un docblock dit à quoi elle sert et ce qu'elle expose.
-- Elle ne contient que ce qu'il faut pour le test.
+- Name: `<Subject>Fixture` (e.g. `RestApiRepositoryFixture`, `IncludesDtoFixture`), namespace `Tests\Fixtures`.
+- A docblock says what it is for and what it exposes.
+- It only contains what the test needs.
 
-### Rendre testable une méthode `protected`
+### Making a `protected` method testable
 
-La technique dépend de l'endroit où la méthode est définie :
+The technique depends on where the method is defined:
 
-| La méthode `protected` est définie… | Dans la fixture |
+| The `protected` method is defined… | In the fixture |
 |---|---|
-| dans la classe parente (ou dans un trait de la classe parente) | La redéfinir en `public` et appeler `parent::methode()` |
-| dans un trait que la fixture utilise elle-même | `use LeTrait { methode as public; }` |
+| in the parent class (or in a trait of the parent class) | Redefine it as `public` and call `parent::method()` |
+| in a trait the fixture uses itself | `use TheTrait { method as public; }` |
 
-**Méthode de la classe parente** : on la redéfinit en `public`.
+**Method of the parent class**: redefine it as `public`.
 
 ```php
 /**
@@ -61,7 +61,7 @@ class RestApiRepositoryFixture extends RestApiRepository
 }
 ```
 
-**Méthode d'un trait utilisé par la fixture** : on change sa visibilité au moment du `use`.
+**Method of a trait used by the fixture**: change its visibility in the `use` statement.
 
 ```php
 class FiltersParamBagFixture extends RequestParamBag
@@ -74,22 +74,22 @@ class FiltersParamBagFixture extends RequestParamBag
 }
 ```
 
-La redéfinition ne marche pas dans ce second cas. PHP copie les méthodes d'un trait dans la classe qui l'utilise : la méthode redéfinie remplace celle du trait, et `parent::` la cherche dans la classe parente, où elle n'existe pas (`Call to undefined method`).
+Redefining does not work in this second case. PHP copies the methods of a trait into the class using it: the redefined method replaces the trait's one, and `parent::` looks for it in the parent class, where it does not exist (`Call to undefined method`).
 
-N'utilisez pas d'alias (`methode as public exposedMethode;`) : le test appellerait un nom qui n'existe pas dans le SDK.
+Do not use an alias (`method as public exposedMethod;`): the test would call a name that does not exist in the SDK.
 
-Les détails (fixture de DTO, exception « NotConstructable ») sont dans `dtos-and-shared-behavior.md`.
+The details (DTO fixture, « NotConstructable » exception) are in `dtos-and-shared-behavior.md`.
 
-## Traits de helpers (`tests/TestUtils/`)
+## Helper traits (`tests/TestUtils/`)
 
-- Tout helper réutilisable va dans un trait de `tests/TestUtils/`, namespace `Tests\TestUtils`, nommé `Tests<Sujet>` : `TestsExceptions`, `TestsRestClient`, `Tests<Domaine>Dtos`.
-- On ajoute un helper à un trait existant si le sujet correspond, et on crée un trait sinon.
-- Les méthodes sont `protected`. Les assertions s'appellent `assert…` (`assertLastApiRequestWas`, `assertThatExceptionWasThrown`, `assertArrayKeysAreCamelCase`), les données mockées `mock…`.
-- Chaque helper dont le nom ne suffit pas a un docblock en anglais (ce qu'il fait, ses particularités, ex : « Query string values are always strings once sent »).
+- Any reusable helper goes in a trait of `tests/TestUtils/`, namespace `Tests\TestUtils`, named `Tests<Subject>`: `TestsExceptions`, `TestsRestClient`, `Tests<Domain>Dtos`.
+- Add a helper to an existing trait if the subject matches, otherwise create a trait.
+- Methods are `protected`. Assertions are named `assert…` (`assertLastApiRequestWas`, `assertThatExceptionWasThrown`, `assertArrayKeysAreCamelCase`), mock data `mock…`.
+- Each helper whose name is not enough has an English docblock (what it does, its quirks, e.g. « Query string values are always strings once sent »).
 
-### Enregistrer un nouveau trait
+### Registering a new trait
 
-Un nouveau trait doit être importé et utilisé dans `tests/TestCase.php`, **par ordre alphabétique**, dans les `use` en tête de fichier comme dans la liste `use` de la classe :
+A new trait must be imported and used in `tests/TestCase.php`, **in alphabetical order**, both in the `use` statements at the top of the file and in the class `use` list:
 
 ```php
 use Tests\TestUtils\TestsErrorDtos;
@@ -106,4 +106,4 @@ abstract class TestCase extends BaseTestCase
         // ...
 ```
 
-`TestCase` ne contient en propre que les helpers vraiment transverses (`unique()`, `mockApiPagination()`, `mockApiPaginatedListData()`).
+`TestCase` itself only holds the truly cross-cutting helpers (`unique()`, `mockApiPagination()`, `mockApiPaginatedListData()`).

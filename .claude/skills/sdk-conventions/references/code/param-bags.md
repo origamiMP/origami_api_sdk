@@ -1,36 +1,36 @@
 # Code — Param bags
 
-Un param bag porte les paramètres d'une requête vers l'API (query, body JSON, headers). Une méthode de repository qui appelle l'API reçoit son param bag en argument.
+A param bag carries the parameters of a request to the API (query, JSON body, headers). A repository method calling the API receives its param bag as an argument.
 
-🚧 TODO — le reste des conventions des param bags (nommage, découpage, conversion des valeurs, validation…) n'est pas encore écrit. En attendant, suivez le pattern le plus proche dans `src/ParamBags/` et signalez à l'utilisateur que le point n'est pas documenté.
+🚧 TODO — the rest of the param bag conventions (naming, splitting, value conversion, validation…) is not written yet. In the meantime, follow the closest pattern in `src/ParamBags/` and tell the user the point is not documented.
 
 ## Includes
 
-### La règle
+### The rule
 
-**Si une requête de l'API propose un include, que ce soit par défaut ou à la demande, le param bag de la méthode du SDK qui l'appelle doit permettre de le fournir.**
+**If an API request offers an include, whether by default or on demand, the param bag of the SDK method calling it must allow providing it.**
 
-Le SDK ne doit pas restreindre ce que l'API sait faire. Un include que l'API propose mais que le SDK ne permet pas de demander oblige l'application qui utilise le SDK à faire plusieurs appels, ou à contourner le SDK.
+The SDK must not restrict what the API can do. An include offered by the API but that the SDK cannot request forces the application using the SDK to make several calls, or to bypass the SDK.
 
-Les includes par défaut sont concernés aussi : l'API les renvoie aujourd'hui sans qu'on les demande, mais les demander explicitement rend l'appel indépendant d'un changement de ces valeurs par défaut côté API, et permet de demander leurs includes imbriqués (ex : `pages.sections`).
+Default includes are concerned too: the API returns them today without being asked, but requesting them explicitly makes the call independent from a change of these defaults on the API side, and allows requesting their nested includes (e.g. `pages.sections`).
 
-### Portée : les fichiers qui existent dans le SDK
+### Scope: the files that exist in the SDK
 
-Le SDK est en cours de développement : il ne couvre pas encore toutes les ressources de l'API. La règle s'applique aux param bags et aux DTO **qui existent dans le SDK**. Créer les DTO des ressources incluses qui manquent n'est pas obligatoire.
+The SDK is under development: it does not cover every API resource yet. The rule applies to the param bags and DTOs **that exist in the SDK**. Creating the missing DTOs of included resources is not mandatory.
 
-En revanche, **chaque include proposé par l'API doit apparaître dans le `getAvailableIncludes()` du DTO**, que le SDK sache le lire ou non :
-- un include dont le DTO existe dans le SDK est déclaré normalement (`'roles' => RoleDto::class`) ;
-- un include dont le DTO n'existe pas encore est déclaré **en commentaire** (`// 'shipping_offers',`), comme dans `SellerDto` et `ModuleDto` ;
-- un include **réservé** (renvoyé seulement à certains rôles, ou soumis à un feature flag) est déclaré de la même façon, selon que son DTO existe ou non.
+However, **every include offered by the API must appear in the DTO's `getAvailableIncludes()`**, whether the SDK can read it or not:
+- an include whose DTO exists in the SDK is declared normally (`'roles' => RoleDto::class`);
+- an include whose DTO does not exist yet is declared **as a comment** (`// 'shipping_offers',`), as in `SellerDto` and `ModuleDto`;
+- a **restricted** include (only returned to some roles, or behind a feature flag) is declared the same way, depending on whether its DTO exists.
 
-Le lien vers l'API reste ainsi visible dans le code : ajouter un include revient à créer son DTO et à décommenter sa ligne. Le détail de cette déclaration est dans `dtos.md`.
+The link to the API thus stays visible in the code: adding an include means creating its DTO and uncommenting its line. The details of this declaration are in `dtos.md`.
 
-### Ce que ça implique dans le SDK
+### What it implies in the SDK
 
-Pour chaque méthode de repository dont la requête propose au moins un include :
+For each repository method whose request offers at least one include:
 
-1. **La méthode reçoit un param bag**, même si elle n'a pas d'autre paramètre à envoyer (ex : `get(int $id, ?GetFormRequestParamBag $paramBag = null)`, dont le param bag ne porte que des includes). Un param bag qui ne porte que des paramètres optionnels, comme des includes, peut être optionnel dans la signature (voir `repositories.md`).
-2. **Ce param bag utilise le trait `HasIncludes`** (`OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes`), implémente le contrat correspondant, et envoie ses includes en query :
+1. **The method receives a param bag**, even if it has nothing else to send (e.g. `get(int $id, ?GetFormRequestParamBag $paramBag = null)`, whose param bag only carries includes). A param bag that only carries optional parameters, such as includes, can be optional in the signature (see `repositories.md`).
+2. **This param bag uses the `HasIncludes` trait** (`OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes`), implements the matching contract, and sends its includes as query:
 
 ```php
 class GetCurrentUserRequestParamBag extends RequestParamBag implements HasIncludesContract
@@ -54,19 +54,19 @@ class GetCurrentUserRequestParamBag extends RequestParamBag implements HasInclud
 }
 ```
 
-3. **`getRequestMainDto()` renvoie le DTO que renvoie la méthode de repository** qui utilise ce param bag. Pour une liste, c'est le DTO de liste (`ListSellerRequestParamBag` → `SellerListDto`, car `list()` renvoie un `SellerListDto`), pas le DTO d'un élément. C'est ce DTO qui décide des includes acceptés.
-4. **Ce DTO déclare les includes de l'API** dans `getAvailableIncludes()` (voir la portée ci-dessus et `dtos.md`). Un DTO de liste reprend ceux de son élément. Les DTO inclus déclarent à leur tour leurs propres includes, pour que les includes imbriqués soient acceptés. `setIncludes()` retire silencieusement tout include que le DTO ne déclare pas, y compris ceux qui sont en commentaire.
+3. **`getRequestMainDto()` returns the DTO returned by the repository method** using this param bag. For a list, it is the list DTO (`ListSellerRequestParamBag` → `SellerListDto`, since `list()` returns a `SellerListDto`), not the DTO of an item. This DTO decides which includes are accepted.
+4. **This DTO declares the API includes** in `getAvailableIncludes()` (see the scope above and `dtos.md`). A list DTO reuses those of its item. Included DTOs in turn declare their own includes, so that nested includes are accepted. `setIncludes()` silently drops any include the DTO does not declare, commented ones included.
 
-### Trouver les includes d'une requête dans l'API
+### Finding the includes of a request in the API
 
-Dans le repo `origami_api` :
+In the `origami_api` repo:
 
-- le transformer de la ressource (`app/Api/Core/Transformers/...`) : ses propriétés `$availableIncludes` et `$defaultIncludes` ;
-- `translations`, ajouté à la fois en disponible et par défaut par `BaseTranslatableTransformer`, dont héritent les transformers des ressources traduites ;
-- le contrôleur de l'endpoint, qui peut imposer ses propres includes par défaut (ex : `setDefaultIncludes(['translations', 'pages'])` dans `FormController`).
+- the transformer of the resource (`app/Api/Core/Transformers/...`): its `$availableIncludes` and `$defaultIncludes` properties;
+- `translations`, added both as available and default by `BaseTranslatableTransformer`, which the transformers of translated resources extend;
+- the controller of the endpoint, which can force its own default includes (e.g. `setDefaultIncludes(['translations', 'pages'])` in `FormController`).
 
-Un include imposé par le contrôleur reste un include que la requête propose : la règle s'applique aussi.
+An include forced by the controller is still an include offered by the request: the rule applies too.
 
 ### Tests
 
-Chaque méthode concernée a un test d'include (voir `references/tests/repositories.md`, section « Les includes »).
+Each method concerned has an include test (see `references/tests/repositories.md`, section « Includes: check every method accepting some »).

@@ -1,14 +1,14 @@
-# Tests — DTO, traits et comportements partagés
+# Tests — DTOs, traits and shared behaviors
 
-## Tests d'un DTO
+## Testing a DTO
 
-Le parcours normal d'un DTO (lecture de la réponse d'un endpoint) est déjà couvert par les tests du repository qui le renvoie. On écrit un test de DTO dédié (`tests/Unit/Dtos/<Domaine>/<Dto>Test.php`) pour ce que les tests de repository ne montrent pas :
+The normal path of a DTO (reading the response of an endpoint) is already covered by the tests of the repository returning it. A dedicated DTO test (`tests/Unit/Dtos/<Domain>/<Dto>Test.php`) is written for what repository tests do not show:
 
-- les **includes** (présent, absent, mal formé) ;
-- les **valeurs acceptées** d'un champ validé (chaque cas d'un enum que l'API peut envoyer) ;
-- les **cas d'erreur** : une donnée invalide doit rendre le DTO non constructible.
+- **includes** (present, missing, malformed);
+- the **accepted values** of a validated field (each enum case the API can send);
+- **error cases**: an invalid value must make the DTO not constructable.
 
-Le DTO se construit avec `mock<Dto>Dto()` (voir `mock-data.md`), en passant par override ce que le cas met en jeu :
+The DTO is built with `mock<Dto>Dto()` (see `mock-data.md`), overriding what the case involves:
 
 ```php
 /**
@@ -37,11 +37,11 @@ public function test_roles_case_3(): void
 }
 ```
 
-Ici, le test a deux temps seulement (construction, vérifications), puisque la construction est l'action testée.
+Here, the test only has two blocks (building, assertions), since building is the tested action.
 
-## Tests de garde d'une convention
+## Guard tests of a convention
 
-Quand un test protège une convention plutôt qu'un comportement précis, la classe porte un docblock qui explique la convention et ce qui casse si on ne la respecte pas :
+When a test guards a convention rather than a precise behavior, the class has a docblock explaining the convention and what breaks if it is not followed:
 
 ```php
 /**
@@ -52,13 +52,13 @@ Quand un test protège une convention plutôt qu'un comportement précis, la cla
 class SellerDtoTest extends TestCase
 ```
 
-C'est le cas de `ApiResponseDtoTest` (les clés de `toArray()` restent en camelCase, vérifiées avec `assertArrayKeysAreCamelCase()`).
+This is the case of `ApiResponseDtoTest` (the keys of `toArray()` stay camelCase, checked with `assertArrayKeysAreCamelCase()`).
 
-## Comportement commun : passer par une fixture
+## Shared behavior: going through a fixture
 
-Un trait ou une classe abstraite se teste **à travers une fixture** (`tests/Fixtures/`) : une classe minimale qui n'ajoute rien au comportement testé. Tester à travers un DTO ou un repository concret mélangerait leur comportement propre au test, et le test casserait si cette classe changeait.
+A trait or an abstract class is tested **through a fixture** (`tests/Fixtures/`): a minimal class adding nothing to the tested behavior. Testing through a concrete DTO or repository would mix their own behavior into the test, and the test would break if this class changed.
 
-La classe de test le dit dans son docblock :
+The test class says so in its docblock:
 
 ```php
 /**
@@ -67,9 +67,9 @@ La classe de test le dit dans son docblock :
 class HasIncludesTest extends TestCase
 ```
 
-### Fixture d'une classe à méthodes protégées
+### Fixture of a class with protected methods
 
-On élargit la visibilité de la méthode : en la redéfinissant si elle vient de la classe parente, avec `use LeTrait { methode as public; }` si elle vient d'un trait utilisé par la fixture (les deux cas sont détaillés dans `structure.md`, section « Rendre testable une méthode `protected` »). On instancie ensuite la fixture dans `setUp()` si tous les tests l'utilisent :
+Widen the visibility of the method: by redefining it if it comes from the parent class, with `use TheTrait { method as public; }` if it comes from a trait used by the fixture (both cases are detailed in `structure.md`, section « Making a `protected` method testable »). Then instantiate the fixture in `setUp()` if every test uses it:
 
 ```php
 private RestApiRepositoryFixture $repository;
@@ -82,11 +82,11 @@ protected function setUp(): void
 }
 ```
 
-`parent::setUp()` doit être appelé : c'est lui qui remet à zéro le compteur de `TestCase::unique()`.
+`parent::setUp()` must be called: it resets the counter of `TestCase::unique()`.
 
-### Fixture d'un DTO
+### DTO fixture
 
-Une fixture de DTO étend `ApiResponseDto`, utilise le trait testé, ne déclare que les propriétés utiles au test, et renvoie une exception anonyme comme exception « NotConstructable » :
+A DTO fixture extends `ApiResponseDto`, uses the tested trait, only declares the properties the test needs, and returns an anonymous exception as « NotConstructable » exception:
 
 ```php
 class IncludesDtoFixture extends ApiResponseDto
@@ -129,7 +129,7 @@ class IncludesDtoFixture extends ApiResponseDto
 }
 ```
 
-Une fixture peut s'inclure elle-même (`self::class`) pour tester des includes imbriqués sans dépendre d'un autre DTO. Les tests la construisent avec un petit helper privé :
+A fixture can include itself (`self::class`) to test nested includes without depending on another DTO. Tests build it with a small private helper:
 
 ```php
 private function makeFixture(array $apiData): IncludesDtoFixture
@@ -138,11 +138,11 @@ private function makeFixture(array $apiData): IncludesDtoFixture
 }
 ```
 
-Un helper privé propre à une seule classe de test est placé à la fin de cette classe.
+A private helper specific to one test class is placed at the end of this class.
 
-### Fixtures liées entre elles
+### Linked fixtures
 
-Une fixture peut s'appuyer sur une autre fixture quand le comportement testé relie deux classes. Par exemple, le trait `HasIncludes` des param bags ne garde que les includes que le DTO renvoyé par la requête déclare disponibles. `IncludesParamBagFixture` renvoie donc `IncludesDtoFixture`, déjà écrite pour tester le trait `HasIncludes` des DTO :
+A fixture can rely on another fixture when the tested behavior links two classes. For instance, the `HasIncludes` trait of param bags only keeps the includes that the DTO returned by the request declares available. `IncludesParamBagFixture` therefore returns `IncludesDtoFixture`, already written to test the `HasIncludes` trait of DTOs:
 
 ```php
 class IncludesParamBagFixture extends RequestParamBag
@@ -158,11 +158,11 @@ class IncludesParamBagFixture extends RequestParamBag
 }
 ```
 
-Réutilisez une fixture existante plutôt que d'en écrire une seconde qui ferait la même chose.
+Reuse an existing fixture rather than writing a second one doing the same thing.
 
-### Faire varier une fixture pour un seul test
+### Varying a fixture for a single test
 
-Quand un seul test a besoin d'une variante de la fixture, on crée dans ce test une **classe anonyme** qui l'étend et redéfinit le strict nécessaire, plutôt qu'une nouvelle fixture :
+When a single test needs a variant of the fixture, create in this test an **anonymous class** extending it and redefining the bare minimum, rather than a new fixture:
 
 ```php
 /**
@@ -184,4 +184,4 @@ public function test_set_includes_case_4(): void
 }
 ```
 
-Si plusieurs tests ont besoin de la même variante, écrivez une vraie fixture dans `tests/Fixtures/`.
+If several tests need the same variant, write a real fixture in `tests/Fixtures/`.
