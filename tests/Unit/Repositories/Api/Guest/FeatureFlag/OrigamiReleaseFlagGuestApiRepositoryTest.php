@@ -24,4 +24,20 @@ class OrigamiReleaseFlagGuestApiRepositoryTest extends TestCase
         $this->assertFalse($flags->isFlagActive('other'));
         $this->assertFalse($flags->isFlagActive('unknown'));
     }
+
+    /**
+     * Without any flag, `GET release_flags` answers [] (an empty map, encoded by PHP as a list): every flag should be
+     * reported as inactive.
+     */
+    public function test_list_case_2(): void
+    {
+        $restClient = $this->mockGuestRestClientReturning($this->jsonResponse([]));
+
+        $flags = (new OrigamiReleaseFlagGuestApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'release_flags');
+        $this->assertInstanceOf(FeatureFlagListDto::class, $flags);
+        $this->assertSame([], $flags->flags);
+        $this->assertFalse($flags->isFlagActive('some_flag'));
+    }
 }

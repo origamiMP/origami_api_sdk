@@ -14,15 +14,13 @@ abstract class RestApiRepository
     }
 
     /**
+     * Decodes a response whose body should be a JSON object.
+     *
      * @throws OrigamiApiUnknownException
      */
     protected function decodeResponse(ResponseInterface $response): object
     {
-        try {
-            $responseContent = json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
-            throw OrigamiApiUnknownException::createFromUnreadableResponse($response, $e);
-        }
+        $responseContent = $this->decodeJson($response);
 
         // PHP encodes an empty map as [], ex: no feature flag
         if ($responseContent === []) {
@@ -30,9 +28,37 @@ abstract class RestApiRepository
         }
 
         if (! is_object($responseContent)) {
-            throw OrigamiApiUnknownException::createFromUnreadableResponse($response);
+            throw OrigamiApiUnknownException::createFromUnreadableResponse($response, 'object');
         }
 
         return $responseContent;
+    }
+
+    /**
+     * Decodes a response whose body should be a JSON list (ex: seller legal types).
+     *
+     * @throws OrigamiApiUnknownException
+     */
+    protected function decodeListResponse(ResponseInterface $response): array
+    {
+        $responseContent = $this->decodeJson($response);
+
+        if (! is_array($responseContent) || ! array_is_list($responseContent)) {
+            throw OrigamiApiUnknownException::createFromUnreadableResponse($response, 'list');
+        }
+
+        return $responseContent;
+    }
+
+    /**
+     * @throws OrigamiApiUnknownException
+     */
+    private function decodeJson(ResponseInterface $response): mixed
+    {
+        try {
+            return json_decode((string) $response->getBody(), flags: JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw OrigamiApiUnknownException::createFromUnreadableResponse($response, previous: $e);
+        }
     }
 }

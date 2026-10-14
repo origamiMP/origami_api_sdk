@@ -31,9 +31,16 @@ class OrigamiApiUnknownException extends OrigamiApiException
         return new OrigamiApiUnknownException($msg, errorDto: $errorDto);
     }
 
-    public static function createFromUnreadableResponse(ResponseInterface $response, ?\Throwable $previous = null): self
-    {
-        $msg = "Unreadable response from Origami API : HTTP {$response->getStatusCode()}, the body is not a JSON object";
+    /**
+     * $expected is the JSON type the body should have been (ex: object, list), null when it is not JSON at all.
+     */
+    public static function createFromUnreadableResponse(
+        ResponseInterface $response,
+        ?string $expected = null,
+        ?\Throwable $previous = null,
+    ): self {
+        $reason = is_null($expected) ? 'the body is not valid JSON' : "the body is not a JSON {$expected}";
+        $msg = "Unreadable response from Origami API : HTTP {$response->getStatusCode()}, {$reason}";
 
         return new OrigamiApiUnknownException($msg, previous: $previous);
     }

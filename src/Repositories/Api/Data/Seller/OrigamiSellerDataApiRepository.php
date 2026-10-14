@@ -41,7 +41,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
     public function getLegalTypes(): SellerLegalTypeListDto
     {
         $response = $this->restClient->get('sellers/legal_types');
-        $responseContent = $this->decodeResponse($response);
+        $responseContent = $this->decodeListResponse($response);
 
         return new SellerLegalTypeListDto($responseContent);
     }
