@@ -7,7 +7,8 @@ tests/
 ├── TestCase.php          # classe de base de tous les tests, utilise tous les traits de TestUtils
 ├── Fixtures/             # classes minimales pour tester un comportement commun
 │   ├── RestApiRepositoryFixture.php
-│   └── IncludesDtoFixture.php
+│   ├── IncludesDtoFixture.php
+│   └── IncludesParamBagFixture.php   # …
 ├── TestUtils/            # traits de helpers et de données mockées
 │   ├── TestsRestClient.php        # faux client HTTP + assertions sur la requête
 │   ├── TestsExceptions.php        # assertThatExceptionWasThrown()
@@ -18,7 +19,8 @@ tests/
     ├── Dtos/User/UserDtoTest.php
     ├── Repositories/Api/Data/Seller/OrigamiSellerDataApiRepositoryTest.php
     ├── Repositories/Client/OrigamiRestClientTest.php
-    └── Traits/Dtos/HasIncludesTest.php
+    ├── Traits/Dtos/HasIncludesTest.php
+    └── Traits/ParamBags/HasIncludesTest.php
 ```
 
 ## Fichiers de test

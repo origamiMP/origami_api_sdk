@@ -63,6 +63,8 @@ Les includes sont facilement oubliés, parce que le premier test d'une méthode 
 
 **Quand une méthode en accepte-t-elle ?** Son param bag utilise le trait `HasIncludes`, **et** le DTO renvoyé par son `getRequestMainDto()` déclare au moins un include dans `getAvailableIncludes()`. Si cette liste est vide (ou entièrement commentée), `setIncludes()` retire tout : il n'y a rien à tester tant qu'un include n'y est pas ajouté.
 
+**Vérifiez aussi l'inverse** : d'après `references/code/param-bags.md`, toute requête de l'API qui propose un include doit pouvoir le recevoir depuis le SDK. Si l'API propose des includes pour l'endpoint testé (transformer ou contrôleur) mais que la méthode ne prend pas de param bag avec `HasIncludes`, ou que le DTO ne déclare pas l'un de ces includes (même en commentaire), le code n'est pas conforme : signalez-le à l'utilisateur plutôt que d'écrire un test qui fige ce manque.
+
 **Le test ajoute un cas à la méthode** (`test_<méthode>_case_<n>`), qui :
 1. demande les includes disponibles **plus un include inconnu** avec `setIncludes()` ;
 2. mocke une réponse qui contient l'include, enveloppé comme le fait Fractal (`['data' => …]`) ;
