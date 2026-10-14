@@ -8,9 +8,12 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
 class TaxDto extends ApiResponseDto
 {
+    use HasIncludes;
+
     public int $id;
 
     public float $value;
@@ -28,6 +31,13 @@ class TaxDto extends ApiResponseDto
      */
     public Collection $translations;
 
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            'translations' => TaxTranslationDto::class,
+        ];
+    }
+
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
@@ -37,7 +47,7 @@ class TaxDto extends ApiResponseDto
             'id_scs_tax'   => 'idScsTax',
             'is_default'   => 'isDefault',
             'module_id'    => 'moduleId',
-            'translations' => fn ($translations) => $this->initTranslations($translations),
+            'translations' => fn (object $translations) => $this->translations = $this->collectIncluded($translations, TaxTranslationDto::class),
         ];
     }
 
@@ -61,12 +71,5 @@ class TaxDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new TaxDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    protected function initTranslations(object $translations): void
-    {
-        $this->throwIfDataFieldOnObjectIsEmpty($translations);
-
-        $this->translations = collect($translations->data)->map(fn ($translation) => new TaxTranslationDto($translation));
     }
 }

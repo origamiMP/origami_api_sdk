@@ -2,8 +2,10 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoActionEnum;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 
 trait TestsUserGroupInvitationDtos
@@ -27,6 +29,11 @@ trait TestsUserGroupInvitationDtos
         ];
 
         return array_merge($baseData, $override);
+    }
+
+    protected function mockUserGroupInvitationDto(array $override = []): UserGroupInvitationDto
+    {
+        return new UserGroupInvitationDto(Obj::fromArray($this->mockUserGroupInvitationApiData($override)));
     }
 
     protected function mockUserGroupInvitationResultApiData(array $override = []): array

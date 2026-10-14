@@ -6,11 +6,11 @@ use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleListDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
 class ModuleListDto extends ApiResponseDto
 {
-    use HasAvailableIncludes;
+    use HasIncludes;
 
     /**
      * @var Collection|ModuleDto[]

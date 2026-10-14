@@ -8,12 +8,12 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\RoleDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\RoleDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class RoleDto extends ApiResponseDto
 {
-    use HasAvailableIncludes, HasTimestamps;
+    use HasIncludes, HasTimestamps;
 
     public int $id;
 
@@ -51,7 +51,7 @@ class RoleDto extends ApiResponseDto
             'color'      => 'color',
             'text_color' => 'textColor',
 
-            'permissions' => fn ($permissions) => $this->initPermissions($permissions),
+            'permissions' => fn (object $permissions) => $this->permissions = $this->collectIncluded($permissions, RolePermissionDto::class),
         ];
 
         return array_merge(
@@ -83,12 +83,5 @@ class RoleDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new RoleDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    protected function initPermissions($permissions): void
-    {
-        $this->throwIfDataFieldOnObjectIsEmpty($permissions);
-
-        $this->permissions = collect($permissions->data)->map(fn ($permission) => new RolePermissionDto($permission));
     }
 }

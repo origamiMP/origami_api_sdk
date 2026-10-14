@@ -3,8 +3,9 @@
 namespace OrigamiMp\OrigamiApiSdk\Traits\Dtos;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
-trait HasAvailableIncludes
+trait HasIncludes
 {
     public static function isIncludeAvailable(string $include): bool
     {
@@ -35,4 +36,34 @@ trait HasAvailableIncludes
      * @return string[]
      */
     abstract public static function getAvailableIncludes(): array;
+
+    /**
+     * Includes come wrapped by Fractal: {"data": [...]}. An empty list gives an empty Collection.
+     *
+     * @template T of object
+     *
+     * @param  class-string<T>  $dtoClass
+     * @return Collection<int, T>
+     */
+    protected function collectIncluded(object $included, string $dtoClass): Collection
+    {
+        $this->throwIfDataFieldOnObjectIsEmpty($included);
+
+        return collect($included->data)->map(fn (object $item) => new $dtoClass($item));
+    }
+
+    /**
+     * A single item include comes wrapped by Fractal too: {"data": {...}}.
+     *
+     * @template T of object
+     *
+     * @param  class-string<T>  $dtoClass
+     * @return T
+     */
+    protected function makeIncluded(object $included, string $dtoClass): object
+    {
+        $this->throwIfDataFieldOnObjectIsEmpty($included);
+
+        return new $dtoClass($included->data);
+    }
 }

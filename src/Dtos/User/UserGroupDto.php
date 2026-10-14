@@ -7,12 +7,12 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class UserGroupDto extends ApiResponseDto
 {
-    use HasAvailableIncludes, HasTimestamps;
+    use HasIncludes, HasTimestamps;
 
     public int $id;
 

@@ -7,11 +7,11 @@ use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSectionDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludedCollections;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
 class FormSectionDto extends ApiResponseDto implements Arrayable
 {
-    use HasIncludedCollections;
+    use HasIncludes;
 
     public int $id;
 
@@ -24,6 +24,14 @@ class FormSectionDto extends ApiResponseDto implements Arrayable
 
     /** @var Collection<int, FormFieldDto> */
     public Collection $fields;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            'translations' => FormSectionTranslationDto::class,
+            'fields'       => FormFieldDto::class,
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

@@ -8,13 +8,13 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class UserDto extends ApiResponseDto
 {
-    use HasAvailableIncludes, HasCustomFields, HasTimestamps;
+    use HasCustomFields, HasIncludes, HasTimestamps;
 
     public int $id;
 
@@ -118,8 +118,8 @@ class UserDto extends ApiResponseDto
             'state'                         => fn ($state) => $this->state = UserDtoStateEnum::from($state),
             'is_account_validated'          => 'isAccountValidated',
 
-            'user_groups' => fn ($userGroups) => $this->initUserGroups($userGroups),
-            'roles'       => fn ($roles) => $this->initRoles($roles),
+            'user_groups' => fn (object $userGroups) => $this->userGroups = $this->collectIncluded($userGroups, UserGroupDto::class),
+            'roles'       => fn (object $roles) => $this->roles = $this->collectIncluded($roles, RoleDto::class),
         ];
 
         return array_merge(
@@ -160,19 +160,5 @@ class UserDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new UserDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    protected function initUserGroups($userGroups): void
-    {
-        $this->throwIfDataFieldOnObjectIsEmpty($userGroups);
-
-        $this->userGroups = collect($userGroups->data)->map(fn ($userGroup) => new UserGroupDto($userGroup));
-    }
-
-    protected function initRoles($roles): void
-    {
-        $this->throwIfDataFieldOnObjectIsEmpty($roles);
-
-        $this->roles = collect($roles->data)->map(fn ($role) => new RoleDto($role));
     }
 }

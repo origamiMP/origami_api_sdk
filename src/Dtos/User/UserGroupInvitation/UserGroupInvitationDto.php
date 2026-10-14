@@ -9,12 +9,12 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class UserGroupInvitationDto extends ApiResponseDto
 {
-    use HasAvailableIncludes, HasTimestamps;
+    use HasIncludes, HasTimestamps;
 
     public int $id;
 
@@ -67,7 +67,7 @@ class UserGroupInvitationDto extends ApiResponseDto
             'is_valid'       => 'isValid',
             'token'          => 'token',
 
-            'user_group' => fn ($userGroup) => $this->initUserGroup($userGroup),
+            'user_group' => fn (object $userGroup) => $this->userGroup = $this->makeIncluded($userGroup, UserGroupDto::class),
         ];
 
         return array_merge(
@@ -105,12 +105,5 @@ class UserGroupInvitationDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new UserGroupInvitationDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    protected function initUserGroup($userGroup): void
-    {
-        $this->throwIfDataFieldOnObjectIsEmpty($userGroup);
-
-        $this->userGroup = new UserGroupDto($userGroup->data);
     }
 }

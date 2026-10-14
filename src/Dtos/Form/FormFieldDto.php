@@ -9,11 +9,11 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormFieldDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludedCollections;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
 class FormFieldDto extends ApiResponseDto implements Arrayable
 {
-    use HasIncludedCollections;
+    use HasIncludes;
 
     public int $id;
 
@@ -42,6 +42,14 @@ class FormFieldDto extends ApiResponseDto implements Arrayable
 
     /** @var Collection<int, FormFieldOptionDto> */
     public Collection $options;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            'translations' => FormFieldTranslationDto::class,
+            'options'      => FormFieldOptionDto::class,
+        ];
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

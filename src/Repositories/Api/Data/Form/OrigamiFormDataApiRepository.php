@@ -29,7 +29,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     public function list(ListFormRequestParamBag $paramBag): FormListDto
     {
         $response = $this->restClient->get('forms', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FormListDto($responseContent);
     }
@@ -44,7 +44,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     public function get(int $id): FormDto
     {
         $response = $this->restClient->get("forms/{$id}");
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -57,7 +57,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     public function create(CreateFormRequestParamBag $paramBag): FormDto
     {
         $response = $this->restClient->post('forms', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -93,7 +93,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     public function duplicate(int $id): FormDto
     {
         $response = $this->restClient->post("forms/{$id}/duplicate");
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -106,7 +106,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     public function getTypes(): FormTypesDto
     {
         $response = $this->restClient->get('forms/types');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FormTypesDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
@@ -119,7 +119,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     public function getPrefillSources(): FormPrefillSourcesDto
     {
         $response = $this->restClient->get('forms/prefill-sources');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new FormPrefillSourcesDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }

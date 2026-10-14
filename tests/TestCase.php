@@ -8,6 +8,7 @@ use Tests\TestUtils\TestsCountryDtos;
 use Tests\TestUtils\TestsCustomFieldDtos;
 use Tests\TestUtils\TestsErrorDtos;
 use Tests\TestUtils\TestsExceptions;
+use Tests\TestUtils\TestsFormDtos;
 use Tests\TestUtils\TestsLanguageDtos;
 use Tests\TestUtils\TestsModuleDtos;
 use Tests\TestUtils\TestsOauthDtos;
@@ -24,6 +25,7 @@ abstract class TestCase extends BaseTestCase
         TestsCustomFieldDtos,
         TestsErrorDtos,
         TestsExceptions,
+        TestsFormDtos,
         TestsLanguageDtos,
         TestsModuleDtos,
         TestsOauthDtos,

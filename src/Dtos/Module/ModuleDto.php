@@ -5,12 +5,12 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Module;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasAvailableIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 class ModuleDto extends ApiResponseDto
 {
-    use HasAvailableIncludes, HasTimestamps;
+    use HasIncludes, HasTimestamps;
 
     public int $id;
 
