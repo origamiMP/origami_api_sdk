@@ -15,9 +15,9 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
     public function getRequiredDocuments(int $sellerId): DocumentTypeListDto
     {
         $response = $this->restClient->get("sellers/{$sellerId}/required_documents");
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
-        return new DocumentTypeListDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new DocumentTypeListDto($responseContent);
     }
 
     /**
@@ -26,7 +26,7 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
     public function create(CreateSellerDocumentRequestParamBag $paramBag): SellerDocumentDto
     {
         $response = $this->restClient->post('sellers/documents', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SellerDocumentDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }

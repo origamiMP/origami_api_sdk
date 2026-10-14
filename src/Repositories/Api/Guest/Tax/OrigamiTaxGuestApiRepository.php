@@ -13,7 +13,7 @@ class OrigamiTaxGuestApiRepository extends OrigamiGuestApiRepository
     public function list(): TaxListDto
     {
         $response = $this->restClient->get('taxes');
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new TaxListDto($responseContent);
     }

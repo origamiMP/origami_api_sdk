@@ -11,7 +11,7 @@ class OrigamiModuleDataApiRepository extends OrigamiDataApiRepository
     public function list(ListModuleRequestParamBag $paramBag): ModuleListDto
     {
         $response = $this->restClient->get('modules', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new ModuleListDto($responseContent);
     }

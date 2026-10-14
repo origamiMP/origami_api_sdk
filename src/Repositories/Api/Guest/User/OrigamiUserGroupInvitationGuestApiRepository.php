@@ -22,7 +22,7 @@ class OrigamiUserGroupInvitationGuestApiRepository extends OrigamiGuestApiReposi
     {
         $response = $this->restClient->post('users/groups/invitations/accept', $paramBag);
 
-        $responseContent = json_decode($response->getBody()->getContents())->data;
+        $responseContent = $this->decodeResponse($response)->data;
 
         return new UserGroupInvitationDto($responseContent);
     }

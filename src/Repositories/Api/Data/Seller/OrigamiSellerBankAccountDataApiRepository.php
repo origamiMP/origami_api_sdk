@@ -14,7 +14,7 @@ class OrigamiSellerBankAccountDataApiRepository extends OrigamiDataApiRepository
     public function create(CreateBankAccountRequestParamBag $paramBag): SellerBankAccountDto
     {
         $response = $this->restClient->post('sellers/bank_accounts', $paramBag);
-        $responseContent = json_decode($response->getBody()->getContents());
+        $responseContent = $this->decodeResponse($response);
 
         return new SellerBankAccountDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
