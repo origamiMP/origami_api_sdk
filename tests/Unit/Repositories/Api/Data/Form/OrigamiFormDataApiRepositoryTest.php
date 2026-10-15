@@ -4,12 +4,14 @@ namespace Tests\Unit\Repositories\Api\Data\Form;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormPageDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormPrefillSourcesDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormTypesDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\CreateFormRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\DuplicateFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormConditionParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormFieldOptionParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormFieldOptionTranslationParamBag;
@@ -21,6 +23,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormPageTranslationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormSectionParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormSectionTranslationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\FormTranslationParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\GetFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\ListFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\UpdateFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Form\OrigamiFormDataApiRepository;
@@ -358,5 +361,106 @@ class OrigamiFormDataApiRepositoryTest extends TestCase
         $this->assertSame(['company_name'], $sources->attributes->pluck('key')->all());
         $this->assertSame(['siret'], $sources->customFields->pluck('key')->all());
         $this->assertNull($sources->customFields->first()->type);
+    }
+
+    /**
+     * `GET forms` should send the includes available on a form as query, and read the included pages of each form.
+     */
+    public function test_list_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
+            $this->mockFormApiData(['pages' => ['data' => [$this->mockFormPageApiData(['id' => 42])]]]),
+        ])));
+        $paramBag = new ListFormRequestParamBag;
+        $paramBag->setIncludes(['pages', 'unknown']);
+
+        $forms = (new OrigamiFormDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'forms');
+        $this->assertLastApiRequestQueryWas(['page' => '1', 'item_per_page' => '20', 'include' => ['pages']]);
+        $this->assertInstanceOf(FormListDto::class, $forms);
+        $this->assertInstanceOf(FormPageDto::class, $forms->data->first()->pages->first());
+        $this->assertSame(42, $forms->data->first()->pages->first()->id);
+    }
+
+    /**
+     * `GET forms/{id}` should send the includes available on a form as query, and read the included pages.
+     */
+    public function test_get_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockFormApiData([
+            'pages' => ['data' => [$this->mockFormPageApiData(['id' => 42])]],
+        ])]));
+        $paramBag = new GetFormRequestParamBag;
+        $paramBag->setIncludes(['pages', 'translations', 'unknown']);
+
+        $form = (new OrigamiFormDataApiRepository($restClient))->get(1, $paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'forms/1');
+        $this->assertLastApiRequestQueryWas(['include' => ['pages', 'translations']]);
+        $this->assertInstanceOf(FormDto::class, $form);
+        $this->assertInstanceOf(FormPageDto::class, $form->pages->first());
+        $this->assertSame(42, $form->pages->first()->id);
+    }
+
+    /**
+     * `POST forms` should send the includes available on a form as query, along with the form as JSON, and read the
+     * included pages.
+     */
+    public function test_create_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockFormApiData([
+            'pages' => ['data' => [$this->mockFormPageApiData(['id' => 42])]],
+        ])]));
+        $translation = new FormTranslationParamBag;
+        $translation->languageId = 1;
+        $translation->name = 'Quote request';
+        $paramBag = new CreateFormRequestParamBag;
+        $paramBag->translations = [$translation];
+        $paramBag->setIncludes(['pages', 'unknown']);
+
+        $form = (new OrigamiFormDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'forms');
+        $this->assertLastApiRequestQueryWas(['include' => ['pages']]);
+        $this->assertLastApiRequestJsonWas(['translations' => [['language_id' => 1, 'name' => 'Quote request']]]);
+        $this->assertInstanceOf(FormDto::class, $form);
+        $this->assertSame(42, $form->pages->first()->id);
+    }
+
+    /**
+     * `POST forms/{id}/duplicate` should send the includes available on a form as query, without any body, and read
+     * the included pages of the copy.
+     */
+    public function test_duplicate_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockFormApiData([
+            'pages' => ['data' => [$this->mockFormPageApiData(['id' => 42])]],
+        ])]));
+        $paramBag = new DuplicateFormRequestParamBag;
+        $paramBag->setIncludes(['pages', 'unknown']);
+
+        $form = (new OrigamiFormDataApiRepository($restClient))->duplicate(1, $paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'forms/1/duplicate');
+        $this->assertLastApiRequestQueryWas(['include' => ['pages']]);
+        $this->assertLastApiRequestHadNoBody();
+        $this->assertInstanceOf(FormDto::class, $form);
+        $this->assertSame(42, $form->pages->first()->id);
+    }
+
+    /**
+     * `GET forms` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_4(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$this->mockFormApiData(['id' => 42])])));
+
+        $forms = (new OrigamiFormDataApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'forms');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(FormListDto::class, $forms);
+        $this->assertSame(42, $forms->data->first()->id);
     }
 }

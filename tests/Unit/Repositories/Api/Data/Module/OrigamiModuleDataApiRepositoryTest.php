@@ -25,4 +25,19 @@ class OrigamiModuleDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(ModuleListDto::class, $modules);
         $this->assertSame(['payment', 'shipping'], $modules->data->pluck('name')->all());
     }
+
+    /**
+     * `GET modules` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [$this->mockModuleApiData(['id' => 42])]]));
+
+        $modules = (new OrigamiModuleDataApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'modules');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(ModuleListDto::class, $modules);
+        $this->assertSame(42, $modules->data->first()->id);
+    }
 }

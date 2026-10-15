@@ -23,6 +23,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupIn
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\CheckPendingUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationHistoryRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationsRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ResendUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationsRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ValidateUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
@@ -67,9 +68,9 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationDtoNotConstructableException
      */
-    public function resend(int $invitationId): UserGroupInvitationDto
+    public function resend(int $invitationId, ?ResendUserGroupInvitationRequestParamBag $paramBag = null): UserGroupInvitationDto
     {
-        $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend");
+        $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));
@@ -142,7 +143,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationListResponseDtoNotConstructableException
      */
-    public function list(ListUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationListDto
+    public function list(?ListUserGroupInvitationsRequestParamBag $paramBag = null): UserGroupInvitationListDto
     {
         $response = $this->restClient->get('users/groups/invitations', $paramBag);
         $responseContent = $this->decodeResponse($response);

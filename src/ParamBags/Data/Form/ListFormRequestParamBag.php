@@ -3,16 +3,19 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form;
 
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContract, HasPaginationContract, HasSearchContract
+class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
 {
-    use HasFilters, HasPagination, HasSearch;
+    use HasFilters, HasIncludes, HasPagination, HasSearch;
 
     /**
      * Sent as `with_count=fields`, which adds `fields_count` to each form.
@@ -37,6 +40,7 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
             $this->getFiltersParamsList(),
             $this->getPaginationParamsList(),
             $this->getSearchParamsList(),
+            $this->getIncludeParamsList(),
             ['withCount'],
         );
     }
@@ -47,7 +51,13 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
             $this->getFiltersValidationRules(),
             $this->getPaginationValidationRules(),
             $this->getSearchValidationRules(),
+            $this->getIncludeValidationRules(),
             ['with_count' => ['string', 'in:fields']],
         );
+    }
+
+    protected static function getRequestMainDto(): string
+    {
+        return FormListDto::class;
     }
 }

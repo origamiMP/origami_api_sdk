@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories\Api\Guest\User;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\User\AcceptUserGroupInvitationRequestParamBag;
@@ -30,5 +31,28 @@ class OrigamiUserGroupInvitationGuestApiRepositoryTest extends TestCase
         $this->assertInstanceOf(UserGroupInvitationDto::class, $invitation);
         $this->assertSame(42, $invitation->id);
         $this->assertSame(UserGroupInvitationDtoStatusEnum::ACCEPTED, $invitation->status);
+    }
+
+    /**
+     * `POST users/groups/invitations/accept` should send the includes available on an invitation as query, along
+     * with the token as JSON, and read the included user group.
+     */
+    public function test_accept_case_2(): void
+    {
+        $restClient = $this->mockGuestRestClientReturning($this->jsonResponse(['data' => $this->mockUserGroupInvitationApiData([
+            'user_group' => ['data' => $this->mockUserGroupApiData(['id' => 42])],
+        ])]));
+        $paramBag = new AcceptUserGroupInvitationRequestParamBag;
+        $paramBag->token = 'some-token';
+        $paramBag->setIncludes(['user_group', 'unknown']);
+
+        $invitation = (new OrigamiUserGroupInvitationGuestApiRepository($restClient))->accept($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'users/groups/invitations/accept');
+        $this->assertLastApiRequestQueryWas(['include' => ['user_group']]);
+        $this->assertLastApiRequestJsonWas(['token' => 'some-token']);
+        $this->assertInstanceOf(UserGroupInvitationDto::class, $invitation);
+        $this->assertInstanceOf(UserGroupDto::class, $invitation->userGroup);
+        $this->assertSame(42, $invitation->userGroup->id);
     }
 }

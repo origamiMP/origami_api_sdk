@@ -18,7 +18,7 @@ class OrigamiCountryGuestApiRepository extends OrigamiGuestApiRepository
      * @throws OrigamiApiUnknownException
      * @throws CountryListDtoNotConstructableException
      */
-    public function list(ListCountriesRequestParamBag $paramBag): CountryListDto
+    public function list(?ListCountriesRequestParamBag $paramBag = null): CountryListDto
     {
         $response = $this->restClient->get('countries', $paramBag);
         $responseContent = $this->decodeResponse($response);

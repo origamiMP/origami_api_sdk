@@ -8,7 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiModuleDataApiRepository extends OrigamiDataApiRepository
 {
-    public function list(ListModuleRequestParamBag $paramBag): ModuleListDto
+    public function list(?ListModuleRequestParamBag $paramBag = null): ModuleListDto
     {
         $response = $this->restClient->get('modules', $paramBag);
         $responseContent = $this->decodeResponse($response);

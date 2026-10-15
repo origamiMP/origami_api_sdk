@@ -5,11 +5,17 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\CustomField;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
 class CustomFieldListDto extends ApiResponseDto
 {
-    use HasPagination;
+    use HasIncludes, HasPagination;
+
+    public static function getAvailableIncludes(): array
+    {
+        return CustomFieldDto::getAvailableIncludes();
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

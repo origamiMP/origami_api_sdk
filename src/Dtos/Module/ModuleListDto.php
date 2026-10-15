@@ -19,11 +19,7 @@ class ModuleListDto extends ApiResponseDto
 
     public static function getAvailableIncludes(): array
     {
-        return [
-            // 'payment_psp',
-            // 'webhooks',
-            // 'logs',
-        ];
+        return ModuleDto::getAvailableIncludes();
     }
 
     protected function getDefaultDataStructureToProperties(): array

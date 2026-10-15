@@ -6,11 +6,17 @@ use Illuminate\Contracts\Support\Arrayable;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
 class FormListDto extends ApiResponseDto implements Arrayable
 {
-    use HasPagination;
+    use HasIncludes, HasPagination;
+
+    public static function getAvailableIncludes(): array
+    {
+        return FormDto::getAvailableIncludes();
+    }
 
     protected function getDefaultDataStructureToProperties(): array
     {

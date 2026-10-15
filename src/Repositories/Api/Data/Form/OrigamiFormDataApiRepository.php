@@ -15,6 +15,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormListDtoNotConstructableExce
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormPrefillSourcesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormTypesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\CreateFormRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\DuplicateFormRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\GetFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\ListFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\UpdateFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
@@ -26,7 +28,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      * @throws OrigamiApiUnknownException
      * @throws FormListDtoNotConstructableException
      */
-    public function list(ListFormRequestParamBag $paramBag): FormListDto
+    public function list(?ListFormRequestParamBag $paramBag = null): FormListDto
     {
         $response = $this->restClient->get('forms', $paramBag);
         $responseContent = $this->decodeResponse($response);
@@ -41,9 +43,9 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      * @throws OrigamiApiUnknownException
      * @throws FormDtoNotConstructableException
      */
-    public function get(int $id): FormDto
+    public function get(int $id, ?GetFormRequestParamBag $paramBag = null): FormDto
     {
-        $response = $this->restClient->get("forms/{$id}");
+        $response = $this->restClient->get("forms/{$id}", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
@@ -90,9 +92,9 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      * @throws OrigamiApiUnknownException
      * @throws FormDtoNotConstructableException
      */
-    public function duplicate(int $id): FormDto
+    public function duplicate(int $id, ?DuplicateFormRequestParamBag $paramBag = null): FormDto
     {
-        $response = $this->restClient->post("forms/{$id}/duplicate");
+        $response = $this->restClient->post("forms/{$id}/duplicate", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));

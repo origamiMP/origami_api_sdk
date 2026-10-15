@@ -4,8 +4,11 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoMangopayScaStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoTypeEnum;
@@ -101,32 +104,68 @@ class SellerDto extends ApiResponseDto implements Arrayable
 
     public bool $isInHoliday;
 
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var SellerDocumentDto[]|Collection
+     */
+    public Collection $documents;
+
+    /**
+     * May be undefined if the corresponding data was not included, or if the seller has no default tax.
+     */
+    public TaxDto $defaultTax;
+
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var SellerBankAccountDto[]|Collection
+     */
+    public Collection $bankAccounts;
+
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var DocumentTypeDto[]|Collection
+     */
+    public Collection $requiredDocuments;
+
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var UserDto[]|Collection
+     */
+    public Collection $users;
+
     public static function getAvailableIncludes(): array
     {
         return [
             // 'shipping_offers',
             // 'product_offers',
             // 'tickets',
-            // 'documents',
-            // 'default_tax',
+            'documents'   => SellerDocumentDto::class,
+            'default_tax' => TaxDto::class,
             // 'payment_reports',
-            // 'bank_accounts',
+            'bank_accounts' => SellerBankAccountDto::class,
             // 'invoices',
             // 'subscriptions',
             // 'legal_information',
             // 'psp_wallets',
-            // 'required_documents',
+            // 'current_psp_wallet',
+            'required_documents' => DocumentTypeDto::class,
             // 'visibilities',
-            // 'users',
+            'users' => UserDto::class,
             // 'user_group_users',
             // 'reviews',
             // 'psp_users',
+            // 'current_psp_user',
             // 'notifications_sent',
             // 'invoice_tax',
             // 'psp_ubos',
             // 'subscription_lines',
             // 'warehouses',
             // 'translations',
+            // 'lifecycle_state',
         ];
     }
 
@@ -174,6 +213,12 @@ class SellerDto extends ApiResponseDto implements Arrayable
             'holiday_return_date'      => fn ($holidayReturnDate) => $this->holidayReturnDate = $holidayReturnDate ? Carbon::parse($holidayReturnDate) : $holidayReturnDate,
             'deactivated_until'        => fn ($deactivatedUntil) => $this->deactivatedUntil = $deactivatedUntil ? Carbon::parse($deactivatedUntil) : $deactivatedUntil,
             'is_in_holiday'            => 'isInHoliday',
+
+            'documents'          => fn (object $documents) => $this->documents = $this->collectIncluded($documents, SellerDocumentDto::class),
+            'default_tax'        => fn (object $defaultTax) => $this->defaultTax = $this->makeIncluded($defaultTax, TaxDto::class),
+            'bank_accounts'      => fn (object $bankAccounts) => $this->bankAccounts = $this->collectIncluded($bankAccounts, SellerBankAccountDto::class),
+            'required_documents' => fn (object $requiredDocuments) => $this->requiredDocuments = $this->collectIncluded($requiredDocuments, DocumentTypeDto::class),
+            'users'              => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
         return array_merge(

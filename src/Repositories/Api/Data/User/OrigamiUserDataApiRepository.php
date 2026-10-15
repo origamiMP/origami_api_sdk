@@ -17,7 +17,7 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
      * @throws OrigamiApiUnknownException
      * @throws UserDtoNotConstructableException
      */
-    public function getCurrentAuthenticatedUser(GetCurrentUserRequestParamBag $paramBag): UserDto
+    public function getCurrentAuthenticatedUser(?GetCurrentUserRequestParamBag $paramBag = null): UserDto
     {
         $response = $this->restClient->get('me', $paramBag);
 

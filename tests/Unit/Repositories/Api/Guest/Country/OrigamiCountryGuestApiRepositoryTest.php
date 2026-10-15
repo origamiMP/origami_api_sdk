@@ -31,4 +31,19 @@ class OrigamiCountryGuestApiRepositoryTest extends TestCase
         $this->assertSame(['FR', 'BE'], $countries->data->pluck('iso2')->all());
         $this->assertSame(2, $countries->total);
     }
+
+    /**
+     * `GET countries` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_2(): void
+    {
+        $restClient = $this->mockGuestRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$this->mockCountryApiData(['id' => 42])])));
+
+        $countries = (new OrigamiCountryGuestApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'countries');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(CountryListDto::class, $countries);
+        $this->assertSame(42, $countries->data->first()->id);
+    }
 }

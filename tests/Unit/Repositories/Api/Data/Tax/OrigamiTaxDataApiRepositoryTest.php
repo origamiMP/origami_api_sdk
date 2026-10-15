@@ -3,6 +3,7 @@
 namespace Tests\Unit\Repositories\Api\Data\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax\CreateTaxRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax\TaxTranslationParamBag;
@@ -70,5 +71,26 @@ class OrigamiTaxDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('DELETE', 'taxes/42');
         $this->assertLastApiRequestHadNoBody();
+    }
+
+    /**
+     * `POST taxes` should send the includes available on a tax as query, along with the tax as JSON, and read the
+     * included translations.
+     */
+    public function test_create_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockTaxApiData()]));
+        $paramBag = new CreateTaxRequestParamBag;
+        $paramBag->value = 5.5;
+        $paramBag->setIncludes(['translations', 'unknown']);
+
+        $tax = (new OrigamiTaxDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'taxes');
+        $this->assertLastApiRequestQueryWas(['include' => ['translations']]);
+        $this->assertLastApiRequestJsonWas(['value' => 5.5]);
+        $this->assertInstanceOf(TaxDto::class, $tax);
+        $this->assertContainsOnlyInstancesOf(TaxTranslationDto::class, $tax->translations);
+        $this->assertSame(['VAT'], $tax->translations->pluck('name')->all());
     }
 }

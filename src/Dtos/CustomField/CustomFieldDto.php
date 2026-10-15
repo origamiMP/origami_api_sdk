@@ -8,6 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 /**
@@ -19,7 +20,7 @@ use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
  */
 class CustomFieldDto extends ApiResponseDto
 {
-    use HasTimestamps;
+    use HasIncludes, HasTimestamps;
 
     public int $id;
 
@@ -40,6 +41,25 @@ class CustomFieldDto extends ApiResponseDto
      */
     public Collection $translations;
 
+    /**
+     * Possible values of a select or multiple Custom Field.
+     *
+     * May be undefined if the corresponding data was not included, or if the Custom Field is not a select or a
+     * multiple.
+     *
+     * @var Collection|CustomFieldValueDto[]
+     */
+    public Collection $values;
+
+    public static function getAvailableIncludes(): array
+    {
+        return [
+            // 'group',
+            'values'       => CustomFieldValueDto::class,
+            'translations' => CustomFieldTranslationDto::class,
+        ];
+    }
+
     protected function getDefaultDataStructureToProperties(): array
     {
         $structure = [
@@ -52,6 +72,7 @@ class CustomFieldDto extends ApiResponseDto
             'private'               => 'isPrivate',
             // Fractal wraps every include (even nested ones) in its own `{"data": [...]}` envelope.
             'translations' => fn ($translations) => $this->initTranslations($translations->data ?? []),
+            'values'       => fn (object $values) => $this->values = $this->collectIncluded($values, CustomFieldValueDto::class),
         ];
 
         return array_merge($structure, $this->getTimestampsAsDataStructureToProperties());

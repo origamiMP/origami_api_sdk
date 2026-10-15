@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersC
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
@@ -53,6 +53,6 @@ class ListUserGroupInvitationsRequestParamBag extends RequestParamBag implements
 
     protected static function getRequestMainDto(): string
     {
-        return UserGroupInvitationDto::class;
+        return UserGroupInvitationListDto::class;
     }
 }

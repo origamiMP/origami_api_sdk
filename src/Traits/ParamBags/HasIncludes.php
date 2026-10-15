@@ -21,9 +21,9 @@ trait HasIncludes
         }
 
         $this->include = collect($includes)
-            ->values()
             ->unique()
             ->filter(fn ($include) => $requestMainDto::isIncludeAvailable($include))
+            ->values()
             ->toArray();
     }
 

@@ -30,6 +30,8 @@ trait HasCustomFields
     {
         if (! is_object($additionalInformation)) {
             $this->additionalInformation = collect();
+
+            return;
         }
 
         $this->additionalInformation = collect($additionalInformation)->map(fn ($customField) => new CustomFieldModelValueDto($customField));

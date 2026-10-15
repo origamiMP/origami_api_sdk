@@ -6,12 +6,13 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerLegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSellerRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\GetSellerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\ListSellerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
 {
-    public function list(ListSellerRequestParamBag $paramBag): SellerListDto
+    public function list(?ListSellerRequestParamBag $paramBag = null): SellerListDto
     {
         $response = $this->restClient->get('sellers', $paramBag);
         $responseContent = $this->decodeResponse($response);
@@ -19,9 +20,9 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         return new SellerListDto($responseContent);
     }
 
-    public function get(int $id): SellerDto
+    public function get(int $id, ?GetSellerRequestParamBag $paramBag = null): SellerDto
     {
-        $response = $this->restClient->get("sellers/$id");
+        $response = $this->restClient->get("sellers/$id", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));

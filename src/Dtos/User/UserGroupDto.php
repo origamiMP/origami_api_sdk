@@ -2,8 +2,11 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
+use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupDtoNotConstructableException;
@@ -72,22 +75,45 @@ class UserGroupDto extends ApiResponseDto
 
     public bool $phoneValidated;
 
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var SellerDocumentDto[]|Collection
+     */
+    public Collection $documents;
+
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var SellerBankAccountDto[]|Collection
+     */
+    public Collection $bankAccounts;
+
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var UserDto[]|Collection
+     */
+    public Collection $users;
+
     public static function getAvailableIncludes(): array
     {
         return [
             // 'shipping_offers',
             // 'product_offers',
             // 'tickets',
-            // 'documents',
+            'documents' => SellerDocumentDto::class,
             // 'payment_reports',
-            // 'bank_accounts',
+            'bank_accounts' => SellerBankAccountDto::class,
             // 'invoices',
             // 'subscriptions',
             // 'subscription_lines',
-            // 'users',
+            'users' => UserDto::class,
             // 'legal_information',
             // 'psp_wallets',
+            // 'current_psp_wallet',
             // 'psp_users',
+            // 'current_psp_user',
             // 'translations',
             // 'user_group_users',
             // 'mandates',
@@ -127,6 +153,10 @@ class UserGroupDto extends ApiResponseDto
             'external_uid'         => 'externalUid',
             'email_validated'      => 'emailValidated',
             'phone_validated'      => 'phoneValidated',
+
+            'documents'     => fn (object $documents) => $this->documents = $this->collectIncluded($documents, SellerDocumentDto::class),
+            'bank_accounts' => fn (object $bankAccounts) => $this->bankAccounts = $this->collectIncluded($bankAccounts, SellerBankAccountDto::class),
+            'users'         => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
         return array_merge(
