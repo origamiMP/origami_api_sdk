@@ -448,4 +448,19 @@ class OrigamiFormDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(FormDto::class, $form);
         $this->assertSame(42, $form->pages->first()->id);
     }
+
+    /**
+     * `GET forms` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_4(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$this->mockFormApiData(['id' => 42])])));
+
+        $forms = (new OrigamiFormDataApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'forms');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(FormListDto::class, $forms);
+        $this->assertSame(42, $forms->data->first()->id);
+    }
 }

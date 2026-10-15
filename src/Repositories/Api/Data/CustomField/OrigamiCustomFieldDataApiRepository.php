@@ -10,7 +10,7 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiCustomFieldDataApiRepository extends OrigamiDataApiRepository
 {
-    public function list(ListCustomFieldRequestParamBag $paramBag): CustomFieldListDto
+    public function list(?ListCustomFieldRequestParamBag $paramBag = null): CustomFieldListDto
     {
         $response = $this->restClient->get('custom_fields', $paramBag);
         $responseContent = $this->decodeResponse($response);
@@ -21,7 +21,7 @@ class OrigamiCustomFieldDataApiRepository extends OrigamiDataApiRepository
     /**
      * Get the possible values of a `select`/`multiple` custom field
      */
-    public function getValues(int $customFieldId, ListCustomFieldValueRequestParamBag $paramBag): CustomFieldValueListDto
+    public function getValues(int $customFieldId, ?ListCustomFieldValueRequestParamBag $paramBag = null): CustomFieldValueListDto
     {
         $response = $this->restClient->get("custom_fields/$customFieldId/values", $paramBag);
         $responseContent = $this->decodeResponse($response);

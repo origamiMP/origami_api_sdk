@@ -83,4 +83,19 @@ class OrigamiUserDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(ModuleDto::class, $user->module);
         $this->assertSame(42, $user->module->id);
     }
+
+    /**
+     * `GET me` should be callable without param bag, then sending no query.
+     */
+    public function test_get_current_authenticated_user_case_4(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData(['id' => 42])]));
+
+        $user = (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser();
+
+        $this->assertLastApiRequestWas('GET', 'me');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(UserDto::class, $user);
+        $this->assertSame(42, $user->id);
+    }
 }

@@ -1,107 +1,33 @@
 # Tests — Mock data
 
-The data imitating API responses is centralized in the `tests/TestUtils/Tests<Domain>Dtos.php` traits. A test only holds the values it checks, which keeps it short and shows what matters. When the API format changes, only one place needs fixing.
+API response data lives in the `tests/TestUtils/Tests<Domain>Dtos` traits (one per folder of `src/Dtos/`, registered in `TestCase`). A test only holds the values it checks; when the API format changes, one place is fixed.
 
-## One trait per domain
+## `mock<Dto>ApiData(array $override = []): array`
 
-- Name: `Tests<Domain>Dtos` (`TestsSellerDtos`, `TestsFormDtos`, `TestsUserDtos`…), with a domain following the folders of `src/Dtos/`.
-- A new domain → a new trait, registered in `TestCase` (see `structure.md`). A new DTO in an existing domain → one more method in the trait of this domain.
+One method per DTO (name without the `Dto` suffix), returning `array_merge($baseData, $override)` in the API format (snake_case keys). Model: `TestsTaxDtos::mockTaxApiData()`.
 
-## `mock<Dto>ApiData()`: the raw response
+- Every key the DTO validates (`required`, `present`) is there, so that the default data builds a valid DTO. Optional keys (includes, `fields_count`…) are left out, and added by override.
+- Ids: `TestCase::unique()`, foreign keys included. It is a counter reset before each test, so ids are always the same; an id checked by the test is still passed by override (`['id' => 42]`).
+- Enums: `XxxEnum::CASE->value`. Dates: `'2024-05-12 16:12:56'`. Includes: wrapped as Fractal does, `['data' => [...]]`.
+- A child node can have its own method, assembled by override to build a tree (`mockFormPageApiData()`…). So can a nested object that is not a DTO, when tests must change one of its fields, since `array_merge` only merges the first level (`mockCustomFieldModelValueConfigApiData()` for the `config` key of `CustomFieldModelValueDto`).
+- A response without dedicated DTO (stats, `check-pending`) can be written in the test.
 
-One method per DTO, returning an array in the API response format (snake_case keys). The test overrides only the values it cares about:
+## `mock<Dto>Dto(array $override = []): <Dto>`
 
-```php
-protected function mockTaxApiData(array $override = []): array
-{
-    $baseData = [
-        'id'           => TestCase::unique(),
-        'value'        => 20.0,
-        'type'         => TaxDtoTypeEnum::PERCENTAGE->value,
-        'id_scs_tax'   => null,
-        'is_default'   => false,
-        'module_id'    => null,
-        'translations' => ['data' => [
-            ['locale' => 'en', 'default' => true, 'language_id' => TestCase::unique(), 'name' => 'VAT'],
-        ]],
-    ];
+Builds the DTO from the raw data, for DTO tests: `new SellerDto(Obj::fromArray($this->mockSellerApiData($override)))`.
 
-    return array_merge($baseData, $override);
-}
-```
+An override cannot remove a key. To test a missing key, take the raw data, `unset()` the key and build the DTO directly (`CustomFieldModelValueDtoTest::test_value_case_3`), the only case where a test builds a DTO itself.
 
-- Signature: `protected function mock<Dto>ApiData(array $override = []): array`, with the DTO name without the `Dto` suffix (`mockSellerBankAccountApiData`, `mockFormFieldOptionApiData`).
-- Body: `$baseData = [...]`, then `return array_merge($baseData, $override);`.
-- **Every key the DTO validates** (`required` or `present`) is there, so that the default data builds a valid DTO. Optional keys (includes, `fields_count`…) are missing by default, and the test adds them by override.
-- **Ids**: `TestCase::unique()`, foreign keys included (`user_group_id`, `language_id`).
-- **Enums**: `XxxEnum::CASE->value`, so that the data follows if a value changes.
-- **Dates**: `'2024-05-12 16:12:56'`.
-- **Includes**: wrapped as Fractal does, `'translations' => ['data' => [...]]`, and `['data' => []]` for an empty list.
-- A child node can have its own method (`mockFormPageApiData()`, `mockFormSectionApiData()`…), which the test assembles by override to build a tree.
-- A **nested object that is not a DTO** can also have its method, when tests need to change one of its fields. `array_merge` only merges the first level: without a dedicated method, the whole object would have to be rewritten, or changed afterwards (`$data['config']['id'] = 42`). Name it after the DTO and the key (`mockCustomFieldModelValueConfigApiData()` for the `config` key of `CustomFieldModelValueDto`):
+## Matching the actual API format
 
-```php
-$this->mockCustomFieldModelValueApiData([
-    'config' => $this->mockCustomFieldModelValueConfigApiData(['type' => 'unknown']),
-]);
-```
-- A response whose shape has no dedicated DTO (stats, `check-pending`) can be written directly in the test.
+Mock data must look like what the API returns, otherwise the test passes while the SDK would break. When in doubt, read the transformer in `origami_api` (`app/Api/Core/Transformers/...`). Known points:
 
-Ids come from `TestCase::unique()`, a counter reset before each test: the ids of a test are thus always the same, whatever the execution order. An id checked by the test is still passed by override (`['id' => 42]`), so that the test reads without knowing the order of the calls to `unique()`.
-
-### Matching the actual API format
-
-Mock data must look like what the API actually returns, otherwise the test passes while the SDK would break in production. When in doubt, read the matching transformer in the `origami_api` repo (`app/Api/Core/Transformers/...`) before writing the data. Known points:
-
-- **The API is in PHP: an empty map is encoded as `[]`**, not `{}` (e.g. no feature flag). A test covering this case uses `jsonResponse([])`.
-- Conversely, to get `{}` in the response, pass `(object) []`: `'params' => (object) []`.
-- An associative array is encoded as a JSON object and becomes a `stdClass` again on the SDK side. If a value must arrive as an object, use an associative array, and add a comment when it is not obvious:
-
-```php
-// Associative (not a list) : encoded as a JSON object, so it decodes back into a stdClass
-// to match ModuleDto's typed `object` properties.
-'configurations' => ['is_enabled' => true],
-```
-
-## `mock<Dto>Dto()`: the built DTO
-
-When a test needs the DTO itself (DTO tests, authenticated client…), add next to it a method building it from the raw data:
-
-```php
-protected function mockSellerDto(array $override = []): SellerDto
-{
-    return new SellerDto(Obj::fromArray($this->mockSellerApiData($override)));
-}
-```
-
-`Obj::fromArray()` turns the array into objects, as decoding the JSON response would.
-
-### Testing a missing key
-
-An override cannot remove a key (`array_merge` adds or replaces, it does not delete). To test a response missing a mandatory key, start from the raw data, remove the key with `unset()`, then build the DTO directly:
-
-```php
-public function test_value_case_3(): void
-{
-    $apiData = $this->mockCustomFieldModelValueApiData();
-    unset($apiData['value']);
-
-    $this->assertThatExceptionWasThrown(
-        fn () => new CustomFieldModelValueDto(Obj::fromArray($apiData)),
-        CustomFieldModelValueDtoNotConstructableException::class,
-    );
-}
-```
-
-This is the only case where a test builds a DTO itself instead of going through `mock<Dto>Dto()`.
+- the API is in PHP: an empty map is encoded as `[]`, not `{}` (test it with `jsonResponse([])`); to get `{}`, pass `(object) []`;
+- an associative array becomes a JSON object, then a `stdClass` in the SDK: say so in a comment when it is not obvious (`TestsModuleDtos`).
 
 ## Generic responses
 
-In `TestCase` and `TestsErrorDtos`:
-
 | Helper | For |
 |---|---|
-| `mockApiPaginatedListData(array $items)` | Single-page paginated list (`data` + `meta.pagination`) |
-| `mockApiPagination(int $count)` | The `pagination` part alone |
-| `mockApiErrorData($status, $detail, $code, ?$field)` | One error of the `errors` list |
-| `mockApiErrorsResponse($status, ...$errors)` | A full error response |
+| `mockApiPaginatedListData(array $items)` | Single-page paginated list (`TestCase`) |
+| `mockApiErrorsResponse($status, ...$errors)`, `mockApiErrorData(...)` | API error response (`TestsErrorDtos`) |

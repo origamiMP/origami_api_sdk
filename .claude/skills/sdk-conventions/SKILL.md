@@ -1,6 +1,6 @@
 ---
 name: sdk-conventions
-description: "Code conventions of the Origami API PHP SDK (origami_api_sdk / origami-mp/origami-api-sdk). Documents unit tests (PHPUnit): file layout and naming, test structure, assertions, mock data (Tests<Domain>Dtos traits), fake HTTP client (TestsRestClient), exceptions (assertThatExceptionWasThrown), fixtures and data providers; and, for the code, include handling in param bags and DTOs, and optional param bags of repository methods (the rest of the code is not documented yet). Use it whenever working on this SDK: when creating or changing a param bag, a repository method or a DTO, and above all whenever writing, completing, fixing or reviewing a test — tests of a repository (Data, Guest, Oauth), a DTO, a REST client, a trait or a shared behavior — even if the user only says « ajoute les TUs », « add tests », « test this repo » or « cover this code », and before adding a helper or test data in tests/TestUtils."
+description: "Use when working in origami_api_sdk: creating or changing a repository method, a param bag or a DTO, or writing, fixing or reviewing PHPUnit tests (« ajoute les TUs », \"add tests\", \"cover this code\")."
 ---
 
 # Conventions — Origami API SDK
@@ -17,18 +17,7 @@ The skill is split by domain, each in its own subfolder of `references/`.
 
 ### Tests (documented)
 
-Always start with `references/tests/README.md` (the essential rules), then read the file matching the kind of test you are writing:
-
-| File | Read it when… |
-|---|---|
-| `references/tests/README.md` | **Always, first**: what we test, the essential rules |
-| `references/tests/structure.md` | You create a test file, a fixture or a helper trait: where to put it, how to name it, how to register it in `TestCase` |
-| `references/tests/writing-tests.md` | You write any test: method naming, docblocks, test body layout, assertions, exceptions, data providers, values used |
-| `references/tests/repositories.md` | You test a repository (`Repositories/Api/...`) or a REST client: fake HTTP client, what to check, expected coverage, examples per endpoint type |
-| `references/tests/mock-data.md` | You need API response data or a ready-made DTO: `Tests<Domain>Dtos` traits, `mock…ApiData()` and `mock…Dto()` methods, actual API format |
-| `references/tests/dtos-and-shared-behavior.md` | You test a DTO, a trait, an abstract class or a cross-cutting convention: fixtures, guard tests |
-
-When in doubt, read several files: they are short and complement each other. For instance, a repository test involves `repositories.md`, `writing-tests.md` and `mock-data.md`.
+Start with `references/tests/README.md`: it lists every test topic and the single file where its rule is written.
 
 ### SDK code (being documented)
 
@@ -38,21 +27,20 @@ When in doubt, read several files: they are short and complement each other. For
 | `references/code/repositories.md` | You create or change a repository method: when its param bag can be optional (only documented topic so far) |
 | `references/code/dtos.md` | You create or change a DTO: declaring includes (commented ones included), list DTOs (only documented topic so far) |
 
-🚧 TODO — the rest of the code conventions (REST clients, exceptions, enums… and the rest of repositories, param bags and DTOs) is not written yet. In the meantime:
-- do not invent a convention;
-- follow the closest pattern already in `src/`, and tell the user the point is not documented.
+🚧 TODO — the rest of the code conventions (REST clients, exceptions, enums… and the rest of repositories, param bags and DTOs) is not written yet (see the last general rule).
 
 ## General rules
 
 - Prefer explicit checks (`is_null($x)`, `array_is_list($x)`) over implicit logic explained by a comment.
 - Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
-- When a convention is not covered here, follow the closest pattern in the existing code and tell the user.
+- When a convention is not covered here, do not invent one: follow the closest pattern in the existing code and tests, and tell the user the point is not documented.
 
 ## How to contribute
 
 This skill is versioned with the SDK code. Any change goes through a PR, like code.
 
-- **Edit the right file**: each file of `references/` covers one topic. Change the relevant one rather than duplicating a rule.
+- **One rule, one place**: each rule is written in a single file; other files refer to it instead of rephrasing it, so that two copies never contradict each other.
+- **Refer to real code**: point to existing tests and classes by name (`OrigamiTaxDataApiRepositoryTest::test_create_case_1`) and keep only short excerpts, rather than copying code that will diverge.
 - **Resolve a `🚧 TODO`**: replace the TODO with the final rule, in the same file.
-- **Add a file or a domain**: a new kind of code (e.g. enums) goes in `references/code/`, an entirely new domain in its own subfolder of `references/`. Add every new file to the tables of this SKILL.md, otherwise it may never be read.
+- **Add a file or a domain**: a new kind of code (e.g. enums) goes in `references/code/`, an entirely new domain in its own subfolder of `references/`. Add every new file to its index (`references/tests/README.md` for tests, the table above for code), otherwise it may never be read.
 - **Change the scope**: reread and update the frontmatter `description`. It is what decides when Claude reads the skill.

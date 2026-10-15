@@ -264,4 +264,19 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(UserGroupDto::class, $invitation->userGroup);
         $this->assertSame(42, $invitation->userGroup->id);
     }
+
+    /**
+     * `GET users/groups/invitations` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$this->mockUserGroupInvitationApiData(['id' => 42])])));
+
+        $invitations = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'users/groups/invitations');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(UserGroupInvitationListDto::class, $invitations);
+        $this->assertSame(42, $invitations->data->first()->id);
+    }
 }

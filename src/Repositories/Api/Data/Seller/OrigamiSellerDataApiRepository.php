@@ -12,7 +12,7 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
 class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
 {
-    public function list(ListSellerRequestParamBag $paramBag): SellerListDto
+    public function list(?ListSellerRequestParamBag $paramBag = null): SellerListDto
     {
         $response = $this->restClient->get('sellers', $paramBag);
         $responseContent = $this->decodeResponse($response);

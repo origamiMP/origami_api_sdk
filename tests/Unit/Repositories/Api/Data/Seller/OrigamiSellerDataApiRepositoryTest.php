@@ -290,4 +290,19 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
             'holiday_return_date'    => '2024-07-31',
         ]);
     }
+
+    /**
+     * `GET sellers` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_4(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$this->mockSellerApiData(['id' => 42])])));
+
+        $sellers = (new OrigamiSellerDataApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'sellers');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(SellerListDto::class, $sellers);
+        $this->assertSame(42, $sellers->data->first()->id);
+    }
 }

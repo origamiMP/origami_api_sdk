@@ -143,7 +143,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationListResponseDtoNotConstructableException
      */
-    public function list(ListUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationListDto
+    public function list(?ListUserGroupInvitationsRequestParamBag $paramBag = null): UserGroupInvitationListDto
     {
         $response = $this->restClient->get('users/groups/invitations', $paramBag);
         $responseContent = $this->decodeResponse($response);

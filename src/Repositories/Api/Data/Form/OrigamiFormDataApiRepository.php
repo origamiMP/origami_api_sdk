@@ -28,7 +28,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      * @throws OrigamiApiUnknownException
      * @throws FormListDtoNotConstructableException
      */
-    public function list(ListFormRequestParamBag $paramBag): FormListDto
+    public function list(?ListFormRequestParamBag $paramBag = null): FormListDto
     {
         $response = $this->restClient->get('forms', $paramBag);
         $responseContent = $this->decodeResponse($response);

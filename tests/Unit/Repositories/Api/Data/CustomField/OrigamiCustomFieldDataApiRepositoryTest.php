@@ -100,4 +100,34 @@ class OrigamiCustomFieldDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(CustomFieldDto::class, $values->data->first()->customField);
         $this->assertSame(42, $values->data->first()->customField->id);
     }
+
+    /**
+     * `GET custom_fields` should be callable without param bag, then sending no query.
+     */
+    public function test_list_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$this->mockCustomFieldApiData(['id' => 42])])));
+
+        $customFields = (new OrigamiCustomFieldDataApiRepository($restClient))->list();
+
+        $this->assertLastApiRequestWas('GET', 'custom_fields');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(CustomFieldListDto::class, $customFields);
+        $this->assertSame(42, $customFields->data->first()->id);
+    }
+
+    /**
+     * `GET custom_fields/{id}/values` should be callable without param bag, then sending no query.
+     */
+    public function test_get_values_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [$this->mockCustomFieldValueApiData(['id' => 42])]]));
+
+        $values = (new OrigamiCustomFieldDataApiRepository($restClient))->getValues(12);
+
+        $this->assertLastApiRequestWas('GET', 'custom_fields/12/values');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(CustomFieldValueListDto::class, $values);
+        $this->assertSame(42, $values->data->first()->id);
+    }
 }
