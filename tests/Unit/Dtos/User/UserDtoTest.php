@@ -4,6 +4,7 @@ namespace Tests\Unit\Dtos\User;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\User\RoleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupUserDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
 use Tests\TestCase;
 
@@ -56,5 +57,30 @@ class UserDtoTest extends TestCase
             fn () => $this->mockUserDto(['roles' => [$this->mockRoleApiData()]]),
             UserDtoNotConstructableException::class,
         );
+    }
+
+    /**
+     * The `user_group_users` include should be read as a collection of user group users, with their nested roles.
+     */
+    public function test_user_group_users_case_1(): void
+    {
+        $userDto = $this->mockUserDto(['user_group_users' => ['data' => [
+            $this->mockUserGroupUserApiData(['id' => 1, 'roles' => ['data' => [$this->mockRoleApiData(['id' => 42])]]]),
+            $this->mockUserGroupUserApiData(['id' => 2]),
+        ]]]);
+
+        $this->assertContainsOnlyInstancesOf(UserGroupUserDto::class, $userDto->userGroupUsers);
+        $this->assertSame([1, 2], $userDto->userGroupUsers->pluck('id')->all());
+        $this->assertSame([42], $userDto->userGroupUsers->first()->roles->pluck('id')->all());
+    }
+
+    /**
+     * Without the `user_group_users` include, the user group users should stay undefined.
+     */
+    public function test_user_group_users_case_2(): void
+    {
+        $userDto = $this->mockUserDto();
+
+        $this->assertFalse(isset($userDto->userGroupUsers));
     }
 }
