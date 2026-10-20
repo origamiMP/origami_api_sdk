@@ -18,6 +18,7 @@ use Tests\TestUtils\TestsRestClient;
 use Tests\TestUtils\TestsSellerDtos;
 use Tests\TestUtils\TestsStateDtos;
 use Tests\TestUtils\TestsTaxDtos;
+use Tests\TestUtils\TestsTicketDtos;
 use Tests\TestUtils\TestsUserDtos;
 use Tests\TestUtils\TestsUserGroupInvitationDtos;
 
@@ -38,6 +39,7 @@ abstract class TestCase extends BaseTestCase
         TestsSellerDtos,
         TestsStateDtos,
         TestsTaxDtos,
+        TestsTicketDtos,
         TestsUserDtos,
         TestsUserGroupInvitationDtos;
 

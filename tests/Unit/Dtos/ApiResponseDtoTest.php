@@ -60,6 +60,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\State\StateLogDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Ticket\TicketDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\RoleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\RolePermissionDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
@@ -131,6 +132,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\State\StateLogDtoNotConstructableExc
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxTranslationDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Ticket\TicketDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\RoleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\RolePermissionDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
@@ -283,6 +285,7 @@ class ApiResponseDtoTest extends TestCase
             'TaxDto'                             => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
             'TaxListDto'                         => [TaxListDto::class, TaxListDtoNotConstructableException::class, (object) []],
             'TaxTranslationDto'                  => [TaxTranslationDto::class, TaxTranslationDtoNotConstructableException::class, (object) []],
+            'TicketDto'                          => [TicketDto::class, TicketDtoNotConstructableException::class, (object) []],
             'UserDto'                            => [UserDto::class, UserDtoNotConstructableException::class, (object) []],
             'UserGroupDto'                       => [UserGroupDto::class, UserGroupDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationCancelDto'       => [UserGroupInvitationCancelDto::class, UserGroupInvitationCancelResponseDtoNotConstructableException::class, (object) []],
