@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Repositories\Api\Data\Order;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Order\OrderLineDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Order\QuoteSellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\State\StateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\State\StateLogDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Order\GetQuoteSellerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Order\OrigamiQuoteSellerDataApiRepository;
 use Tests\TestCase;
@@ -38,7 +38,7 @@ class OrigamiQuoteSellerDataApiRepositoryTest extends TestCase
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockQuoteSellerApiData([
             'id'         => 42,
-            'customer'   => ['data' => $this->mockUserGroupApiData(['id' => 43])],
+            'customer'   => ['data' => $this->mockCustomerApiData(['id' => 43])],
             'orderLines' => ['data' => [$this->mockOrderLineApiData([
                 'id'                 => 44,
                 'form_submission_id' => 45,
@@ -54,7 +54,7 @@ class OrigamiQuoteSellerDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('GET', 'quote_sellers/42');
         $this->assertLastApiRequestQueryWas(['include' => ['customer', 'orderLines.form_submission.values', 'state', 'state_logs']]);
-        $this->assertInstanceOf(UserGroupDto::class, $quote->customer);
+        $this->assertInstanceOf(CustomerDto::class, $quote->customer);
         $this->assertSame(43, $quote->customer->id);
         $this->assertInstanceOf(StateDto::class, $quote->state);
         $this->assertSame(46, $quote->state->id);

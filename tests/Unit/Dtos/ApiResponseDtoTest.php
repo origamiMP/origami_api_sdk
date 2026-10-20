@@ -8,6 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuotePriceBuildUpRowDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldGroupTranslationDto;
@@ -80,6 +81,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuotePriceBuildUpRowDtoN
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuoteResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldGroupDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldGroupTranslationDtoNotConstructableException;
@@ -228,6 +230,7 @@ class ApiResponseDtoTest extends TestCase
         return [
             'CountryDto'                         => [CountryDto::class, CountryDtoNotConstructableException::class, (object) []],
             'CountryListDto'                     => [CountryListDto::class, CountryListDtoNotConstructableException::class, (object) []],
+            'CustomerDto'                        => [CustomerDto::class, CustomerDtoNotConstructableException::class, (object) []],
             'CustomFieldDto'                     => [CustomFieldDto::class, CustomFieldDtoNotConstructableException::class, (object) []],
             'CustomFieldGroupDto'                => [CustomFieldGroupDto::class, CustomFieldGroupDtoNotConstructableException::class, (object) []],
             'CustomFieldGroupTranslationDto'     => [CustomFieldGroupTranslationDto::class, CustomFieldGroupTranslationDtoNotConstructableException::class, (object) []],

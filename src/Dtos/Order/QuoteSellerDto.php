@@ -4,9 +4,9 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Order;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\State\StateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\State\StateLogDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Order\QuoteSellerDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
@@ -32,7 +32,7 @@ class QuoteSellerDto extends ApiResponseDto
     /**
      * May be undefined if the corresponding data was not included.
      */
-    public UserGroupDto $customer;
+    public CustomerDto $customer;
 
     /**
      * May be undefined if the corresponding data was not included.
@@ -56,7 +56,7 @@ class QuoteSellerDto extends ApiResponseDto
     public static function getAvailableIncludes(): array
     {
         return [
-            'customer' => UserGroupDto::class,
+            'customer' => CustomerDto::class,
             // 'seller',
             // 'shippingOffer',
             'orderLines' => OrderLineDto::class,
@@ -98,7 +98,7 @@ class QuoteSellerDto extends ApiResponseDto
             'type'       => 'type',
             'order_id'   => 'orderId',
             'state_id'   => 'stateId',
-            'customer'   => fn (object $customer) => $this->customer = $this->makeIncluded($customer, UserGroupDto::class),
+            'customer'   => fn (object $customer) => $this->customer = $this->makeIncluded($customer, CustomerDto::class),
             'orderLines' => fn (object $orderLines) => $this->orderLines = $this->collectIncluded($orderLines, OrderLineDto::class),
             'state'      => fn (object $state) => $this->state = $this->makeIncluded($state, StateDto::class),
             'state_logs' => fn (object $stateLogs) => $this->stateLogs = $this->collectIncluded($stateLogs, StateLogDto::class),

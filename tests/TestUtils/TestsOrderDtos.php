@@ -46,4 +46,22 @@ trait TestsOrderDtos
     {
         return new OrderLineDto(Obj::fromArray($this->mockOrderLineApiData($override)));
     }
+
+    /**
+     * A customer as the API includes it in an order (the user group transformer): only the fields the SDK reads, the
+     * email of a customer being possibly empty.
+     */
+    protected function mockCustomerApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'        => TestCase::unique(),
+            'type'      => 'customer',
+            'name'      => 'Blois',
+            'firstname' => null,
+            'lastname'  => null,
+            'email'     => null,
+        ];
+
+        return array_merge($baseData, $override);
+    }
 }
