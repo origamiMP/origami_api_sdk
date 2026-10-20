@@ -4,6 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tests\TestUtils\TestsArrayableDtos;
+use Tests\TestUtils\TestsB2BAdvancedDtos;
 use Tests\TestUtils\TestsCountryDtos;
 use Tests\TestUtils\TestsCustomFieldDtos;
 use Tests\TestUtils\TestsErrorDtos;
@@ -12,15 +13,19 @@ use Tests\TestUtils\TestsFormDtos;
 use Tests\TestUtils\TestsLanguageDtos;
 use Tests\TestUtils\TestsModuleDtos;
 use Tests\TestUtils\TestsOauthDtos;
+use Tests\TestUtils\TestsOrderDtos;
 use Tests\TestUtils\TestsRestClient;
 use Tests\TestUtils\TestsSellerDtos;
+use Tests\TestUtils\TestsStateDtos;
 use Tests\TestUtils\TestsTaxDtos;
+use Tests\TestUtils\TestsTicketDtos;
 use Tests\TestUtils\TestsUserDtos;
 use Tests\TestUtils\TestsUserGroupInvitationDtos;
 
 abstract class TestCase extends BaseTestCase
 {
     use TestsArrayableDtos,
+        TestsB2BAdvancedDtos,
         TestsCountryDtos,
         TestsCustomFieldDtos,
         TestsErrorDtos,
@@ -29,9 +34,12 @@ abstract class TestCase extends BaseTestCase
         TestsLanguageDtos,
         TestsModuleDtos,
         TestsOauthDtos,
+        TestsOrderDtos,
         TestsRestClient,
         TestsSellerDtos,
+        TestsStateDtos,
         TestsTaxDtos,
+        TestsTicketDtos,
         TestsUserDtos,
         TestsUserGroupInvitationDtos;
 

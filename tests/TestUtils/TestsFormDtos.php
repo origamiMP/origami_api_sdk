@@ -2,9 +2,11 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionValueDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 
 trait TestsFormDtos
@@ -173,6 +175,48 @@ trait TestsFormDtos
             'label'  => 'Company name',
             'key'    => 'company_name',
             'type'   => 'string',
+        ];
+
+        return array_merge($baseData, $override);
+    }
+
+    /**
+     * Without its answers: add a `values` include to get them.
+     */
+    protected function mockFormSubmissionApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'        => TestCase::unique(),
+            'form_name' => 'Cleaning service',
+        ];
+
+        return array_merge($baseData, $override);
+    }
+
+    protected function mockFormSubmissionValueApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'            => TestCase::unique(),
+            'page_title'    => 'Your site',
+            'label'         => 'Total area',
+            'value'         => 2500,
+            'display_value' => '2500 m²',
+            'position'      => 1,
+            'files'         => [],
+        ];
+
+        return array_merge($baseData, $override);
+    }
+
+    protected function mockFormSubmissionValueDto(array $override = []): FormSubmissionValueDto
+    {
+        return new FormSubmissionValueDto(Obj::fromArray($this->mockFormSubmissionValueApiData($override)));
+    }
+
+    protected function mockFormSubmissionFileApiData(array $override = []): array
+    {
+        $baseData = [
+            'name' => 'store-plan.pdf',
         ];
 
         return array_merge($baseData, $override);
