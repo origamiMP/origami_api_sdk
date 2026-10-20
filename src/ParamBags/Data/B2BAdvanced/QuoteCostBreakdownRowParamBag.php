@@ -18,6 +18,16 @@ class QuoteCostBreakdownRowParamBag extends ParamBag
 
     public float $unitPrice;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'poste'      => 'poste',
+            'montant'    => 'montant',
+            'quantity'   => 'quantity',
+            'unit_price' => 'unitPrice',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

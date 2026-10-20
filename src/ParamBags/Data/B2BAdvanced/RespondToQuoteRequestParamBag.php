@@ -36,31 +36,16 @@ class RespondToQuoteRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'priceTaxExc',
-            'delayDays',
-            'conditions',
-            'engagementMonths',
-            'onCall247',
-            'rseScore',
-            'referencesCount',
-            'certifications',
-            'costBreakdown',
+            'price_tax_exc'     => 'priceTaxExc',
+            'delay_days'        => 'delayDays',
+            'conditions'        => 'conditions',
+            'engagement_months' => 'engagementMonths',
+            'on_call_247'       => 'onCall247',
+            'rse_score'         => 'rseScore',
+            'references_count'  => 'referencesCount',
+            'certifications'    => 'certifications',
+            'cost_breakdown'    => 'costBreakdown',
         ];
-    }
-
-    /**
-     * Str::snake() keeps the digits glued: onCall247 would be sent as on_call247.
-     */
-    protected function propertyNamesToSnakeCase(array $propertyList): array
-    {
-        $properties = parent::propertyNamesToSnakeCase($propertyList);
-
-        if (array_key_exists('on_call247', $properties)) {
-            $properties['on_call_247'] = $properties['on_call247'];
-            unset($properties['on_call247']);
-        }
-
-        return $properties;
     }
 
     protected function validationRulesForProperties(): array
