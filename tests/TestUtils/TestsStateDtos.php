@@ -9,17 +9,8 @@ trait TestsStateDtos
     protected function mockStateApiData(array $override = []): array
     {
         $baseData = [
-            'id'          => TestCase::unique(),
-            'key'         => null,
-            'color'       => '#4169E1',
-            'initial'     => false,
-            'is_final'    => false,
-            'readonly'    => false,
-            'workflow_id' => TestCase::unique(),
-            'text_color'  => '#FFFFFF',
-            'name'        => 'Quote sent',
-            'action_name' => null,
-            'description' => null,
+            'id'   => TestCase::unique(),
+            'name' => 'Quote sent',
         ];
 
         return array_merge($baseData, $override);
@@ -31,11 +22,9 @@ trait TestsStateDtos
     protected function mockStateLogApiData(array $override = []): array
     {
         $baseData = [
-            'id'              => TestCase::unique(),
-            'to_state'        => ['data' => $this->mockStateApiData()],
-            'user_group_type' => 'seller',
-            'message'         => null,
-            'created_at'      => '2024-05-12 16:12:56',
+            'id'         => TestCase::unique(),
+            'created_at' => '2024-05-12 16:12:56',
+            'to_state'   => ['data' => $this->mockStateApiData()],
         ];
 
         return array_merge($baseData, $override);

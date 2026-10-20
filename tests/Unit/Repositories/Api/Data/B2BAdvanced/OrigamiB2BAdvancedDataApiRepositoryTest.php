@@ -29,7 +29,7 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
         $this->assertNull($response->priceTaxExc);
         $this->assertNull($response->respondedAt);
         $this->assertContainsOnlyInstancesOf(QuotePriceBuildUpRowDto::class, $response->priceBuildUp);
-        $this->assertSame(QuotePriceBuildUpRowDtoTypeEnum::RATE, $response->priceBuildUp->first()->type);
+        $this->assertSame(QuotePriceBuildUpRowDtoTypeEnum::AMOUNT, $response->priceBuildUp->first()->type);
     }
 
     /**
@@ -38,8 +38,6 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
      */
     public function test_get_quote_response_case_2(): void
     {
-        $amountRow = $this->mockQuotePriceBuildUpRowApiData(['poste' => 'Margin', 'unit' => '€ HT', 'type' => 'amount', 'montant' => 1530]);
-        unset($amountRow['quantity'], $amountRow['unit_price']);
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockQuoteResponseApiData([
             'has_responded'     => true,
             'price_tax_exc'     => 4470,
@@ -51,8 +49,8 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
             'references_count'  => '3',
             'certifications'    => ['ISO 9001'],
             'price_build_up'    => [
-                $this->mockQuotePriceBuildUpRowApiData(['quantity' => 120, 'unit_price' => 24.5, 'montant' => 2940]),
-                $amountRow,
+                $this->mockQuotePriceBuildUpRowApiData(['poste' => 'Cleaning hours', 'unit' => 'h', 'type' => 'rate', 'quantity' => 120, 'unit_price' => 24.5, 'montant' => 2940]),
+                $this->mockQuotePriceBuildUpRowApiData(['montant' => 1530]),
             ],
             'price_build_up_total' => 4470,
         ])]));

@@ -180,21 +180,14 @@ trait TestsFormDtos
         return array_merge($baseData, $override);
     }
 
+    /**
+     * Without its answers: add a `values` include to get them.
+     */
     protected function mockFormSubmissionApiData(array $override = []): array
     {
         $baseData = [
-            'id'            => TestCase::unique(),
-            'user_group_id' => TestCase::unique(),
-            'user_id'       => TestCase::unique(),
-            'form_id'       => TestCase::unique(),
-            'form_name'     => 'Cleaning service',
-            'context'       => 'quote',
-            'language_id'   => TestCase::unique(),
-            'submitted_at'  => '2024-05-12 16:12:56',
-            'locked_at'     => null,
-            'created_at'    => '2024-05-12 16:12:56',
-            'updated_at'    => '2024-05-12 16:12:56',
-            'values'        => ['data' => [$this->mockFormSubmissionValueApiData()]],
+            'id'        => TestCase::unique(),
+            'form_name' => 'Cleaning service',
         ];
 
         return array_merge($baseData, $override);
@@ -203,19 +196,13 @@ trait TestsFormDtos
     protected function mockFormSubmissionValueApiData(array $override = []): array
     {
         $baseData = [
-            'id'                => TestCase::unique(),
-            'form_field_id'     => TestCase::unique(),
-            'field_key'         => 'total_area',
-            'field_type'        => FormFieldDtoTypeEnum::NUMBER->value,
-            'page_title'        => 'Your site',
-            'section_title'     => 'Scope',
-            'label'             => 'Total area',
-            'hint'              => null,
-            'value'             => 2500,
-            'display_value'     => '2500 m²',
-            'visible_to_seller' => true,
-            'position'          => 1,
-            'files'             => [],
+            'id'            => TestCase::unique(),
+            'page_title'    => 'Your site',
+            'label'         => 'Total area',
+            'value'         => 2500,
+            'display_value' => '2500 m²',
+            'position'      => 1,
+            'files'         => [],
         ];
 
         return array_merge($baseData, $override);
@@ -229,10 +216,7 @@ trait TestsFormDtos
     protected function mockFormSubmissionFileApiData(array $override = []): array
     {
         $baseData = [
-            'name'         => 'store-plan.pdf',
-            'format'       => 'pdf',
-            'size'         => 20480,
-            'download_url' => 'http://api.test/v1/forms/submissions/42/files/store_plan/0',
+            'name' => 'store-plan.pdf',
         ];
 
         return array_merge($baseData, $override);

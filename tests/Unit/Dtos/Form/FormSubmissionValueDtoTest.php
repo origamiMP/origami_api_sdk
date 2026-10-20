@@ -3,7 +3,6 @@
 namespace Tests\Unit\Dtos\Form;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionFileDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use Tests\TestCase;
 
 class FormSubmissionValueDtoTest extends TestCase
@@ -14,7 +13,6 @@ class FormSubmissionValueDtoTest extends TestCase
     public function test_files_case_1(): void
     {
         $value = $this->mockFormSubmissionValueDto([
-            'field_type'    => FormFieldDtoTypeEnum::FILE->value,
             'value'         => null,
             'display_value' => 'store-plan.pdf',
             'files'         => [$this->mockFormSubmissionFileApiData()],
