@@ -15,6 +15,15 @@ class FormFieldOptionParamBag extends ParamBag
      */
     public array $translations;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'id'           => 'id',
+            'value'        => 'value',
+            'translations' => 'translations',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

@@ -4,6 +4,16 @@ A param bag carries the parameters of a request to the API (query, JSON body, he
 
 🚧 TODO — the rest of the param bag conventions (naming, splitting, value conversion, validation…) is not written yet (see the general rules in `SKILL.md`).
 
+## Keys sent to the API
+
+**A param bag declares the API key of every property it sends**, as `api_key => propertyName`, the way a DTO declares the keys it reads (`getDefaultDataStructureToProperties()`). Nothing is deduced from the property names: a property left out, or not set, is not sent.
+
+- A request param bag declares them in `getJsonRequestParamsList()`, `getFormRequestParamsList()` or `getQueryRequestParamsList()`, depending on where the API reads them: `'price_tax_exc' => 'priceTaxExc'`. The traits (`HasIncludes`, `HasFilters`, `HasPagination`, `HasSearch`) declare theirs the same way, merged by the param bag (`ListSellerRequestParamBag`).
+- A param bag sent inside another one (a line, a translation, an address) declares them in `getApiKeysToProperties()` (`FormFieldOptionParamBag`).
+- The key is the API's, whatever the property name: `'on_call_247' => 'onCall247'`, where a conversion of the name would give `on_call247`.
+
+Guarded by `ParamBagTest::test_api_keys_case_1`: it fails on a public property without API key, or on a declared property that does not exist.
+
 ## Includes
 
 ### The rule

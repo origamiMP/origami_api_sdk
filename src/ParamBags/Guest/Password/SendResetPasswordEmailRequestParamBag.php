@@ -19,8 +19,8 @@ class SendResetPasswordEmailRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'email',
-            'resetLink',
+            'email'      => 'email',
+            'reset_link' => 'resetLink',
         ];
     }
 }

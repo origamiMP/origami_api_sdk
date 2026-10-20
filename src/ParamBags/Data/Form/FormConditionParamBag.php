@@ -13,6 +13,15 @@ class FormConditionParamBag extends ParamBag
 
     public ?string $value;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'field_key' => 'fieldKey',
+            'operator'  => 'operator',
+            'value'     => 'value',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

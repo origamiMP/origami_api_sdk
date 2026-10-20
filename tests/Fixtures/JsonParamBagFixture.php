@@ -14,7 +14,7 @@ class JsonParamBagFixture extends RequestParamBag
 
     protected function getJsonRequestParamsList(): array
     {
-        return ['date'];
+        return ['date' => 'date'];
     }
 
     protected function validationRulesForProperties(): array

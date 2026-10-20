@@ -35,6 +35,25 @@ class CreateSellerLegalInformationParamBag extends ParamBag
 
     public CreateSellerLegalInformationAddressParamBag $address;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'legal_type'              => 'legalType',
+            'manager_first_name'      => 'managerFirstName',
+            'manager_last_name'       => 'managerLastName',
+            'manager_birthday'        => 'managerBirthday',
+            'manager_country_iso'     => 'managerCountryIso',
+            'manager_nationality_iso' => 'managerNationalityIso',
+            'company_name'            => 'companyName',
+            'company_contact_email'   => 'companyContactEmail',
+            'siret'                   => 'siret',
+            'tva_number'              => 'tvaNumber',
+            'registration_city'       => 'registrationCity',
+            'legal_form'              => 'legalForm',
+            'address'                 => 'address',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         $requiredIfCompanyLegalTypeRules = Rule::requiredIf(in_array($this->legalType, [

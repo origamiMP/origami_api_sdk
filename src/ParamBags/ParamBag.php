@@ -4,27 +4,36 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\RequiredIf;
 
 abstract class ParamBag
 {
-    protected function asEncodableArray(?array $propertiesList = null): array
-    {
-        $allProperties = $this->getAllObjectVars();
+    /**
+     * The properties this param bag sends, under their API key: `api_key => propertyName`, as DTOs declare the keys
+     * they read. A property not listed, or not set, is not sent.
+     *
+     * @return array<string, string>
+     */
+    abstract protected function getApiKeysToProperties(): array;
 
-        $properties = is_null($propertiesList) ? $allProperties : Arr::only($allProperties, $propertiesList);
-        $propertiesAsSnakeCase = $this->propertyNamesToSnakeCase($properties);
+    /**
+     * @param  array<string, string>  $apiKeysToProperties  API key => property name
+     */
+    protected function asEncodableArray(array $apiKeysToProperties): array
+    {
+        $properties = $this->getAllObjectVars();
 
         $encodableArray = [];
 
-        foreach ($propertiesAsSnakeCase as $propertyName => $propertyValue) {
-            if ($this->doesPropertyHaveCustomCastMethod($propertyName)) {
-                $encodableArray[$propertyName] = $this->useCustomCastForProperty($propertyName, $propertyValue);
-            } else {
-                $encodableArray[$propertyName] = $this->castPropertyToEncodableType($propertyValue);
+        foreach ($apiKeysToProperties as $apiKey => $propertyName) {
+            if (! array_key_exists($propertyName, $properties)) {
+                continue;
             }
+
+            $encodableArray[$apiKey] = $this->doesPropertyHaveCustomCastMethod($propertyName)
+                ? $this->useCustomCastForProperty($propertyName, $properties[$propertyName])
+                : $this->castPropertyToEncodableType($properties[$propertyName]);
         }
 
         return $encodableArray;
@@ -44,7 +53,7 @@ abstract class ParamBag
     protected function castPropertyToEncodableType(mixed $propertyValue): null|bool|int|float|string|array
     {
         if ($propertyValue instanceof ParamBag) {
-            return $propertyValue->asEncodableArray();
+            return $propertyValue->asEncodableArray($propertyValue->getApiKeysToProperties());
         }
 
         if (is_array($propertyValue)) {
@@ -100,17 +109,6 @@ abstract class ParamBag
         $methodName = $this->getCustomCastMethodNameForProperty($propertyName);
 
         return $this->$methodName($propertyValue);
-    }
-
-    protected function propertyNamesToSnakeCase(array $propertyList): array
-    {
-        $newPropertyList = [];
-
-        foreach ($propertyList as $propertyName => $propertyValue) {
-            $newPropertyList[Str::snake($propertyName)] = $propertyValue;
-        }
-
-        return $newPropertyList;
     }
 
     /**

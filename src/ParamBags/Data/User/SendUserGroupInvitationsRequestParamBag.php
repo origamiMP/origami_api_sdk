@@ -19,8 +19,8 @@ class SendUserGroupInvitationsRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'emails',
-            'onboardingUrl',
+            'emails'         => 'emails',
+            'onboarding_url' => 'onboardingUrl',
         ];
     }
 

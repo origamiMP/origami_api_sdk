@@ -10,6 +10,14 @@ class FormFieldOptionTranslationParamBag extends ParamBag
 
     public string $label;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'language_id' => 'languageId',
+            'label'       => 'label',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [
