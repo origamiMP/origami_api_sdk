@@ -14,19 +14,6 @@ class OrderLineDto extends ApiResponseDto
 
     public int $id;
 
-    public int $orderSellerId;
-
-    public ?int $productId;
-
-    public string $name;
-
-    public int $quantity;
-
-    /**
-     * Only sent by the API while the form_builder option is on.
-     */
-    public ?int $formSubmissionId = null;
-
     /**
      * Not sent by the API when the line has no answer.
      */
@@ -48,25 +35,15 @@ class OrderLineDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'                 => 'id',
-            'order_seller_id'    => 'orderSellerId',
-            'product_id'         => 'productId',
-            'name'               => 'name',
-            'quantity'           => 'quantity',
-            'form_submission_id' => 'formSubmissionId',
-            'form_submission'    => fn (object $formSubmission) => $this->formSubmission = $this->makeIncluded($formSubmission, FormSubmissionDto::class),
+            'id'              => 'id',
+            'form_submission' => fn (object $formSubmission) => $this->formSubmission = $this->makeIncluded($formSubmission, FormSubmissionDto::class),
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'                 => ['required', 'integer'],
-            'order_seller_id'    => ['required', 'integer'],
-            'product_id'         => ['present', 'nullable', 'integer'],
-            'name'               => ['required', 'string'],
-            'quantity'           => ['required', 'integer'],
-            'form_submission_id' => ['nullable', 'integer'],
+            'id' => ['required', 'integer'],
         ];
     }
 

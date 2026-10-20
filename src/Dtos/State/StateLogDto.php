@@ -14,10 +14,6 @@ class StateLogDto extends ApiResponseDto
 
     public int $id;
 
-    public ?string $userGroupType;
-
-    public ?string $message;
-
     public Carbon $createdAt;
 
     /**
@@ -35,22 +31,18 @@ class StateLogDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'              => 'id',
-            'user_group_type' => 'userGroupType',
-            'message'         => 'message',
-            'created_at'      => fn ($createdAt) => $this->createdAt = Carbon::parse($createdAt),
-            'to_state'        => fn (object $toState) => $this->toState = $this->makeIncluded($toState, StateDto::class),
+            'id'         => 'id',
+            'created_at' => fn ($createdAt) => $this->createdAt = Carbon::parse($createdAt),
+            'to_state'   => fn (object $toState) => $this->toState = $this->makeIncluded($toState, StateDto::class),
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'              => ['required', 'integer'],
-            'user_group_type' => ['present', 'nullable', 'string'],
-            'message'         => ['present', 'nullable', 'string'],
-            'created_at'      => ['required', 'date'],
-            'to_state'        => ['required'],
+            'id'         => ['required', 'integer'],
+            'created_at' => ['required', 'date'],
+            'to_state'   => ['required'],
         ];
     }
 

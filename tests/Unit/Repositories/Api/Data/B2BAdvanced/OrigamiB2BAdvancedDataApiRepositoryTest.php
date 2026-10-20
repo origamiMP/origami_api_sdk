@@ -2,10 +2,9 @@
 
 namespace Tests\Unit\Repositories\Api\Data\B2BAdvanced;
 
-use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteCostDriverDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuotePriceBuildUpRowDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\B2BAdvanced\QuoteCostDriverDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\B2BAdvanced\QuotePriceBuildUpRowDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\B2BAdvanced\QuoteCostBreakdownRowParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\B2BAdvanced\RespondToQuoteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\B2BAdvanced\OrigamiB2BAdvancedDataApiRepository;
@@ -14,7 +13,7 @@ use Tests\TestCase;
 class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
 {
     /**
-     * `GET modules/b2b_advanced/quotes/{id}/response` should read the quote not answered yet, with its cost drivers.
+     * `GET modules/b2b_advanced/quotes/{id}/response` should read the quote not answered yet, with its price build-up.
      */
     public function test_get_quote_response_case_1(): void
     {
@@ -29,9 +28,8 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
         $this->assertFalse($response->hasResponded);
         $this->assertNull($response->priceTaxExc);
         $this->assertNull($response->respondedAt);
-        $this->assertContainsOnlyInstancesOf(QuoteCostDriverDto::class, $response->costDrivers);
-        $this->assertSame(QuoteCostDriverDtoTypeEnum::RATE, $response->costDrivers->first()->type);
         $this->assertContainsOnlyInstancesOf(QuotePriceBuildUpRowDto::class, $response->priceBuildUp);
+        $this->assertSame(QuotePriceBuildUpRowDtoTypeEnum::RATE, $response->priceBuildUp->first()->type);
     }
 
     /**
@@ -70,11 +68,10 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
         $this->assertSame(80, $response->rseScore);
         $this->assertSame(3, $response->referencesCount);
         $this->assertSame(['ISO 9001'], $response->certifications);
-        $this->assertSame(4470.0, $response->priceBuildUpTotal);
 
         [$rate, $amount] = $response->priceBuildUp->all();
         $this->assertSame([120.0, 24.5, 2940.0], [$rate->quantity, $rate->unitPrice, $rate->amount]);
-        $this->assertSame(QuoteCostDriverDtoTypeEnum::AMOUNT, $amount->type);
+        $this->assertSame(QuotePriceBuildUpRowDtoTypeEnum::AMOUNT, $amount->type);
         $this->assertSame([null, null, 1530.0], [$amount->quantity, $amount->unitPrice, $amount->amount]);
     }
 

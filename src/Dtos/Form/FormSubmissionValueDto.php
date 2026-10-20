@@ -3,9 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSubmissionValueDtoNotConstructableException;
 
@@ -16,19 +14,9 @@ class FormSubmissionValueDto extends ApiResponseDto
 {
     public int $id;
 
-    public ?int $formFieldId;
-
-    public string $fieldKey;
-
-    public FormFieldDtoTypeEnum $fieldType;
-
     public ?string $pageTitle;
 
-    public ?string $sectionTitle;
-
     public string $label;
-
-    public ?string $hint;
 
     /**
      * Null for a file field: see $files.
@@ -36,8 +24,6 @@ class FormSubmissionValueDto extends ApiResponseDto
     public mixed $value;
 
     public ?string $displayValue;
-
-    public bool $visibleToSeller;
 
     public int $position;
 
@@ -47,38 +33,26 @@ class FormSubmissionValueDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'                => 'id',
-            'form_field_id'     => 'formFieldId',
-            'field_key'         => 'fieldKey',
-            'field_type'        => fn (string $fieldType) => $this->fieldType = FormFieldDtoTypeEnum::from($fieldType),
-            'page_title'        => 'pageTitle',
-            'section_title'     => 'sectionTitle',
-            'label'             => 'label',
-            'hint'              => 'hint',
-            'value'             => 'value',
-            'display_value'     => 'displayValue',
-            'visible_to_seller' => 'visibleToSeller',
-            'position'          => 'position',
-            'files'             => fn (array $files) => $this->files = collect($files)->map(fn (object $file) => new FormSubmissionFileDto($file)),
+            'id'            => 'id',
+            'page_title'    => 'pageTitle',
+            'label'         => 'label',
+            'value'         => 'value',
+            'display_value' => 'displayValue',
+            'position'      => 'position',
+            'files'         => fn (array $files) => $this->files = collect($files)->map(fn (object $file) => new FormSubmissionFileDto($file)),
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'                => ['required', 'integer'],
-            'form_field_id'     => ['present', 'nullable', 'integer'],
-            'field_key'         => ['required', 'string'],
-            'field_type'        => ['required', Rule::in(collect(FormFieldDtoTypeEnum::cases())->pluck('value'))],
-            'page_title'        => ['present', 'nullable', 'string'],
-            'section_title'     => ['present', 'nullable', 'string'],
-            'label'             => ['required', 'string'],
-            'hint'              => ['present', 'nullable', 'string'],
-            'value'             => ['present'],
-            'display_value'     => ['present', 'nullable', 'string'],
-            'visible_to_seller' => ['required', 'boolean'],
-            'position'          => ['required', 'integer'],
-            'files'             => ['present', 'array'],
+            'id'            => ['required', 'integer'],
+            'page_title'    => ['present', 'nullable', 'string'],
+            'label'         => ['required', 'string'],
+            'value'         => ['present'],
+            'display_value' => ['present', 'nullable', 'string'],
+            'position'      => ['required', 'integer'],
+            'files'         => ['present', 'array'],
         ];
     }
 

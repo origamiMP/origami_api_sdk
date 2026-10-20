@@ -13,15 +13,7 @@ class StateDto extends ApiResponseDto
 
     public int $id;
 
-    public ?string $key;
-
     public ?string $name;
-
-    public ?string $color;
-
-    public ?string $textColor;
-
-    public bool $isFinal;
 
     public static function getAvailableIncludes(): array
     {
@@ -40,24 +32,16 @@ class StateDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'         => 'id',
-            'key'        => 'key',
-            'name'       => 'name',
-            'color'      => 'color',
-            'text_color' => 'textColor',
-            'is_final'   => fn ($isFinal) => $this->isFinal = (bool) $isFinal,
+            'id'   => 'id',
+            'name' => 'name',
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'         => ['required', 'integer'],
-            'key'        => ['present', 'nullable', 'string'],
-            'name'       => ['present', 'nullable', 'string'],
-            'color'      => ['present', 'nullable', 'string'],
-            'text_color' => ['present', 'nullable', 'string'],
-            'is_final'   => ['required', 'boolean'],
+            'id'   => ['required', 'integer'],
+            'name' => ['present', 'nullable', 'string'],
         ];
     }
 

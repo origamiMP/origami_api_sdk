@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\B2BAdvanced;
 
-enum QuoteCostDriverDtoTypeEnum: string
+enum QuotePriceBuildUpRowDtoTypeEnum: string
 {
     case AMOUNT = 'amount';
 

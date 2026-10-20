@@ -20,7 +20,6 @@ class FormSubmissionValueDtoTest extends TestCase
             'files'         => [$this->mockFormSubmissionFileApiData()],
         ]);
 
-        $this->assertSame(FormFieldDtoTypeEnum::FILE, $value->fieldType);
         $this->assertNull($value->value);
         $this->assertContainsOnlyInstancesOf(FormSubmissionFileDto::class, $value->files);
         $this->assertSame(['store-plan.pdf'], $value->files->pluck('name')->all());

@@ -64,7 +64,6 @@ class OrigamiQuoteSellerDataApiRepositoryTest extends TestCase
         $line = $quote->orderLines->first();
         $this->assertInstanceOf(OrderLineDto::class, $line);
         $this->assertSame(44, $line->id);
-        $this->assertSame(45, $line->formSubmissionId);
         $this->assertInstanceOf(FormSubmissionDto::class, $line->formSubmission);
         $this->assertSame(45, $line->formSubmission->id);
     }

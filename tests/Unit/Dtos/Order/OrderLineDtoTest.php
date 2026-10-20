@@ -14,7 +14,6 @@ class OrderLineDtoTest extends TestCase
     {
         $line = $this->mockOrderLineDto();
 
-        $this->assertNull($line->formSubmissionId);
         $this->assertNull($line->formSubmission);
     }
 

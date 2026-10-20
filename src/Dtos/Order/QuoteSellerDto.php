@@ -23,11 +23,7 @@ class QuoteSellerDto extends ApiResponseDto
 
     public ?string $reference;
 
-    public string $type;
-
     public int $orderId;
-
-    public int $stateId;
 
     /**
      * May be undefined if the corresponding data was not included.
@@ -95,9 +91,7 @@ class QuoteSellerDto extends ApiResponseDto
         $structure = [
             'id'         => 'id',
             'reference'  => 'reference',
-            'type'       => 'type',
             'order_id'   => 'orderId',
-            'state_id'   => 'stateId',
             'customer'   => fn (object $customer) => $this->customer = $this->makeIncluded($customer, CustomerDto::class),
             'orderLines' => fn (object $orderLines) => $this->orderLines = $this->collectIncluded($orderLines, OrderLineDto::class),
             'state'      => fn (object $state) => $this->state = $this->makeIncluded($state, StateDto::class),
@@ -115,9 +109,7 @@ class QuoteSellerDto extends ApiResponseDto
         $rules = [
             'id'        => ['required', 'integer'],
             'reference' => ['present', 'nullable', 'string'],
-            'type'      => ['required', 'string'],
             'order_id'  => ['required', 'integer'],
-            'state_id'  => ['required', 'integer'],
         ];
 
         return array_merge(

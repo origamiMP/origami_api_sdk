@@ -3,7 +3,6 @@
 namespace Tests\Unit\Dtos;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteCostDriverDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuotePriceBuildUpRowDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryDto;
@@ -76,7 +75,6 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSen
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuoteCostDriverDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuotePriceBuildUpRowDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuoteResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
@@ -270,7 +268,6 @@ class ApiResponseDtoTest extends TestCase
             'OrderLineDto'                       => [OrderLineDto::class, OrderLineDtoNotConstructableException::class, (object) []],
             'OrigamiApiErrorDto'                 => [OrigamiApiErrorDto::class, OrigamiApiErrorDtoNotConstructableException::class, (object) []],
             'OrigamiApiErrorsDto'                => [OrigamiApiErrorsDto::class, OrigamiApiErrorsDtoNotConstructableException::class, (object) []],
-            'QuoteCostDriverDto'                 => [QuoteCostDriverDto::class, QuoteCostDriverDtoNotConstructableException::class, (object) []],
             'QuotePriceBuildUpRowDto'            => [QuotePriceBuildUpRowDto::class, QuotePriceBuildUpRowDtoNotConstructableException::class, (object) []],
             'QuoteResponseDto'                   => [QuoteResponseDto::class, QuoteResponseDtoNotConstructableException::class, (object) []],
             'QuoteSellerDto'                     => [QuoteSellerDto::class, QuoteSellerDtoNotConstructableException::class, (object) []],

@@ -2,7 +2,7 @@
 
 namespace Tests\TestUtils;
 
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\B2BAdvanced\QuoteCostDriverDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\B2BAdvanced\QuotePriceBuildUpRowDtoTypeEnum;
 use Tests\TestCase;
 
 trait TestsB2BAdvancedDtos
@@ -34,20 +34,9 @@ trait TestsB2BAdvancedDtos
             'references_count'       => null,
             'certifications'         => [],
             'cost_breakdown'         => [],
-            'cost_drivers'           => [$this->mockQuoteCostDriverApiData()],
+            'cost_drivers'           => [['label' => 'Cleaning hours', 'unit' => 'h', 'type' => QuotePriceBuildUpRowDtoTypeEnum::RATE->value]],
             'price_build_up'         => [$this->mockQuotePriceBuildUpRowApiData()],
             'price_build_up_total'   => 0.0,
-        ];
-
-        return array_merge($baseData, $override);
-    }
-
-    protected function mockQuoteCostDriverApiData(array $override = []): array
-    {
-        $baseData = [
-            'label' => 'Cleaning hours',
-            'unit'  => 'h',
-            'type'  => QuoteCostDriverDtoTypeEnum::RATE->value,
         ];
 
         return array_merge($baseData, $override);
@@ -61,7 +50,7 @@ trait TestsB2BAdvancedDtos
         $baseData = [
             'poste'      => 'Cleaning hours',
             'unit'       => 'h',
-            'type'       => QuoteCostDriverDtoTypeEnum::RATE->value,
+            'type'       => QuotePriceBuildUpRowDtoTypeEnum::RATE->value,
             'quantity'   => 0,
             'unit_price' => 0,
             'montant'    => 0,
