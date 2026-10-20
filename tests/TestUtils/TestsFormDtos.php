@@ -2,9 +2,11 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionValueDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 
 trait TestsFormDtos
@@ -173,6 +175,64 @@ trait TestsFormDtos
             'label'  => 'Company name',
             'key'    => 'company_name',
             'type'   => 'string',
+        ];
+
+        return array_merge($baseData, $override);
+    }
+
+    protected function mockFormSubmissionApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'            => TestCase::unique(),
+            'user_group_id' => TestCase::unique(),
+            'user_id'       => TestCase::unique(),
+            'form_id'       => TestCase::unique(),
+            'form_name'     => 'Cleaning service',
+            'context'       => 'quote',
+            'language_id'   => TestCase::unique(),
+            'submitted_at'  => '2024-05-12 16:12:56',
+            'locked_at'     => null,
+            'created_at'    => '2024-05-12 16:12:56',
+            'updated_at'    => '2024-05-12 16:12:56',
+            'values'        => ['data' => [$this->mockFormSubmissionValueApiData()]],
+        ];
+
+        return array_merge($baseData, $override);
+    }
+
+    protected function mockFormSubmissionValueApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'                => TestCase::unique(),
+            'form_field_id'     => TestCase::unique(),
+            'field_key'         => 'total_area',
+            'field_type'        => FormFieldDtoTypeEnum::NUMBER->value,
+            'page_title'        => 'Your site',
+            'section_title'     => 'Scope',
+            'label'             => 'Total area',
+            'hint'              => null,
+            'value'             => 2500,
+            'display_value'     => '2500 m²',
+            'visible_to_seller' => true,
+            'position'          => 1,
+            'files'             => [],
+        ];
+
+        return array_merge($baseData, $override);
+    }
+
+    protected function mockFormSubmissionValueDto(array $override = []): FormSubmissionValueDto
+    {
+        return new FormSubmissionValueDto(Obj::fromArray($this->mockFormSubmissionValueApiData($override)));
+    }
+
+    protected function mockFormSubmissionFileApiData(array $override = []): array
+    {
+        $baseData = [
+            'name'         => 'store-plan.pdf',
+            'format'       => 'pdf',
+            'size'         => 20480,
+            'download_url' => 'http://api.test/v1/forms/submissions/42/files/store_plan/0',
         ];
 
         return array_merge($baseData, $override);

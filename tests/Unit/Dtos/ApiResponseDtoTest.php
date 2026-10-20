@@ -3,6 +3,9 @@
 namespace Tests\Unit\Dtos;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteCostDriverDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuotePriceBuildUpRowDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced\QuoteResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
@@ -30,6 +33,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormPrefillSourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormPrefillSourcesDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSectionDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSectionTranslationDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionFileDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormSubmissionValueDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormTypeDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormTypesDto;
@@ -38,6 +44,8 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Language\LanguageListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Order\OrderLineDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Order\QuoteSellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\ResetPasswordDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeDto;
@@ -47,6 +55,8 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerLegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\State\StateDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\State\StateLogDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
@@ -64,6 +74,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSen
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuoteCostDriverDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuotePriceBuildUpRowDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuoteResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldDtoNotConstructableException;
@@ -91,6 +104,9 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormPrefillSourceDtoNotConstruc
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormPrefillSourcesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSectionDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSectionTranslationDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSubmissionDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSubmissionFileDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSubmissionValueDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormTranslationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormTypeDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormTypesDtoNotConstructableException;
@@ -99,6 +115,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageListDtoNotConstruct
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Order\OrderLineDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Order\QuoteSellerDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\ResetPasswordDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\SendResetPasswordEmailDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeDtoNotConstructableException;
@@ -108,6 +126,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDocumentDtoNotConstruct
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerLegalTypeListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\State\StateDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\State\StateLogDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxTranslationDtoNotConstructableException;
@@ -214,8 +234,8 @@ class ApiResponseDtoTest extends TestCase
             'CustomFieldTranslationDto'          => [CustomFieldTranslationDto::class, CustomFieldTranslationDtoNotConstructableException::class, (object) []],
             'CustomFieldValueDto'                => [CustomFieldValueDto::class, CustomFieldValueDtoNotConstructableException::class, (object) []],
             'CustomFieldValueListDto'            => [CustomFieldValueListDto::class, CustomFieldValueListDtoNotConstructableException::class, (object) []],
-            'OrigamiApiErrorDto'                 => [OrigamiApiErrorDto::class, OrigamiApiErrorDtoNotConstructableException::class, (object) []],
-            'OrigamiApiErrorsDto'                => [OrigamiApiErrorsDto::class, OrigamiApiErrorsDtoNotConstructableException::class, (object) []],
+            'DocumentTypeDto'                    => [DocumentTypeDto::class, DocumentTypeDtoNotConstructableException::class, (object) []],
+            'DocumentTypeListDto'                => [DocumentTypeListDto::class, DocumentTypeListDtoNotConstructableException::class, (object) []],
             'FeatureFlagListDto'                 => [FeatureFlagListDto::class, FeatureFlagListDtoNotConstructableException::class, (object) ['some_flag' => 'yes']],
             'FormConditionDto'                   => [FormConditionDto::class, FormConditionDtoNotConstructableException::class, (object) []],
             'FormDto'                            => [FormDto::class, FormDtoNotConstructableException::class, (object) []],
@@ -231,6 +251,9 @@ class ApiResponseDtoTest extends TestCase
             'FormPrefillSourcesDto'              => [FormPrefillSourcesDto::class, FormPrefillSourcesDtoNotConstructableException::class, (object) []],
             'FormSectionDto'                     => [FormSectionDto::class, FormSectionDtoNotConstructableException::class, (object) []],
             'FormSectionTranslationDto'          => [FormSectionTranslationDto::class, FormSectionTranslationDtoNotConstructableException::class, (object) []],
+            'FormSubmissionDto'                  => [FormSubmissionDto::class, FormSubmissionDtoNotConstructableException::class, (object) []],
+            'FormSubmissionFileDto'              => [FormSubmissionFileDto::class, FormSubmissionFileDtoNotConstructableException::class, (object) []],
+            'FormSubmissionValueDto'             => [FormSubmissionValueDto::class, FormSubmissionValueDtoNotConstructableException::class, (object) []],
             'FormTranslationDto'                 => [FormTranslationDto::class, FormTranslationDtoNotConstructableException::class, (object) []],
             'FormTypeDto'                        => [FormTypeDto::class, FormTypeDtoNotConstructableException::class, (object) []],
             'FormTypesDto'                       => [FormTypesDto::class, FormTypesDtoNotConstructableException::class, (object) []],
@@ -239,20 +262,27 @@ class ApiResponseDtoTest extends TestCase
             'ModuleDto'                          => [ModuleDto::class, ModuleDtoNotConstructableException::class, (object) []],
             'ModuleListDto'                      => [ModuleListDto::class, ModuleListDtoNotConstructableException::class, (object) []],
             'OauthTokenDto'                      => [OauthTokenDto::class, OauthTokenDtoNotConstructableException::class, (object) []],
+            'OrderLineDto'                       => [OrderLineDto::class, OrderLineDtoNotConstructableException::class, (object) []],
+            'OrigamiApiErrorDto'                 => [OrigamiApiErrorDto::class, OrigamiApiErrorDtoNotConstructableException::class, (object) []],
+            'OrigamiApiErrorsDto'                => [OrigamiApiErrorsDto::class, OrigamiApiErrorsDtoNotConstructableException::class, (object) []],
+            'QuoteCostDriverDto'                 => [QuoteCostDriverDto::class, QuoteCostDriverDtoNotConstructableException::class, (object) []],
+            'QuotePriceBuildUpRowDto'            => [QuotePriceBuildUpRowDto::class, QuotePriceBuildUpRowDtoNotConstructableException::class, (object) []],
+            'QuoteResponseDto'                   => [QuoteResponseDto::class, QuoteResponseDtoNotConstructableException::class, (object) []],
+            'QuoteSellerDto'                     => [QuoteSellerDto::class, QuoteSellerDtoNotConstructableException::class, (object) []],
             'ResetPasswordDto'                   => [ResetPasswordDto::class, ResetPasswordDtoNotConstructableException::class, (object) []],
-            'SendResetPasswordEmailDto'          => [SendResetPasswordEmailDto::class, SendResetPasswordEmailDtoNotConstructableException::class, (object) []],
-            'DocumentTypeDto'                    => [DocumentTypeDto::class, DocumentTypeDtoNotConstructableException::class, (object) []],
-            'DocumentTypeListDto'                => [DocumentTypeListDto::class, DocumentTypeListDtoNotConstructableException::class, (object) []],
+            'RoleDto'                            => [RoleDto::class, RoleDtoNotConstructableException::class, (object) []],
+            'RolePermissionDto'                  => [RolePermissionDto::class, RolePermissionDtoNotConstructableException::class, (object) []],
             'SellerBankAccountDto'               => [SellerBankAccountDto::class, SellerBankAccountDtoNotConstructableException::class, (object) []],
             'SellerDocumentDto'                  => [SellerDocumentDto::class, SellerDocumentDtoNotConstructableException::class, (object) []],
             'SellerDto'                          => [SellerDto::class, SellerDtoNotConstructableException::class, (object) []],
             'SellerLegalTypeListDto'             => [SellerLegalTypeListDto::class, SellerLegalTypeListDtoNotConstructableException::class, (object) []],
             'SellerListDto'                      => [SellerListDto::class, SellerListDtoNotConstructableException::class, (object) []],
+            'SendResetPasswordEmailDto'          => [SendResetPasswordEmailDto::class, SendResetPasswordEmailDtoNotConstructableException::class, (object) []],
+            'StateDto'                           => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
+            'StateLogDto'                        => [StateLogDto::class, StateLogDtoNotConstructableException::class, (object) []],
             'TaxDto'                             => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
             'TaxListDto'                         => [TaxListDto::class, TaxListDtoNotConstructableException::class, (object) []],
             'TaxTranslationDto'                  => [TaxTranslationDto::class, TaxTranslationDtoNotConstructableException::class, (object) []],
-            'RoleDto'                            => [RoleDto::class, RoleDtoNotConstructableException::class, (object) []],
-            'RolePermissionDto'                  => [RolePermissionDto::class, RolePermissionDtoNotConstructableException::class, (object) []],
             'UserDto'                            => [UserDto::class, UserDtoNotConstructableException::class, (object) []],
             'UserGroupDto'                       => [UserGroupDto::class, UserGroupDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationCancelDto'       => [UserGroupInvitationCancelDto::class, UserGroupInvitationCancelResponseDtoNotConstructableException::class, (object) []],
