@@ -4,7 +4,9 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\B2BAdvanced;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\B2BAdvanced\QuoteResponseDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\B2BAdvanced\QuoteResponseDtoNotConstructableException;
 
@@ -34,6 +36,11 @@ class QuoteResponseDto extends ApiResponseDto
      * The request is withdrawn, expired or answered by another seller: it takes no offer anymore.
      */
     public bool $isClosed;
+
+    /**
+     * Where the offer stands: the store's decision first, then whether the request is still open.
+     */
+    public QuoteResponseDtoStatusEnum $status;
 
     public ?string $refusalReason;
 
@@ -67,6 +74,7 @@ class QuoteResponseDto extends ApiResponseDto
             'is_selected'     => 'isSelected',
             'is_converted'    => 'isConverted',
             'is_closed'       => 'isClosed',
+            'status'          => fn (string $status) => $this->status = QuoteResponseDtoStatusEnum::from($status),
             'refusal_reason'  => 'refusalReason',
             // Custom field values: the API sends them as strings.
             'engagement_months' => fn ($value) => $this->engagementMonths = self::toIntOrNull($value),
@@ -90,6 +98,7 @@ class QuoteResponseDto extends ApiResponseDto
             'is_selected'       => ['required', 'boolean'],
             'is_converted'      => ['required', 'boolean'],
             'is_closed'         => ['required', 'boolean'],
+            'status'            => ['required', Rule::in(collect(QuoteResponseDtoStatusEnum::cases())->pluck('value'))],
             'refusal_reason'    => ['present', 'nullable', 'string'],
             'engagement_months' => ['present', 'nullable', 'numeric'],
             'on_call_247'       => ['required', 'boolean'],
