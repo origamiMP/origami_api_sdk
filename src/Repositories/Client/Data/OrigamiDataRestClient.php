@@ -17,12 +17,18 @@ class OrigamiDataRestClient extends OrigamiRestClient
      */
     private ?int $userGroupId;
 
-    public function __construct(string $apiUri, OauthToken $oauthToken, ?int $userGroupId = null)
+    /**
+     * Locale the API answers in (error messages, among others): its default language without it.
+     */
+    private ?string $locale;
+
+    public function __construct(string $apiUri, OauthToken $oauthToken, ?int $userGroupId = null, ?string $locale = null)
     {
         parent::__construct($apiUri);
 
         $this->oauthToken = $oauthToken;
         $this->userGroupId = $userGroupId;
+        $this->locale = $locale;
     }
 
     public function getOauthToken(): OauthToken
@@ -35,11 +41,17 @@ class OrigamiDataRestClient extends OrigamiRestClient
         return $this->userGroupId;
     }
 
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
     protected function getAdditionalHeaders(): array
     {
         return array_merge(
             parent::getAdditionalHeaders(),
             $this->getAuthentificationHeaders(),
+            is_null($this->locale) ? [] : ['Accept-Language' => $this->locale],
         );
     }
 
