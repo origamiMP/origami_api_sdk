@@ -21,6 +21,7 @@ trait TestsB2BAdvancedDtos
             'responded_at'      => null,
             'is_selected'       => false,
             'is_converted'      => false,
+            'is_closed'         => false,
             'refusal_reason'    => null,
             'engagement_months' => null,
             'on_call_247'       => false,

@@ -30,6 +30,11 @@ class QuoteResponseDto extends ApiResponseDto
 
     public bool $isConverted;
 
+    /**
+     * The request is withdrawn, expired or answered by another seller: it takes no offer anymore.
+     */
+    public bool $isClosed;
+
     public ?string $refusalReason;
 
     public ?int $engagementMonths;
@@ -61,6 +66,7 @@ class QuoteResponseDto extends ApiResponseDto
             'responded_at'    => fn (?string $date) => $this->respondedAt = is_null($date) ? null : Carbon::parse($date),
             'is_selected'     => 'isSelected',
             'is_converted'    => 'isConverted',
+            'is_closed'       => 'isClosed',
             'refusal_reason'  => 'refusalReason',
             // Custom field values: the API sends them as strings.
             'engagement_months' => fn ($value) => $this->engagementMonths = self::toIntOrNull($value),
@@ -83,6 +89,7 @@ class QuoteResponseDto extends ApiResponseDto
             'responded_at'      => ['present', 'nullable', 'date'],
             'is_selected'       => ['required', 'boolean'],
             'is_converted'      => ['required', 'boolean'],
+            'is_closed'         => ['required', 'boolean'],
             'refusal_reason'    => ['present', 'nullable', 'string'],
             'engagement_months' => ['present', 'nullable', 'numeric'],
             'on_call_247'       => ['required', 'boolean'],

@@ -28,6 +28,7 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
         $this->assertFalse($response->hasResponded);
         $this->assertNull($response->priceTaxExc);
         $this->assertNull($response->respondedAt);
+        $this->assertFalse($response->isClosed);
         $this->assertContainsOnlyInstancesOf(QuotePriceBuildUpRowDto::class, $response->priceBuildUp);
         $this->assertSame(QuotePriceBuildUpRowDtoTypeEnum::AMOUNT, $response->priceBuildUp->first()->type);
     }
@@ -48,6 +49,7 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
             'rse_score'         => '80',
             'references_count'  => '3',
             'certifications'    => ['ISO 9001'],
+            'is_closed'         => true,
             'price_build_up'    => [
                 $this->mockQuotePriceBuildUpRowApiData(['poste' => 'Cleaning hours', 'unit' => 'h', 'type' => 'rate', 'quantity' => 120, 'unit_price' => 24.5, 'montant' => 2940]),
                 $this->mockQuotePriceBuildUpRowApiData(['montant' => 1530]),
@@ -66,6 +68,7 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
         $this->assertSame(80, $response->rseScore);
         $this->assertSame(3, $response->referencesCount);
         $this->assertSame(['ISO 9001'], $response->certifications);
+        $this->assertTrue($response->isClosed);
 
         [$rate, $amount] = $response->priceBuildUp->all();
         $this->assertSame([120.0, 24.5, 2940.0], [$rate->quantity, $rate->unitPrice, $rate->amount]);
