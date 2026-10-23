@@ -63,6 +63,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationRes
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupUserDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryListDtoNotConstructableException;
@@ -124,6 +125,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupIn
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationsSendResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupUserDtoNotConstructableException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -264,6 +266,7 @@ class ApiResponseDtoTest extends TestCase
             'UserGroupInvitationSendDto'         => [UserGroupInvitationSendDto::class, UserGroupInvitationsSendResponseDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationStatsDto'        => [UserGroupInvitationStatsDto::class, UserGroupInvitationStatsResponseDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationValidateDto'     => [UserGroupInvitationValidateDto::class, UserGroupInvitationValidateResponseDtoNotConstructableException::class, (object) []],
+            'UserGroupUserDto'                   => [UserGroupUserDto::class, UserGroupUserDtoNotConstructableException::class, (object) []],
         ];
     }
 }

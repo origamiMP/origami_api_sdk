@@ -93,6 +93,16 @@ class UserDto extends ApiResponseDto
     public Collection $roles;
 
     /**
+     * Memberships of this User in their UserGroups. Including their roles gives the roles of the User per UserGroup,
+     * whatever their type, unlike the `roles` include filtered on a UserGroup.
+     *
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var UserGroupUserDto[]|Collection
+     */
+    public Collection $userGroupUsers;
+
+    /**
      * Module linked to this User (see $moduleId).
      *
      * May be undefined if the corresponding data was not included, if this User has no module, or if the
@@ -103,10 +113,10 @@ class UserDto extends ApiResponseDto
     public static function getAvailableIncludes(): array
     {
         return [
-            'roles' => RoleDto::class,
-            // 'user_group_users',
-            'user_groups' => UserGroupDto::class,
-            'module'      => ModuleDto::class,
+            'roles'            => RoleDto::class,
+            'user_group_users' => UserGroupUserDto::class,
+            'user_groups'      => UserGroupDto::class,
+            'module'           => ModuleDto::class,
             // 'user_group_count',
             // 'user_reports_received',
         ];
@@ -128,9 +138,10 @@ class UserDto extends ApiResponseDto
             'state'                         => fn ($state) => $this->state = UserDtoStateEnum::from($state),
             'is_account_validated'          => 'isAccountValidated',
 
-            'user_groups' => fn (object $userGroups) => $this->userGroups = $this->collectIncluded($userGroups, UserGroupDto::class),
-            'roles'       => fn (object $roles) => $this->roles = $this->collectIncluded($roles, RoleDto::class),
-            'module'      => fn (object $module) => $this->module = $this->makeIncluded($module, ModuleDto::class),
+            'user_groups'      => fn (object $userGroups) => $this->userGroups = $this->collectIncluded($userGroups, UserGroupDto::class),
+            'roles'            => fn (object $roles) => $this->roles = $this->collectIncluded($roles, RoleDto::class),
+            'user_group_users' => fn (object $userGroupUsers) => $this->userGroupUsers = $this->collectIncluded($userGroupUsers, UserGroupUserDto::class),
+            'module'           => fn (object $module) => $this->module = $this->makeIncluded($module, ModuleDto::class),
         ];
 
         return array_merge(
