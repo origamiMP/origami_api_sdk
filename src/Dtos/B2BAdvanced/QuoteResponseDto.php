@@ -46,15 +46,6 @@ class QuoteResponseDto extends ApiResponseDto
 
     public ?int $engagementMonths;
 
-    public bool $onCall247;
-
-    public ?int $rseScore;
-
-    public ?int $referencesCount;
-
-    /** @var string[] */
-    public array $certifications;
-
     /**
      * Every cost driver, in the operator's order, with what the seller filled.
      *
@@ -78,10 +69,6 @@ class QuoteResponseDto extends ApiResponseDto
             'refusal_reason'  => 'refusalReason',
             // Custom field values: the API sends them as strings.
             'engagement_months' => fn ($value) => $this->engagementMonths = self::toIntOrNull($value),
-            'on_call_247'       => 'onCall247',
-            'rse_score'         => fn ($value) => $this->rseScore = self::toIntOrNull($value),
-            'references_count'  => fn ($value) => $this->referencesCount = self::toIntOrNull($value),
-            'certifications'    => 'certifications',
             'price_build_up'    => fn (array $rows) => $this->priceBuildUp = collect($rows)->map(fn (object $row) => new QuotePriceBuildUpRowDto($row)),
         ];
     }
@@ -101,10 +88,6 @@ class QuoteResponseDto extends ApiResponseDto
             'status'            => ['required', Rule::in(collect(QuoteResponseDtoStatusEnum::cases())->pluck('value'))],
             'refusal_reason'    => ['present', 'nullable', 'string'],
             'engagement_months' => ['present', 'nullable', 'numeric'],
-            'on_call_247'       => ['required', 'boolean'],
-            'rse_score'         => ['present', 'nullable', 'numeric'],
-            'references_count'  => ['present', 'nullable', 'numeric'],
-            'certifications'    => ['present', 'array'],
             'price_build_up'    => ['present', 'array'],
         ];
     }

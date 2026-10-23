@@ -9,8 +9,11 @@ trait TestsStateDtos
     protected function mockStateApiData(array $override = []): array
     {
         $baseData = [
-            'id'   => TestCase::unique(),
-            'name' => 'Quote sent',
+            'id'          => TestCase::unique(),
+            'name'        => 'Quote sent',
+            'action_name' => 'Send the quote',
+            'description' => null,
+            'initial'     => false,
         ];
 
         return array_merge($baseData, $override);
