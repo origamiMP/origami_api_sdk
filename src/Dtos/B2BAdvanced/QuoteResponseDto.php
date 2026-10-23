@@ -47,6 +47,14 @@ class QuoteResponseDto extends ApiResponseDto
     public ?int $engagementMonths;
 
     /**
+     * The states sending the offer moves the quote to (quote sent, quote updated): their transitions belong to the offer.
+     * Only on the response to a single quote.
+     *
+     * @var int[]
+     */
+    public array $offerStateIds = [];
+
+    /**
      * Every cost driver, in the operator's order, with what the seller filled.
      *
      * @var Collection<int, QuotePriceBuildUpRowDto>
@@ -69,6 +77,7 @@ class QuoteResponseDto extends ApiResponseDto
             'refusal_reason'  => 'refusalReason',
             // Custom field values: the API sends them as strings.
             'engagement_months' => fn ($value) => $this->engagementMonths = self::toIntOrNull($value),
+            'offer_state_ids'   => fn (array $ids) => $this->offerStateIds = array_map(intval(...), $ids),
             'price_build_up'    => fn (array $rows) => $this->priceBuildUp = collect($rows)->map(fn (object $row) => new QuotePriceBuildUpRowDto($row)),
         ];
     }
@@ -88,6 +97,7 @@ class QuoteResponseDto extends ApiResponseDto
             'status'            => ['required', Rule::in(collect(QuoteResponseDtoStatusEnum::cases())->pluck('value'))],
             'refusal_reason'    => ['present', 'nullable', 'string'],
             'engagement_months' => ['present', 'nullable', 'numeric'],
+            'offer_state_ids'   => ['sometimes', 'array'],
             'price_build_up'    => ['present', 'array'],
         ];
     }
