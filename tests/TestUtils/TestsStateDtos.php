@@ -13,6 +13,7 @@ trait TestsStateDtos
             'name'        => 'Quote sent',
             'action_name' => 'Send the quote',
             'description' => null,
+            'initial'     => false,
         ];
 
         return array_merge($baseData, $override);

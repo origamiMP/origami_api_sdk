@@ -24,6 +24,11 @@ class StateDto extends ApiResponseDto
     public ?string $description;
 
     /**
+     * The state an entity starts in, e.g. the cart a quote request comes from.
+     */
+    public bool $isInitial;
+
+    /**
      * The states the current user may move the entity to, given their user group type and roles.
      * May be undefined if the corresponding data was not included.
      *
@@ -52,6 +57,7 @@ class StateDto extends ApiResponseDto
             'name'                   => 'name',
             'action_name'            => 'actionName',
             'description'            => 'description',
+            'initial'                => 'isInitial',
             'restricted_next_states' => fn (object $states) => $this->restrictedNextStates = $this->collectIncluded($states, StateDto::class),
         ];
     }
@@ -63,6 +69,7 @@ class StateDto extends ApiResponseDto
             'name'        => ['present', 'nullable', 'string'],
             'action_name' => ['present', 'nullable', 'string'],
             'description' => ['present', 'nullable', 'string'],
+            'initial'     => ['required', 'boolean'],
         ];
     }
 

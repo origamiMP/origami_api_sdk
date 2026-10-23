@@ -46,7 +46,7 @@ class OrigamiQuoteSellerDataApiRepositoryTest extends TestCase
                 'form_submission'    => ['data' => $this->mockFormSubmissionApiData(['id' => 45])],
             ])]],
             'state'      => ['data' => $this->mockStateApiData(['id' => 46])],
-            'state_logs' => ['data' => [$this->mockStateLogApiData(['id' => 47])]],
+            'state_logs' => ['data' => [$this->mockStateLogApiData(['id' => 47, 'to_state' => ['data' => $this->mockStateApiData(['initial' => true])]])]],
         ])]));
         $paramBag = new GetQuoteSellerRequestParamBag;
         $paramBag->setIncludes(['customer', 'orderLines.form_submission.values', 'state', 'state_logs', 'seller']);
@@ -61,6 +61,8 @@ class OrigamiQuoteSellerDataApiRepositoryTest extends TestCase
         $this->assertSame(46, $quote->state->id);
         $this->assertContainsOnlyInstancesOf(StateLogDto::class, $quote->stateLogs);
         $this->assertSame([47], $quote->stateLogs->pluck('id')->all());
+        $this->assertTrue($quote->stateLogs->first()->toState->isInitial);
+        $this->assertFalse($quote->state->isInitial);
 
         $line = $quote->orderLines->first();
         $this->assertInstanceOf(OrderLineDto::class, $line);
