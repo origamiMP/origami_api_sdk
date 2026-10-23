@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\State;
 
+use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\State\StateDtoNotConstructableException;
@@ -15,6 +16,21 @@ class StateDto extends ApiResponseDto
 
     public ?string $name;
 
+    /**
+     * Label of the button that moves an entity to this state, when it differs from the name.
+     */
+    public ?string $actionName;
+
+    public ?string $description;
+
+    /**
+     * The states the current user may move the entity to, given their user group type and roles.
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var Collection<int, StateDto>
+     */
+    public Collection $restrictedNextStates;
+
     public static function getAvailableIncludes(): array
     {
         return [
@@ -22,7 +38,7 @@ class StateDto extends ApiResponseDto
             // 'actions',
             // 'workflow',
             // 'next_states_by_user_group_type',
-            // 'restricted_next_states',
+            'restricted_next_states' => StateDto::class,
             // 'actions_by_user_group_type',
             // 'restricted_actions',
             // 'order_seller_informations',
@@ -32,16 +48,21 @@ class StateDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'   => 'id',
-            'name' => 'name',
+            'id'                     => 'id',
+            'name'                   => 'name',
+            'action_name'            => 'actionName',
+            'description'            => 'description',
+            'restricted_next_states' => fn (object $states) => $this->restrictedNextStates = $this->collectIncluded($states, StateDto::class),
         ];
     }
 
     protected function validationRulesForProperties(): array
     {
         return [
-            'id'   => ['required', 'integer'],
-            'name' => ['present', 'nullable', 'string'],
+            'id'          => ['required', 'integer'],
+            'name'        => ['present', 'nullable', 'string'],
+            'action_name' => ['present', 'nullable', 'string'],
+            'description' => ['present', 'nullable', 'string'],
         ];
     }
 

@@ -9,6 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Order\QuoteSellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\State\StateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\State\StateLogDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Order\GetQuoteSellerRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Order\UpdateQuoteSellerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Order\OrigamiQuoteSellerDataApiRepository;
 use Tests\TestCase;
 
@@ -66,5 +67,51 @@ class OrigamiQuoteSellerDataApiRepositoryTest extends TestCase
         $this->assertSame(44, $line->id);
         $this->assertInstanceOf(FormSubmissionDto::class, $line->formSubmission);
         $this->assertSame(45, $line->formSubmission->id);
+    }
+
+    /**
+     * `GET quote_sellers/{id}` should read the next states the current user may move the quote to, with their labels.
+     */
+    public function test_get_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockQuoteSellerApiData([
+            'id'    => 42,
+            'state' => ['data' => $this->mockStateApiData([
+                'id'                     => 46,
+                'restricted_next_states' => ['data' => [$this->mockStateApiData([
+                    'id'          => 47,
+                    'name'        => 'Declined by the supplier',
+                    'action_name' => 'Decline the service request',
+                    'description' => 'The store is told you will not answer.',
+                ])]],
+            ])],
+        ])]));
+        $paramBag = new GetQuoteSellerRequestParamBag;
+        $paramBag->setIncludes(['state.restricted_next_states']);
+
+        $quote = (new OrigamiQuoteSellerDataApiRepository($restClient))->get(42, $paramBag);
+
+        $this->assertLastApiRequestQueryWas(['include' => ['state.restricted_next_states']]);
+        $nextState = $quote->state->restrictedNextStates->sole();
+        $this->assertInstanceOf(StateDto::class, $nextState);
+        $this->assertSame(47, $nextState->id);
+        $this->assertSame('Decline the service request', $nextState->actionName);
+        $this->assertSame('The store is told you will not answer.', $nextState->description);
+        $this->assertFalse(isset($nextState->restrictedNextStates));
+    }
+
+    /**
+     * `PATCH quote_sellers/{id}` should send the next state as JSON.
+     */
+    public function test_update_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockQuoteSellerApiData(['id' => 42])]));
+        $paramBag = new UpdateQuoteSellerRequestParamBag;
+        $paramBag->stateId = 47;
+
+        (new OrigamiQuoteSellerDataApiRepository($restClient))->update(42, $paramBag);
+
+        $this->assertLastApiRequestWas('PATCH', 'quote_sellers/42');
+        $this->assertLastApiRequestJsonWas(['state_id' => 47]);
     }
 }
