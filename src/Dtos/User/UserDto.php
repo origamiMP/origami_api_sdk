@@ -146,9 +146,9 @@ class UserDto extends ApiResponseDto
 
         $rules = [
             'id'                            => ['required', 'integer'],
-            'firstname'                     => ['required', 'string'],
-            'lastname'                      => ['required', 'string'],
-            'name'                          => ['required', 'string'],
+            'firstname'                     => ['present', 'string'],
+            'lastname'                      => ['present', 'string'],
+            'name'                          => ['present', 'string'],
             'email'                         => ['required', 'email'],
             'external_configuration'        => ['present', 'nullable', 'json'],
             'language_id'                   => ['present', 'nullable', 'integer'],
