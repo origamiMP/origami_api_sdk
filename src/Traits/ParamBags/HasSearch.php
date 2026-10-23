@@ -18,7 +18,7 @@ trait HasSearch
 
     protected function getSearchParamsList(): array
     {
-        return ['search'];
+        return ['search' => 'search'];
     }
 
     protected function getSearchValidationRules(): array

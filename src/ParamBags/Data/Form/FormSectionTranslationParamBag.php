@@ -12,6 +12,15 @@ class FormSectionTranslationParamBag extends ParamBag
 
     public ?string $description;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'language_id' => 'languageId',
+            'title'       => 'title',
+            'description' => 'description',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

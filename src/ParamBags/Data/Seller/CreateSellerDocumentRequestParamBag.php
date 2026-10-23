@@ -46,11 +46,11 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag implements Has
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'content',
-            'pages',
-            'documentTypeId',
-            'name',
-            'userGroupId',
+            'content'          => 'content',
+            'pages'            => 'pages',
+            'document_type_id' => 'documentTypeId',
+            'name'             => 'name',
+            'user_group_id'    => 'userGroupId',
         ];
     }
 

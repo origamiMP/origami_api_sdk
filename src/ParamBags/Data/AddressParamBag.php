@@ -22,6 +22,20 @@ abstract class AddressParamBag extends ParamBag
 
     public string $region;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'address_line1' => 'addressLine1',
+            'address_line2' => 'addressLine2',
+            'postcode'      => 'postcode',
+            'city'          => 'city',
+            'country_iso'   => 'countryIso',
+            'longitude'     => 'longitude',
+            'latitude'      => 'latitude',
+            'region'        => 'region',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

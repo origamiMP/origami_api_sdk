@@ -39,12 +39,12 @@ class CreateBankAccountRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'bankName',
-            'ownerName',
-            'ownerAddress',
-            'iban',
-            'bic',
-            'isDefault',
+            'bank_name'     => 'bankName',
+            'owner_name'    => 'ownerName',
+            'owner_address' => 'ownerAddress',
+            'iban'          => 'iban',
+            'bic'           => 'bic',
+            'is_default'    => 'isDefault',
         ];
     }
 

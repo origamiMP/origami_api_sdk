@@ -10,6 +10,14 @@ class TaxTranslationParamBag extends ParamBag
 
     public string $name;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'language_id' => 'languageId',
+            'name'        => 'name',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

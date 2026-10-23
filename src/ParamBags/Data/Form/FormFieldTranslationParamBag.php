@@ -14,6 +14,16 @@ class FormFieldTranslationParamBag extends ParamBag
 
     public ?string $placeholder;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'language_id' => 'languageId',
+            'label'       => 'label',
+            'hint'        => 'hint',
+            'placeholder' => 'placeholder',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

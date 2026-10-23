@@ -37,6 +37,24 @@ class FormFieldParamBag extends ParamBag
      */
     public array $options;
 
+    protected function getApiKeysToProperties(): array
+    {
+        return [
+            'id'                => 'id',
+            'key'               => 'key',
+            'type'              => 'type',
+            'is_required'       => 'isRequired',
+            'visible_to_seller' => 'visibleToSeller',
+            'prefill_source'    => 'prefillSource',
+            'prefill_readonly'  => 'prefillReadonly',
+            'save_to_customer'  => 'saveToCustomer',
+            'params'            => 'params',
+            'condition'         => 'condition',
+            'translations'      => 'translations',
+            'options'           => 'options',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

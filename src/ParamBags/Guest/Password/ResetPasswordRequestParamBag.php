@@ -29,10 +29,10 @@ class ResetPasswordRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'email',
-            'password',
-            'passwordConfirmation',
-            'token',
+            'email'                 => 'email',
+            'password'              => 'password',
+            'password_confirmation' => 'passwordConfirmation',
+            'token'                 => 'token',
         ];
     }
 }
