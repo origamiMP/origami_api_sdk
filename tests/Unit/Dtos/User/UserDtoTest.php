@@ -10,6 +10,19 @@ use Tests\TestCase;
 class UserDtoTest extends TestCase
 {
     /**
+     * A user created without first name and last name should be readable: the API sends empty strings,
+     * and a name made of a single space.
+     */
+    public function test_names_case_1(): void
+    {
+        $userDto = $this->mockUserDto(['firstname' => '', 'lastname' => '', 'name' => ' ']);
+
+        $this->assertSame('', $userDto->firstName);
+        $this->assertSame('', $userDto->lastName);
+        $this->assertSame(' ', $userDto->name);
+    }
+
+    /**
      * The `user_groups` include should be read as a collection of user groups.
      */
     public function test_user_groups_case_1(): void
