@@ -1,6 +1,6 @@
 {
     "name": "origami-mp/origami-api-sdk",
-    "version": "v6.6.0-beta.5",
+    "version": "v6.6.0-beta.6",
     "description": "A lightweight package to interact easily with Origami API.",
     "type": "library",
     "license": "MIT",
