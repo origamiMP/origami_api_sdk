@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Repositories\Api\Data\Form;
 
+use GuzzleHttp\Psr7\Response;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormPageDto;
@@ -462,5 +463,19 @@ class OrigamiFormDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestQueryWas([]);
         $this->assertInstanceOf(FormListDto::class, $forms);
         $this->assertSame(42, $forms->data->first()->id);
+    }
+
+    /**
+     * `GET forms/submissions/{id}/files/{fieldKey}/{index}` should hand back the raw response of the file.
+     */
+    public function test_download_submission_file_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning(new Response(200, ['Content-Disposition' => 'attachment; filename=cahier.pdf'], '%PDF-1.7'));
+
+        $response = (new OrigamiFormDataApiRepository($restClient))->downloadSubmissionFile(42, 'specifications', 0);
+
+        $this->assertLastApiRequestWas('GET', 'forms/submissions/42/files/specifications/0');
+        $this->assertSame('%PDF-1.7', (string) $response->getBody());
+        $this->assertSame('attachment; filename=cahier.pdf', $response->getHeaderLine('Content-Disposition'));
     }
 }

@@ -19,6 +19,11 @@ class FormSubmissionValueDto extends ApiResponseDto
     public string $label;
 
     /**
+     * Addresses the files of the answer on the download route: value ids change on update.
+     */
+    public ?string $fieldKey = null;
+
+    /**
      * Null for a file field: see $files.
      */
     public mixed $value;
@@ -36,6 +41,7 @@ class FormSubmissionValueDto extends ApiResponseDto
             'id'            => 'id',
             'page_title'    => 'pageTitle',
             'label'         => 'label',
+            'field_key'     => 'fieldKey',
             'value'         => 'value',
             'display_value' => 'displayValue',
             'position'      => 'position',
@@ -53,6 +59,7 @@ class FormSubmissionValueDto extends ApiResponseDto
             'display_value' => ['present', 'nullable', 'string'],
             'position'      => ['required', 'integer'],
             'files'         => ['present', 'array'],
+            'field_key'     => ['sometimes', 'nullable', 'string'],
         ];
     }
 

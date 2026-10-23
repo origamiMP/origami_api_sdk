@@ -20,6 +20,7 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\GetFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\ListFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form\UpdateFormRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
+use Psr\Http\Message\ResponseInterface;
 
 class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
 {
@@ -124,5 +125,17 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $responseContent = $this->decodeResponse($response);
 
         return new FormPrefillSourcesDto($this->getResponseContentDataOrEmptyObject($responseContent));
+    }
+
+    /**
+     * The raw response of a file of a form answer, for the caller to relay: the API only lets a seller reach the files
+     * of its own quotes and orders, on fields visible to sellers.
+     *
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     */
+    public function downloadSubmissionFile(int $submissionId, string $fieldKey, int $index): ResponseInterface
+    {
+        return $this->restClient->get("forms/submissions/{$submissionId}/files/{$fieldKey}/{$index}");
     }
 }
