@@ -47,6 +47,7 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
             'delay_days'        => 5,
             'responded_at'      => '2024-05-12T16:12:56+00:00',
             'engagement_months' => '12',
+            'offer_state_ids'   => [51, 74],
             'is_closed'         => true,
             'status'            => 'updated',
             'price_build_up'    => [
@@ -63,6 +64,7 @@ class OrigamiB2BAdvancedDataApiRepositoryTest extends TestCase
         $this->assertSame(5, $response->delayDays);
         $this->assertSame('2024-05-12 16:12:56', $response->respondedAt->format('Y-m-d H:i:s'));
         $this->assertSame(12, $response->engagementMonths);
+        $this->assertSame([51, 74], $response->offerStateIds);
         $this->assertTrue($response->isClosed);
         $this->assertSame(QuoteResponseDtoStatusEnum::UPDATED, $response->status);
 
