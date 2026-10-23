@@ -25,10 +25,6 @@ trait TestsB2BAdvancedDtos
             'status'            => 'to_answer',
             'refusal_reason'    => null,
             'engagement_months' => null,
-            'on_call_247'       => false,
-            'rse_score'         => null,
-            'references_count'  => null,
-            'certifications'    => [],
             'price_build_up'    => [$this->mockQuotePriceBuildUpRowApiData()],
         ];
 
