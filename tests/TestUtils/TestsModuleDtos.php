@@ -9,11 +9,9 @@ trait TestsModuleDtos
     protected function mockModuleApiData(array $override = []): array
     {
         $baseData = [
-            'id'              => TestCase::unique(),
-            'name'            => 'payment',
-            'current_version' => '1.0.0',
-            // Associative (not a list) : encoded as a JSON object, so it decodes back into a stdClass
-            // to match ModuleDto's typed `object` properties.
+            'id'                       => TestCase::unique(),
+            'name'                     => 'payment',
+            'current_version'          => '1.0.0',
             'configurations'           => ['is_enabled' => true],
             'type'                     => 'payment',
             'version'                  => '1.0.0',

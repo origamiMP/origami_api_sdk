@@ -51,14 +51,14 @@ class ModuleDto extends ApiResponseDto
             'id'                       => 'id',
             'name'                     => 'name',
             'current_version'          => 'currentVersion',
-            'configurations'           => 'configurations',
+            'configurations'           => fn ($value) => $this->configurations = (object) $value,
             'type'                     => 'type',
             'version'                  => 'version',
             'author'                   => 'author',
             'display_name'             => 'displayName',
             'description'              => 'description',
             'image'                    => 'imageUrl',
-            'available_configurations' => 'availableConfigurations',
+            'available_configurations' => fn ($value) => $this->availableConfigurations = (object) $value,
             'is_active'                => 'isActive',
         ];
 
@@ -74,14 +74,14 @@ class ModuleDto extends ApiResponseDto
             'id'                       => ['required', 'integer'],
             'name'                     => ['required', 'string'],
             'current_version'          => ['required', 'string'],
-            'configurations'           => ['required', 'array'],
+            'configurations'           => ['present', 'array'],
             'type'                     => ['required', 'string'],
             'version'                  => ['required', 'string'],
             'author'                   => ['required', 'string'],
             'display_name'             => ['required', 'string'],
             'description'              => ['required', 'string'],
             'image'                    => ['required', 'string'],
-            'available_configurations' => ['required', 'array'],
+            'available_configurations' => ['present', 'array'],
             'is_active'                => ['required', 'boolean'],
         ];
 

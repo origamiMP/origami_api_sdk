@@ -41,4 +41,22 @@ class OrigamiModuleDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(ModuleListDto::class, $modules);
         $this->assertSame(42, $modules->data->first()->id);
     }
+
+    /**
+     * A caller who doesn't manage the modules (seller, customer) gets their configurations as empty JSON lists: they
+     * should be read as empty objects.
+     */
+    public function test_list_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [$this->mockModuleApiData([
+            'configurations'           => [],
+            'available_configurations' => [],
+        ])]]));
+
+        $modules = (new OrigamiModuleDataApiRepository($restClient))->list();
+
+        $this->assertInstanceOf(ModuleListDto::class, $modules);
+        $this->assertEquals((object) [], $modules->data->first()->configurations);
+        $this->assertEquals((object) [], $modules->data->first()->availableConfigurations);
+    }
 }
