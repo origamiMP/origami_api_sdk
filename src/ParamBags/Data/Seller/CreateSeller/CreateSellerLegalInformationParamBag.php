@@ -35,6 +35,25 @@ class CreateSellerLegalInformationParamBag extends ParamBag
 
     public CreateSellerLegalInformationAddressParamBag $address;
 
+    protected function getPropertiesToApiKeys(): array
+    {
+        return [
+            'legalType'             => 'legal_type',
+            'managerFirstName'      => 'manager_first_name',
+            'managerLastName'       => 'manager_last_name',
+            'managerBirthday'       => fn (Carbon $date) => ['manager_birthday' => $date->format('Y-m-d')],
+            'managerCountryIso'     => 'manager_country_iso',
+            'managerNationalityIso' => 'manager_nationality_iso',
+            'companyName'           => 'company_name',
+            'companyContactEmail'   => 'company_contact_email',
+            'siret'                 => 'siret',
+            'tvaNumber'             => 'tva_number',
+            'registrationCity'      => 'registration_city',
+            'legalForm'             => 'legal_form',
+            'address'               => 'address',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         $requiredIfCompanyLegalTypeRules = Rule::requiredIf(in_array($this->legalType, [
@@ -56,10 +75,5 @@ class CreateSellerLegalInformationParamBag extends ParamBag
             'registrationCity'      => ['string', 'max:255'],
             'legalForm'             => ['string', 'max:255'],
         ];
-    }
-
-    protected function castManagerBirthdayToEncodableType(Carbon $datetime): string|int
-    {
-        return $datetime->format('Y-m-d');
     }
 }

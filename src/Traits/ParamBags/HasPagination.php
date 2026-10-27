@@ -46,7 +46,7 @@ trait HasPagination
 
     protected function getPaginationParamsList(): array
     {
-        return ['page', 'itemPerPage', 'withoutPagination'];
+        return ['page' => 'page', 'itemPerPage' => 'item_per_page', 'withoutPagination' => 'without_pagination'];
     }
 
     protected function getPaginationValidationRules(): array

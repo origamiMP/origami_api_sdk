@@ -20,6 +20,16 @@ class FormPageParamBag extends ParamBag
      */
     public array $sections;
 
+    protected function getPropertiesToApiKeys(): array
+    {
+        return [
+            'id'           => 'id',
+            'translations' => 'translations',
+            'condition'    => 'condition',
+            'sections'     => 'sections',
+        ];
+    }
+
     protected function validationRulesForProperties(): array
     {
         return [

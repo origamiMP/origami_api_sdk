@@ -23,7 +23,7 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 
 | File | Read it when… |
 |---|---|
-| `references/code/param-bags.md` | You create or change a param bag, or a repository method calling the API: the include rule and its scope (only documented topic so far) |
+| `references/code/param-bags.md` | You create or change a param bag, or a repository method calling the API: the API key declared for every property sent and its custom cast, and the include rule and its scope |
 | `references/code/repositories.md` | You create or change a repository method: when its param bag can be optional (only documented topic so far) |
 | `references/code/dtos.md` | You create or change a DTO: declaring includes (commented ones included), list DTOs (only documented topic so far) |
 

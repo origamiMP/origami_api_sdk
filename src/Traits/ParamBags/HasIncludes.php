@@ -34,7 +34,7 @@ trait HasIncludes
 
     protected function getIncludeParamsList(): array
     {
-        return ['include'];
+        return ['include' => 'include'];
     }
 
     protected function getIncludeValidationRules(): array

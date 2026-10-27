@@ -78,30 +78,30 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'userGroupParentId',
-            'customerId',
-            'name',
-            'firstname',
-            'lastname',
-            'email',
-            'phone',
-            'externalUid',
-            'phoneAreaCode',
-            'languageIso',
-            'sellerType',
-            'state',
-            'defaultTaxId',
-            'isActive',
-            'invoiceTaxId',
-            'holidayDepartureDate',
-            'holidayReturnDate',
-            'feesProfileId',
-            'sellerFeesProfileId',
-            'customerFeesProfileId',
-            'additionalInformation',
-            'translations',
-            'address',
-            'legalInformation',
+            'userGroupParentId'     => 'user_group_parent_id',
+            'customerId'            => 'customer_id',
+            'name'                  => 'name',
+            'firstname'             => 'firstname',
+            'lastname'              => 'lastname',
+            'email'                 => 'email',
+            'phone'                 => 'phone',
+            'externalUid'           => 'external_uid',
+            'phoneAreaCode'         => 'phone_area_code',
+            'languageIso'           => 'language_iso',
+            'sellerType'            => 'seller_type',
+            'state'                 => 'state',
+            'defaultTaxId'          => 'default_tax_id',
+            'isActive'              => 'is_active',
+            'invoiceTaxId'          => 'invoice_tax_id',
+            'holidayDepartureDate'  => fn (Carbon $date) => ['holiday_departure_date' => $date->format('Y-m-d')],
+            'holidayReturnDate'     => fn (Carbon $date) => ['holiday_return_date' => $date->format('Y-m-d')],
+            'feesProfileId'         => 'fees_profile_id',
+            'sellerFeesProfileId'   => 'seller_fees_profile_id',
+            'customerFeesProfileId' => 'customer_fees_profile_id',
+            'additionalInformation' => 'additional_information',
+            'translations'          => 'translations',
+            'address'               => 'address',
+            'legalInformation'      => 'legal_information',
         ];
     }
 
@@ -141,15 +141,5 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
     protected static function getRequestMainDto(): string
     {
         return SellerDto::class;
-    }
-
-    protected function castHolidayDepartureDateToEncodableType(Carbon $datetime): string|int
-    {
-        return $datetime->format('Y-m-d');
-    }
-
-    protected function castHolidayReturnDateToEncodableType(Carbon $datetime): string|int
-    {
-        return $datetime->format('Y-m-d');
     }
 }

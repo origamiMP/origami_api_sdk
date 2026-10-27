@@ -41,7 +41,7 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
             $this->getPaginationParamsList(),
             $this->getSearchParamsList(),
             $this->getIncludeParamsList(),
-            ['withCount'],
+            ['withCount' => 'with_count'],
         );
     }
 

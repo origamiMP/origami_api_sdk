@@ -19,7 +19,7 @@ class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag imple
             parent::getQueryRequestParamsList(),
             $this->getIncludeParamsList(),
             [
-                'email',
+                'email' => 'email',
             ],
         );
     }

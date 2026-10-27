@@ -26,10 +26,10 @@ class CreateTaxRequestParamBag extends RequestParamBag implements HasIncludesCon
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'type',
-            'value',
-            'isDefault',
-            'translations',
+            'type'         => 'type',
+            'value'        => 'value',
+            'isDefault'    => 'is_default',
+            'translations' => 'translations',
         ];
     }
 
