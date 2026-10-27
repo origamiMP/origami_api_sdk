@@ -12,7 +12,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use OrigamiMp\OrigamiApiSdk\Helpers\Validation\Validator;
 
-abstract class ApiResponseDto
+abstract class ApiResponseDto implements Arrayable
 {
     protected object $apiResponse;
 
@@ -174,10 +174,9 @@ abstract class ApiResponseDto
     }
 
     /**
-     * Builds an array from this DTO's public, initialized properties, for use in an
-     * `Arrayable::toArray()` implementation. Keys default to the property's own (camelCase)
-     * name, unchanged; pass $keyOverrides for the rare property that should be exposed under
-     * a different key.
+     * Builds an array from this DTO's public, initialized properties, for `toArray()`. Keys
+     * default to the property's own (camelCase) name, unchanged; pass $keyOverrides for the
+     * rare property that should be exposed under a different key.
      *
      * @param  array<string, string>  $keyOverrides  propertyName => arrayKey
      */
@@ -220,5 +219,10 @@ abstract class ApiResponseDto
         }
 
         return implode(', ', $summary);
+    }
+
+    public function toArray(): array
+    {
+        return $this->arrayFromPublicProperties();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -10,7 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormDtoNotConstructableExceptio
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-class FormDto extends ApiResponseDto implements Arrayable
+class FormDto extends ApiResponseDto
 {
     use HasIncludes, HasTimestamps;
 
@@ -63,7 +62,7 @@ class FormDto extends ApiResponseDto implements Arrayable
             'is_quote_enabled'      => ['required', 'boolean'],
             'is_standalone_enabled' => ['required', 'boolean'],
             'fields_count'          => ['nullable', 'integer'],
-            'translations'          => ['required'],
+            'translations'          => ['required', 'array'],
         ] + $this->getTimestampsValidationRules();
     }
 
@@ -72,10 +71,5 @@ class FormDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FormDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

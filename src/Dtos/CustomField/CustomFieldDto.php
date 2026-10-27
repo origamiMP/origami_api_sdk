@@ -36,9 +36,7 @@ class CustomFieldDto extends ApiResponseDto
 
     public bool $isPrivate;
 
-    /**
-     * @var Collection|CustomFieldTranslationDto[]
-     */
+    /** @var Collection<int, CustomFieldTranslationDto> */
     public Collection $translations;
 
     /**
@@ -47,7 +45,7 @@ class CustomFieldDto extends ApiResponseDto
      * May be undefined if the corresponding data was not included, or if the Custom Field is not a select or a
      * multiple.
      *
-     * @var Collection|CustomFieldValueDto[]
+     * @var Collection<int, CustomFieldValueDto>
      */
     public Collection $values;
 

@@ -16,9 +16,7 @@ class OrigamiApiErrorsDto extends ApiResponseDto
 
     public int $statusCode;
 
-    /**
-     * @var OrigamiApiErrorDto[]|Collection
-     */
+    /** @var Collection<int, OrigamiApiErrorDto> */
     public Collection $errors;
 
     public function getCorrespondingException(): OrigamiApiException
@@ -34,7 +32,7 @@ class OrigamiApiErrorsDto extends ApiResponseDto
     {
         return [
             'status_code' => 'statusCode',
-            'errors'      => fn ($errors) => $this->initErrorsProperty($errors),
+            'errors'      => fn ($errors) => $this->initErrors($errors),
         ];
     }
 
@@ -53,7 +51,7 @@ class OrigamiApiErrorsDto extends ApiResponseDto
         return new OrigamiApiErrorsDtoNotConstructableException($msg, previous: $previous);
     }
 
-    protected function initErrorsProperty(array $errors): void
+    protected function initErrors(array $errors): void
     {
         if (count($errors) === 0) {
             throw self::getDefaultNotConstructableException('The error list is empty.');

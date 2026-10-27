@@ -30,7 +30,7 @@ class RoleDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var RolePermissionDto[]|Collection
+     * @var Collection<int, RolePermissionDto>
      */
     public Collection $permissions;
 
@@ -39,7 +39,7 @@ class RoleDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserDto[]|Collection
+     * @var Collection<int, UserDto>
      */
     public Collection $users;
 

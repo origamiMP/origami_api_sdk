@@ -2,13 +2,12 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormPrefillSourcesDtoNotConstructableException;
 
-class FormPrefillSourcesDto extends ApiResponseDto implements Arrayable
+class FormPrefillSourcesDto extends ApiResponseDto
 {
     /** @var Collection<int, FormPrefillSourceDto> */
     public Collection $attributes;
@@ -19,8 +18,8 @@ class FormPrefillSourcesDto extends ApiResponseDto implements Arrayable
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'attributes'    => fn (array $attributes) => $this->attributes = $this->mapSources($attributes),
-            'custom_fields' => fn (array $customFields) => $this->customFields = $this->mapSources($customFields),
+            'attributes'    => fn (array $attributes) => $this->initAttributes($attributes),
+            'custom_fields' => fn (array $customFields) => $this->initCustomFields($customFields),
         ];
     }
 
@@ -39,14 +38,13 @@ class FormPrefillSourcesDto extends ApiResponseDto implements Arrayable
         return new FormPrefillSourcesDtoNotConstructableException($msg, previous: $previous);
     }
 
-    public function toArray(): array
+    protected function initAttributes(array $attributes): void
     {
-        return $this->arrayFromPublicProperties();
+        $this->attributes = collect($attributes)->map(fn (object $attribute) => new FormPrefillSourceDto($attribute));
     }
 
-    /** @return Collection<int, FormPrefillSourceDto> */
-    private function mapSources(array $sources): Collection
+    protected function initCustomFields(array $customFields): void
     {
-        return collect($sources)->map(fn (object $source) => new FormPrefillSourceDto($source));
+        $this->customFields = collect($customFields)->map(fn (object $customField) => new FormPrefillSourceDto($customField));
     }
 }

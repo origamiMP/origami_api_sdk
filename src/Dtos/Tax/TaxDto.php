@@ -26,9 +26,7 @@ class TaxDto extends ApiResponseDto
 
     public ?int $moduleId;
 
-    /**
-     * @var Collection|TaxTranslationDto[]
-     */
+    /** @var Collection<int, TaxTranslationDto> */
     public Collection $translations;
 
     public static function getAvailableIncludes(): array

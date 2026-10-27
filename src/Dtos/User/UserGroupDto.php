@@ -78,21 +78,21 @@ class UserGroupDto extends ApiResponseDto
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerDocumentDto[]|Collection
+     * @var Collection<int, SellerDocumentDto>
      */
     public Collection $documents;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerBankAccountDto[]|Collection
+     * @var Collection<int, SellerBankAccountDto>
      */
     public Collection $bankAccounts;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserDto[]|Collection
+     * @var Collection<int, UserDto>
      */
     public Collection $users;
 

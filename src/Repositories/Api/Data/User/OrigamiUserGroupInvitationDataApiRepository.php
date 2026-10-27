@@ -12,14 +12,14 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSta
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationListResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationsSendResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\CheckPendingUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationHistoryRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationsRequestParamBag;
@@ -33,7 +33,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationListResponseDtoNotConstructableException
+     * @throws UserGroupInvitationListDtoNotConstructableException
      */
     public function list(?ListUserGroupInvitationsRequestParamBag $paramBag = null): UserGroupInvitationListDto
     {
@@ -48,7 +48,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationsSendResponseDtoNotConstructableException
+     * @throws UserGroupInvitationSendDtoNotConstructableException
      */
     public function send(SendUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationSendDto
     {
@@ -63,7 +63,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationCancelResponseDtoNotConstructableException
+     * @throws UserGroupInvitationCancelDtoNotConstructableException
      */
     public function cancel(int $id): UserGroupInvitationCancelDto
     {
@@ -93,7 +93,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationValidateResponseDtoNotConstructableException
+     * @throws UserGroupInvitationValidateDtoNotConstructableException
      */
     public function validate(ValidateUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationValidateDto
     {
@@ -108,7 +108,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationStatsResponseDtoNotConstructableException
+     * @throws UserGroupInvitationStatsDtoNotConstructableException
      */
     public function getStats(): UserGroupInvitationStatsDto
     {
@@ -123,7 +123,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationHistoryResponseDtoNotConstructableException
+     * @throws UserGroupInvitationHistoryDtoNotConstructableException
      */
     public function getHistory(GetUserGroupInvitationHistoryRequestParamBag $paramBag): UserGroupInvitationHistoryDto
     {
@@ -138,7 +138,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationCheckPendingResponseDtoNotConstructableException
+     * @throws UserGroupInvitationCheckPendingDtoNotConstructableException
      */
     public function checkPending(CheckPendingUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationCheckPendingDto
     {

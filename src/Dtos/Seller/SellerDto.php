@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
@@ -18,7 +17,7 @@ use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-class SellerDto extends ApiResponseDto implements Arrayable
+class SellerDto extends ApiResponseDto
 {
     use HasCustomFields, HasIncludes, HasTimestamps;
 
@@ -107,7 +106,7 @@ class SellerDto extends ApiResponseDto implements Arrayable
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerDocumentDto[]|Collection
+     * @var Collection<int, SellerDocumentDto>
      */
     public Collection $documents;
 
@@ -119,21 +118,21 @@ class SellerDto extends ApiResponseDto implements Arrayable
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerBankAccountDto[]|Collection
+     * @var Collection<int, SellerBankAccountDto>
      */
     public Collection $bankAccounts;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var DocumentTypeDto[]|Collection
+     * @var Collection<int, DocumentTypeDto>
      */
     public Collection $requiredDocuments;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserDto[]|Collection
+     * @var Collection<int, UserDto>
      */
     public Collection $users;
 
@@ -291,10 +290,5 @@ class SellerDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new SellerDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

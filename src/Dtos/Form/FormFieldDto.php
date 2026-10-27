@@ -2,7 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
@@ -11,7 +10,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormFieldDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
-class FormFieldDto extends ApiResponseDto implements Arrayable
+class FormFieldDto extends ApiResponseDto
 {
     use HasIncludes;
 
@@ -84,8 +83,8 @@ class FormFieldDto extends ApiResponseDto implements Arrayable
             'prefill_readonly'  => ['required', 'boolean'],
             'save_to_customer'  => ['required', 'boolean'],
             'condition'         => ['present'],
-            'translations'      => ['required'],
-            'options'           => ['required'],
+            'translations'      => ['required', 'array'],
+            'options'           => ['required', 'array'],
         ];
     }
 
@@ -94,10 +93,5 @@ class FormFieldDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FormFieldDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

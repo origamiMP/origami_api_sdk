@@ -26,9 +26,7 @@ class CustomFieldModelValueDto extends ApiResponseDto
 
     public bool $isPrivate;
 
-    /**
-     * @var Collection|CustomFieldTranslationDto[]
-     */
+    /** @var Collection<int, CustomFieldTranslationDto> */
     public Collection $translations;
 
     public ?CustomFieldGroupDto $group;

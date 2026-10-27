@@ -74,7 +74,7 @@ class UserDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserGroupDto[]|Collection
+     * @var Collection<int, UserGroupDto>
      */
     public Collection $userGroups;
 
@@ -88,7 +88,7 @@ class UserDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var RoleDto[]|Collection
+     * @var Collection<int, RoleDto>
      */
     public Collection $roles;
 

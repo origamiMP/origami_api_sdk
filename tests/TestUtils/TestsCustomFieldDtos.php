@@ -2,6 +2,7 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldModelValueDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
@@ -27,6 +28,11 @@ trait TestsCustomFieldDtos
         ];
 
         return [...$baseData, ...$override];
+    }
+
+    protected function mockCustomFieldDto(array $override = []): CustomFieldDto
+    {
+        return new CustomFieldDto(Obj::fromArray($this->mockCustomFieldApiData($override)));
     }
 
     protected function mockCustomFieldValueApiData(array $override = []): array
