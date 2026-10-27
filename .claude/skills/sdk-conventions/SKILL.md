@@ -28,8 +28,9 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 | `references/code/client-repositories.md` | You create or change a client repository: class hierarchy, folder, name, constructor, overridden hooks |
 | `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, validation rules, exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
 | `references/code/traits.md` | You create or change a trait, or its contract: folder, name, when it has a contract, order of the contents, setters and getters, what it gives to the class using it |
+| `references/code/exceptions.md` | You create, throw or catch an exception: `OrigamiApiSdkException`, families and folders, API exceptions and how an API error picks one, names, contents, messages, native exceptions |
 
-🚧 TODO — the rest of the code conventions (exceptions, enums…) is not written yet (see the last general rule).
+🚧 TODO — the rest of the code conventions (enums…) is not written yet (see the last general rule).
 
 ## General rules
 

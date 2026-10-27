@@ -52,7 +52,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not valid JSON',
+            'Unreadable response from Origami API: HTTP 200, the body is not valid JSON',
         );
 
         $this->assertInstanceOf(\JsonException::class, $exception->getPrevious());
@@ -67,7 +67,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not a JSON object',
+            'Unreadable response from Origami API: HTTP 200, the body is not a JSON object',
         );
 
         $this->assertNull($exception->getPrevious());
@@ -99,7 +99,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeListResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not valid JSON',
+            'Unreadable response from Origami API: HTTP 200, the body is not valid JSON',
         );
 
         $this->assertInstanceOf(\JsonException::class, $exception->getPrevious());
@@ -114,7 +114,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeListResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not a JSON list',
+            'Unreadable response from Origami API: HTTP 200, the body is not a JSON list',
         );
 
         $this->assertNull($exception->getPrevious());

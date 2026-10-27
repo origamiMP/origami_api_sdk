@@ -98,7 +98,7 @@ abstract class ApiResponseDto implements Arrayable
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Api response data failed to be validated : $summary",
+                "[$classShortName] Api response data failed to be validated: $summary",
                 $e,
             );
         }
@@ -135,7 +135,7 @@ abstract class ApiResponseDto implements Arrayable
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Could not assign data '$dottedPath' to property : {$e->getMessage()}",
+                "[$classShortName] Could not assign data '$dottedPath' to property: {$e->getMessage()}",
                 $e,
             );
         }

@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
 
 abstract class OrigamiApiSingleException extends OrigamiApiException
 {
-    public function __construct(protected OrigamiApiErrorDto $errorDto, $previous = null)
+    public function __construct(protected OrigamiApiErrorDto $errorDto, ?\Throwable $previous = null)
     {
         parent::__construct($this->errorDto->toString(), previous: $previous);
     }
