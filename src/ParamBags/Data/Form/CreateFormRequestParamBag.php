@@ -27,11 +27,11 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'is_active'             => 'isActive',
-            'is_purchase_enabled'   => 'isPurchaseEnabled',
-            'is_quote_enabled'      => 'isQuoteEnabled',
-            'is_standalone_enabled' => 'isStandaloneEnabled',
-            'translations'          => 'translations',
+            'isActive'            => 'is_active',
+            'isPurchaseEnabled'   => 'is_purchase_enabled',
+            'isQuoteEnabled'      => 'is_quote_enabled',
+            'isStandaloneEnabled' => 'is_standalone_enabled',
+            'translations'        => 'translations',
         ];
     }
 

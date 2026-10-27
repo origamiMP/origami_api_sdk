@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
+use Closure;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 
 abstract class RequestParamBag extends ParamBag
@@ -39,7 +40,7 @@ abstract class RequestParamBag extends ParamBag
     /**
      * {@inheritDoc}
      */
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return array_merge(
             $this->getJsonRequestParamsList(),
@@ -49,7 +50,7 @@ abstract class RequestParamBag extends ParamBag
     }
 
     /**
-     * @return array<string, string> API key => property name
+     * @return array<string, string|Closure(mixed): array<string, mixed>> property name => API key, or closure (see ParamBag::getPropertiesToApiKeys())
      */
     protected function getJsonRequestParamsList(): array
     {
@@ -57,7 +58,7 @@ abstract class RequestParamBag extends ParamBag
     }
 
     /**
-     * @return array<string, string> API key => property name
+     * @return array<string, string|Closure(mixed): array<string, mixed>> property name => API key, or closure (see ParamBag::getPropertiesToApiKeys())
      */
     protected function getFormRequestParamsList(): array
     {
@@ -65,7 +66,7 @@ abstract class RequestParamBag extends ParamBag
     }
 
     /**
-     * @return array<string, string> API key => property name
+     * @return array<string, string|Closure(mixed): array<string, mixed>> property name => API key, or closure (see ParamBag::getPropertiesToApiKeys())
      */
     protected function getQueryRequestParamsList(): array
     {

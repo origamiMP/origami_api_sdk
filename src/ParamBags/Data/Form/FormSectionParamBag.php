@@ -20,7 +20,7 @@ class FormSectionParamBag extends ParamBag
      */
     public array $fields;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
             'id'           => 'id',

@@ -21,7 +21,7 @@ class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestP
         return array_merge(
             parent::getJsonRequestParamsList(),
             [
-                'refresh_token' => 'refreshToken',
+                'refreshToken' => 'refresh_token',
             ]
         );
     }

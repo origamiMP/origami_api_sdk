@@ -35,22 +35,22 @@ class CreateSellerLegalInformationParamBag extends ParamBag
 
     public CreateSellerLegalInformationAddressParamBag $address;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'legal_type'              => 'legalType',
-            'manager_first_name'      => 'managerFirstName',
-            'manager_last_name'       => 'managerLastName',
-            'manager_birthday'        => 'managerBirthday',
-            'manager_country_iso'     => 'managerCountryIso',
-            'manager_nationality_iso' => 'managerNationalityIso',
-            'company_name'            => 'companyName',
-            'company_contact_email'   => 'companyContactEmail',
-            'siret'                   => 'siret',
-            'tva_number'              => 'tvaNumber',
-            'registration_city'       => 'registrationCity',
-            'legal_form'              => 'legalForm',
-            'address'                 => 'address',
+            'legalType'             => 'legal_type',
+            'managerFirstName'      => 'manager_first_name',
+            'managerLastName'       => 'manager_last_name',
+            'managerBirthday'       => fn (Carbon $date) => ['manager_birthday' => $date->format('Y-m-d')],
+            'managerCountryIso'     => 'manager_country_iso',
+            'managerNationalityIso' => 'manager_nationality_iso',
+            'companyName'           => 'company_name',
+            'companyContactEmail'   => 'company_contact_email',
+            'siret'                 => 'siret',
+            'tvaNumber'             => 'tva_number',
+            'registrationCity'      => 'registration_city',
+            'legalForm'             => 'legal_form',
+            'address'               => 'address',
         ];
     }
 
@@ -75,10 +75,5 @@ class CreateSellerLegalInformationParamBag extends ParamBag
             'registrationCity'      => ['string', 'max:255'],
             'legalForm'             => ['string', 'max:255'],
         ];
-    }
-
-    protected function castManagerBirthdayToEncodableType(Carbon $datetime): string|int
-    {
-        return $datetime->format('Y-m-d');
     }
 }

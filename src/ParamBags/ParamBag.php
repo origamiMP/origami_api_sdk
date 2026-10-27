@@ -10,33 +10,56 @@ use Illuminate\Validation\Rules\RequiredIf;
 abstract class ParamBag
 {
     /**
-     * The properties this param bag sends, under their API key: `api_key => propertyName`, as DTOs declare the keys
-     * they read. A property not listed, or not set, is not sent.
+     * The properties this param bag sends, with their API key: `propertyName => 'api_key'`. A property needing a
+     * custom cast declares a closure instead, receiving the property value and returning a single API key / value
+     * pair, sent as is: `propertyName => fn (Carbon $date) => ['api_key' => $date->format('Y-m-d')]`.
+     * A property not listed, or not set, is not sent.
      *
-     * @return array<string, string>
+     * @return array<string, string|Closure(mixed): array<string, mixed>>
      */
-    abstract protected function getApiKeysToProperties(): array;
+    abstract protected function getPropertiesToApiKeys(): array;
 
     /**
-     * @param  array<string, string>  $apiKeysToProperties  API key => property name
+     * @param  array<string, string|Closure(mixed): array<string, mixed>>  $propertiesToApiKeys  property name => API key, or closure
      */
-    protected function asEncodableArray(array $apiKeysToProperties): array
+    protected function asEncodableArray(array $propertiesToApiKeys): array
     {
         $properties = $this->getAllObjectVars();
 
         $encodableArray = [];
 
-        foreach ($apiKeysToProperties as $apiKey => $propertyName) {
+        foreach ($propertiesToApiKeys as $propertyName => $apiKeyOrCaster) {
             if (! array_key_exists($propertyName, $properties)) {
                 continue;
             }
 
-            $encodableArray[$apiKey] = $this->doesPropertyHaveCustomCastMethod($propertyName)
-                ? $this->useCustomCastForProperty($propertyName, $properties[$propertyName])
-                : $this->castPropertyToEncodableType($properties[$propertyName]);
+            if ($apiKeyOrCaster instanceof Closure) {
+                $encodableArray = [
+                    ...$encodableArray,
+                    ...$this->useCustomCastForProperty($propertyName, $apiKeyOrCaster, $properties[$propertyName]),
+                ];
+            } else {
+                $encodableArray[$apiKeyOrCaster] = $this->castPropertyToEncodableType($properties[$propertyName]);
+            }
         }
 
         return $encodableArray;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function useCustomCastForProperty(string $propertyName, Closure $caster, mixed $propertyValue): array
+    {
+        $apiKeyToValue = $caster($propertyValue);
+
+        if (! is_array($apiKeyToValue) || count($apiKeyToValue) !== 1 || ! is_string(array_key_first($apiKeyToValue))) {
+            $classShortName = class_basename($this);
+
+            throw new \LogicException("[$classShortName] The cast of '$propertyName' must return a single API key / value pair.");
+        }
+
+        return $apiKeyToValue;
     }
 
     /**
@@ -53,7 +76,7 @@ abstract class ParamBag
     protected function castPropertyToEncodableType(mixed $propertyValue): null|bool|int|float|string|array
     {
         if ($propertyValue instanceof ParamBag) {
-            return $propertyValue->asEncodableArray($propertyValue->getApiKeysToProperties());
+            return $propertyValue->asEncodableArray($propertyValue->getPropertiesToApiKeys());
         }
 
         if (is_array($propertyValue)) {
@@ -90,25 +113,6 @@ abstract class ParamBag
     protected function castCarbonToEncodableType(Carbon $dateTime): string|int
     {
         return $dateTime->format('Y-m-d H:i:s');
-    }
-
-    protected function getCustomCastMethodNameForProperty(string $propertyName): string
-    {
-        $formattedPropertyName = Str::ucfirst(Str::camel($propertyName));
-
-        return "cast{$formattedPropertyName}ToEncodableType";
-    }
-
-    protected function doesPropertyHaveCustomCastMethod(string $propertyName): bool
-    {
-        return method_exists($this, $this->getCustomCastMethodNameForProperty($propertyName));
-    }
-
-    protected function useCustomCastForProperty(string $propertyName, mixed $propertyValue): mixed
-    {
-        $methodName = $this->getCustomCastMethodNameForProperty($propertyName);
-
-        return $this->$methodName($propertyValue);
     }
 
     /**

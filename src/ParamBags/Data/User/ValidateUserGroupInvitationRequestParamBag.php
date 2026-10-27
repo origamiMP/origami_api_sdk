@@ -13,8 +13,8 @@ class ValidateUserGroupInvitationRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'token'         => 'token',
-            'user_group_id' => 'userGroupId',
+            'token'       => 'token',
+            'userGroupId' => 'user_group_id',
         ];
     }
 

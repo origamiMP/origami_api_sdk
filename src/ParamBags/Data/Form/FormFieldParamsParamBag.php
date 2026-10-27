@@ -24,16 +24,16 @@ class FormFieldParamsParamBag extends ParamBag
 
     public FormFieldParamsDtoWidthEnum $width;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'extensions'  => 'extensions',
-            'max_size_kb' => 'maxSizeKb',
-            'max_files'   => 'maxFiles',
-            'unit'        => 'unit',
-            'min'         => 'min',
-            'max'         => 'max',
-            'width'       => 'width',
+            'extensions' => 'extensions',
+            'maxSizeKb'  => 'max_size_kb',
+            'maxFiles'   => 'max_files',
+            'unit'       => 'unit',
+            'min'        => 'min',
+            'max'        => 'max',
+            'width'      => 'width',
         ];
     }
 

@@ -22,17 +22,17 @@ abstract class AddressParamBag extends ParamBag
 
     public string $region;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'address_line1' => 'addressLine1',
-            'address_line2' => 'addressLine2',
-            'postcode'      => 'postcode',
-            'city'          => 'city',
-            'country_iso'   => 'countryIso',
-            'longitude'     => 'longitude',
-            'latitude'      => 'latitude',
-            'region'        => 'region',
+            'addressLine1' => 'address_line1',
+            'addressLine2' => 'address_line2',
+            'postcode'     => 'postcode',
+            'city'         => 'city',
+            'countryIso'   => 'country_iso',
+            'longitude'    => 'longitude',
+            'latitude'     => 'latitude',
+            'region'       => 'region',
         ];
     }
 

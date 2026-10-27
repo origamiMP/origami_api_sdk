@@ -23,7 +23,7 @@ class UpdateTaxRequestParamBag extends RequestParamBag
         return [
             'type'         => 'type',
             'value'        => 'value',
-            'is_default'   => 'isDefault',
+            'isDefault'    => 'is_default',
             'translations' => 'translations',
         ];
     }

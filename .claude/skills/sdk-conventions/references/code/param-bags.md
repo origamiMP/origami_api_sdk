@@ -6,13 +6,23 @@ A param bag carries the parameters of a request to the API (query, JSON body, he
 
 ## Keys sent to the API
 
-**A param bag declares the API key of every property it sends**, as `api_key => propertyName`, the way a DTO declares the keys it reads (`getDefaultDataStructureToProperties()`). Nothing is deduced from the property names: a property left out, or not set, is not sent.
+**A param bag declares the API key of every property it sends**, as `propertyName => api_key`: the reverse of a DTO (`getDefaultDataStructureToProperties()`), since the data goes out of the SDK instead of coming in. Nothing is deduced from the property names: a property left out, or not set, is not sent.
 
-- A request param bag declares them in `getJsonRequestParamsList()`, `getFormRequestParamsList()` or `getQueryRequestParamsList()`, depending on where the API reads them: `'price_tax_exc' => 'priceTaxExc'`. The traits (`HasIncludes`, `HasFilters`, `HasPagination`, `HasSearch`) declare theirs the same way, merged by the param bag (`ListSellerRequestParamBag`).
-- A param bag sent inside another one (a line, a translation, an address) declares them in `getApiKeysToProperties()` (`FormFieldOptionParamBag`).
-- The key is the API's, whatever the property name: `'on_call_247' => 'onCall247'`, where a conversion of the name would give `on_call247`.
+- A request param bag declares them in `getJsonRequestParamsList()`, `getFormRequestParamsList()` or `getQueryRequestParamsList()`, depending on where the API reads them: `'priceTaxExc' => 'price_tax_exc'`. The traits (`HasIncludes`, `HasFilters`, `HasPagination`, `HasSearch`) declare theirs the same way, merged by the param bag (`ListSellerRequestParamBag`).
+- A param bag sent inside another one (a line, a translation, an address) declares them in `getPropertiesToApiKeys()` (`FormFieldOptionParamBag`).
+- The key is the API's, whatever the property name: `'onCall247' => 'on_call_247'`, where a conversion of the name would give `on_call247`.
 
 Guarded by `ParamBagTest::test_api_keys_case_1`: it fails on a public property without API key, or on a declared property that does not exist.
+
+### Custom cast
+
+A property value is converted by `ParamBag::castPropertyToEncodableType()` (nested param bag, array, backed enum, `Carbon` as `Y-m-d H:i:s`). A property needing another conversion declares a closure instead of its API key. The closure receives the property value and returns a single `api_key => value` pair, sent as is:
+
+```php
+'holidayDepartureDate' => fn (Carbon $date) => ['holiday_departure_date' => $date->format('Y-m-d')],
+```
+
+The closure is only called when the property is set. Returning anything else than a single pair with a string key throws a `LogicException`. Model: `CreateSellerRequestParamBag`.
 
 ## Includes
 

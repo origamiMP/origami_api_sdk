@@ -12,10 +12,10 @@ class FormTranslationParamBag extends ParamBag
 
     public ?string $description;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'language_id' => 'languageId',
+            'languageId'  => 'language_id',
             'name'        => 'name',
             'description' => 'description',
         ];

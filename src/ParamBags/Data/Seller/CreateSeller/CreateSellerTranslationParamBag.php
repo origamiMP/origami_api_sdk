@@ -12,10 +12,10 @@ class CreateSellerTranslationParamBag extends ParamBag
 
     public string $tos;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'language_id' => 'languageId',
+            'languageId'  => 'language_id',
             'description' => 'description',
             'tos'         => 'tos',
         ];

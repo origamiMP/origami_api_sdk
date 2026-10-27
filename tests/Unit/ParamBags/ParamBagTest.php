@@ -30,6 +30,46 @@ class ParamBagTest extends TestCase
     }
 
     /**
+     * A property declared with a cast closure should be sent as the API key / value pair the closure returns.
+     */
+    public function test_json_case_2(): void
+    {
+        $paramBag = new JsonParamBagFixture;
+        $paramBag->dateOnly = Carbon::parse('2024-05-12 16:12:56');
+
+        $guzzleParams = $paramBag->asGuzzleParams();
+
+        $this->assertSame(['date_only' => '2024-05-12'], $guzzleParams['json']);
+    }
+
+    /**
+     * A property declared with a cast closure but not set should not be sent.
+     */
+    public function test_json_case_3(): void
+    {
+        $paramBag = new JsonParamBagFixture;
+        $paramBag->date = Carbon::parse('2024-05-12 16:12:56');
+
+        $guzzleParams = $paramBag->asGuzzleParams();
+
+        $this->assertSame(['date' => '2024-05-12 16:12:56'], $guzzleParams['json']);
+    }
+
+    /**
+     * A cast closure not returning a single API key / value pair should throw a LogicException.
+     */
+    #[DataProvider('invalidCastResultProvider')]
+    public function test_json_case_4(array $castResult): void
+    {
+        $paramBag = new JsonParamBagFixture;
+        $paramBag->castResult = $castResult;
+
+        $this->expectException(\LogicException::class);
+
+        $paramBag->asGuzzleParams();
+    }
+
+    /**
      * Every public property of a param bag should be declared with its API key, and every declared property should
      * exist.
      *
@@ -39,11 +79,23 @@ class ParamBagTest extends TestCase
     public function test_api_keys_case_1(string $paramBagClass): void
     {
         $reflection = new \ReflectionClass($paramBagClass);
-        $declaredProperties = array_values($reflection->getMethod('getApiKeysToProperties')->invoke($reflection->newInstanceWithoutConstructor()));
+        $declaredProperties = array_keys($reflection->getMethod('getPropertiesToApiKeys')->invoke($reflection->newInstanceWithoutConstructor()));
         $publicProperties = array_map(fn (\ReflectionProperty $property) => $property->getName(), $reflection->getProperties(\ReflectionProperty::IS_PUBLIC));
 
         $this->assertSame([], array_values(array_diff($publicProperties, $declaredProperties)), 'Public properties without API key.');
         $this->assertSame([], array_values(array_filter($declaredProperties, fn (string $property) => ! $reflection->hasProperty($property))), 'Declared properties that do not exist.');
+    }
+
+    /**
+     * @return array<string, array{array}>
+     */
+    public static function invalidCastResultProvider(): array
+    {
+        return [
+            'no pair'     => [[]],
+            'two pairs'   => [['date_only' => '2024-05-12', 'time_only' => '16:12:56']],
+            'integer key' => [['2024-05-12']],
+        ];
     }
 
     /**
