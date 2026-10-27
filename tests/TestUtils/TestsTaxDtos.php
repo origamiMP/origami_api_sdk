@@ -3,7 +3,7 @@
 namespace Tests\TestUtils;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 

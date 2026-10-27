@@ -56,7 +56,7 @@ Laravel rules on the raw response, one line per key of the data structure:
 
 - `required` for a key always present with a value, `present` + `nullable` for a key present but possibly `null`;
 - a type rule (`integer`, `string`, `boolean`, `numeric`, `array`, `date`);
-- an enum: `Rule::in()` on the values of its cases (`TaxDto`);
+- an enum: `Rule::enum(TaxDtoTypeEnum::class)` (see `enums.md`);
 - an include: `['required', 'array']` when the API always sends it.
 
 ## NotConstructable exception (`getDefaultNotConstructableException()`)

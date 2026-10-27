@@ -29,7 +29,7 @@ class FormConditionDto extends ApiResponseDto
     {
         return [
             'field_key' => ['required', 'string'],
-            'operator'  => ['required', Rule::in(collect(FormConditionDtoOperatorEnum::cases())->pluck('value'))],
+            'operator'  => ['required', Rule::enum(FormConditionDtoOperatorEnum::class)],
             'value'     => ['present', 'nullable', 'string'],
         ];
     }

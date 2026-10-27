@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax;
 
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 class UpdateTaxRequestParamBag extends RequestParamBag

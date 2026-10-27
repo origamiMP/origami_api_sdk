@@ -78,13 +78,11 @@ class UserGroupInvitationDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $statuses = collect(UserGroupInvitationDtoStatusEnum::cases())->pluck('value');
-
         $rules = [
             'id'             => ['required', 'integer'],
             'user_group_id'  => ['present', 'nullable', 'integer'],
             'email'          => ['required', 'string', 'email'],
-            'status'         => ['required', Rule::in($statuses)],
+            'status'         => ['required', Rule::enum(UserGroupInvitationDtoStatusEnum::class)],
             'onboarding_url' => ['required', 'string', 'url'],
             'sent_at'        => ['present', 'nullable', 'date'],
             'accepted_at'    => ['present', 'nullable', 'date'],

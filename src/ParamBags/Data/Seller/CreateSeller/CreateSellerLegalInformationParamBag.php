@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller;
 
 use Carbon\Carbon;
 use Illuminate\Validation\Rule;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerLegalInformationParamBagLegalTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBagLegalTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
 class CreateSellerLegalInformationParamBag extends ParamBag

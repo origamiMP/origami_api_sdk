@@ -78,12 +78,10 @@ class CustomFieldDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(CustomFieldDtoTypeEnum::cases())->pluck('value');
-
         $rules = [
             'id'                    => ['required', 'integer'],
             'key'                   => ['required', 'string'],
-            'type'                  => ['required', Rule::in($types)],
+            'type'                  => ['required', Rule::enum(CustomFieldDtoTypeEnum::class)],
             'model_type'            => ['required', 'string'],
             'custom_field_group_id' => ['present', 'nullable', 'integer'],
             'params'                => ['present', 'nullable'],

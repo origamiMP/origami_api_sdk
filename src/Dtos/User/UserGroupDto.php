@@ -167,11 +167,9 @@ class UserGroupDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(UserGroupDtoTypeEnum::cases())->pluck('value');
-
         $rules = [
             'id'                   => ['required', 'integer'],
-            'type'                 => ['required', Rule::in($types)],
+            'type'                 => ['required', Rule::enum(UserGroupDtoTypeEnum::class)],
             'user_group_parent_id' => ['required', 'integer'],
             'firstname'            => ['present', 'nullable', 'string'],
             'lastname'             => ['present', 'nullable', 'string'],

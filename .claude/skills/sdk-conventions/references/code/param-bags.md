@@ -61,7 +61,7 @@ Every param bag declares the Laravel rules of what it sends, in `validationRules
 
 - keyed by the **API key**, as sent (`'is_default'`, `'translations.*.language_id'`), never by the property name; a field named inside a rule too (`'missing_with:customer_id'`);
 - `required` for a value the API requires; a rule depending on another property checks that this property is set (`isset($this->legalType) && …` in `CreateSellerLegalInformationParamBag`);
-- the type of the value as sent: an enum as `string` or `Rule::in()` on its values, a date with the format of its cast (`'date_format:Y-m-d'`).
+- the type of the value as sent: an enum with `Rule::enum()` (see `enums.md`), a date with the format of its cast (`'date_format:Y-m-d'`).
 
 Guarded by `ParamBagTest::test_validation_rules_case_1` (every rule key is an API key, rules built on an empty param bag) and `_case_2` (every field named inside a rule is an API key).
 

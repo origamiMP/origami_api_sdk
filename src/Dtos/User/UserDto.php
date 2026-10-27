@@ -142,8 +142,6 @@ class UserDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $states = collect(UserDtoStateEnum::cases())->pluck('value');
-
         $rules = [
             'id'                            => ['required', 'integer'],
             'firstname'                     => ['present', 'string'],
@@ -155,7 +153,7 @@ class UserDto extends ApiResponseDto
             'language_iso'                  => ['present', 'nullable', 'string'],
             'module_id'                     => ['present', 'nullable', 'integer'],
             'has_access_to_seller_features' => ['required', 'boolean'],
-            'state'                         => [Rule::in($states)],
+            'state'                         => [Rule::enum(UserDtoStateEnum::class)],
             'is_account_validated'          => ['boolean'],
         ];
 

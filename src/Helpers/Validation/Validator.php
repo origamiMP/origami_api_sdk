@@ -4,6 +4,9 @@ namespace OrigamiMp\OrigamiApiSdk\Helpers\Validation;
 
 use Illuminate\Validation\Validator as BaseValidator;
 
+/**
+ * Laravel validator usable outside of Laravel, built with a translator returning the keys of the messages.
+ */
 class Validator extends BaseValidator
 {
     public function __construct(

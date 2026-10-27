@@ -74,7 +74,7 @@ class FormFieldDto extends ApiResponseDto
         return [
             'id'                => ['required', 'integer'],
             'key'               => ['required', 'string'],
-            'type'              => ['required', Rule::in(collect(FormFieldDtoTypeEnum::cases())->pluck('value'))],
+            'type'              => ['required', Rule::enum(FormFieldDtoTypeEnum::class)],
             'is_required'       => ['required', 'boolean'],
             'position'          => ['required', 'integer'],
             'params'            => ['present'],

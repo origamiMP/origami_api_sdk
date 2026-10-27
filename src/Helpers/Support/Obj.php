@@ -7,17 +7,26 @@ use Illuminate\Support\Collection;
 
 class Obj
 {
+    /**
+     * Converts an object to an array, nested objects included.
+     */
     public static function toArray(object $object): array
     {
         return json_decode(json_encode($object), true);
     }
 
+    /**
+     * Converts an array to an object, nested associative arrays included.
+     */
     public static function fromArray(array $array): object
     {
         return json_decode(json_encode($array));
     }
 
     /**
+     * Reads a value of an array or an object with a dotted key (`seller.name`, `items.*.name`), or returns $default
+     * when it does not exist.
+     *
      * This method was created from Laravel data_get() helper, to fix an issue in the original :
      *
      * When $target is an array and $key points to a field that is null, original method returns
@@ -26,7 +35,7 @@ class Obj
      *
      * This version fixes this issue by using property_exist() along with isset().
      */
-    public static function get($target, $key, $default = null): mixed
+    public static function get(mixed $target, string|array|int|null $key, mixed $default = null): mixed
     {
         if (is_null($key)) {
             return $target;
@@ -51,7 +60,7 @@ class Obj
                 $result = [];
 
                 foreach ($target as $item) {
-                    $result[] = data_get($item, $key);
+                    $result[] = self::get($item, $key);
                 }
 
                 return in_array('*', $key) ? Arr::collapse($result) : $result;

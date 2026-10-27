@@ -29,8 +29,10 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 | `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, validation rules, exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
 | `references/code/traits.md` | You create or change a trait, or its contract: folder, name, when it has a contract, order of the contents, setters and getters, what it gives to the class using it |
 | `references/code/exceptions.md` | You create, throw or catch an exception: `OrigamiApiSdkException`, families and folders, API exceptions and how an API error picks one, names, contents, messages, native exceptions |
+| `references/code/enums.md` | You create, rename or use an enum: contents and case names, folder (mirror of the class using it, or thematic), name (with the exception of a class not in the SDK yet), one enum per class, conversion and validation (`Rule::enum()`) |
+| `references/code/helpers.md` | You create, change or use a helper: no business logic, folder per subject, name, static methods (and the exception of the classes adapting Laravel), documentation of what it fixes, tests |
 
-🚧 TODO — the rest of the code conventions (enums…) is not written yet (see the last general rule).
+🚧 TODO — the rest of the code conventions (contracts outside traits…) is not written yet (see the last general rule).
 
 ## General rules
 

@@ -47,7 +47,7 @@ class FormFieldParamsDto extends ApiResponseDto
             'unit'        => ['nullable', 'string'],
             'min'         => ['nullable', 'numeric'],
             'max'         => ['nullable', 'numeric'],
-            'width'       => ['nullable', Rule::in(collect(FormFieldParamsDtoWidthEnum::cases())->pluck('value'))],
+            'width'       => ['nullable', Rule::enum(FormFieldParamsDtoWidthEnum::class)],
         ];
     }
 

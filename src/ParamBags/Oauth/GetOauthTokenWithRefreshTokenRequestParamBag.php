@@ -13,7 +13,7 @@ class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestP
 
     public function __construct()
     {
-        parent::__construct(GetOauthTokenParamBagGrantTypeEnum::REFRESH);
+        parent::__construct(GetOauthTokenParamBagGrantTypeEnum::REFRESH_TOKEN);
     }
 
     protected function getJsonRequestParamsList(): array

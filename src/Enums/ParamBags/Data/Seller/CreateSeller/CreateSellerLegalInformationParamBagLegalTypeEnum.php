@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller;
+namespace OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSeller;
 
 enum CreateSellerLegalInformationParamBagLegalTypeEnum: string
 {

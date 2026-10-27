@@ -229,10 +229,6 @@ class SellerDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $mangopayScaStatuses = collect(SellerDtoMangopayScaStatusEnum::cases())->pluck('value');
-        $sellerTypes = collect(SellerDtoTypeEnum::cases())->pluck('value');
-        $states = collect(SellerDtoStateEnum::cases())->pluck('value');
-
         $rules = [
             'id'                   => ['required', 'integer'],
             'user_group_parent_id' => ['required', 'integer'],
@@ -262,9 +258,9 @@ class SellerDto extends ApiResponseDto
             'external_uid'         => ['present', 'nullable', 'string'],
             'email_validated'      => ['required', 'boolean'],
             'phone_validated'      => ['required', 'boolean'],
-            'mangopay_sca_status'  => ['nullable', Rule::in($mangopayScaStatuses)],
-            'seller_type'          => ['required', Rule::in($sellerTypes)],
-            'state'                => ['required', Rule::in($states)],
+            'mangopay_sca_status'  => ['nullable', Rule::enum(SellerDtoMangopayScaStatusEnum::class)],
+            'seller_type'          => ['required', Rule::enum(SellerDtoTypeEnum::class)],
+            'state'                => ['required', Rule::enum(SellerDtoStateEnum::class)],
             'default_tax_id'       => ['required', 'integer'],
             // TODO : Add 'required' when feature flag will be merged
             'fees_profile_id'          => ['nullable', 'integer'],

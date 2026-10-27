@@ -72,12 +72,10 @@ class RoleDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(RoleDtoTypeEnum::cases())->pluck('value');
-
         $rules = [
             'id'         => ['required', 'integer'],
             'name'       => ['required', 'string'],
-            'type'       => ['required', Rule::in($types)],
+            'type'       => ['required', Rule::enum(RoleDtoTypeEnum::class)],
             'color'      => ['required', 'string'],
             'text_color' => ['required', 'string'],
         ];
