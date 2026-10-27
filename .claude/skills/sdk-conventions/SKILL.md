@@ -41,6 +41,7 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 - In a class or a trait, the `public` methods first, then the `protected` and `private` ones. In a test class, `setUp()` / `tearDown()` come first. In a DTO or a trait of DTOs, an overridden `toArray()` comes last (see `references/code/dtos.md`).
 - Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
 - When a convention is not covered here, do not invent one: follow the closest pattern in the existing code and tests, and tell the user the point is not documented.
+- When reading the code reveals a mechanism the skill does not describe (a base class, a hook, a trait, a way of building or validating data…), strongly suggest the user documents it, in the file of its kind of code (see « How to contribute »), even when the current task does not need it.
 
 ## How to contribute
 
