@@ -16,7 +16,7 @@ class OrigamiModuleDataApiRepositoryTest extends TestCase
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [
             $this->mockModuleApiData(['name' => 'payment']),
-            $this->mockModuleApiData(['name' => 'shipping']),
+            $this->mockModuleApiData(['name' => 'shipping', 'is_active' => false]),
         ]]));
 
         $modules = (new OrigamiModuleDataApiRepository($restClient))->list(new ListModuleRequestParamBag);
@@ -24,6 +24,7 @@ class OrigamiModuleDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestWas('GET', 'modules');
         $this->assertInstanceOf(ModuleListDto::class, $modules);
         $this->assertSame(['payment', 'shipping'], $modules->data->pluck('name')->all());
+        $this->assertSame([true, false], $modules->data->pluck('isActive')->all());
     }
 
     /**
