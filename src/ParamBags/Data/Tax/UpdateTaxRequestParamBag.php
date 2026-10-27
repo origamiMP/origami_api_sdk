@@ -21,10 +21,10 @@ class UpdateTaxRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'type',
-            'value',
-            'isDefault',
-            'translations',
+            'type'         => 'type',
+            'value'        => 'value',
+            'isDefault'    => 'is_default',
+            'translations' => 'translations',
         ];
     }
 

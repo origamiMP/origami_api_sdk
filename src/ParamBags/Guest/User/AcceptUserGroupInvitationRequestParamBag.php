@@ -16,7 +16,7 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag implement
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'token',
+            'token' => 'token',
         ];
     }
 

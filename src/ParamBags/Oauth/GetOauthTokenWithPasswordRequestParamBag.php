@@ -25,8 +25,8 @@ class GetOauthTokenWithPasswordRequestParamBag extends GetOauthTokenRequestParam
     {
         return [
             ...parent::getJsonRequestParamsList(),
-            'username',
-            'password',
+            'username' => 'username',
+            'password' => 'password',
         ];
     }
 }

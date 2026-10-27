@@ -44,7 +44,7 @@ trait HasFilters
 
     protected function getFiltersParamsList(): array
     {
-        return ['filter'];
+        return ['filter' => 'filter'];
     }
 
     protected function getFiltersValidationRules(): array

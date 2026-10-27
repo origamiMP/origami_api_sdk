@@ -33,12 +33,12 @@ class UpdateFormRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'isActive',
-            'isPurchaseEnabled',
-            'isQuoteEnabled',
-            'isStandaloneEnabled',
-            'translations',
-            'pages',
+            'isActive'            => 'is_active',
+            'isPurchaseEnabled'   => 'is_purchase_enabled',
+            'isQuoteEnabled'      => 'is_quote_enabled',
+            'isStandaloneEnabled' => 'is_standalone_enabled',
+            'translations'        => 'translations',
+            'pages'               => 'pages',
         ];
     }
 

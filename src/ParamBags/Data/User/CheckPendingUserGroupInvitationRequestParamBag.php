@@ -12,7 +12,7 @@ class CheckPendingUserGroupInvitationRequestParamBag extends RequestParamBag
     {
         return [
             ...parent::getQueryRequestParamsList(),
-            'email',
+            'email' => 'email',
         ];
     }
 
