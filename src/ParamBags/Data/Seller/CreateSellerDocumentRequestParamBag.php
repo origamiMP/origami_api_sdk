@@ -38,11 +38,6 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag implements Has
      */
     public ?int $userGroupId = null;
 
-    protected function getQueryRequestParamsList(): array
-    {
-        return $this->getIncludeParamsList();
-    }
-
     protected function getJsonRequestParamsList(): array
     {
         return [
@@ -54,15 +49,20 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag implements Has
         ];
     }
 
+    protected function getQueryRequestParamsList(): array
+    {
+        return $this->getIncludeParamsList();
+    }
+
     protected function validationRulesForProperties(): array
     {
         $rules = [
-            'content'        => ['string'],
-            'pages'          => ['missing_with:content', 'array', 'min:1'],
-            'pages.*'        => ['required', 'string'],
-            'documentTypeId' => ['required', 'integer'],
-            'name'           => ['required', 'string', 'max:255'],
-            'userGroupId'    => ['nullable', 'integer'],
+            'content'          => ['string'],
+            'pages'            => ['missing_with:content', 'array', 'min:1'],
+            'pages.*'          => ['required', 'string'],
+            'document_type_id' => ['required', 'integer'],
+            'name'             => ['required', 'string', 'max:255'],
+            'user_group_id'    => ['nullable', 'integer'],
         ];
 
         return [

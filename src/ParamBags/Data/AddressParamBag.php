@@ -39,14 +39,14 @@ abstract class AddressParamBag extends ParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'addressLine1' => ['required', 'string', 'max:255'],
-            'addressLine2' => ['required', 'string', 'max:255'],
-            'postcode'     => ['required', 'string', 'max:255'],
-            'city'         => ['required', 'string', 'max:255'],
-            'countryIso'   => ['required', 'string', 'max:2'],
-            'longitude'    => ['string', 'max:255'],
-            'latitude'     => ['string', 'max:255'],
-            'region'       => ['string', 'max:255'],
+            'address_line1' => ['required', 'string', 'max:255'],
+            'address_line2' => ['required', 'string', 'max:255'],
+            'postcode'      => ['required', 'string', 'max:255'],
+            'city'          => ['required', 'string', 'max:255'],
+            'country_iso'   => ['required', 'string', 'max:2'],
+            'longitude'     => ['string', 'max:255'],
+            'latitude'      => ['string', 'max:255'],
+            'region'        => ['string', 'max:255'],
         ];
     }
 }

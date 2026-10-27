@@ -52,9 +52,9 @@ trait HasPagination
     protected function getPaginationValidationRules(): array
     {
         return [
-            'page'              => ['integer', 'min:1'],
-            'itemPerPage'       => ['integer', 'min:1', 'max:100'],
-            'withoutPagination' => ['boolean'],
+            'page'               => ['integer', 'min:1'],
+            'item_per_page'      => ['integer', 'min:1', 'max:100'],
+            'without_pagination' => ['boolean'],
         ];
     }
 }

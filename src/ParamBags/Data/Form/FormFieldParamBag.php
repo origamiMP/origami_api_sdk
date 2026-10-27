@@ -27,14 +27,10 @@ class FormFieldParamBag extends ParamBag
 
     public FormConditionParamBag $condition;
 
-    /**
-     * @var FormFieldTranslationParamBag[]
-     */
+    /** @var array<int, FormFieldTranslationParamBag> */
     public array $translations;
 
-    /**
-     * @var FormFieldOptionParamBag[]
-     */
+    /** @var array<int, FormFieldOptionParamBag> */
     public array $options;
 
     protected function getPropertiesToApiKeys(): array

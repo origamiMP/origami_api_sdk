@@ -14,9 +14,7 @@ class UpdateFormRequestParamBag extends RequestParamBag
 
     public bool $isStandaloneEnabled;
 
-    /**
-     * @var FormTranslationParamBag[]
-     */
+    /** @var array<int, FormTranslationParamBag> */
     public array $translations;
 
     /**
@@ -26,7 +24,7 @@ class UpdateFormRequestParamBag extends RequestParamBag
      * sent): any other property left unset takes the API default (no condition, no params,
      * no options).
      *
-     * @var FormPageParamBag[]
+     * @var array<int, FormPageParamBag>
      */
     public array $pages;
 

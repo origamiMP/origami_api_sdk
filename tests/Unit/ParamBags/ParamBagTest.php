@@ -13,6 +13,9 @@ use Tests\TestCase;
  *
  * Guards the declaration of the API keys too: every param bag of the SDK must declare the API key of each property
  * it sends, since nothing is deduced from the property names. A property left out would silently not be sent.
+ *
+ * Guards the validation rules as well: they are not executed yet, so nothing else catches a rule keyed by a property
+ * name instead of its API key, or one that cannot be built while a property is unset.
  */
 class ParamBagTest extends TestCase
 {
@@ -87,6 +90,45 @@ class ParamBagTest extends TestCase
     }
 
     /**
+     * Every param bag should declare its validation rules, keyed by the API keys it sends, even when none of its
+     * properties is set.
+     *
+     * @param  class-string<ParamBag>  $paramBagClass
+     */
+    #[DataProvider('paramBagProvider')]
+    public function test_validation_rules_case_1(string $paramBagClass): void
+    {
+        $paramBag = (new \ReflectionClass($paramBagClass))->newInstanceWithoutConstructor();
+
+        $ruleKeys = array_keys($this->getValidationRules($paramBag));
+
+        $this->assertSame([], array_values(array_diff(
+            array_map(fn (string $ruleKey) => explode('.', $ruleKey)[0], $ruleKeys),
+            $this->getApiKeys($paramBag),
+        )), 'Rule keys that are not API keys.');
+    }
+
+    /**
+     * A field named inside a rule (`missing_with`, `required_without`…) should be an API key of the param bag.
+     *
+     * @param  class-string<ParamBag>  $paramBagClass
+     */
+    #[DataProvider('paramBagProvider')]
+    public function test_validation_rules_case_2(string $paramBagClass): void
+    {
+        $paramBag = (new \ReflectionClass($paramBagClass))->newInstanceWithoutConstructor();
+
+        $namedFields = collect($this->getValidationRules($paramBag))
+            ->flatten()
+            ->filter(fn (mixed $rule) => is_string($rule) && preg_match('/^\w+_(with|without)\w*:/', $rule))
+            ->flatMap(fn (string $rule) => explode(',', explode(':', $rule, 2)[1]))
+            ->values()
+            ->all();
+
+        $this->assertSame([], array_values(array_diff($namedFields, $this->getApiKeys($paramBag))), 'Fields named in rules that are not API keys.');
+    }
+
+    /**
      * @return array<string, array{array}>
      */
     public static function invalidCastResultProvider(): array
@@ -110,5 +152,33 @@ class ParamBagTest extends TestCase
             ->mapWithKeys(fn (string $class) => [class_basename($class) => [$class]])
             ->sortKeys()
             ->all();
+    }
+
+    private function getValidationRules(ParamBag $paramBag): array
+    {
+        $this->assertTrue(method_exists($paramBag, 'validationRulesForProperties'), 'No validationRulesForProperties().');
+
+        return (new \ReflectionMethod($paramBag, 'validationRulesForProperties'))->invoke($paramBag);
+    }
+
+    /**
+     * The API keys a param bag sends. A custom cast is called with a new instance of its parameter type to read its
+     * API key.
+     *
+     * @return string[]
+     */
+    private function getApiKeys(ParamBag $paramBag): array
+    {
+        $propertiesToApiKeys = (new \ReflectionMethod($paramBag, 'getPropertiesToApiKeys'))->invoke($paramBag);
+
+        return array_values(array_map(function (string|\Closure $apiKeyOrCaster) {
+            if (is_string($apiKeyOrCaster)) {
+                return $apiKeyOrCaster;
+            }
+
+            $valueClass = (new \ReflectionFunction($apiKeyOrCaster))->getParameters()[0]->getType()->getName();
+
+            return array_key_first($apiKeyOrCaster(new $valueClass));
+        }, $propertiesToApiKeys));
     }
 }

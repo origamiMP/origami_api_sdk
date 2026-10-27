@@ -3,7 +3,7 @@
 namespace Tests\Unit\Repositories\Api\Guest\Country;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Country\ListCountriesRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Country\ListCountryRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\Country\OrigamiCountryGuestApiRepository;
 use Tests\TestCase;
 
@@ -18,7 +18,7 @@ class OrigamiCountryGuestApiRepositoryTest extends TestCase
             $this->mockCountryApiData(['iso_2' => 'FR']),
             $this->mockCountryApiData(['iso_2' => 'BE']),
         ])));
-        $paramBag = new ListCountriesRequestParamBag;
+        $paramBag = new ListCountryRequestParamBag;
         $paramBag->page(2);
         $paramBag->perPage(50);
         $paramBag->search('fra');

@@ -2,7 +2,68 @@
 
 A param bag carries the parameters of a request to the API (query, JSON body, headers). An API repository method receives its param bag as an argument.
 
-🚧 TODO — the rest of the param bag conventions (naming, splitting, value conversion, validation…) is not written yet (see the general rules in `SKILL.md`).
+There are two kinds:
+
+- a **request param bag** extends `RequestParamBag`: the parameters of one call, one per API repository method (`ListSellerRequestParamBag`);
+- a **nested param bag** extends `ParamBag`: an object sent inside a request (a translation, an address, a node of the form tree), as a property of a request param bag or of another nested param bag (`TaxTranslationParamBag`).
+
+## File organization
+
+`src/ParamBags/<Family>/<Domain>/`, the same family and domain as the API repository calling the request (`Data/Seller/`, `Guest/Tax/`, `Oauth/`).
+
+A nested param bag goes:
+
+- in a subfolder named after the request param bag, without `RequestParamBag`, when only this request uses it (`Data/Seller/CreateSeller/CreateSellerAddressParamBag`);
+- in the domain folder when several requests of the domain use it (`Data/Tax/TaxTranslationParamBag`, used by `CreateTaxRequestParamBag` and `UpdateTaxRequestParamBag`);
+- at the root of the family when several domains use it (`Data/AddressParamBag`).
+
+## Class names
+
+- Request param bag: `<Verb><Resource>RequestParamBag`, the verb being the method of the API repository and the resource in the singular: `ListCountryRequestParamBag` for `OrigamiCountryGuestApiRepository::list()`, `CreateSellerBankAccountRequestParamBag` for `OrigamiSellerBankAccountDataApiRepository::create()`.
+- Nested param bag: `<Resource><Part>ParamBag` (`TaxTranslationParamBag`, `FormFieldOptionParamBag`), prefixed by the request when it lives in its subfolder (`CreateSellerLegalInformationParamBag`).
+
+## Class contents
+
+In this order:
+
+1. the traits;
+2. the properties;
+3. the constructor, when the param bag sets a fixed value (`GetOauthTokenWithPasswordRequestParamBag`);
+4. `getAdditionalAvailableFilters()`, when the param bag uses `HasFilters`;
+5. the API keys (see « Keys sent to the API »): `getPropertiesToApiKeys()` for a nested param bag, otherwise `getJsonRequestParamsList()`, `getFormRequestParamsList()`, then `getQueryRequestParamsList()`;
+6. `validationRulesForProperties()`;
+7. `getRequestMainDto()`, when the param bag uses `HasIncludes`.
+
+A param bag calls the parent method of a list or of the rules (`...parent::getJsonRequestParamsList()`) only when its parent declares some itself (`GetOauthTokenRequestParamBag` for its two subclasses), never when the parent is `RequestParamBag` or `ParamBag`.
+
+## Properties
+
+- `public` and typed, named in camelCase. A property left unset is not sent.
+- A backed enum, a `Carbon`, a nested param bag or an array of them is converted automatically (see « Custom cast »).
+- An array of nested param bags is documented by `/** @var array<int, TaxTranslationParamBag> */`.
+
+## Cross-cutting traits
+
+A request param bag offering a common feature of the API uses its trait from `Traits\ParamBags`, and implements its contract from `Contracts\Traits\ParamBags`, imported as `<Trait>Contract`:
+
+| Trait | Sends (query) | The param bag adds |
+|---|---|---|
+| `HasIncludes` | `include` | `getRequestMainDto()` (see « Includes ») |
+| `HasFilters` | `filter` | `getAdditionalAvailableFilters()`: the filters of the endpoint, on top of the dates of `BASE_FILTERS` |
+| `HasPagination` | `page`, `item_per_page`, `without_pagination` | – |
+| `HasSearch` | `search` | – |
+
+The param bag merges the API keys and the rules of each trait with its own: `...$this->getIncludeParamsList()`, `...$this->getIncludeValidationRules()` (`ListSellerRequestParamBag`).
+
+## Validation rules (`validationRulesForProperties()`)
+
+Every param bag declares the Laravel rules of what it sends, in `validationRulesForProperties()`. They are not executed yet (`TODO DEV` in `RequestParamBag::getTypedRequestParamsAsGuzzleParams()`), but they document what the API expects, decide whether the param bag of an API repository method is optional (see `api-repositories.md`), and must stay correct for when they are:
+
+- keyed by the **API key**, as sent (`'is_default'`, `'translations.*.language_id'`), never by the property name; a field named inside a rule too (`'missing_with:customer_id'`);
+- `required` for a value the API requires; a rule depending on another property checks that this property is set (`isset($this->legalType) && …` in `CreateSellerLegalInformationParamBag`);
+- the type of the value as sent: an enum as `string` or `Rule::in()` on its values, a date with the format of its cast (`'date_format:Y-m-d'`).
+
+Guarded by `ParamBagTest::test_validation_rules_case_1` (every rule key is an API key, rules built on an empty param bag) and `_case_2` (every field named inside a rule is an API key).
 
 ## Keys sent to the API
 
@@ -52,3 +113,7 @@ In `origami_api`:
 - the controller of the endpoint, which can force default includes (`setDefaultIncludes(['translations', 'pages'])` in `FormController`): they are still includes offered by the request.
 
 How to test it: `references/tests/api-repositories.md`, « Include tests ».
+
+## Tests
+
+What a request param bag sends is tested through its API repository (`references/tests/api-repositories.md`). The behavior shared by every param bag is tested in `ParamBagTest`, and each trait in `Traits/ParamBags/<Trait>Test`, through a fixture (`references/tests/dtos-and-shared-behavior.md`).

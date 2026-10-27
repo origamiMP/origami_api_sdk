@@ -11,7 +11,6 @@ class CheckPendingUserGroupInvitationRequestParamBag extends RequestParamBag
     protected function getQueryRequestParamsList(): array
     {
         return [
-            ...parent::getQueryRequestParamsList(),
             'email' => 'email',
         ];
     }

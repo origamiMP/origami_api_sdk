@@ -8,16 +8,12 @@ class FormPageParamBag extends ParamBag
 {
     public int $id;
 
-    /**
-     * @var FormPageTranslationParamBag[]
-     */
+    /** @var array<int, FormPageTranslationParamBag> */
     public array $translations;
 
     public FormConditionParamBag $condition;
 
-    /**
-     * @var FormSectionParamBag[]
-     */
+    /** @var array<int, FormSectionParamBag> */
     public array $sections;
 
     protected function getPropertiesToApiKeys(): array

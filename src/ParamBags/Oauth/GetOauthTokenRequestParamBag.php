@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Oauth;
 
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Oauth\GetOauthTokenParamBagGrantTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
@@ -25,6 +26,17 @@ abstract class GetOauthTokenRequestParamBag extends RequestParamBag
             'clientId'     => 'client_id',
             'clientSecret' => 'client_secret',
             'grantType'    => 'grant_type',
+        ];
+    }
+
+    protected function validationRulesForProperties(): array
+    {
+        $grantTypes = collect(GetOauthTokenParamBagGrantTypeEnum::cases())->pluck('value');
+
+        return [
+            'client_id'     => ['required', 'string'],
+            'client_secret' => ['required', 'string'],
+            'grant_type'    => ['required', Rule::in($grantTypes)],
         ];
     }
 }

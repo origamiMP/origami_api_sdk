@@ -22,9 +22,9 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupIn
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\CheckPendingUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationHistoryRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationsRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ResendUserGroupInvitationRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationsRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ValidateUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
@@ -35,7 +35,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationListDtoNotConstructableException
      */
-    public function list(?ListUserGroupInvitationsRequestParamBag $paramBag = null): UserGroupInvitationListDto
+    public function list(?ListUserGroupInvitationRequestParamBag $paramBag = null): UserGroupInvitationListDto
     {
         $response = $this->restClient->get('users/groups/invitations', $paramBag);
         $responseContent = $this->decodeResponse($response);
@@ -50,7 +50,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationSendDtoNotConstructableException
      */
-    public function send(SendUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationSendDto
+    public function send(SendUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationSendDto
     {
         $response = $this->restClient->post('users/groups/invitations/send', $paramBag);
         $responseContent = $this->decodeResponse($response);

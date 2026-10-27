@@ -27,7 +27,6 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
     protected function getQueryRequestParamsList(): array
     {
         return [
-            ...parent::getQueryRequestParamsList(),
             ...$this->getFiltersParamsList(),
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),

@@ -33,7 +33,6 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
     protected function getQueryRequestParamsList(): array
     {
         return [
-            ...parent::getQueryRequestParamsList(),
             ...$this->getFiltersParamsList(),
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),

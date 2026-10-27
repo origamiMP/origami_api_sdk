@@ -19,9 +19,7 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
 
     public bool $isStandaloneEnabled;
 
-    /**
-     * @var FormTranslationParamBag[]
-     */
+    /** @var array<int, FormTranslationParamBag> */
     public array $translations;
 
     protected function getJsonRequestParamsList(): array

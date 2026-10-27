@@ -23,4 +23,12 @@ class SendResetPasswordEmailRequestParamBag extends RequestParamBag
             'resetLink' => 'reset_link',
         ];
     }
+
+    protected function validationRulesForProperties(): array
+    {
+        return [
+            'email'      => ['required', 'string', 'email'],
+            'reset_link' => ['string', 'url'],
+        ];
+    }
 }

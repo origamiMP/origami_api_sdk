@@ -35,4 +35,14 @@ class ResetPasswordRequestParamBag extends RequestParamBag
             'token'                => 'token',
         ];
     }
+
+    protected function validationRulesForProperties(): array
+    {
+        return [
+            'email'                 => ['required', 'string', 'email'],
+            'password'              => ['required', 'string', 'confirmed'],
+            'password_confirmation' => ['required', 'string'],
+            'token'                 => ['required', 'string'],
+        ];
+    }
 }

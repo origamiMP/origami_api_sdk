@@ -21,8 +21,8 @@ class ValidateUserGroupInvitationRequestParamBag extends RequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'token'       => ['required', 'string'],
-            'userGroupId' => ['required', 'integer'],
+            'token'         => ['required', 'string'],
+            'user_group_id' => ['required', 'integer'],
         ];
     }
 }

@@ -8,14 +8,13 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListCountriesRequestParamBag extends RequestParamBag implements HasPaginationContract, HasSearchContract
+class ListCountryRequestParamBag extends RequestParamBag implements HasPaginationContract, HasSearchContract
 {
     use HasPagination, HasSearch;
 
     protected function getQueryRequestParamsList(): array
     {
         return [
-            ...parent::getQueryRequestParamsList(),
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),
         ];

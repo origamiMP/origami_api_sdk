@@ -13,9 +13,7 @@ class UpdateTaxRequestParamBag extends RequestParamBag
 
     public bool $isDefault;
 
-    /**
-     * @var TaxTranslationParamBag[]
-     */
+    /** @var array<int, TaxTranslationParamBag> */
     public array $translations;
 
     protected function getJsonRequestParamsList(): array

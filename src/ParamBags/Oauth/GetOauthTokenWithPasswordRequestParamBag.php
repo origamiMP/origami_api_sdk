@@ -29,4 +29,13 @@ class GetOauthTokenWithPasswordRequestParamBag extends GetOauthTokenRequestParam
             'password' => 'password',
         ];
     }
+
+    protected function validationRulesForProperties(): array
+    {
+        return [
+            ...parent::validationRulesForProperties(),
+            'username' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ];
+    }
 }

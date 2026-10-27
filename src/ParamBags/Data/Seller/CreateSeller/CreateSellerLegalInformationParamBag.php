@@ -56,24 +56,24 @@ class CreateSellerLegalInformationParamBag extends ParamBag
 
     protected function validationRulesForProperties(): array
     {
-        $requiredIfCompanyLegalTypeRules = Rule::requiredIf(in_array($this->legalType, [
+        $requiredIfCompanyLegalTypeRules = Rule::requiredIf(isset($this->legalType) && in_array($this->legalType, [
             CreateSellerLegalInformationParamBagLegalTypeEnum::COMPANY,
             CreateSellerLegalInformationParamBagLegalTypeEnum::SOLE_TRADER,
         ]));
 
         return [
-            'legalType'             => ['required'],
-            'managerFirstName'      => ['required', 'string', 'max:255'],
-            'managerLastName'       => ['required', 'string', 'max:255'],
-            'managerBirthday'       => ['required'],
-            'managerCountryIso'     => ['required', 'string', 'max:2'],
-            'managerNationalityIso' => ['required', 'string', 'max:2'],
-            'companyName'           => [$requiredIfCompanyLegalTypeRules, 'string', 'max:255'],
-            'companyContactEmail'   => [$requiredIfCompanyLegalTypeRules, 'email', 'max:255'],
-            'siret'                 => [$requiredIfCompanyLegalTypeRules, 'string', 'max:255'],
-            'tvaNumber'             => ['string', 'max:255'],
-            'registrationCity'      => ['string', 'max:255'],
-            'legalForm'             => ['string', 'max:255'],
+            'legal_type'              => ['required', 'string'],
+            'manager_first_name'      => ['required', 'string', 'max:255'],
+            'manager_last_name'       => ['required', 'string', 'max:255'],
+            'manager_birthday'        => ['required', 'date_format:Y-m-d'],
+            'manager_country_iso'     => ['required', 'string', 'max:2'],
+            'manager_nationality_iso' => ['required', 'string', 'max:2'],
+            'company_name'            => [$requiredIfCompanyLegalTypeRules, 'string', 'max:255'],
+            'company_contact_email'   => [$requiredIfCompanyLegalTypeRules, 'email', 'max:255'],
+            'siret'                   => [$requiredIfCompanyLegalTypeRules, 'string', 'max:255'],
+            'tva_number'              => ['string', 'max:255'],
+            'registration_city'       => ['string', 'max:255'],
+            'legal_form'              => ['string', 'max:255'],
         ];
     }
 }
