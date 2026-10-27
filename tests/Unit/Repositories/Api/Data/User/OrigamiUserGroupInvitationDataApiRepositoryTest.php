@@ -202,8 +202,8 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
             $this->mockUserGroupInvitationApiData(['id' => 1]),
         ])));
         $paramBag = new ListUserGroupInvitationRequestParamBag;
-        $paramBag->withFilters(['status' => 'pending']);
-        $paramBag->withoutPagination();
+        $paramBag->setFilters(['status' => 'pending']);
+        $paramBag->setWithoutPagination(true);
 
         $invitations = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->list($paramBag);
 

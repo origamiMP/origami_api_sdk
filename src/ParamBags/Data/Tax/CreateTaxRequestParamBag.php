@@ -33,7 +33,7 @@ class CreateTaxRequestParamBag extends RequestParamBag implements HasIncludesCon
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
+        return $this->getIncludesParamsList();
     }
 
     protected function validationRulesForProperties(): array
@@ -49,7 +49,7 @@ class CreateTaxRequestParamBag extends RequestParamBag implements HasIncludesCon
 
         return [
             ...$rules,
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

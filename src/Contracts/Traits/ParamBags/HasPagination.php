@@ -4,11 +4,11 @@ namespace OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags;
 
 interface HasPagination
 {
-    public function withoutPagination(bool $withoutPagination = true): void;
+    public function setWithoutPagination(bool $withoutPagination): void;
 
-    public function page(int $page = 1): void;
+    public function setPage(int $page): void;
 
-    public function perPage(int $perPage = 20): void;
+    public function setPerPage(int $perPage): void;
 
     public function getPage(): int;
 

@@ -30,7 +30,7 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
             ...$this->getFiltersParamsList(),
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),
-            ...$this->getIncludeParamsList(),
+            ...$this->getIncludesParamsList(),
         ];
     }
 
@@ -40,7 +40,7 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
             ...$this->getFiltersValidationRules(),
             ...$this->getPaginationValidationRules(),
             ...$this->getSearchValidationRules(),
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

@@ -42,9 +42,9 @@ class OrigamiFormDataApiRepositoryTest extends TestCase
             $this->mockFormApiData(['id' => 2, 'fields_count' => 0]),
         ])));
         $paramBag = new ListFormRequestParamBag;
-        $paramBag->withFilters(['is_active' => true, 'context' => 'quote']);
-        $paramBag->page(2);
-        $paramBag->search('quote');
+        $paramBag->setFilters(['is_active' => true, 'context' => 'quote']);
+        $paramBag->setPage(2);
+        $paramBag->setSearch('quote');
         $paramBag->withCount = 'fields';
 
         $forms = (new OrigamiFormDataApiRepository($restClient))->list($paramBag);
@@ -72,7 +72,7 @@ class OrigamiFormDataApiRepositoryTest extends TestCase
             $this->mockFormApiData(),
         ])));
         $paramBag = new ListFormRequestParamBag;
-        $paramBag->withFilters(['is_quote_enabled' => false, 'unknown_filter' => 'value']);
+        $paramBag->setFilters(['is_quote_enabled' => false, 'unknown_filter' => 'value']);
 
         $forms = (new OrigamiFormDataApiRepository($restClient))->list($paramBag);
 

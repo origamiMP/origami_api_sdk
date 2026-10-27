@@ -35,7 +35,7 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
+        return $this->getIncludesParamsList();
     }
 
     protected function validationRulesForProperties(): array
@@ -50,7 +50,7 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
 
         return [
             ...$rules,
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

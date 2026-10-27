@@ -39,7 +39,7 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
             ...$this->getFiltersParamsList(),
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),
-            ...$this->getIncludeParamsList(),
+            ...$this->getIncludesParamsList(),
             'withCount' => 'with_count',
         ];
     }
@@ -50,7 +50,7 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
             ...$this->getFiltersValidationRules(),
             ...$this->getPaginationValidationRules(),
             ...$this->getSearchValidationRules(),
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
             'with_count' => ['string', 'in:fields'],
         ];
     }

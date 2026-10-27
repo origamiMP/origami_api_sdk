@@ -25,6 +25,8 @@ A test guarding a convention rather than a precise behavior has a class docblock
 
 A trait or an abstract class is tested **through a fixture** (`tests/Fixtures/`), a minimal class adding nothing to the tested behavior, never through a concrete class whose own behavior would blur the test. The test class says so: « Behavior shared by every … , tested through a fixture (which adds nothing to it). »
 
+A trait with logic of its own (a computed value, a filter, an exception thrown, its own `toArray()`) has its test file, `tests/Unit/Traits/<Kind>/<Trait>Test.php`. A trait only declaring properties with their structure and rules (`HasTimestamps`, `HasSearch`) is covered by the tests of the classes using it.
+
 - **Protected methods**: see `structure.md` for widening their visibility. If every test uses the fixture, build it in `setUp()`, after `parent::setUp()` (which resets `TestCase::unique()`) (`RestApiRepositoryTest`).
 - **DTO fixture**: extends `ApiResponseDto`, uses the tested trait, only declares the properties the test needs, and returns an anonymous exception as « NotConstructable » exception. It can include itself (`self::class`) to test nested includes (`IncludesDtoFixture`). Tests build it with a private `makeFixture()` helper, at the end of the class.
 - **Linked fixtures**: reuse an existing fixture when the behavior links two classes (`IncludesParamBagFixture` returns `IncludesDtoFixture`).

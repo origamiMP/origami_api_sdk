@@ -19,9 +19,9 @@ class OrigamiCountryGuestApiRepositoryTest extends TestCase
             $this->mockCountryApiData(['iso_2' => 'BE']),
         ])));
         $paramBag = new ListCountryRequestParamBag;
-        $paramBag->page(2);
-        $paramBag->perPage(50);
-        $paramBag->search('fra');
+        $paramBag->setPage(2);
+        $paramBag->setPerPage(50);
+        $paramBag->setSearch('fra');
 
         $countries = (new OrigamiCountryGuestApiRepository($restClient))->list($paramBag);
 

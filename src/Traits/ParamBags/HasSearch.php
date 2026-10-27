@@ -6,7 +6,7 @@ trait HasSearch
 {
     private string $search;
 
-    public function search(string $search): void
+    public function setSearch(string $search): void
     {
         $this->search = $search;
     }

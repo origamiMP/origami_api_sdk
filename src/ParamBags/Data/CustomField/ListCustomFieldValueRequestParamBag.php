@@ -17,7 +17,7 @@ class ListCustomFieldValueRequestParamBag extends RequestParamBag implements Has
     {
         return [
             ...$this->getSearchParamsList(),
-            ...$this->getIncludeParamsList(),
+            ...$this->getIncludesParamsList(),
         ];
     }
 
@@ -25,7 +25,7 @@ class ListCustomFieldValueRequestParamBag extends RequestParamBag implements Has
     {
         return [
             ...$this->getSearchValidationRules(),
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

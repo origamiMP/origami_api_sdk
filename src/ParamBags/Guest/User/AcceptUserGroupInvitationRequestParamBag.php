@@ -22,7 +22,7 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag implement
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
+        return $this->getIncludesParamsList();
     }
 
     protected function validationRulesForProperties(): array
@@ -33,7 +33,7 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag implement
 
         return [
             ...$rules,
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

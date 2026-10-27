@@ -53,7 +53,7 @@ A request param bag offering a common feature of the API uses its trait from `Tr
 | `HasPagination` | `page`, `item_per_page`, `without_pagination` | – |
 | `HasSearch` | `search` | – |
 
-The param bag merges the API keys and the rules of each trait with its own: `...$this->getIncludeParamsList()`, `...$this->getIncludeValidationRules()` (`ListSellerRequestParamBag`).
+The param bag merges the API keys and the rules of each trait with its own: `...$this->getIncludesParamsList()`, `...$this->getIncludesValidationRules()` (`ListSellerRequestParamBag`).
 
 ## Validation rules (`validationRulesForProperties()`)
 

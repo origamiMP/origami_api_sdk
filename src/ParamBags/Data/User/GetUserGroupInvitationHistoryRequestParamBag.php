@@ -16,7 +16,7 @@ class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag imple
     protected function getQueryRequestParamsList(): array
     {
         return [
-            ...$this->getIncludeParamsList(),
+            ...$this->getIncludesParamsList(),
             'email' => 'email',
         ];
     }
@@ -29,7 +29,7 @@ class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag imple
 
         return [
             ...$rules,
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

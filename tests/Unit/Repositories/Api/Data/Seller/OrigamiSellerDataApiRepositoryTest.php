@@ -36,9 +36,9 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
             $this->mockSellerApiData(['id' => 2]),
         ])));
         $paramBag = new ListSellerRequestParamBag;
-        $paramBag->withFilters(['address_city' => 'Paris']);
-        $paramBag->page(3);
-        $paramBag->search('john');
+        $paramBag->setFilters(['address_city' => 'Paris']);
+        $paramBag->setPage(3);
+        $paramBag->setSearch('john');
 
         $sellers = (new OrigamiSellerDataApiRepository($restClient))->list($paramBag);
 
@@ -60,7 +60,7 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([])));
         $paramBag = new ListSellerRequestParamBag;
-        $paramBag->withFilters(['address_city' => 'Paris', 'unknown_filter' => 'value']);
+        $paramBag->setFilters(['address_city' => 'Paris', 'unknown_filter' => 'value']);
 
         (new OrigamiSellerDataApiRepository($restClient))->list($paramBag);
 

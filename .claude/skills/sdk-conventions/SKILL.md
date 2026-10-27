@@ -27,15 +27,16 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 | `references/code/api-repositories.md` | You create or change an API repository or one of its methods: folder, class and method names, method order, parameters (optional param bag), body, docblock and `@throws` |
 | `references/code/client-repositories.md` | You create or change a client repository: class hierarchy, folder, name, constructor, overridden hooks |
 | `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, validation rules, exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
+| `references/code/traits.md` | You create or change a trait, or its contract: folder, name, when it has a contract, order of the contents, setters and getters, what it gives to the class using it |
 
-🚧 TODO — the rest of the code conventions (exceptions, enums, traits…) is not written yet (see the last general rule).
+🚧 TODO — the rest of the code conventions (exceptions, enums…) is not written yet (see the last general rule).
 
 ## General rules
 
 - Prefer explicit checks (`is_null($x)`, `array_is_list($x)`) over implicit logic explained by a comment.
 - Merge arrays with the spread (`[...$baseData, ...$override]`), never with `array_merge()`. A literal array is written inline rather than spread (`[...parent::getJsonRequestParamsList(), 'username']`).
-- Interpolate variables without braces (`"sellers/$id"`). Braces only when PHP needs them: method call, nested property, or a name followed by a character of an identifier (`"Bearer {$this->oauthToken->getAccessToken()}"`, `"cast{$formattedPropertyName}ToEncodableType"`).
-- In a class or a trait, the `public` methods first, then the `protected` and `private` ones. In a test class, `setUp()` / `tearDown()` come first. In a DTO, an overridden `toArray()` comes last (see `references/code/dtos.md`).
+- Interpolate variables without braces (`"sellers/$id"`). Braces only when PHP needs them: method call, nested property, or a name followed by a character of an identifier (`"Bearer {$this->oauthToken->getAccessToken()}"`, `"{$name}Dto"`).
+- In a class or a trait, the `public` methods first, then the `protected` and `private` ones. In a test class, `setUp()` / `tearDown()` come first. In a DTO or a trait of DTOs, an overridden `toArray()` comes last (see `references/code/dtos.md`).
 - Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
 - When a convention is not covered here, do not invent one: follow the closest pattern in the existing code and tests, and tell the user the point is not documented.
 

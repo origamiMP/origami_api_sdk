@@ -36,7 +36,7 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
             ...$this->getFiltersParamsList(),
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),
-            ...$this->getIncludeParamsList(),
+            ...$this->getIncludesParamsList(),
         ];
     }
 
@@ -46,7 +46,7 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
             ...$this->getFiltersValidationRules(),
             ...$this->getPaginationValidationRules(),
             ...$this->getSearchValidationRules(),
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 

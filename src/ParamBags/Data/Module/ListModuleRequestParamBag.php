@@ -13,12 +13,12 @@ class ListModuleRequestParamBag extends RequestParamBag implements HasIncludesCo
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
+        return $this->getIncludesParamsList();
     }
 
     protected function validationRulesForProperties(): array
     {
-        return $this->getIncludeValidationRules();
+        return $this->getIncludesValidationRules();
     }
 
     protected static function getRequestMainDto(): string

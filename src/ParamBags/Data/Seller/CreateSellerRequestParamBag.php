@@ -100,7 +100,7 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
+        return $this->getIncludesParamsList();
     }
 
     protected function validationRulesForProperties(): array
@@ -132,7 +132,7 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
 
         return [
             ...$rules,
-            ...$this->getIncludeValidationRules(),
+            ...$this->getIncludesValidationRules(),
         ];
     }
 
