@@ -26,7 +26,7 @@ In this order:
 3. `getAvailableIncludes()`, when the DTO uses `HasIncludes`;
 4. the other public methods specific to the DTO (`FeatureFlagListDto::isFlagActive()`);
 5. `getDefaultDataStructureToProperties()`, `validationRulesForProperties()`, `getDefaultNotConstructableException()`;
-6. the helpers building a property (`init<Property>()`, see « Nested lists »);
+6. the other protected methods: first the helpers building a property (`init<Property>()`, see « Nested lists »), then any other helper (`OrigamiApiErrorDto::getCorrespondingExceptionToErrorCode()`);
 7. `toArray()`, when the DTO overrides it (see « `toArray()` »): last, below the protected methods, which matter more to understand the DTO.
 
 Overriding the constructor stays exceptional: `FeatureFlagListDto` wraps a bare map into a `flags` key before validating it.
@@ -103,7 +103,7 @@ protected function initTranslations(array $translations): void
 **Any DTO whose response is a collection of items is a list**, whatever its name and whether it is paginated or not: `SellerListDto`, `ModuleListDto`, but also `UserGroupInvitationHistoryDto`. Look at the API response (a Fractal collection) and at the DTO property holding the items, not at the name.
 
 - A paginated list uses `HasPagination`, and returns its structure and rules (`getPaginationAsDataStructureToProperties()`, `getPaginationValidationRules()`) (`SellerListDto`).
-- A non-paginated list only declares a `data` property, validated `['present', 'array']` (`ModuleListDto`).
+- A non-paginated list holds its items in a `data` property, validated `['present', 'array']` (`ModuleListDto`), next to the other values of the response if any (`UserGroupInvitationSendDto::$message`).
 - Both build their items in `initData()`, like any nested list (see above): `fn ($module) => new ModuleDto($module)`.
 
 A list DTO offers the same includes as its item, since the API applies them to each item. It does not copy them, it returns those of its item, so that both never diverge:
