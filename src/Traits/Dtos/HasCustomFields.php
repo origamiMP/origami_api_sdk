@@ -24,7 +24,7 @@ trait HasCustomFields
         ];
     }
 
-    protected function initAdditionalInformation($additionalInformation): void
+    protected function initAdditionalInformation(object|array $additionalInformation): void
     {
         if (! is_object($additionalInformation)) {
             $this->additionalInformation = collect();

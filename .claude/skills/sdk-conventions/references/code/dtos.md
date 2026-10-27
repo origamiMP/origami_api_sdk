@@ -52,7 +52,7 @@ A nested key is written as a nested array or a dotted key (`'file.max_size_kb' =
 
 ## Validation (`validationRulesForProperties()`)
 
-Laravel rules on the raw response, one line per key of the data structure:
+Laravel rules on the raw response, one line per key the DTO requires or checks (an include sent only on demand has no rule, `UserDto`):
 
 - `required` for a key always present with a value, `present` + `nullable` for a key present but possibly `null`;
 - a type rule (`integer`, `string`, `boolean`, `numeric`, `array`, `date`);
@@ -87,7 +87,7 @@ Adding an include later means creating its DTO, uncommenting the line and readin
 
 ## Nested lists
 
-A list of items that is not an include (no Fractal `data` wrapper) is built by a `protected` helper `init<Property>(array $<property>): void`, which fills the property. The closure parameter is the singular of the property:
+A list of items that is not an include (no Fractal `data` wrapper) is built by a `protected` helper `init<Property>(array $<property>): void`, which fills the property. Its parameter is typed with exactly what the API sends: `array` for a list, a union when it varies (`HasCustomFields::initAdditionalInformation(object|array …)`: a map of custom fields, or `[]` when it is empty). Do not fall back on `mixed` for convenience: look for what the API actually returns (its transformer in `origami_api`, see `references/tests/mock-data.md`), and use `mixed` only when any value is really possible. The closure parameter is the singular of the property:
 
 ```php
 'translations' => fn ($translations) => $this->initTranslations($translations),
@@ -117,6 +117,6 @@ public static function getAvailableIncludes(): array
 
 ## `toArray()`
 
-Every DTO is `Arrayable`: `ApiResponseDto::toArray()` exposes the public properties under their own camelCase names, with `arrayFromPublicProperties()`. Consumers of the SDK get it when they send a DTO as JSON (`response()->json($dto)`, Inertia props): enums give their value, dates `DATE_ATOM`, collections and nested DTOs their own array.
+Every DTO is `Arrayable`: `ApiResponseDto::toArray()` exposes the public properties under their own camelCase names, with `arrayFromPublicProperties()`. Users of the SDK get it when they send a DTO as JSON (`response()->json($dto)`, Inertia props): enums give their value, dates `DATE_ATOM`, collections and nested DTOs their own array.
 
 A DTO does not redeclare `Arrayable` nor `toArray()`. It overrides `toArray()` only when its array is not its public properties: `HasPagination` nests the pagination under `meta.pagination`. The override comes last in the class, and in `HasPagination` after the protected methods of the trait.

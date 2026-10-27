@@ -1,6 +1,6 @@
 ---
 name: sdk-conventions
-description: "Use when working in origami_api_sdk: creating or changing an API repository method, a client repository, a param bag or a DTO, or writing, fixing or reviewing PHPUnit tests (« ajoute les TUs », \"add tests\", \"cover this code\")."
+description: "Use when working in origami_api_sdk: creating, changing or reviewing any of its code (API or client repository, param bag, DTO, trait, contract, exception, enum, helper), or writing, fixing or reviewing PHPUnit tests (« ajoute les TUs », \"add tests\", \"cover this code\")."
 ---
 
 # Conventions — Origami API SDK
@@ -8,18 +8,18 @@ description: "Use when working in origami_api_sdk: creating or changing an API r
 ## Project context
 
 - PHP SDK (`origami-mp/origami-api-sdk`) calling the central Origami API. It is used by origami_admin_v2, among others.
-- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **client repositories** (sending the HTTP requests of the API repositories), and **traits** carrying shared behavior.
+- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **client repositories** (sending the HTTP requests of the API repositories), **traits** carrying shared behavior and their **contracts**, **exceptions**, **enums** and generic **helpers**.
 - The API code (to check the actual format of its responses) lives in the sibling repo `origami_api`.
 
 ## How to use this skill
 
 The skill is split by domain, each in its own subfolder of `references/`.
 
-### Tests (documented)
+### Tests
 
 Start with `references/tests/README.md`: it lists every test topic and the single file where its rule is written.
 
-### SDK code (being documented)
+### SDK code
 
 | File | Read it when… |
 |---|---|
@@ -31,13 +31,12 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 | `references/code/exceptions.md` | You create, throw or catch an exception: `OrigamiApiSdkException`, families and folders, API exceptions and how an API error picks one, names, contents, messages, native exceptions |
 | `references/code/enums.md` | You create, rename or use an enum: contents and case names, folder (mirror of the class using it, or thematic), name (with the exception of a class not in the SDK yet), one enum per class, conversion and validation (`Rule::enum()`) |
 | `references/code/helpers.md` | You create, change or use a helper: no business logic, folder per subject, name, static methods (and the exception of the classes adapting Laravel), documentation of what it fixes, tests |
-
-🚧 TODO — the rest of the code conventions (contracts outside traits…) is not written yet (see the last general rule).
+| `references/code/contracts.md` | You create, implement or import a contract (interface): when one exists (trait, DTO, other needs), folder, name, contents, `<Name>Contract` alias |
 
 ## General rules
 
 - Prefer explicit checks (`is_null($x)`, `array_is_list($x)`) over implicit logic explained by a comment.
-- Merge arrays with the spread (`[...$baseData, ...$override]`), never with `array_merge()`. A literal array is written inline rather than spread (`[...parent::getJsonRequestParamsList(), 'username']`).
+- Merge arrays with the spread (`[...$baseData, ...$override]`), never with `array_merge()`. A literal array is written inline rather than spread (`[...parent::getJsonRequestParamsList(), 'username' => 'username']`).
 - Interpolate variables without braces (`"sellers/$id"`). Braces only when PHP needs them: method call, nested property, or a name followed by a character of an identifier (`"Bearer {$this->oauthToken->getAccessToken()}"`, `"{$name}Dto"`).
 - In a class or a trait, the `public` methods first, then the `protected` and `private` ones. In a test class, `setUp()` / `tearDown()` come first. In a DTO or a trait of DTOs, an overridden `toArray()` comes last (see `references/code/dtos.md`).
 - Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
@@ -50,5 +49,5 @@ This skill is versioned with the SDK code. Any change goes through a PR, like co
 - **One rule, one place**: each rule is written in a single file; other files refer to it instead of rephrasing it, so that two copies never contradict each other.
 - **Refer to real code**: point to existing tests and classes by name (`OrigamiTaxDataApiRepositoryTest::test_create_case_1`) and keep only short excerpts, rather than copying code that will diverge.
 - **Resolve a `🚧 TODO`**: replace the TODO with the final rule, in the same file.
-- **Add a file or a domain**: a new kind of code (e.g. enums) goes in `references/code/`, an entirely new domain in its own subfolder of `references/`. Add every new file to its index (`references/tests/README.md` for tests, the table above for code), otherwise it may never be read.
+- **Add a file or a domain**: a new kind of code (e.g. a new folder of `src/`) goes in `references/code/`, an entirely new domain in its own subfolder of `references/`. Add every new file to its index (`references/tests/README.md` for tests, the table above for code), otherwise it may never be read.
 - **Change the scope**: reread and update the frontmatter `description`. It is what decides when Claude reads the skill.

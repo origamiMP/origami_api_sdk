@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax;
 
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
@@ -29,7 +30,7 @@ class UpdateTaxRequestParamBag extends RequestParamBag
     protected function validationRulesForProperties(): array
     {
         return [
-            'type'                       => ['required', 'string'],
+            'type'                       => ['required', Rule::enum(TaxDtoTypeEnum::class)],
             'value'                      => ['required', 'numeric'],
             'is_default'                 => ['boolean'],
             'translations'               => ['required', 'array'],

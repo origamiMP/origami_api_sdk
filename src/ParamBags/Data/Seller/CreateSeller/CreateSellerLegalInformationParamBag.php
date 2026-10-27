@@ -62,7 +62,7 @@ class CreateSellerLegalInformationParamBag extends ParamBag
         ]));
 
         return [
-            'legal_type'              => ['required', 'string'],
+            'legal_type'              => ['required', Rule::enum(CreateSellerLegalInformationParamBagLegalTypeEnum::class)],
             'manager_first_name'      => ['required', 'string', 'max:255'],
             'manager_last_name'       => ['required', 'string', 'max:255'],
             'manager_birthday'        => ['required', 'date_format:Y-m-d'],

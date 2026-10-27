@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form;
 
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
@@ -56,7 +57,7 @@ class FormFieldParamBag extends ParamBag
         return [
             'id'                => ['integer'],
             'key'               => ['string', 'max:64'],
-            'type'              => ['required', 'string'],
+            'type'              => ['required', Rule::enum(FormFieldDtoTypeEnum::class)],
             'is_required'       => ['required', 'boolean'],
             'visible_to_seller' => ['required', 'boolean'],
             'prefill_source'    => ['nullable', 'string'],

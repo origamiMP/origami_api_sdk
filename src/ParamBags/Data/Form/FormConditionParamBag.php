@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form;
 
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
@@ -26,7 +27,7 @@ class FormConditionParamBag extends ParamBag
     {
         return [
             'field_key' => ['required', 'string'],
-            'operator'  => ['required', 'string'],
+            'operator'  => ['required', Rule::enum(FormConditionDtoOperatorEnum::class)],
             'value'     => ['nullable', 'string', 'max:255'],
         ];
     }

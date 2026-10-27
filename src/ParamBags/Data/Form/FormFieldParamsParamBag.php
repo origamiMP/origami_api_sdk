@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Form;
 
+use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
@@ -46,7 +47,7 @@ class FormFieldParamsParamBag extends ParamBag
             'unit'        => ['string', 'max:8'],
             'min'         => ['numeric'],
             'max'         => ['numeric'],
-            'width'       => ['string'],
+            'width'       => [Rule::enum(FormFieldParamsDtoWidthEnum::class)],
         ];
     }
 }

@@ -19,7 +19,7 @@ Every DTO must reject an invalid response with **its own** Â« NotConstructable Â
 
 ## Guard tests
 
-A test guarding a convention rather than a precise behavior has a class docblock explaining the convention and what breaks without it (`SellerDtoTest`, `ApiResponseDtoTest`).
+A test guarding a convention rather than a precise behavior has a class docblock explaining the convention and what breaks without it (`SellerDtoTest`, `ApiResponseDtoTest`, `ParamBagTest`, `OrigamiApiSdkExceptionTest`).
 
 ## Traits and abstract classes: through a fixture
 

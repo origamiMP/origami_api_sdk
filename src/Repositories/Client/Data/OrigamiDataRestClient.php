@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Client\Data;
 
-use OrigamiMp\OrigamiApiSdk\Contracts\Dtos\Oauth\OauthToken;
+use OrigamiMp\OrigamiApiSdk\Contracts\Dtos\Oauth\OauthToken as OauthTokenContract;
 use OrigamiMp\OrigamiApiSdk\Repositories\Client\OrigamiRestClient;
 
 class OrigamiDataRestClient extends OrigamiRestClient
@@ -10,14 +10,14 @@ class OrigamiDataRestClient extends OrigamiRestClient
     /**
      * Oauth token that will be used for authenticating a certain User.
      */
-    private OauthToken $oauthToken;
+    private OauthTokenContract $oauthToken;
 
     /**
      * Id of the UserGroup that should be used for authentication.
      */
     private ?int $userGroupId;
 
-    public function __construct(string $apiUri, OauthToken $oauthToken, ?int $userGroupId = null)
+    public function __construct(string $apiUri, OauthTokenContract $oauthToken, ?int $userGroupId = null)
     {
         parent::__construct($apiUri);
 
@@ -25,7 +25,7 @@ class OrigamiDataRestClient extends OrigamiRestClient
         $this->userGroupId = $userGroupId;
     }
 
-    public function getOauthToken(): OauthToken
+    public function getOauthToken(): OauthTokenContract
     {
         return $this->oauthToken;
     }

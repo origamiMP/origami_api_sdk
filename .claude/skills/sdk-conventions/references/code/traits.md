@@ -12,7 +12,7 @@ A trait carries a behavior shared by several classes of the same kind: DTOs and 
 
 ## Contract
 
-A trait whose public methods are called by the users of the SDK, on any class using it, has a contract: an interface of the same name in `src/Contracts/Traits/<Kind>/`, declaring those public methods. A class using the trait implements the contract, imported as `Has<Feature>Contract`:
+A trait whose public methods are called by the users of the SDK, on any class using it, has a contract: an interface of the same name in `src/Contracts/Traits/<Kind>/`, declaring those public methods. A class using the trait implements the contract, imported as `Has<Feature>Contract` (see `contracts.md`):
 
 ```php
 class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
@@ -32,7 +32,7 @@ In this order:
 
 A `toArray()` overridden by a trait of DTOs comes last, below the protected methods, like in a DTO (see `dtos.md`): `Dtos/HasPagination`.
 
-The visibility of the properties, and whether they come with getters and setters, depends on their use: public in a trait of DTOs, like the properties of a DTO; private in a trait of param bags, set and read through the public methods of the trait, since users of the SDK go through its contract.
+No rule sets the visibility of the properties, nor whether they come with getters and setters: it depends on their use. For instance, the traits of DTOs have public properties, like the DTOs; the traits of param bags have private ones, set and read through their public methods, since users of the SDK go through the contract.
 
 ## Public methods
 
