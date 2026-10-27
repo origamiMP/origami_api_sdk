@@ -43,8 +43,8 @@ class OrigamiModuleDataApiRepositoryTest extends TestCase
     }
 
     /**
-     * A caller who doesn't manage the modules (seller, customer) gets their configurations as empty JSON lists: they
-     * should be read as empty objects.
+     * `GET modules` sends a seller or a customer their configurations as empty JSON lists: they should be read as
+     * empty objects.
      */
     public function test_list_case_3(): void
     {

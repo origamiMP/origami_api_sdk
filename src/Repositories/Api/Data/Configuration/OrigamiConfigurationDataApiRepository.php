@@ -11,15 +11,13 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 class OrigamiConfigurationDataApiRepository extends OrigamiDataApiRepository
 {
     /**
-     * Get the value of one configuration of the marketplace
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws ConfigurationDtoNotConstructableException
      */
     public function get(string $key): ConfigurationDto
     {
-        $response = $this->restClient->get("configurations/{$key}");
+        $response = $this->restClient->get("configurations/$key");
         $responseContent = $this->decodeResponse($response);
 
         return new ConfigurationDto($this->getResponseContentDataOrEmptyObject($responseContent));

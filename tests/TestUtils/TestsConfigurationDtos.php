@@ -11,6 +11,6 @@ trait TestsConfigurationDtos
             'value' => 'My marketplace',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

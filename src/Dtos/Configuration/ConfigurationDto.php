@@ -11,7 +11,8 @@ class ConfigurationDto extends ApiResponseDto
     public string $key;
 
     /**
-     * Its type depends on the configuration: scalar, list, object or null.
+     * Its type depends on the configuration: scalar, list, object or null. The API sends a falsy JSON value (empty
+     * list, `0`, `false`) as its raw string: `"[]"`, `"0"`, `"false"`.
      */
     public mixed $value;
 
@@ -27,7 +28,7 @@ class ConfigurationDto extends ApiResponseDto
     {
         return [
             'key'   => ['required', 'string'],
-            'value' => ['present'],
+            'value' => ['present', 'nullable'],
         ];
     }
 

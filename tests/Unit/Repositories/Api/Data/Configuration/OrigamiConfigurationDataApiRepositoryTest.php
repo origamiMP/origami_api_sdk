@@ -28,7 +28,7 @@ class OrigamiConfigurationDataApiRepositoryTest extends TestCase
     }
 
     /**
-     * A configuration without value should be read with a null value.
+     * `GET configurations/{key}` should read a configuration without value as `null`.
      */
     public function test_get_case_2(): void
     {
