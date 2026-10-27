@@ -18,18 +18,18 @@ class CustomFieldsDtoFixture extends ApiResponseDto
 
     protected function getDefaultDataStructureToProperties(): array
     {
-        return array_merge(
-            ['id' => 'id'],
-            $this->getCustomFieldsAsDataStructureToProperties(),
-        );
+        return [
+            'id' => 'id',
+            ...$this->getCustomFieldsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        return array_merge(
-            ['id' => ['required', 'integer']],
-            $this->getCustomFieldsValidationRules(),
-        );
+        return [
+            'id' => ['required', 'integer'],
+            ...$this->getCustomFieldsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

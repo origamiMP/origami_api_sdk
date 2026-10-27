@@ -31,10 +31,10 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag implement
             'token' => ['required', 'string', 'size:64'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

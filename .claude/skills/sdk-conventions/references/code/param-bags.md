@@ -1,6 +1,6 @@
 # Code — Param bags
 
-A param bag carries the parameters of a request to the API (query, JSON body, headers). A repository method calling the API receives its param bag as an argument.
+A param bag carries the parameters of a request to the API (query, JSON body, headers). An API repository method receives its param bag as an argument.
 
 🚧 TODO — the rest of the param bag conventions (naming, splitting, value conversion, validation…) is not written yet (see the general rules in `SKILL.md`).
 
@@ -16,11 +16,11 @@ The SDK is under development: the rule applies to the param bags and DTOs **that
 
 ### What it implies
 
-For each repository method whose request offers at least one include:
+For each API repository method whose request offers at least one include:
 
-1. The method receives a param bag, even if it has nothing else to send (optional or not: see `repositories.md`).
+1. The method receives a param bag, even if it has nothing else to send (optional or not: see `api-repositories.md`).
 2. This param bag uses the `HasIncludes` trait, implements the matching contract, and sends its includes as query. Model: `GetCurrentUserRequestParamBag`.
-3. Its `getRequestMainDto()` returns the DTO returned by the repository method: for a list, the list DTO (`ListSellerRequestParamBag` → `SellerListDto`). This DTO decides which includes are accepted: `setIncludes()` silently drops the others, commented ones included.
+3. Its `getRequestMainDto()` returns the DTO returned by the API repository method: for a list, the list DTO (`ListSellerRequestParamBag` → `SellerListDto`). This DTO decides which includes are accepted: `setIncludes()` silently drops the others, commented ones included.
 4. This DTO declares the API includes (see `dtos.md`).
 
 ### Finding the includes of a request in the API
@@ -31,4 +31,4 @@ In `origami_api`:
 - `translations`, added as available and default by `BaseTranslatableTransformer` to every transformer extending it;
 - the controller of the endpoint, which can force default includes (`setDefaultIncludes(['translations', 'pages'])` in `FormController`): they are still includes offered by the request.
 
-How to test it: `references/tests/repositories.md`, « Include tests ».
+How to test it: `references/tests/api-repositories.md`, « Include tests ».

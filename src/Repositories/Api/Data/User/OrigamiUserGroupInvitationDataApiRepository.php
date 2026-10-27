@@ -31,6 +31,19 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiRepository
 {
     /**
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws UserGroupInvitationListResponseDtoNotConstructableException
+     */
+    public function list(?ListUserGroupInvitationsRequestParamBag $paramBag = null): UserGroupInvitationListDto
+    {
+        $response = $this->restClient->get('users/groups/invitations', $paramBag);
+        $responseContent = $this->decodeResponse($response);
+
+        return new UserGroupInvitationListDto($responseContent);
+    }
+
+    /**
      * Send invitations to multiple email addresses for seller onboarding
      *
      * @throws HttpClientException
@@ -40,22 +53,21 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
     public function send(SendUserGroupInvitationsRequestParamBag $paramBag): UserGroupInvitationSendDto
     {
         $response = $this->restClient->post('users/groups/invitations/send', $paramBag);
-
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationSendDto($responseContent);
     }
 
     /**
-     * Cancel a pending invitation by ID
+     * Cancel a pending invitation
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationCancelResponseDtoNotConstructableException
      */
-    public function cancel(int $invitationId): UserGroupInvitationCancelDto
+    public function cancel(int $id): UserGroupInvitationCancelDto
     {
-        $response = $this->restClient->delete("users/groups/invitations/{$invitationId}");
+        $response = $this->restClient->delete("users/groups/invitations/$id");
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationCancelDto($responseContent);
@@ -68,9 +80,9 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      * @throws OrigamiApiUnknownException
      * @throws UserGroupInvitationDtoNotConstructableException
      */
-    public function resend(int $invitationId, ?ResendUserGroupInvitationRequestParamBag $paramBag = null): UserGroupInvitationDto
+    public function resend(int $id, ?ResendUserGroupInvitationRequestParamBag $paramBag = null): UserGroupInvitationDto
     {
-        $response = $this->restClient->post("users/groups/invitations/{$invitationId}/resend", $paramBag);
+        $response = $this->restClient->post("users/groups/invitations/$id/resend", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));
@@ -134,20 +146,5 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationCheckPendingDto($this->getResponseContentDataOrEmptyObject($responseContent));
-    }
-
-    /**
-     * List all invitations with filtering and pagination
-     *
-     * @throws HttpClientException
-     * @throws OrigamiApiUnknownException
-     * @throws UserGroupInvitationListResponseDtoNotConstructableException
-     */
-    public function list(?ListUserGroupInvitationsRequestParamBag $paramBag = null): UserGroupInvitationListDto
-    {
-        $response = $this->restClient->get('users/groups/invitations', $paramBag);
-        $responseContent = $this->decodeResponse($response);
-
-        return new UserGroupInvitationListDto($responseContent);
     }
 }

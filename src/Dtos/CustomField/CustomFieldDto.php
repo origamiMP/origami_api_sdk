@@ -75,7 +75,7 @@ class CustomFieldDto extends ApiResponseDto
             'values'       => fn (object $values) => $this->values = $this->collectIncluded($values, CustomFieldValueDto::class),
         ];
 
-        return array_merge($structure, $this->getTimestampsAsDataStructureToProperties());
+        return [...$structure, ...$this->getTimestampsAsDataStructureToProperties()];
     }
 
     protected function validationRulesForProperties(): array
@@ -93,7 +93,7 @@ class CustomFieldDto extends ApiResponseDto
             'translations'          => ['required', 'array'],
         ];
 
-        return array_merge($rules, $this->getTimestampsValidationRules());
+        return [...$rules, ...$this->getTimestampsValidationRules()];
     }
 
     protected static function getDefaultNotConstructableException(

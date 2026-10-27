@@ -98,7 +98,7 @@ abstract class ApiResponseDto
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Api response data failed to be validated : {$summary}",
+                "[$classShortName] Api response data failed to be validated : $summary",
                 $e,
             );
         }

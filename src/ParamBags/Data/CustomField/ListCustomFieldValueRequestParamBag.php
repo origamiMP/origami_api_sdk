@@ -15,19 +15,19 @@ class ListCustomFieldValueRequestParamBag extends RequestParamBag implements Has
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            $this->getSearchParamsList(),
-            $this->getIncludeParamsList(),
-        );
+        return [
+            ...parent::getQueryRequestParamsList(),
+            ...$this->getSearchParamsList(),
+            ...$this->getIncludeParamsList(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        return array_merge(
-            $this->getSearchValidationRules(),
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$this->getSearchValidationRules(),
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

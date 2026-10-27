@@ -64,10 +64,10 @@ class RoleDto extends ApiResponseDto
             'users'       => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -82,10 +82,10 @@ class RoleDto extends ApiResponseDto
             'text_color' => ['required', 'string'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

@@ -24,10 +24,10 @@ trait HasFilters
      */
     public static function getAvailableFilters(): array
     {
-        return array_merge(
-            self::BASE_FILTERS,
-            self::getAdditionalAvailableFilters(),
-        );
+        return [
+            ...self::BASE_FILTERS,
+            ...self::getAdditionalAvailableFilters(),
+        ];
     }
 
     public function withFilters(array $filters = []): void

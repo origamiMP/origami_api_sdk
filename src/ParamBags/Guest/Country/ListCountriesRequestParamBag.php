@@ -14,18 +14,18 @@ class ListCountriesRequestParamBag extends RequestParamBag implements HasPaginat
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            $this->getPaginationParamsList(),
-            $this->getSearchParamsList(),
-        );
+        return [
+            ...parent::getQueryRequestParamsList(),
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        return array_merge(
-            $this->getPaginationValidationRules(),
-            $this->getSearchValidationRules(),
-        );
+        return [
+            ...$this->getPaginationValidationRules(),
+            ...$this->getSearchValidationRules(),
+        ];
     }
 }

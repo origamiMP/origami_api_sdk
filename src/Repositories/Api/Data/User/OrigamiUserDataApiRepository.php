@@ -15,25 +15,22 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     */
+    public function update(int $id, UpdateUserRequestParamBag $paramBag): void
+    {
+        $this->restClient->patch("users/$id", $paramBag);
+    }
+
+    /**
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
      * @throws UserDtoNotConstructableException
      */
     public function getCurrentAuthenticatedUser(?GetCurrentUserRequestParamBag $paramBag = null): UserDto
     {
         $response = $this->restClient->get('me', $paramBag);
-
         $responseContent = $this->decodeResponse($response);
 
         return new UserDto($this->getResponseContentDataOrEmptyObject($responseContent));
-    }
-
-    /**
-     * Update an existing user
-     *
-     * @throws HttpClientException
-     * @throws OrigamiApiUnknownException
-     */
-    public function update(int $id, UpdateUserRequestParamBag $paramBag): void
-    {
-        $this->restClient->patch("users/{$id}", $paramBag);
     }
 }

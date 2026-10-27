@@ -59,10 +59,10 @@ class ModuleDto extends ApiResponseDto
             'available_configurations' => 'availableConfigurations',
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -81,10 +81,10 @@ class ModuleDto extends ApiResponseDto
             'available_configurations' => ['required', 'array'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

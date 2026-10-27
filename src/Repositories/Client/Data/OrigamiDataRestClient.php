@@ -37,13 +37,13 @@ class OrigamiDataRestClient extends OrigamiRestClient
 
     protected function getAdditionalHeaders(): array
     {
-        return array_merge(
-            parent::getAdditionalHeaders(),
-            $this->getAuthentificationHeaders(),
-        );
+        return [
+            ...parent::getAdditionalHeaders(),
+            ...$this->getAuthenticationHeaders(),
+        ];
     }
 
-    protected function getAuthentificationHeaders(): array
+    protected function getAuthenticationHeaders(): array
     {
         $headers = [
             'Authorization' => "Bearer {$this->oauthToken->getAccessToken()}",

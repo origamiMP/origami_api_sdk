@@ -13,8 +13,6 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
 {
     /**
-     * Create a new tax
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws TaxDtoNotConstructableException
@@ -28,24 +26,20 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
     }
 
     /**
-     * Update an existing tax
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      */
     public function update(int $id, UpdateTaxRequestParamBag $paramBag): void
     {
-        $this->restClient->patch("taxes/{$id}", $paramBag);
+        $this->restClient->patch("taxes/$id", $paramBag);
     }
 
     /**
-     * Delete an existing tax
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      */
     public function delete(int $id): void
     {
-        $this->restClient->delete("taxes/{$id}");
+        $this->restClient->delete("taxes/$id");
     }
 }

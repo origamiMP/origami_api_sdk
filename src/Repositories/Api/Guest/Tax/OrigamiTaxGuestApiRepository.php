@@ -3,13 +3,18 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Tax\ListTaxesRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 
 class OrigamiTaxGuestApiRepository extends OrigamiGuestApiRepository
 {
     /**
-     * Get the list of available taxes (public endpoint)
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws TaxListDtoNotConstructableException
      */
     public function list(?ListTaxesRequestParamBag $paramBag = null): TaxListDto
     {

@@ -26,23 +26,23 @@ class ListCustomFieldRequestParamBag extends RequestParamBag implements HasFilte
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            $this->getFiltersParamsList(),
-            $this->getPaginationParamsList(),
-            $this->getSearchParamsList(),
-            $this->getIncludeParamsList(),
-        );
+        return [
+            ...parent::getQueryRequestParamsList(),
+            ...$this->getFiltersParamsList(),
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+            ...$this->getIncludeParamsList(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        return array_merge(
-            $this->getFiltersValidationRules(),
-            $this->getPaginationValidationRules(),
-            $this->getSearchValidationRules(),
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$this->getFiltersValidationRules(),
+            ...$this->getPaginationValidationRules(),
+            ...$this->getSearchValidationRules(),
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

@@ -65,10 +65,10 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag implements Has
             'userGroupId'    => ['nullable', 'integer'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

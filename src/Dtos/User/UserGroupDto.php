@@ -159,10 +159,10 @@ class UserGroupDto extends ApiResponseDto
             'users'         => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -201,10 +201,10 @@ class UserGroupDto extends ApiResponseDto
             'phone_validated'      => ['required', 'boolean'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

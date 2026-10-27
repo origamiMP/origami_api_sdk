@@ -50,10 +50,10 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
             'translations'          => ['required', 'array'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

@@ -21,6 +21,6 @@ trait TestsTaxDtos
             ]],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

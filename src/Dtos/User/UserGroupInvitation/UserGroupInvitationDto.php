@@ -70,10 +70,10 @@ class UserGroupInvitationDto extends ApiResponseDto
             'user_group' => fn (object $userGroup) => $this->userGroup = $this->makeIncluded($userGroup, UserGroupDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -94,10 +94,10 @@ class UserGroupInvitationDto extends ApiResponseDto
             'token'          => ['required', 'string'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

@@ -2,9 +2,9 @@
 
 ## DTO tests
 
-Reading a valid response is covered by the tests of the repository returning the DTO. A dedicated test file (`tests/Unit/Dtos/<Domain>/<Dto>Test.php`, built with `mock<Dto>Dto()`) covers what repository tests do not show:
+Reading a valid response is covered by the tests of the API repository returning the DTO. A dedicated test file (`tests/Unit/Dtos/<Domain>/<Dto>Test.php`, built with `mock<Dto>Dto()`) covers what API repository tests do not show:
 
-- includes: present, missing, malformed (`UserDtoTest::test_roles_case_1` to `_3`), especially those no repository reads;
+- includes: present, missing, malformed (`UserDtoTest::test_roles_case_1` to `_3`), especially those no API repository reads;
 - the accepted values of a validated field (`SellerDtoTest`: each state the API can send);
 - the error cases specific to the DTO (a missing key that matters, an unexpected value).
 

@@ -120,6 +120,26 @@ class RestApiRepositoryTest extends TestCase
         $this->assertNull($exception->getPrevious());
     }
 
+    /**
+     * A decoded response with a `data` key should give its content.
+     */
+    public function test_get_response_content_data_or_empty_object_case_1(): void
+    {
+        $data = $this->repository->getResponseContentDataOrEmptyObject((object) ['data' => (object) ['id' => 42]]);
+
+        $this->assertEquals((object) ['id' => 42], $data);
+    }
+
+    /**
+     * A decoded response without `data` key should give an empty object.
+     */
+    public function test_get_response_content_data_or_empty_object_case_2(): void
+    {
+        $data = $this->repository->getResponseContentDataOrEmptyObject((object) ['id' => 42]);
+
+        $this->assertEquals((object) [], $data);
+    }
+
     public static function invalidJsonBodyProvider(): array
     {
         return [

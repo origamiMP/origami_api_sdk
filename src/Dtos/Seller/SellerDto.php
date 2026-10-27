@@ -221,11 +221,11 @@ class SellerDto extends ApiResponseDto implements Arrayable
             'users'              => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-            $this->getCustomFieldsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+            ...$this->getCustomFieldsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -279,11 +279,11 @@ class SellerDto extends ApiResponseDto implements Arrayable
             'is_in_holiday'            => ['required', 'boolean'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-            $this->getCustomFieldsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+            ...$this->getCustomFieldsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

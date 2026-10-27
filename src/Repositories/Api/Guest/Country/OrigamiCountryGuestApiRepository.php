@@ -12,8 +12,6 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 class OrigamiCountryGuestApiRepository extends OrigamiGuestApiRepository
 {
     /**
-     * Get the list of countries
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws CountryListDtoNotConstructableException

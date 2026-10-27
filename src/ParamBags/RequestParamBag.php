@@ -24,12 +24,12 @@ abstract class RequestParamBag extends ParamBag
 
         $headers = $this->getHeadersAsGuzzleParams();
 
-        return array_merge(
-            ! empty($jsonParams) ? $jsonParams : [],
-            ! empty($formParams) ? $formParams : [],
-            ! empty($queryParams) ? $queryParams : [],
-            ! empty($headers) ? $headers : [],
-        );
+        return [
+            ...! empty($jsonParams) ? $jsonParams : [],
+            ...! empty($formParams) ? $formParams : [],
+            ...! empty($queryParams) ? $queryParams : [],
+            ...! empty($headers) ? $headers : [],
+        ];
     }
 
     protected function getHeaders(): array

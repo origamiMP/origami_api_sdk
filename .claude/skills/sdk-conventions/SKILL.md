@@ -1,6 +1,6 @@
 ---
 name: sdk-conventions
-description: "Use when working in origami_api_sdk: creating or changing a repository method, a param bag or a DTO, or writing, fixing or reviewing PHPUnit tests (« ajoute les TUs », \"add tests\", \"cover this code\")."
+description: "Use when working in origami_api_sdk: creating or changing an API repository method, a client repository, a param bag or a DTO, or writing, fixing or reviewing PHPUnit tests (« ajoute les TUs », \"add tests\", \"cover this code\")."
 ---
 
 # Conventions — Origami API SDK
@@ -8,7 +8,7 @@ description: "Use when working in origami_api_sdk: creating or changing a reposi
 ## Project context
 
 - PHP SDK (`origami-mp/origami-api-sdk`) calling the central Origami API. It is used by origami_admin_v2, among others.
-- Code organization: **repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **REST clients**, and **traits** carrying shared behavior.
+- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **client repositories** (sending the HTTP requests of the API repositories), and **traits** carrying shared behavior.
 - The API code (to check the actual format of its responses) lives in the sibling repo `origami_api`.
 
 ## How to use this skill
@@ -23,15 +23,19 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 
 | File | Read it when… |
 |---|---|
-| `references/code/param-bags.md` | You create or change a param bag, or a repository method calling the API: the include rule and its scope (only documented topic so far) |
-| `references/code/repositories.md` | You create or change a repository method: when its param bag can be optional (only documented topic so far) |
+| `references/code/param-bags.md` | You create or change a param bag, or an API repository method: the include rule and its scope (only documented topic so far) |
+| `references/code/api-repositories.md` | You create or change an API repository or one of its methods: folder, class and method names, method order, parameters (optional param bag), body, docblock and `@throws` |
+| `references/code/client-repositories.md` | You create or change a client repository: class hierarchy, folder, name, constructor, overridden hooks |
 | `references/code/dtos.md` | You create or change a DTO: declaring includes (commented ones included), list DTOs (only documented topic so far) |
 
-🚧 TODO — the rest of the code conventions (REST clients, exceptions, enums… and the rest of repositories, param bags and DTOs) is not written yet (see the last general rule).
+🚧 TODO — the rest of the code conventions (exceptions, enums… and the rest of param bags and DTOs) is not written yet (see the last general rule).
 
 ## General rules
 
 - Prefer explicit checks (`is_null($x)`, `array_is_list($x)`) over implicit logic explained by a comment.
+- Merge arrays with the spread (`[...$baseData, ...$override]`), never with `array_merge()`. A literal array is written inline rather than spread (`[...parent::getJsonRequestParamsList(), 'username']`).
+- Interpolate variables without braces (`"sellers/$id"`). Braces only when PHP needs them: method call, nested property, or a name followed by a character of an identifier (`"Bearer {$this->oauthToken->getAccessToken()}"`, `"cast{$formattedPropertyName}ToEncodableType"`).
+- In a class or a trait, the `public` methods first, then the `protected` and `private` ones. In a test class, `setUp()` / `tearDown()` come first.
 - Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
 - When a convention is not covered here, do not invent one: follow the closest pattern in the existing code and tests, and tell the user the point is not documented.
 

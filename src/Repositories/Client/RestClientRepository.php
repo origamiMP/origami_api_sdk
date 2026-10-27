@@ -210,10 +210,10 @@ abstract class RestClientRepository
     {
         $headersFromParamBag = Arr::get($guzzleParams, 'headers', []);
 
-        $finalHeaders = array_merge(
-            $this->getAdditionalHeaders(),
-            $headersFromParamBag,
-        );
+        $finalHeaders = [
+            ...$this->getAdditionalHeaders(),
+            ...$headersFromParamBag,
+        ];
 
         $guzzleParams['headers'] = $finalHeaders;
 

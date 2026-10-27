@@ -51,6 +51,14 @@ abstract class RestApiRepository
     }
 
     /**
+     * Reads the `data` key of a decoded response, which holds the item of a Fractal response.
+     */
+    protected function getResponseContentDataOrEmptyObject(object $responseContent): object
+    {
+        return $responseContent->data ?? (object) [];
+    }
+
+    /**
      * @throws OrigamiApiUnknownException
      */
     private function decodeJson(ResponseInterface $response): mixed

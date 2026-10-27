@@ -49,10 +49,10 @@ class CreateTaxRequestParamBag extends RequestParamBag implements HasIncludesCon
             'translations.*.name'        => ['required', 'string'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

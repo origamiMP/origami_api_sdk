@@ -133,11 +133,11 @@ class UserDto extends ApiResponseDto
             'module'      => fn (object $module) => $this->module = $this->makeIncluded($module, ModuleDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-            $this->getCustomFieldsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+            ...$this->getCustomFieldsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -159,11 +159,11 @@ class UserDto extends ApiResponseDto
             'is_account_validated'          => ['boolean'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-            $this->getCustomFieldsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+            ...$this->getCustomFieldsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

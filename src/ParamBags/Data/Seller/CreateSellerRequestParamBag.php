@@ -132,10 +132,10 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
             'customerFeesProfileId' => ['integer'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getIncludeValidationRules(),
+        ];
     }
 
     protected static function getRequestMainDto(): string
