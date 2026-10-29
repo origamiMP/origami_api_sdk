@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
@@ -26,9 +26,7 @@ class TaxDto extends ApiResponseDto
 
     public ?int $moduleId;
 
-    /**
-     * @var Collection|TaxTranslationDto[]
-     */
+    /** @var Collection<int, TaxTranslationDto> */
     public Collection $translations;
 
     public static function getAvailableIncludes(): array
@@ -53,12 +51,10 @@ class TaxDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(TaxDtoTypeEnum::cases())->pluck('value');
-
         return [
             'id'           => ['required', 'integer'],
             'value'        => ['required', 'numeric'],
-            'type'         => ['required', Rule::in($types)],
+            'type'         => ['required', Rule::enum(TaxDtoTypeEnum::class)],
             'id_scs_tax'   => ['present', 'nullable', 'integer'],
             'is_default'   => ['required', 'boolean'],
             'module_id'    => ['present', 'nullable', 'integer'],

@@ -8,13 +8,13 @@ use Tests\TestCase;
 class OrderLineDtoTest extends TestCase
 {
     /**
-     * A line read while the form_builder option is off, or without answer, should have no form submission.
+     * A line read while the form_builder option is off, or without answer, should leave its form submission undefined.
      */
     public function test_form_submission_case_1(): void
     {
         $line = $this->mockOrderLineDto();
 
-        $this->assertNull($line->formSubmission);
+        $this->assertFalse(isset($line->formSubmission));
     }
 
     /**

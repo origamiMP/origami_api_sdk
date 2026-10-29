@@ -3,8 +3,9 @@
 namespace OrigamiMp\OrigamiApiSdk\Exceptions\Client;
 
 use GuzzleHttp\Exception\GuzzleException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\OrigamiApiSdkException;
 
-class HttpClientException extends \Exception
+class HttpClientException extends OrigamiApiSdkException
 {
     public function __construct(GuzzleException $previous)
     {

@@ -12,7 +12,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use OrigamiMp\OrigamiApiSdk\Helpers\Validation\Validator;
 
-abstract class ApiResponseDto
+abstract class ApiResponseDto implements Arrayable
 {
     protected object $apiResponse;
 
@@ -98,7 +98,7 @@ abstract class ApiResponseDto
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Api response data failed to be validated : {$summary}",
+                "[{$classShortName}] Api response data failed to be validated: {$summary}",
                 $e,
             );
         }
@@ -135,7 +135,7 @@ abstract class ApiResponseDto
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Could not assign data '$dottedPath' to property : {$e->getMessage()}",
+                "[{$classShortName}] Could not assign data '{$dottedPath}' to property: {$e->getMessage()}",
                 $e,
             );
         }
@@ -163,7 +163,7 @@ abstract class ApiResponseDto
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Object part from API response does not have mandatory `data` field.",
+                "[{$classShortName}] Object part from API response does not have mandatory `data` field.",
             );
         }
     }
@@ -174,10 +174,9 @@ abstract class ApiResponseDto
     }
 
     /**
-     * Builds an array from this DTO's public, initialized properties, for use in an
-     * `Arrayable::toArray()` implementation. Keys default to the property's own (camelCase)
-     * name, unchanged; pass $keyOverrides for the rare property that should be exposed under
-     * a different key.
+     * Builds an array from this DTO's public, initialized properties, for `toArray()`. Keys
+     * default to the property's own (camelCase) name, unchanged; pass $keyOverrides for the
+     * rare property that should be exposed under a different key.
      *
      * @param  array<string, string>  $keyOverrides  propertyName => arrayKey
      */
@@ -216,9 +215,14 @@ abstract class ApiResponseDto
 
         foreach ($e->errors() as $field => $fieldErrors) {
             $fieldErrorsSummary = implode(', ', $fieldErrors);
-            $summary[] = "$field ($fieldErrorsSummary)";
+            $summary[] = "{$field} ({$fieldErrorsSummary})";
         }
 
         return implode(', ', $summary);
+    }
+
+    public function toArray(): array
+    {
+        return $this->arrayFromPublicProperties();
     }
 }

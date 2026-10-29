@@ -30,7 +30,7 @@ class RoleDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var RolePermissionDto[]|Collection
+     * @var Collection<int, RolePermissionDto>
      */
     public Collection $permissions;
 
@@ -39,7 +39,7 @@ class RoleDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserDto[]|Collection
+     * @var Collection<int, UserDto>
      */
     public Collection $users;
 
@@ -64,28 +64,26 @@ class RoleDto extends ApiResponseDto
             'users'       => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(RoleDtoTypeEnum::cases())->pluck('value');
-
         $rules = [
             'id'         => ['required', 'integer'],
             'name'       => ['required', 'string'],
-            'type'       => ['required', Rule::in($types)],
+            'type'       => ['required', Rule::enum(RoleDtoTypeEnum::class)],
             'color'      => ['required', 'string'],
             'text_color' => ['required', 'string'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

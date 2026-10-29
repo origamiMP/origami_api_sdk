@@ -72,7 +72,7 @@ class CustomFieldModelValueDtoTest extends TestCase
     {
         $customFieldDto = $this->mockCustomFieldModelValueDto([
             'value'  => ['express', 'standard'],
-            'config' => $this->mockCustomFieldModelValueConfigApiData(['type' => CustomFieldDtoTypeEnum::MULTI_SELECT->value]),
+            'config' => $this->mockCustomFieldModelValueConfigApiData(['type' => CustomFieldDtoTypeEnum::MULTIPLE->value]),
         ]);
 
         $this->assertSame(['express', 'standard'], $customFieldDto->value);

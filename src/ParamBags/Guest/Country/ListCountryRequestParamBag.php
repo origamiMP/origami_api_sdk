@@ -1,0 +1,22 @@
+<?php
+
+namespace OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Country;
+
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
+
+class ListCountryRequestParamBag extends RequestParamBag implements HasPaginationContract, HasSearchContract
+{
+    use HasPagination, HasSearch;
+
+    protected function getQueryRequestParamsList(): array
+    {
+        return [
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+        ];
+    }
+}

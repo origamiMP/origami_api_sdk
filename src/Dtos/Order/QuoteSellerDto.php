@@ -98,10 +98,10 @@ class QuoteSellerDto extends ApiResponseDto
             'state_logs' => fn (object $stateLogs) => $this->stateLogs = $this->collectIncluded($stateLogs, StateLogDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -112,10 +112,10 @@ class QuoteSellerDto extends ApiResponseDto
             'order_id'  => ['required', 'integer'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

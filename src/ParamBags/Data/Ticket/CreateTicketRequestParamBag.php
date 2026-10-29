@@ -22,22 +22,11 @@ class CreateTicketRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'subject'         => 'subject',
-            'body'            => 'body',
-            'seller_id'       => 'sellerId',
-            'customer_id'     => 'customerId',
-            'order_seller_id' => 'orderSellerId',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'subject'         => ['required', 'string'],
-            'body'            => ['required', 'string'],
-            'seller_id'       => ['integer'],
-            'customer_id'     => ['integer'],
-            'order_seller_id' => ['integer'],
+            'subject'       => 'subject',
+            'body'          => 'body',
+            'sellerId'      => 'seller_id',
+            'customerId'    => 'customer_id',
+            'orderSellerId' => 'order_seller_id',
         ];
     }
 }

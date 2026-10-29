@@ -198,7 +198,7 @@ abstract class RestClientRepository
     {
         $trimmedPrefix = rtrim($this->getResourcePrefix(), '/');
 
-        return ltrim("$trimmedPrefix/$resource", '/');
+        return ltrim("{$trimmedPrefix}/{$resource}", '/');
     }
 
     protected function getResourcePrefix(): string
@@ -210,10 +210,10 @@ abstract class RestClientRepository
     {
         $headersFromParamBag = Arr::get($guzzleParams, 'headers', []);
 
-        $finalHeaders = array_merge(
-            $this->getAdditionalHeaders(),
-            $headersFromParamBag,
-        );
+        $finalHeaders = [
+            ...$this->getAdditionalHeaders(),
+            ...$headersFromParamBag,
+        ];
 
         $guzzleParams['headers'] = $finalHeaders;
 

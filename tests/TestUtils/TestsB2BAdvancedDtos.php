@@ -30,7 +30,7 @@ trait TestsB2BAdvancedDtos
             'price_build_up'    => [$this->mockQuotePriceBuildUpRowApiData()],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     /**
@@ -45,6 +45,6 @@ trait TestsB2BAdvancedDtos
             'montant' => 0,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

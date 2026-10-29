@@ -18,7 +18,7 @@ trait TestsOrderDtos
             'updated_at' => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     /**
@@ -30,20 +30,11 @@ trait TestsOrderDtos
             'id' => TestCase::unique(),
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockOrderLineDto(array $override = []): OrderLineDto
     {
         return new OrderLineDto(Obj::fromArray($this->mockOrderLineApiData($override)));
-    }
-
-    protected function mockCustomerApiData(array $override = []): array
-    {
-        $baseData = [
-            'id' => TestCase::unique(),
-        ];
-
-        return array_merge($baseData, $override);
     }
 }

@@ -19,41 +19,23 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
 
     public bool $isStandaloneEnabled;
 
-    /**
-     * @var FormTranslationParamBag[]
-     */
+    /** @var array<int, FormTranslationParamBag> */
     public array $translations;
 
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'is_active'             => 'isActive',
-            'is_purchase_enabled'   => 'isPurchaseEnabled',
-            'is_quote_enabled'      => 'isQuoteEnabled',
-            'is_standalone_enabled' => 'isStandaloneEnabled',
-            'translations'          => 'translations',
+            'isActive'            => 'is_active',
+            'isPurchaseEnabled'   => 'is_purchase_enabled',
+            'isQuoteEnabled'      => 'is_quote_enabled',
+            'isStandaloneEnabled' => 'is_standalone_enabled',
+            'translations'        => 'translations',
         ];
     }
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'is_active'             => ['boolean'],
-            'is_purchase_enabled'   => ['boolean'],
-            'is_quote_enabled'      => ['boolean'],
-            'is_standalone_enabled' => ['boolean'],
-            'translations'          => ['required', 'array'],
-        ];
-
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return $this->getIncludesParamsList();
     }
 
     protected static function getRequestMainDto(): string

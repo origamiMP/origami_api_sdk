@@ -33,11 +33,9 @@ class SellerLegalTypeListDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(UserGroupLegalInformationDtoLegalTypeEnum::cases())->pluck('value');
-
         return [
             'types'   => ['required', 'array'],
-            'types.*' => ['required', 'string', Rule::in($types)],
+            'types.*' => ['required', 'string', Rule::enum(UserGroupLegalInformationDtoLegalTypeEnum::class)],
         ];
     }
 

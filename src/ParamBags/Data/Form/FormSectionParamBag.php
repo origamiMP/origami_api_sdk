@@ -8,34 +8,21 @@ class FormSectionParamBag extends ParamBag
 {
     public int $id;
 
-    /**
-     * @var FormSectionTranslationParamBag[]
-     */
+    /** @var array<int, FormSectionTranslationParamBag> */
     public array $translations;
 
     public FormConditionParamBag $condition;
 
-    /**
-     * @var FormFieldParamBag[]
-     */
+    /** @var array<int, FormFieldParamBag> */
     public array $fields;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
             'id'           => 'id',
             'translations' => 'translations',
             'condition'    => 'condition',
             'fields'       => 'fields',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'           => ['integer'],
-            'translations' => ['required', 'array'],
-            'fields'       => ['array'],
         ];
     }
 }

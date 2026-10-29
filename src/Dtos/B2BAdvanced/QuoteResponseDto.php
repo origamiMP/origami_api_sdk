@@ -68,7 +68,7 @@ class QuoteResponseDto extends ApiResponseDto
             'rse_score'         => fn ($value) => $this->rseScore = self::toIntOrNull($value),
             'references_count'  => fn ($value) => $this->referencesCount = self::toIntOrNull($value),
             'certifications'    => 'certifications',
-            'price_build_up'    => fn (array $rows) => $this->priceBuildUp = collect($rows)->map(fn (object $row) => new QuotePriceBuildUpRowDto($row)),
+            'price_build_up'    => fn ($priceBuildUp) => $this->initPriceBuildUp($priceBuildUp),
         ];
     }
 
@@ -100,7 +100,12 @@ class QuoteResponseDto extends ApiResponseDto
         return new QuoteResponseDtoNotConstructableException($msg, previous: $previous);
     }
 
-    private static function toIntOrNull(mixed $value): ?int
+    protected function initPriceBuildUp(array $priceBuildUp): void
+    {
+        $this->priceBuildUp = collect($priceBuildUp)->map(fn ($row) => new QuotePriceBuildUpRowDto($row));
+    }
+
+    protected static function toIntOrNull(mixed $value): ?int
     {
         return is_null($value) ? null : (int) $value;
     }

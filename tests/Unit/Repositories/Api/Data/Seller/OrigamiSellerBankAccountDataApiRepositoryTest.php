@@ -3,7 +3,7 @@
 namespace Tests\Unit\Repositories\Api\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateBankAccountRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSellerBankAccountRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller\OrigamiSellerBankAccountDataApiRepository;
 use Tests\TestCase;
 
@@ -19,7 +19,7 @@ class OrigamiSellerBankAccountDataApiRepositoryTest extends TestCase
             'id'   => 42,
             'iban' => 'FR7630006000011234567890189',
         ])]));
-        $paramBag = new CreateBankAccountRequestParamBag;
+        $paramBag = new CreateSellerBankAccountRequestParamBag;
         $paramBag->bankName = 'Bank of Origami';
         $paramBag->ownerName = 'John Doe';
         $paramBag->ownerAddress = '10 rue de Rivoli, 75001 Paris';

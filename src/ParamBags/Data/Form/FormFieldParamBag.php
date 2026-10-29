@@ -27,47 +27,27 @@ class FormFieldParamBag extends ParamBag
 
     public FormConditionParamBag $condition;
 
-    /**
-     * @var FormFieldTranslationParamBag[]
-     */
+    /** @var array<int, FormFieldTranslationParamBag> */
     public array $translations;
 
-    /**
-     * @var FormFieldOptionParamBag[]
-     */
+    /** @var array<int, FormFieldOptionParamBag> */
     public array $options;
 
-    protected function getApiKeysToProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'id'                => 'id',
-            'key'               => 'key',
-            'type'              => 'type',
-            'is_required'       => 'isRequired',
-            'visible_to_seller' => 'visibleToSeller',
-            'prefill_source'    => 'prefillSource',
-            'prefill_readonly'  => 'prefillReadonly',
-            'save_to_customer'  => 'saveToCustomer',
-            'params'            => 'params',
-            'condition'         => 'condition',
-            'translations'      => 'translations',
-            'options'           => 'options',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'                => ['integer'],
-            'key'               => ['string', 'max:64'],
-            'type'              => ['required', 'string'],
-            'is_required'       => ['required', 'boolean'],
-            'visible_to_seller' => ['required', 'boolean'],
-            'prefill_source'    => ['nullable', 'string'],
-            'prefill_readonly'  => ['required', 'boolean'],
-            'save_to_customer'  => ['required', 'boolean'],
-            'translations'      => ['required', 'array'],
-            'options'           => ['array'],
+            'id'              => 'id',
+            'key'             => 'key',
+            'type'            => 'type',
+            'isRequired'      => 'is_required',
+            'visibleToSeller' => 'visible_to_seller',
+            'prefillSource'   => 'prefill_source',
+            'prefillReadonly' => 'prefill_readonly',
+            'saveToCustomer'  => 'save_to_customer',
+            'params'          => 'params',
+            'condition'       => 'condition',
+            'translations'    => 'translations',
+            'options'         => 'options',
         ];
     }
 }

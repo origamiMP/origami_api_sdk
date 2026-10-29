@@ -1,0 +1,47 @@
+<?php
+
+namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
+
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationListDto;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
+
+class ListUserGroupInvitationRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
+{
+    use HasFilters, HasIncludes, HasPagination, HasSearch;
+
+    protected static function getAdditionalAvailableFilters(): array
+    {
+        return [
+            'user_group_id',
+            'status',
+            'email',
+            'token_expires_at',
+            'onboarding_url',
+            'sent_at',
+            'accepted_at',
+        ];
+    }
+
+    protected function getQueryRequestParamsList(): array
+    {
+        return [
+            ...$this->getFiltersParamsList(),
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+            ...$this->getIncludesParamsList(),
+        ];
+    }
+
+    protected static function getRequestMainDto(): string
+    {
+        return UserGroupInvitationListDto::class;
+    }
+}

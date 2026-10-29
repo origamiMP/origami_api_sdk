@@ -12,9 +12,7 @@ class ModuleListDto extends ApiResponseDto
 {
     use HasIncludes;
 
-    /**
-     * @var Collection|ModuleDto[]
-     */
+    /** @var Collection<int, ModuleDto> */
     public Collection $data;
 
     public static function getAvailableIncludes(): array
@@ -45,6 +43,6 @@ class ModuleListDto extends ApiResponseDto
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($seller) => new ModuleDto($seller));
+        $this->data = collect($data)->map(fn ($module) => new ModuleDto($module));
     }
 }

@@ -11,8 +11,6 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 class OrigamiLanguageGuestApiRepository extends OrigamiGuestApiRepository
 {
     /**
-     * Get the list of available languages (public endpoint)
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws LanguageListDtoNotConstructableException

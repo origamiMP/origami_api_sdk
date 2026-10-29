@@ -15,7 +15,6 @@ class OrigamiTicketDataApiRepositoryTest extends TestCase
     public function test_create_case_1(): void
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockTicketApiData(['id' => 42])]));
-
         $paramBag = new CreateTicketRequestParamBag;
         $paramBag->subject = 'Quote WZXIIYTYX';
         $paramBag->body = 'Can we visit the site before 6 am?';

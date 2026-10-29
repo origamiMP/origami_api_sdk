@@ -13,7 +13,7 @@ trait TestsStateDtos
             'name' => 'Quote sent',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     /**
@@ -27,6 +27,6 @@ trait TestsStateDtos
             'to_state'   => ['data' => $this->mockStateApiData()],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

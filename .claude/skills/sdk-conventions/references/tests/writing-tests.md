@@ -26,9 +26,9 @@ It can be left out when the name and the body say everything (`test_delete_case_
 
 Three blocks separated by a blank line: arrange, act, assert (`OrigamiSellerDataApiRepositoryTest::test_get_case_1`).
 
-- **Arrange**: the client first, then the param bags, filled property by property; for a tree of param bags, the leaves first.
+- **Arrange**: the client repository first, then the param bags, filled property by property; for a tree of param bags, the leaves first.
 - **Act**: the tested class is instantiated on the call line; the result goes in a variable named after its content (`$seller`, `$forms`), `$result` being kept for generic DTOs.
-- **Assert**: in the order given in `repositories.md`. A blank line can separate assertion groups when going down into a nested object, extracted into a variable (`$page = $form->pages->first();`).
+- **Assert**: in the order given in `api-repositories.md`. A blank line can separate assertion groups when going down into a nested object, extracted into a variable (`$page = $form->pages->first();`).
 
 Only two blocks (build, assert) when building is the tested action, or when checking the default state of a new object (`Traits/ParamBags/HasIncludesTest::test_get_includes_case_1`).
 
@@ -60,7 +60,7 @@ Never `expectException()` (nothing can be checked after the exception) nor a han
 | Id not checked | `TestCase::unique()` (see `mock-data.md`) |
 | Email, person | `john@doe.com`, `jane@doe.com`, `John` / `Doe` |
 | Token | `some-token`, `some-access-token` |
-| Generic resource (client tests) | `some_resource` |
+| Generic resource (client repository tests) | `some_resource` |
 | URLs | `http://api.test` (API), `https://example.com/...` (external) |
 | Date | `'2024-05-12 16:12:56'` |
 

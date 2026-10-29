@@ -4,7 +4,4 @@ namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
-class SellerBankAccountDtoNotConstructableException extends ApiResponseDtoNotConstructableException
-{
-    //
-}
+class SellerBankAccountDtoNotConstructableException extends ApiResponseDtoNotConstructableException {}

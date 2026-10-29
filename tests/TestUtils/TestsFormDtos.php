@@ -27,7 +27,7 @@ trait TestsFormDtos
             'updated_at'            => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormTranslationApiData(array $override = []): array
@@ -40,7 +40,7 @@ trait TestsFormDtos
             'description' => null,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormPageApiData(array $override = []): array
@@ -59,7 +59,7 @@ trait TestsFormDtos
             'sections' => ['data' => []],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormSectionApiData(array $override = []): array
@@ -78,7 +78,7 @@ trait TestsFormDtos
             'fields' => ['data' => []],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormFieldApiData(array $override = []): array
@@ -106,7 +106,7 @@ trait TestsFormDtos
             'options' => ['data' => []],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormFieldOptionApiData(array $override = []): array
@@ -123,7 +123,7 @@ trait TestsFormDtos
             ]]],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormConditionApiData(array $override = []): array
@@ -134,7 +134,7 @@ trait TestsFormDtos
             'value'     => 'yes',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormTypesApiData(array $override = []): array
@@ -150,7 +150,7 @@ trait TestsFormDtos
             'limits'     => ['pages' => 10, 'fields' => 100],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormTypeApiData(array $override = []): array
@@ -165,7 +165,7 @@ trait TestsFormDtos
             'condition_operators'     => [FormConditionDtoOperatorEnum::EQUALS->value, FormConditionDtoOperatorEnum::NOT_EQUALS->value],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormPrefillSourceApiData(array $override = []): array
@@ -177,7 +177,7 @@ trait TestsFormDtos
             'type'   => 'string',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     /**
@@ -190,7 +190,7 @@ trait TestsFormDtos
             'form_name' => 'Cleaning service',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormSubmissionValueApiData(array $override = []): array
@@ -205,7 +205,7 @@ trait TestsFormDtos
             'files'         => [],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockFormSubmissionValueDto(array $override = []): FormSubmissionValueDto
@@ -219,6 +219,6 @@ trait TestsFormDtos
             'name' => 'store-plan.pdf',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

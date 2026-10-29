@@ -22,9 +22,9 @@ abstract class GetOauthTokenRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'client_id'     => 'clientId',
-            'client_secret' => 'clientSecret',
-            'grant_type'    => 'grantType',
+            'clientId'     => 'client_id',
+            'clientSecret' => 'client_secret',
+            'grantType'    => 'grant_type',
         ];
     }
 }

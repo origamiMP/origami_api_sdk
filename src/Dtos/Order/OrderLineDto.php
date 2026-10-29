@@ -15,9 +15,9 @@ class OrderLineDto extends ApiResponseDto
     public int $id;
 
     /**
-     * Not sent by the API when the line has no answer.
+     * May be undefined if the corresponding data was not included, or if the line has no answer.
      */
-    public ?FormSubmissionDto $formSubmission = null;
+    public FormSubmissionDto $formSubmission;
 
     public static function getAvailableIncludes(): array
     {

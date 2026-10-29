@@ -4,7 +4,7 @@ namespace Tests\Unit\Repositories\Api\Guest\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Tax\ListTaxesRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\Tax\ListTaxRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\Tax\OrigamiTaxGuestApiRepository;
 use Tests\TestCase;
 
@@ -34,7 +34,7 @@ class OrigamiTaxGuestApiRepositoryTest extends TestCase
     public function test_list_case_2(): void
     {
         $restClient = $this->mockGuestRestClientReturning($this->jsonResponse(['data' => [$this->mockTaxApiData()]]));
-        $paramBag = new ListTaxesRequestParamBag;
+        $paramBag = new ListTaxRequestParamBag;
         $paramBag->setIncludes(['translations', 'unknown']);
 
         $taxes = (new OrigamiTaxGuestApiRepository($restClient))->list($paramBag);

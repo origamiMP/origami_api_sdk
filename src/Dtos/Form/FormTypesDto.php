@@ -2,13 +2,12 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormTypesDtoNotConstructableException;
 
-class FormTypesDto extends ApiResponseDto implements Arrayable
+class FormTypesDto extends ApiResponseDto
 {
     /** @var Collection<int, FormTypeDto> */
     public Collection $types;
@@ -29,7 +28,7 @@ class FormTypesDto extends ApiResponseDto implements Arrayable
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'types'            => fn (array $types) => $this->types = collect($types)->map(fn (object $type) => new FormTypeDto($type)),
+            'types'            => fn (array $types) => $this->initTypes($types),
             'file.extensions'  => 'fileExtensions',
             'file.max_size_kb' => 'fileMaxSizeKb',
             'file.max_files'   => 'fileMaxFiles',
@@ -57,8 +56,8 @@ class FormTypesDto extends ApiResponseDto implements Arrayable
         return new FormTypesDtoNotConstructableException($msg, previous: $previous);
     }
 
-    public function toArray(): array
+    protected function initTypes(array $types): void
     {
-        return $this->arrayFromPublicProperties();
+        $this->types = collect($types)->map(fn (object $type) => new FormTypeDto($type));
     }
 }

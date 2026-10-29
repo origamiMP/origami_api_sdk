@@ -39,7 +39,7 @@ class FormSubmissionValueDto extends ApiResponseDto
             'value'         => 'value',
             'display_value' => 'displayValue',
             'position'      => 'position',
-            'files'         => fn (array $files) => $this->files = collect($files)->map(fn (object $file) => new FormSubmissionFileDto($file)),
+            'files'         => fn ($files) => $this->initFiles($files),
         ];
     }
 
@@ -61,5 +61,10 @@ class FormSubmissionValueDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FormSubmissionValueDtoNotConstructableException($msg, previous: $previous);
+    }
+
+    protected function initFiles(array $files): void
+    {
+        $this->files = collect($files)->map(fn ($file) => new FormSubmissionFileDto($file));
     }
 }

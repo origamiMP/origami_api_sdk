@@ -6,7 +6,7 @@ trait HasSearch
 {
     private string $search;
 
-    public function search(string $search): void
+    public function setSearch(string $search): void
     {
         $this->search = $search;
     }
@@ -19,12 +19,5 @@ trait HasSearch
     protected function getSearchParamsList(): array
     {
         return ['search' => 'search'];
-    }
-
-    protected function getSearchValidationRules(): array
-    {
-        return [
-            'search' => ['string'],
-        ];
     }
 }

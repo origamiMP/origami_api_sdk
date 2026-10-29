@@ -36,9 +36,7 @@ class CustomFieldDto extends ApiResponseDto
 
     public bool $isPrivate;
 
-    /**
-     * @var Collection|CustomFieldTranslationDto[]
-     */
+    /** @var Collection<int, CustomFieldTranslationDto> */
     public Collection $translations;
 
     /**
@@ -47,7 +45,7 @@ class CustomFieldDto extends ApiResponseDto
      * May be undefined if the corresponding data was not included, or if the Custom Field is not a select or a
      * multiple.
      *
-     * @var Collection|CustomFieldValueDto[]
+     * @var Collection<int, CustomFieldValueDto>
      */
     public Collection $values;
 
@@ -75,17 +73,15 @@ class CustomFieldDto extends ApiResponseDto
             'values'       => fn (object $values) => $this->values = $this->collectIncluded($values, CustomFieldValueDto::class),
         ];
 
-        return array_merge($structure, $this->getTimestampsAsDataStructureToProperties());
+        return [...$structure, ...$this->getTimestampsAsDataStructureToProperties()];
     }
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(CustomFieldDtoTypeEnum::cases())->pluck('value');
-
         $rules = [
             'id'                    => ['required', 'integer'],
             'key'                   => ['required', 'string'],
-            'type'                  => ['required', Rule::in($types)],
+            'type'                  => ['required', Rule::enum(CustomFieldDtoTypeEnum::class)],
             'model_type'            => ['required', 'string'],
             'custom_field_group_id' => ['present', 'nullable', 'integer'],
             'params'                => ['present', 'nullable'],
@@ -93,7 +89,7 @@ class CustomFieldDto extends ApiResponseDto
             'translations'          => ['required', 'array'],
         ];
 
-        return array_merge($rules, $this->getTimestampsValidationRules());
+        return [...$rules, ...$this->getTimestampsValidationRules()];
     }
 
     protected static function getDefaultNotConstructableException(

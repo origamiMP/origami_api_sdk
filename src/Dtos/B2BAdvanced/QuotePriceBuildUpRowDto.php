@@ -49,7 +49,7 @@ class QuotePriceBuildUpRowDto extends ApiResponseDto
         return [
             'poste'      => ['required', 'string'],
             'unit'       => ['present', 'nullable', 'string'],
-            'type'       => ['required', Rule::in(collect(QuotePriceBuildUpRowDtoTypeEnum::cases())->pluck('value'))],
+            'type'       => ['required', Rule::enum(QuotePriceBuildUpRowDtoTypeEnum::class)],
             'quantity'   => ['numeric'],
             'unit_price' => ['numeric'],
             'montant'    => ['required', 'numeric'],

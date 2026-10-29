@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tests\TestUtils\TestsArrayableDtos;
 use Tests\TestUtils\TestsB2BAdvancedDtos;
 use Tests\TestUtils\TestsCountryDtos;
+use Tests\TestUtils\TestsCustomerDtos;
 use Tests\TestUtils\TestsCustomFieldDtos;
 use Tests\TestUtils\TestsErrorDtos;
 use Tests\TestUtils\TestsExceptions;
@@ -27,6 +28,7 @@ abstract class TestCase extends BaseTestCase
     use TestsArrayableDtos,
         TestsB2BAdvancedDtos,
         TestsCountryDtos,
+        TestsCustomerDtos,
         TestsCustomFieldDtos,
         TestsErrorDtos,
         TestsExceptions,

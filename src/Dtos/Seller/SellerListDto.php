@@ -2,14 +2,13 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
-use Illuminate\Contracts\Support\Arrayable;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
-class SellerListDto extends ApiResponseDto implements Arrayable
+class SellerListDto extends ApiResponseDto
 {
     use HasIncludes, HasPagination;
 

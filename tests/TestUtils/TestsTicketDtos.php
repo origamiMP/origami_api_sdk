@@ -12,6 +12,6 @@ trait TestsTicketDtos
             'id' => TestCase::unique(),
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

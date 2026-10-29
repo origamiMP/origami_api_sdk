@@ -26,6 +26,6 @@ trait TestsModuleDtos
             'updated_at'               => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

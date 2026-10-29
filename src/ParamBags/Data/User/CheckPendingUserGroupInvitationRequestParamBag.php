@@ -10,18 +10,8 @@ class CheckPendingUserGroupInvitationRequestParamBag extends RequestParamBag
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            [
-                'email' => 'email',
-            ],
-        );
-    }
-
-    protected function validationRulesForProperties(): array
-    {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => 'email',
         ];
     }
 }

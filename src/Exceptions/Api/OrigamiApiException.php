@@ -2,4 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Exceptions\Api;
 
-abstract class OrigamiApiException extends \Exception {}
+use OrigamiMp\OrigamiApiSdk\Exceptions\OrigamiApiSdkException;
+
+abstract class OrigamiApiException extends OrigamiApiSdkException {}

@@ -2,12 +2,11 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormSectionTranslationDtoNotConstructableException;
 
-class FormSectionTranslationDto extends ApiResponseDto implements Arrayable
+class FormSectionTranslationDto extends ApiResponseDto
 {
     public int $id;
 
@@ -46,10 +45,5 @@ class FormSectionTranslationDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FormSectionTranslationDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

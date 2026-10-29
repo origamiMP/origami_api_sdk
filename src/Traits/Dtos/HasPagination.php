@@ -48,6 +48,8 @@ trait HasPagination
         ];
     }
 
+    abstract protected function initData(array $data): void;
+
     public function toArray(): array
     {
         return [
@@ -63,6 +65,4 @@ trait HasPagination
             ],
         ];
     }
-
-    abstract protected function initData(array $data): void;
 }
