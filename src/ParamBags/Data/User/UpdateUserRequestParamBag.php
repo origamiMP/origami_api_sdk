@@ -18,11 +18,4 @@ class UpdateUserRequestParamBag extends RequestParamBag
             'externalConfiguration' => 'external_configuration',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'external_configuration' => ['json'],
-        ];
-    }
 }

@@ -31,7 +31,7 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
      */
     public function update(int $id, UpdateTaxRequestParamBag $paramBag): void
     {
-        $this->restClient->patch("taxes/$id", $paramBag);
+        $this->restClient->patch("taxes/{$id}", $paramBag);
     }
 
     /**
@@ -40,6 +40,6 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
      */
     public function delete(int $id): void
     {
-        $this->restClient->delete("taxes/$id");
+        $this->restClient->delete("taxes/{$id}");
     }
 }

@@ -35,18 +35,4 @@ abstract class AddressParamBag extends ParamBag
             'region'       => 'region',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'address_line1' => ['required', 'string', 'max:255'],
-            'address_line2' => ['required', 'string', 'max:255'],
-            'postcode'      => ['required', 'string', 'max:255'],
-            'city'          => ['required', 'string', 'max:255'],
-            'country_iso'   => ['required', 'string', 'max:2'],
-            'longitude'     => ['string', 'max:255'],
-            'latitude'      => ['string', 'max:255'],
-            'region'        => ['string', 'max:255'],
-        ];
-    }
 }

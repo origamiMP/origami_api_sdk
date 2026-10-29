@@ -11,9 +11,8 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerLegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupLegalInformationDtoLegalTypeEnum;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBagLegalTypeEnum;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerAddressParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerTranslationParamBag;
@@ -101,7 +100,7 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
         $address->countryIso = 'FR';
 
         $legalInformation = new CreateSellerLegalInformationParamBag;
-        $legalInformation->legalType = CreateSellerLegalInformationParamBagLegalTypeEnum::INDIVIDUAL;
+        $legalInformation->legalType = UserGroupLegalInformationDtoLegalTypeEnum::INDIVIDUAL;
         $legalInformation->managerFirstName = 'John';
         $legalInformation->managerLastName = 'Doe';
         $legalInformation->managerBirthday = Carbon::parse('1990-01-31 12:00:00');
@@ -116,7 +115,7 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
         $paramBag->firstname = 'John';
         $paramBag->lastname = 'Doe';
         $paramBag->email = 'john@doe.com';
-        $paramBag->sellerType = CreateSellerParamBagTypeEnum::MARKETPLACE;
+        $paramBag->sellerType = SellerDtoTypeEnum::MARKETPLACE;
         $paramBag->holidayDepartureDate = Carbon::parse('2024-07-01 08:00:00');
         $paramBag->address = $address;
         $paramBag->legalInformation = $legalInformation;

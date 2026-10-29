@@ -11,7 +11,7 @@ class OrigamiApiSdk
     {
         $projectBasePath = dirname(__FILE__, 3);
 
-        $pathToComposerJson = "$projectBasePath/composer.json";
+        $pathToComposerJson = "{$projectBasePath}/composer.json";
         $encodedComposerJsonContent = file_get_contents($pathToComposerJson);
 
         $decodedComposerJsonContent = json_decode($encodedComposerJsonContent, true);

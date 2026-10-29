@@ -44,17 +44,6 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            ...$this->getFiltersValidationRules(),
-            ...$this->getPaginationValidationRules(),
-            ...$this->getSearchValidationRules(),
-            ...$this->getIncludesValidationRules(),
-            'with_count' => ['string', 'in:fields'],
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return FormListDto::class;

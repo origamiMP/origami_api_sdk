@@ -25,9 +25,4 @@ class JsonParamBagFixture extends RequestParamBag
             'castResult' => fn (mixed $castResult) => $castResult,
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [];
-    }
 }

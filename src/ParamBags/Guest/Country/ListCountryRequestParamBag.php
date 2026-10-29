@@ -19,12 +19,4 @@ class ListCountryRequestParamBag extends RequestParamBag implements HasPaginatio
             ...$this->getSearchParamsList(),
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            ...$this->getPaginationValidationRules(),
-            ...$this->getSearchValidationRules(),
-        ];
-    }
 }

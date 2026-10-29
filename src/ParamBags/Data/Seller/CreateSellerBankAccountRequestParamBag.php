@@ -47,16 +47,4 @@ class CreateSellerBankAccountRequestParamBag extends RequestParamBag
             'isDefault'    => 'is_default',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'bank_name'     => ['required', 'string', 'max:255'],
-            'owner_name'    => ['required', 'string', 'max:255'],
-            'owner_address' => ['required', 'string', 'max:500'],
-            'iban'          => ['required', 'string', 'iban'],
-            'bic'           => ['required', 'string', 'bic'],
-            'is_default'    => ['boolean'],
-        ];
-    }
 }

@@ -198,7 +198,7 @@ abstract class RestClientRepository
     {
         $trimmedPrefix = rtrim($this->getResourcePrefix(), '/');
 
-        return ltrim("$trimmedPrefix/$resource", '/');
+        return ltrim("{$trimmedPrefix}/{$resource}", '/');
     }
 
     protected function getResourcePrefix(): string

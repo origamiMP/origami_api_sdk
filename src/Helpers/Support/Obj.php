@@ -8,14 +8,6 @@ use Illuminate\Support\Collection;
 class Obj
 {
     /**
-     * Converts an object to an array, nested objects included.
-     */
-    public static function toArray(object $object): array
-    {
-        return json_decode(json_encode($object), true);
-    }
-
-    /**
      * Converts an array to an object, nested associative arrays included.
      */
     public static function fromArray(array $array): object
@@ -91,5 +83,13 @@ class Obj
         }
 
         return $target;
+    }
+
+    /**
+     * Converts an object to an array, nested objects included.
+     */
+    public static function toArray(object $object): array
+    {
+        return json_decode(json_encode($object), true);
     }
 }

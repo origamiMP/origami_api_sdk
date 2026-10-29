@@ -17,7 +17,7 @@ trait TestsArrayableDtos
                 $this->assertMatchesRegularExpression(
                     '/^[a-z][a-zA-Z0-9]*$/',
                     $key,
-                    "Expected key \"$key\" to be camelCase (no underscore).",
+                    "Expected key \"{$key}\" to be camelCase (no underscore).",
                 );
             }
 

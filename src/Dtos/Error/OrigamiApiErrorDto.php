@@ -41,16 +41,16 @@ class OrigamiApiErrorDto extends ApiResponseDto
 
     public function toString(): string
     {
-        $msg = "[HTTP $this->httpStatusCode]";
+        $msg = "[HTTP {$this->httpStatusCode}]";
 
         if ($this->errorCode !== '0') {
-            $msg .= " Error code $this->errorCode -";
+            $msg .= " Error code {$this->errorCode} -";
         }
 
-        $msg .= " $this->message";
+        $msg .= " {$this->message}";
 
         if (! is_null($this->field)) {
-            $msg .= " (field: $this->field)";
+            $msg .= " (field: {$this->field})";
         }
 
         return $msg;

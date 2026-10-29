@@ -25,18 +25,6 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag implement
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'token' => ['required', 'string', 'size:64'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return UserGroupInvitationDto::class;

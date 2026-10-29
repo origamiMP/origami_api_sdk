@@ -23,25 +23,23 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 
 | File | Read it when… |
 |---|---|
-| `references/code/param-bags.md` | You create or change a param bag, or an API repository method: request vs nested param bags, folder (subfolder of a request), class names, order of the class contents, properties, the API key declared for every property sent and its custom cast, cross-cutting traits and their contracts, validation rules (API keys, kept correct), the include rule and its scope |
+| `references/code/param-bags.md` | You create or change a param bag, or an API repository method: request vs nested param bags, folder (subfolder of a request), class names, order of the class contents, properties, the API key declared for every property sent and its custom cast, cross-cutting traits and their contracts, no validation rules, the include rule and its scope |
 | `references/code/api-repositories.md` | You create or change an API repository or one of its methods: folder, class and method names, method order, parameters (optional param bag), body, docblock and `@throws` |
 | `references/code/client-repositories.md` | You create or change a client repository: class hierarchy, folder, name, constructor, overridden hooks |
 | `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, validation rules, exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
 | `references/code/traits.md` | You create or change a trait, or its contract: folder, name, when it has a contract, order of the contents, setters and getters, what it gives to the class using it |
 | `references/code/exceptions.md` | You create, throw or catch an exception: `OrigamiApiSdkException`, families and folders, API exceptions and how an API error picks one, names, contents, messages, native exceptions |
-| `references/code/enums.md` | You create, rename or use an enum: contents and case names, folder (mirror of the class using it, or thematic), name (with the exception of a class not in the SDK yet), one enum per class, conversion and validation (`Rule::enum()`) |
+| `references/code/enums.md` | You create, rename or use an enum: contents and case names, folder (mirror of the class using it, or thematic), name (with the exception of a class not in the SDK yet), a param bag reusing the enum of its DTO, changing an enum used in several places, conversion and validation (`Rule::enum()`) |
 | `references/code/helpers.md` | You create, change or use a helper: no business logic, folder per subject, name, static methods (and the exception of the classes adapting Laravel), documentation of what it fixes, tests |
 | `references/code/contracts.md` | You create, implement or import a contract (interface): when one exists (trait, DTO, other needs), folder, name, contents, `<Name>Contract` alias |
 
 ## General rules
 
 - Prefer explicit checks (`is_null($x)`, `array_is_list($x)`) over implicit logic explained by a comment.
-- Merge arrays with the spread (`[...$baseData, ...$override]`), never with `array_merge()`. A literal array is written inline rather than spread (`[...parent::getJsonRequestParamsList(), 'username' => 'username']`).
-- Interpolate variables without braces (`"sellers/$id"`). Braces only when PHP needs them: method call, nested property, or a name followed by a character of an identifier (`"Bearer {$this->oauthToken->getAccessToken()}"`, `"{$name}Dto"`).
-- In a class or a trait, the `public` methods first, then the `protected` and `private` ones. In a test class, `setUp()` / `tearDown()` come first. In a DTO or a trait of DTOs, an overridden `toArray()` comes last (see `references/code/dtos.md`).
-- Code style is checked by Pint (`pint.json`, Laravel preset, aligned `=>`).
+- Merge arrays with the spread (`[...$baseData, ...$override]`), never with `array_merge()` nor the `+` operator. A literal array is written inline rather than spread (`[...parent::getJsonRequestParamsList(), 'username' => 'username']`).
+- Code style is checked and fixed by Pint (`pint.json`, Laravel preset), the interpolation (braces around every variable, `"sellers/{$id}"`) and the order of the class elements included: traits, cases, constants, properties, constructor, PHPUnit methods (`setUp()`…), then the `public`, `protected` and `private` methods, and `toArray()` last. The reference files only give the order between methods of a same visibility.
 - When a convention is not covered here, do not invent one: follow the closest pattern in the existing code and tests, and tell the user the point is not documented.
-- When reading the code reveals a mechanism the skill does not describe (a base class, a hook, a trait, a way of building or validating data…), strongly suggest the user documents it, in the file of its kind of code (see « How to contribute »), even when the current task does not need it.
+- The skill covers every way of coding of the SDK as of today. A change introducing a new one (a new kind of file, a base class, a hook, a trait, a way of building or validating data…) documents it in the skill, in the same PR, in the file of its kind of code (see « How to contribute »). When writing or reviewing such a change, strongly suggest the user documents it, with the proposed rule.
 
 ## How to contribute
 

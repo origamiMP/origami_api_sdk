@@ -3,11 +3,10 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Seller\SellerDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagStateEnum;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerParamBagTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerAddressParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerLegalInformationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller\CreateSellerTranslationParamBag;
@@ -38,7 +37,7 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
 
     public string $languageIso;
 
-    public CreateSellerParamBagTypeEnum $sellerType;
+    public SellerDtoTypeEnum $sellerType;
 
     public CreateSellerParamBagStateEnum $state = CreateSellerParamBagStateEnum::VALIDATED;
 
@@ -101,39 +100,6 @@ class CreateSellerRequestParamBag extends RequestParamBag implements HasIncludes
     protected function getQueryRequestParamsList(): array
     {
         return $this->getIncludesParamsList();
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $hasCustomerId = isset($this->customerId);
-
-        $rules = [
-            'user_group_parent_id'     => ['integer', 'missing_with:customer_id'],
-            'customer_id'              => ['integer'],
-            'name'                     => $this->removeRequiredRuleIf(['string', 'required_without:firstname,lastname', 'max:255'], $hasCustomerId),
-            'firstname'                => $this->removeRequiredRuleIf(['string', 'required_without:name', 'max:125'], $hasCustomerId),
-            'lastname'                 => $this->removeRequiredRuleIf(['string', 'required_without:name', 'max:125'], $hasCustomerId),
-            'email'                    => $this->removeRequiredRuleIf(['string', 'required', 'email', 'max:255'], $hasCustomerId),
-            'phone'                    => ['string', 'max:30'],
-            'external_uid'             => ['string', 'max:255'],
-            'phone_area_code'          => ['string', 'max:255'],
-            'language_iso'             => ['string', 'max:2'],
-            'seller_type'              => ['string', Rule::enum(CreateSellerParamBagTypeEnum::class)],
-            'state'                    => ['string', Rule::enum(CreateSellerParamBagStateEnum::class)],
-            'default_tax_id'           => ['integer'],
-            'is_active'                => ['boolean'],
-            'invoice_tax_id'           => ['integer'],
-            'holiday_departure_date'   => ['date_format:Y-m-d'],
-            'holiday_return_date'      => ['date_format:Y-m-d'],
-            'fees_profile_id'          => ['integer'],
-            'seller_fees_profile_id'   => ['integer'],
-            'customer_fees_profile_id' => ['integer'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getIncludesValidationRules(),
-        ];
     }
 
     protected static function getRequestMainDto(): string

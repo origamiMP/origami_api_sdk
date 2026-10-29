@@ -50,7 +50,8 @@ class FormDto extends ApiResponseDto
             'fields_count'          => 'fieldsCount',
             'translations'          => fn (object $translations) => $this->translations = $this->collectIncluded($translations, FormTranslationDto::class),
             'pages'                 => fn (object $pages) => $this->pages = $this->collectIncluded($pages, FormPageDto::class),
-        ] + $this->getTimestampsAsDataStructureToProperties();
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -63,7 +64,8 @@ class FormDto extends ApiResponseDto
             'is_standalone_enabled' => ['required', 'boolean'],
             'fields_count'          => ['nullable', 'integer'],
             'translations'          => ['required', 'array'],
-        ] + $this->getTimestampsValidationRules();
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

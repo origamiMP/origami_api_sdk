@@ -14,11 +14,4 @@ class CheckPendingUserGroupInvitationRequestParamBag extends RequestParamBag
             'email' => 'email',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'email' => ['required', 'string', 'email'],
-        ];
-    }
 }

@@ -37,13 +37,6 @@ trait HasIncludes
         return ['include' => 'include'];
     }
 
-    protected function getIncludesValidationRules(): array
-    {
-        return [
-            'include' => ['array'],
-        ];
-    }
-
     /**
      * If this DataApiRequestParamBag is used in a request that will return a certain DTO,
      * return it here.

@@ -16,11 +16,6 @@ class GetFormRequestParamBag extends RequestParamBag implements HasIncludesContr
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludesValidationRules();
-    }
-
     protected static function getRequestMainDto(): string
     {
         return FormDto::class;

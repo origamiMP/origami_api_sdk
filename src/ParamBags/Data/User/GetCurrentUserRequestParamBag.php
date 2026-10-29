@@ -16,11 +16,6 @@ class GetCurrentUserRequestParamBag extends RequestParamBag implements HasInclud
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludesValidationRules();
-    }
-
     protected static function getRequestMainDto(): string
     {
         return UserDto::class;

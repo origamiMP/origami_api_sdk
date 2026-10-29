@@ -18,9 +18,4 @@ class PaginationParamBagFixture extends RequestParamBag implements HasPagination
     {
         return $this->getPaginationParamsList();
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getPaginationValidationRules();
-    }
 }

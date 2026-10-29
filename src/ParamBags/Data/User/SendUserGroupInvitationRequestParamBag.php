@@ -23,13 +23,4 @@ class SendUserGroupInvitationRequestParamBag extends RequestParamBag
             'onboardingUrl' => 'onboarding_url',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'emails'         => ['required', 'array', 'min:1', 'max:10'],
-            'emails.*'       => ['required', 'string', 'email', 'max:255'],
-            'onboarding_url' => ['required', 'string', 'url', 'max:500'],
-        ];
-    }
 }

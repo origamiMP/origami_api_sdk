@@ -18,7 +18,7 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
      */
     public function update(int $id, UpdateUserRequestParamBag $paramBag): void
     {
-        $this->restClient->patch("users/$id", $paramBag);
+        $this->restClient->patch("users/{$id}", $paramBag);
     }
 
     /**

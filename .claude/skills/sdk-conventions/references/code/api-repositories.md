@@ -42,17 +42,17 @@ A method receives a param bag as soon as the request has something to send, and 
 
 #### Optional param bag
 
-**A param bag is an optional parameter of the method (`?ListSellerRequestParamBag $paramBag = null`) as soon as it only carries optional parameters**: includes, filters, a search, pagination, or properties that are not `required` in its validation rules (`validationRulesForProperties()`).
+**A param bag is an optional parameter of the method (`?ListSellerRequestParamBag $paramBag = null`) as soon as it only carries optional parameters**: includes, filters, a search, pagination, or properties the API does not require (the `required` rules of the request in `origami_api`).
 
 It is **mandatory** in the signature:
-- as soon as it carries at least one value mandatory for the API (a `required` property, such as the email of `GetUserGroupInvitationHistoryRequestParamBag`);
-- when it carries the very content of the request, even without `required` property: calling `update()` with nothing to update makes no sense (`UpdateFormRequestParamBag`, `UpdateUserRequestParamBag`).
+- as soon as it carries at least one value mandatory for the API (a value the API requires, such as the email of `GetUserGroupInvitationHistoryRequestParamBag`);
+- when it carries the very content of the request, even when the API requires none of its values: calling `update()` with nothing to update makes no sense (`UpdateFormRequestParamBag`, `UpdateUserRequestParamBag`).
 
 When the method receives `null`, it passes it on to the client repository, which calls the API without parameters (see `OrigamiFormDataApiRepository::get()`).
 
 ### Body
 
-1. The call of the client repository: `$response = $this->restClient->get("sellers/$id", $paramBag);`.
+1. The call of the client repository: `$response = $this->restClient->get("sellers/{$id}", $paramBag);`.
 2. Right below, without a blank line, the decoding:
    - `decodeResponse()` for a JSON object, the usual case;
    - `decodeListResponse()` for a bare JSON list (`getLegalTypes()`).
@@ -81,7 +81,7 @@ Any other logic stays exceptional: `OrigamiOauthApiRepository::getOauthToken()` 
  */
 public function get(int $id, ?GetSellerRequestParamBag $paramBag = null): SellerDto
 {
-    $response = $this->restClient->get("sellers/$id", $paramBag);
+    $response = $this->restClient->get("sellers/{$id}", $paramBag);
     $responseContent = $this->decodeResponse($response);
 
     return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));

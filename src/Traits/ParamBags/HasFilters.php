@@ -44,12 +44,5 @@ trait HasFilters
         return ['filter' => 'filter'];
     }
 
-    protected function getFiltersValidationRules(): array
-    {
-        return [
-            'filter' => ['array'],
-        ];
-    }
-
     abstract protected static function getAdditionalAvailableFilters(): array;
 }

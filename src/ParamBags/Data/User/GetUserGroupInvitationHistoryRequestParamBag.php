@@ -21,18 +21,6 @@ class GetUserGroupInvitationHistoryRequestParamBag extends RequestParamBag imple
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'email' => ['required', 'string', 'email'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return UserGroupInvitationHistoryDto::class;

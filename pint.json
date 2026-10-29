@@ -32,6 +32,21 @@
       "operators": {
         "=>": "align_single_space_minimal"
       }
+    },
+    "explicit_string_variable": true,
+    "ordered_class_elements": {
+      "order": [
+        "use_trait",
+        "case",
+        "constant",
+        "property",
+        "construct",
+        "phpunit",
+        "method_public",
+        "method_protected",
+        "method_private",
+        "method:toArray"
+      ]
     }
   }
 }

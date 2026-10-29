@@ -20,13 +20,4 @@ class CreateSellerTranslationParamBag extends ParamBag
             'tos'         => 'tos',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'language_id' => ['required', 'integer'],
-            'description' => ['string'],
-            'tos'         => ['string'],
-        ];
-    }
 }

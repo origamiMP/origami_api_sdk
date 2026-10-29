@@ -21,14 +21,6 @@ class ListCustomFieldValueRequestParamBag extends RequestParamBag implements Has
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            ...$this->getSearchValidationRules(),
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return CustomFieldValueListDto::class;

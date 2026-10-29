@@ -39,16 +39,4 @@ class UpdateFormRequestParamBag extends RequestParamBag
             'pages'               => 'pages',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'is_active'             => ['boolean'],
-            'is_purchase_enabled'   => ['boolean'],
-            'is_quote_enabled'      => ['boolean'],
-            'is_standalone_enabled' => ['boolean'],
-            'translations'          => ['array'],
-            'pages'                 => ['array'],
-        ];
-    }
 }

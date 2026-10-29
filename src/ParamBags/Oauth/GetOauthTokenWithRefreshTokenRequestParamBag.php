@@ -23,12 +23,4 @@ class GetOauthTokenWithRefreshTokenRequestParamBag extends GetOauthTokenRequestP
             'refreshToken' => 'refresh_token',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            ...parent::validationRulesForProperties(),
-            'refresh_token' => ['required', 'string'],
-        ];
-    }
 }

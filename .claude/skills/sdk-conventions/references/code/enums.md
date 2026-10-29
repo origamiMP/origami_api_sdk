@@ -12,7 +12,7 @@ An enum lists the values the API accepts or returns for a field, or a fixed set 
 An enum used by a class mirrors the folder of this class, under `src/Enums/`:
 
 - `Enums/Dtos/<Domain>/` for a DTO (`Enums/Dtos/Tax/TaxDtoTypeEnum` for `Dtos/Tax/TaxDto`);
-- `Enums/ParamBags/<Family>/<Domain>/`, with the subfolder of the request when there is one, for a param bag (`Enums/ParamBags/Data/Seller/CreateSeller/CreateSellerLegalInformationParamBagLegalTypeEnum`).
+- `Enums/ParamBags/<Family>/<Domain>/`, with the subfolder of the request when there is one, for a param bag having its own enum (`Enums/ParamBags/Data/Seller/CreateSellerParamBagStateEnum`).
 
 An enum belonging to no class goes in a thematic folder: `Error/` (`OrigamiApiErrorCodeEnum`), `Http/` (`HttpRequestMethodEnum`), `Json/` (`JsonResponseErrorEnum`).
 
@@ -20,13 +20,15 @@ An enum belonging to no class goes in a thematic folder: `Error/` (`OrigamiApiEr
 
 `<Class><Property>Enum`: the class using it and the property it types (`TaxDtoTypeEnum` for `TaxDto::$type`, `SellerDtoMangopayScaStatusEnum` for `SellerDto::$mangopayScaStatus`). For a request param bag, the class name drops `Request`: `CreateSellerParamBagStateEnum` for `CreateSellerRequestParamBag::$state`, `GetOauthTokenParamBagGrantTypeEnum` for `GetOauthTokenRequestParamBag::$grantType`.
 
-📢 Documented exception: an enum of an API data whose class does not exist in the SDK yet is named after that future class, in its future folder: `Enums/Dtos/User/UserGroupLegalInformationDtoLegalTypeEnum`, for the legal information of a user group, used today by `SellerLegalTypeListDto`.
+📢 Documented exception: an enum of an API data whose class does not exist in the SDK yet is named after that future class, in its future folder: `Enums/Dtos/User/UserGroupLegalInformationDtoLegalTypeEnum`, for the legal information of a user group, used today by `SellerLegalTypeListDto` and `CreateSellerLegalInformationParamBag`.
 
-## One enum per class
+## Shared enums
 
-A DTO and a param bag have their own enum, even when they hold the same values (`SellerDtoTypeEnum` and `CreateSellerParamBagTypeEnum`): a param bag can accept only part of the values the API returns (`CreateSellerParamBagStateEnum` only has `VALIDATED`, `SellerDtoStateEnum` has 3 cases).
+A param bag reuses the enum of the matching DTO (`CreateTaxRequestParamBag::$type` is a `TaxDtoTypeEnum`). It has its own enum only when it accepts part of the values the API returns: `CreateSellerParamBagStateEnum` only has `VALIDATED`, `SellerDtoStateEnum` has 3 cases.
+
+Changing an enum used in several places means checking, for each of them, that the new version still applies. A value added because the API now returns it may not be accepted in a request: the param bag then gets its own enum, without that value.
 
 ## Usage
 
 - In a DTO, the value is converted in the data structure (`fn ($type) => $this->type = TaxDtoTypeEnum::from($type)`) and validated with `Rule::enum(TaxDtoTypeEnum::class)` (see `dtos.md`).
-- In a param bag, the property is typed with the enum and sent as its value automatically (see `param-bags.md`), and validated with `Rule::enum()` as well.
+- In a param bag, the property is typed with the enum and sent as its value automatically (see `param-bags.md`).

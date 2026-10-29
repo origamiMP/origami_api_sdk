@@ -80,7 +80,7 @@ trait TestsRestClient
     protected function assertLastApiRequestWas(string $method, string $path, string $prefix = 'v1/'): void
     {
         $this->assertSame($method, $this->lastApiRequest()->getMethod());
-        $this->assertSame("/$prefix$path", $this->lastApiRequest()->getUri()->getPath());
+        $this->assertSame("/{$prefix}{$path}", $this->lastApiRequest()->getUri()->getPath());
     }
 
     /**

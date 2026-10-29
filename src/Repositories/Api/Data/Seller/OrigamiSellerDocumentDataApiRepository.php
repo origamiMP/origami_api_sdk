@@ -33,7 +33,7 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
      */
     public function getRequiredDocuments(int $sellerId): DocumentTypeListDto
     {
-        $response = $this->restClient->get("sellers/$sellerId/required_documents");
+        $response = $this->restClient->get("sellers/{$sellerId}/required_documents");
         $responseContent = $this->decodeResponse($response);
 
         return new DocumentTypeListDto($responseContent);

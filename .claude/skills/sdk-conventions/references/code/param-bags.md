@@ -31,8 +31,7 @@ In this order:
 3. the constructor, when the param bag sets a fixed value (`GetOauthTokenWithPasswordRequestParamBag`);
 4. `getAdditionalAvailableFilters()`, when the param bag uses `HasFilters`;
 5. the API keys (see « Keys sent to the API »): `getPropertiesToApiKeys()` for a nested param bag, otherwise `getJsonRequestParamsList()`, `getFormRequestParamsList()`, then `getQueryRequestParamsList()`;
-6. `validationRulesForProperties()`;
-7. `getRequestMainDto()`, when the param bag uses `HasIncludes`.
+6. `getRequestMainDto()`, when the param bag uses `HasIncludes`.
 
 A param bag calls the parent method of a list or of the rules (`...parent::getJsonRequestParamsList()`) only when its parent declares some itself (`GetOauthTokenRequestParamBag` for its two subclasses), never when the parent is `RequestParamBag` or `ParamBag`.
 
@@ -53,17 +52,11 @@ A request param bag offering a common feature of the API uses its trait from `Tr
 | `HasPagination` | `page`, `item_per_page`, `without_pagination` | – |
 | `HasSearch` | `search` | – |
 
-The param bag merges the API keys and the rules of each trait with its own: `...$this->getIncludesParamsList()`, `...$this->getIncludesValidationRules()` (`ListSellerRequestParamBag`).
+The param bag merges the API keys of each trait with its own: `...$this->getIncludesParamsList()` (`ListSellerRequestParamBag`).
 
-## Validation rules (`validationRulesForProperties()`)
+## No validation rules
 
-Every param bag declares the Laravel rules of what it sends, in `validationRulesForProperties()`. They are not executed yet (`TODO DEV` in `RequestParamBag::getTypedRequestParamsAsGuzzleParams()`), but they document what the API expects, decide whether the param bag of an API repository method is optional (see `api-repositories.md`), and must stay correct for when they are:
-
-- keyed by the **API key**, as sent (`'is_default'`, `'translations.*.language_id'`), never by the property name; a field named inside a rule too (`'missing_with:customer_id'`);
-- `required` for a value the API requires; a rule depending on another property checks that this property is set (`isset($this->legalType) && …` in `CreateSellerLegalInformationParamBag`);
-- the type of the value as sent: an enum with `Rule::enum()` (see `enums.md`), a date with the format of its cast (`'date_format:Y-m-d'`).
-
-Guarded by `ParamBagTest::test_validation_rules_case_1` (every rule key is an API key, rules built on an empty param bag) and `_case_2` (every field named inside a rule is an API key).
+A param bag declares no validation rules: the API validates what it receives, and answers an invalid request with a 422 that the SDK throws as `OrigamiApiUnprocessableEntityException` (see `exceptions.md`).
 
 ## Keys sent to the API
 

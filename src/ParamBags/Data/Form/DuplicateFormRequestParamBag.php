@@ -16,11 +16,6 @@ class DuplicateFormRequestParamBag extends RequestParamBag implements HasInclude
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludesValidationRules();
-    }
-
     protected static function getRequestMainDto(): string
     {
         return FormDto::class;

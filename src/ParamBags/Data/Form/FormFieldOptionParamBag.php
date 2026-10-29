@@ -21,13 +21,4 @@ class FormFieldOptionParamBag extends ParamBag
             'translations' => 'translations',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'           => ['integer'],
-            'value'        => ['required', 'string', 'max:64'],
-            'translations' => ['required', 'array'],
-        ];
-    }
 }

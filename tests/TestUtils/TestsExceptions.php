@@ -24,13 +24,13 @@ trait TestsExceptions
             $this->assertInstanceOf(
                 $exceptionClass,
                 $e,
-                "$exceptionClass was expected, ".$e::class." was thrown instead: {$e->getMessage()}",
+                "{$exceptionClass} was expected, ".$e::class." was thrown instead: {$e->getMessage()}",
             );
             ! is_null($message) && $this->assertSame($message, $e->getMessage());
 
             return $e;
         }
 
-        $this->fail("$exceptionClass was not thrown.");
+        $this->fail("{$exceptionClass} was not thrown.");
     }
 }

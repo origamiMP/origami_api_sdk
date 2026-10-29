@@ -25,13 +25,4 @@ class FormPageParamBag extends ParamBag
             'sections'     => 'sections',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'           => ['integer'],
-            'translations' => ['required', 'array'],
-            'sections'     => ['array'],
-        ];
-    }
 }

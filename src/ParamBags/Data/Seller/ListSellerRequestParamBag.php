@@ -40,16 +40,6 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            ...$this->getFiltersValidationRules(),
-            ...$this->getPaginationValidationRules(),
-            ...$this->getSearchValidationRules(),
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return SellerListDto::class;

@@ -16,11 +16,6 @@ class ListModuleRequestParamBag extends RequestParamBag implements HasIncludesCo
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludesValidationRules();
-    }
-
     protected static function getRequestMainDto(): string
     {
         return ModuleListDto::class;

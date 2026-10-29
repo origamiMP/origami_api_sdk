@@ -63,10 +63,10 @@ abstract class OrigamiRestClient extends RestClientRepository
     {
         $defaultPrefix = self::DEFAULT_USER_AGENT_PREFIX;
         $sdkVersion = OrigamiApiSdk::getVersion();
-        $defaultUserAgent = "$defaultPrefix/$sdkVersion";
+        $defaultUserAgent = "{$defaultPrefix}/{$sdkVersion}";
 
         $this->userAgent = ! is_null($userAgent)
-            ? "$userAgent ($defaultUserAgent)"
+            ? "{$userAgent} ({$defaultUserAgent})"
             : $defaultUserAgent;
     }
 

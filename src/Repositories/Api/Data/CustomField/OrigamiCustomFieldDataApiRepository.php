@@ -36,7 +36,7 @@ class OrigamiCustomFieldDataApiRepository extends OrigamiDataApiRepository
      */
     public function getValues(int $id, ?ListCustomFieldValueRequestParamBag $paramBag = null): CustomFieldValueListDto
     {
-        $response = $this->restClient->get("custom_fields/$id/values", $paramBag);
+        $response = $this->restClient->get("custom_fields/{$id}/values", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new CustomFieldValueListDto($responseContent);

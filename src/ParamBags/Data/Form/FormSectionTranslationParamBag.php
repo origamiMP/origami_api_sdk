@@ -20,13 +20,4 @@ class FormSectionTranslationParamBag extends ParamBag
             'description' => 'description',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'language_id' => ['required', 'integer'],
-            'title'       => ['nullable', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-        ];
-    }
 }

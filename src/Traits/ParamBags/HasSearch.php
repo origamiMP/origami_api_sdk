@@ -20,11 +20,4 @@ trait HasSearch
     {
         return ['search' => 'search'];
     }
-
-    protected function getSearchValidationRules(): array
-    {
-        return [
-            'search' => ['string'],
-        ];
-    }
 }

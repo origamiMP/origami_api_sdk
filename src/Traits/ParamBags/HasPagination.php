@@ -48,13 +48,4 @@ trait HasPagination
     {
         return ['page' => 'page', 'itemPerPage' => 'item_per_page', 'withoutPagination' => 'without_pagination'];
     }
-
-    protected function getPaginationValidationRules(): array
-    {
-        return [
-            'page'               => ['integer', 'min:1'],
-            'item_per_page'      => ['integer', 'min:1', 'max:100'],
-            'without_pagination' => ['boolean'],
-        ];
-    }
 }

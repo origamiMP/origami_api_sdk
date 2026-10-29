@@ -25,10 +25,10 @@ abstract class RequestParamBag extends ParamBag
         $headers = $this->getHeadersAsGuzzleParams();
 
         return [
-            ...! empty($jsonParams) ? $jsonParams : [],
-            ...! empty($formParams) ? $formParams : [],
-            ...! empty($queryParams) ? $queryParams : [],
-            ...! empty($headers) ? $headers : [],
+            ...$jsonParams,
+            ...$formParams,
+            ...$queryParams,
+            ...$headers,
         ];
     }
 
@@ -82,9 +82,6 @@ abstract class RequestParamBag extends ParamBag
         HttpRequestParamsTypeEnum $requestParamsTypeEnum,
         array $requestParamsList,
     ): array {
-        // TODO DEV : Add validation mechanism with rules as $requestParamsList values
-        // TODO DEV : Throw custom validation exception if not validated
-
         $paramsAsEncodableArray = $this->asEncodableArray($requestParamsList);
 
         return ! empty($paramsAsEncodableArray)

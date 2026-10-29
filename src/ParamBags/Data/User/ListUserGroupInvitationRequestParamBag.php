@@ -40,16 +40,6 @@ class ListUserGroupInvitationRequestParamBag extends RequestParamBag implements 
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            ...$this->getFiltersValidationRules(),
-            ...$this->getPaginationValidationRules(),
-            ...$this->getSearchValidationRules(),
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return UserGroupInvitationListDto::class;

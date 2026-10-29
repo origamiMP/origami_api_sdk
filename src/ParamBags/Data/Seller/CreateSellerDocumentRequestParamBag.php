@@ -54,23 +54,6 @@ class CreateSellerDocumentRequestParamBag extends RequestParamBag implements Has
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'content'          => ['string'],
-            'pages'            => ['missing_with:content', 'array', 'min:1'],
-            'pages.*'          => ['required', 'string'],
-            'document_type_id' => ['required', 'integer'],
-            'name'             => ['required', 'string', 'max:255'],
-            'user_group_id'    => ['nullable', 'integer'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return SellerDocumentDto::class;

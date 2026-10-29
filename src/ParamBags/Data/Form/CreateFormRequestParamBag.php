@@ -38,22 +38,6 @@ class CreateFormRequestParamBag extends RequestParamBag implements HasIncludesCo
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'is_active'             => ['boolean'],
-            'is_purchase_enabled'   => ['boolean'],
-            'is_quote_enabled'      => ['boolean'],
-            'is_standalone_enabled' => ['boolean'],
-            'translations'          => ['required', 'array'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getIncludesValidationRules(),
-        ];
-    }
-
     protected static function getRequestMainDto(): string
     {
         return FormDto::class;

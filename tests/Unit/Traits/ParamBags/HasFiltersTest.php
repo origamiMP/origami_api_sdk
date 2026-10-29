@@ -82,11 +82,4 @@ class HasFiltersTest extends TestCase
 
         $this->assertSame(['filter' => ['createdAfter' => '2024-05-12 16:12:56', 'is_active' => true]], $guzzleParams['query']);
     }
-
-    public function test_get_filters_validation_rules_case_1(): void
-    {
-        $validationRules = (new FiltersParamBagFixture)->getFiltersValidationRules();
-
-        $this->assertSame(['filter' => ['array']], $validationRules);
-    }
 }

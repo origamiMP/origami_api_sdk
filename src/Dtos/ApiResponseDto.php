@@ -98,7 +98,7 @@ abstract class ApiResponseDto implements Arrayable
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Api response data failed to be validated: $summary",
+                "[{$classShortName}] Api response data failed to be validated: {$summary}",
                 $e,
             );
         }
@@ -135,7 +135,7 @@ abstract class ApiResponseDto implements Arrayable
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Could not assign data '$dottedPath' to property: {$e->getMessage()}",
+                "[{$classShortName}] Could not assign data '{$dottedPath}' to property: {$e->getMessage()}",
                 $e,
             );
         }
@@ -163,7 +163,7 @@ abstract class ApiResponseDto implements Arrayable
             $classShortName = $this->getClassShortName();
 
             throw $this->getDefaultNotConstructableException(
-                "[$classShortName] Object part from API response does not have mandatory `data` field.",
+                "[{$classShortName}] Object part from API response does not have mandatory `data` field.",
             );
         }
     }
@@ -215,7 +215,7 @@ abstract class ApiResponseDto implements Arrayable
 
         foreach ($e->errors() as $field => $fieldErrors) {
             $fieldErrorsSummary = implode(', ', $fieldErrors);
-            $summary[] = "$field ($fieldErrorsSummary)";
+            $summary[] = "{$field} ({$fieldErrorsSummary})";
         }
 
         return implode(', ', $summary);

@@ -18,11 +18,6 @@ class IncludesParamBagFixture extends RequestParamBag
         return $this->getIncludesParamsList();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludesValidationRules();
-    }
-
     protected static function getRequestMainDto(): string
     {
         return IncludesDtoFixture::class;

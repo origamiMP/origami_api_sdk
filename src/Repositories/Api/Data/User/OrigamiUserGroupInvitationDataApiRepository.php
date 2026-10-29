@@ -67,7 +67,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      */
     public function cancel(int $id): UserGroupInvitationCancelDto
     {
-        $response = $this->restClient->delete("users/groups/invitations/$id");
+        $response = $this->restClient->delete("users/groups/invitations/{$id}");
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationCancelDto($responseContent);
@@ -82,7 +82,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      */
     public function resend(int $id, ?ResendUserGroupInvitationRequestParamBag $paramBag = null): UserGroupInvitationDto
     {
-        $response = $this->restClient->post("users/groups/invitations/$id/resend", $paramBag);
+        $response = $this->restClient->post("users/groups/invitations/{$id}/resend", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));

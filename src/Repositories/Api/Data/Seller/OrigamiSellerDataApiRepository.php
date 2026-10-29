@@ -37,7 +37,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
      */
     public function get(int $id, ?GetSellerRequestParamBag $paramBag = null): SellerDto
     {
-        $response = $this->restClient->get("sellers/$id", $paramBag);
+        $response = $this->restClient->get("sellers/{$id}", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));
@@ -75,7 +75,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
      */
     public function activate(int $id): void
     {
-        $this->restClient->post("sellers/$id/activate");
+        $this->restClient->post("sellers/{$id}/activate");
     }
 
     /**
@@ -84,6 +84,6 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
      */
     public function deactivate(int $id): void
     {
-        $this->restClient->post("sellers/$id/deactivate");
+        $this->restClient->post("sellers/{$id}/deactivate");
     }
 }

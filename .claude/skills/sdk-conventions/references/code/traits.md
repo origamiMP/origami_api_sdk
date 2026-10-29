@@ -24,13 +24,7 @@ Users of the SDK type-hint the contract, never the trait (`origami_admin_v2`: `P
 
 ## Contents
 
-In this order:
-
-1. the constants (`HasFilters::BASE_FILTERS`);
-2. the properties;
-3. the public methods, then the protected and private ones. An abstract method stays with the methods of its visibility.
-
-A `toArray()` overridden by a trait of DTOs comes last, below the protected methods, like in a DTO (see `dtos.md`): `Dtos/HasPagination`.
+The order of the elements follows Pint (see `SKILL.md`), `toArray()` last (`Dtos/HasPagination`). An abstract method stays with the methods of its visibility.
 
 No rule sets the visibility of the properties, nor whether they come with getters and setters: it depends on their use. For instance, the traits of DTOs have public properties, like the DTOs; the traits of param bags have private ones, set and read through their public methods, since users of the SDK go through the contract.
 
@@ -40,12 +34,12 @@ A setter is named `set<Property>()` and takes the value without default; a gette
 
 ## What a trait gives to the class using it
 
-A trait gives the class its part of the structure and of the rules, named after its feature, and the class merges them with its own:
+A trait gives the class its part of the structure (and of the rules, for a DTO), named after its feature, and the class merges them with its own:
 
 | Kind | Methods | Example |
 |---|---|---|
 | DTO | `get<Feature>AsDataStructureToProperties()`, `get<Feature>ValidationRules()` | `HasTimestamps`, merged by `CustomFieldDto` |
-| Param bag | `get<Feature>ParamsList()`, `get<Feature>ValidationRules()` | `HasIncludes`: `getIncludesParamsList()`, `getIncludesValidationRules()` |
+| Param bag | `get<Feature>ParamsList()` | `HasIncludes`: `getIncludesParamsList()` |
 
 What the class must provide is an abstract method of the trait: `getAvailableIncludes()`, `getRequestMainDto()`, `getAdditionalAvailableFilters()`, `initData()`.
 

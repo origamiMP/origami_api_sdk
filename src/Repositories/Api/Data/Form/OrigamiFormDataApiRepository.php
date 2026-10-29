@@ -45,7 +45,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      */
     public function get(int $id, ?GetFormRequestParamBag $paramBag = null): FormDto
     {
-        $response = $this->restClient->get("forms/$id", $paramBag);
+        $response = $this->restClient->get("forms/{$id}", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
@@ -74,7 +74,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      */
     public function update(int $id, UpdateFormRequestParamBag $paramBag): void
     {
-        $this->restClient->patch("forms/$id", $paramBag);
+        $this->restClient->patch("forms/{$id}", $paramBag);
     }
 
     /**
@@ -84,7 +84,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      */
     public function delete(int $id): void
     {
-        $this->restClient->delete("forms/$id");
+        $this->restClient->delete("forms/{$id}");
     }
 
     /**
@@ -94,7 +94,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      */
     public function duplicate(int $id, ?DuplicateFormRequestParamBag $paramBag = null): FormDto
     {
-        $response = $this->restClient->post("forms/$id/duplicate", $paramBag);
+        $response = $this->restClient->post("forms/{$id}/duplicate", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
