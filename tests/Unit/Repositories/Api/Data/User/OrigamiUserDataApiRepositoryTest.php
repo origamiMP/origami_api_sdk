@@ -4,6 +4,7 @@ namespace Tests\Unit\Repositories\Api\Data\User;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupUserDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetCurrentUserRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\UpdateUserRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\User\OrigamiUserDataApiRepository;
@@ -97,5 +98,73 @@ class OrigamiUserDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestQueryWas([]);
         $this->assertInstanceOf(UserDto::class, $user);
         $this->assertSame(42, $user->id);
+    }
+
+    /**
+     * `GET me` should send the roles user group filter as query, and read the roles answered.
+     */
+    public function test_get_current_authenticated_user_case_5(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData([
+            'roles' => ['data' => [$this->mockRoleApiData(['id' => 42])]],
+        ])]));
+        $paramBag = new GetCurrentUserRequestParamBag;
+        $paramBag->setFilters(['roles_user_group_id' => 43]);
+        $paramBag->setIncludes(['roles']);
+
+        $user = (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'me');
+        $this->assertLastApiRequestQueryWas([
+            'filter'  => ['roles_user_group_id' => '43'],
+            'include' => ['roles'],
+        ]);
+        $this->assertInstanceOf(UserDto::class, $user);
+        $this->assertSame([42], $user->roles->pluck('id')->all());
+    }
+
+    /**
+     * A filter not available on `GET me` should not be sent.
+     */
+    public function test_get_current_authenticated_user_case_6(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData()]));
+        $paramBag = new GetCurrentUserRequestParamBag;
+        $paramBag->setFilters(['roles_user_group_id' => 43, 'unknown_filter' => 'value']);
+
+        (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
+
+        $this->assertLastApiRequestQueryWas(['filter' => ['roles_user_group_id' => '43']]);
+    }
+
+    /**
+     * `GET me` should send the `user_group_users` include and its nested includes as query, and read the user group
+     * users with their roles and permissions.
+     */
+    public function test_get_current_authenticated_user_case_7(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData([
+            'user_group_users' => ['data' => [$this->mockUserGroupUserApiData([
+                'id'    => 42,
+                'roles' => ['data' => [$this->mockRoleApiData([
+                    'id'          => 43,
+                    'permissions' => ['data' => [$this->mockRolePermissionApiData(['permission' => 'all'])]],
+                ])]],
+            ])]],
+        ])]));
+        $paramBag = new GetCurrentUserRequestParamBag;
+        $paramBag->setIncludes(['user_group_users.roles.permissions', 'user_group_users.unknown']);
+
+        $user = (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'me');
+        $this->assertLastApiRequestQueryWas(['include' => ['user_group_users.roles.permissions']]);
+        $this->assertInstanceOf(UserDto::class, $user);
+        $this->assertContainsOnlyInstancesOf(UserGroupUserDto::class, $user->userGroupUsers);
+        $this->assertSame([42], $user->userGroupUsers->pluck('id')->all());
+
+        $role = $user->userGroupUsers->first()->roles->first();
+        $this->assertSame(43, $role->id);
+        $this->assertSame(['all'], $role->permissions->pluck('permission')->all());
     }
 }

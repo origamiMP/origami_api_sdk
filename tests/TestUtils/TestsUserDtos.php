@@ -5,6 +5,7 @@ namespace Tests\TestUtils;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\RoleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupUserDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\RoleDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupDtoTypeEnum;
@@ -114,5 +115,23 @@ trait TestsUserDtos
         ];
 
         return [...$baseData, ...$override];
+    }
+
+    protected function mockUserGroupUserApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'            => TestCase::unique(),
+            'user_id'       => TestCase::unique(),
+            'user_group_id' => TestCase::unique(),
+            'created_at'    => '2024-05-12 16:12:56',
+            'updated_at'    => '2024-05-12 16:12:56',
+        ];
+
+        return [...$baseData, ...$override];
+    }
+
+    protected function mockUserGroupUserDto(array $override = []): UserGroupUserDto
+    {
+        return new UserGroupUserDto(Obj::fromArray($this->mockUserGroupUserApiData($override)));
     }
 }
