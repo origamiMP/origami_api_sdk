@@ -2,13 +2,16 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags;
 
+/**
+ * Param bag sending the pagination of a list, given by `HasPagination`.
+ */
 interface HasPagination
 {
-    public function withoutPagination(bool $withoutPagination = true): void;
+    public function setWithoutPagination(bool $withoutPagination): void;
 
-    public function page(int $page = 1): void;
+    public function setPage(int $page): void;
 
-    public function perPage(int $perPage = 20): void;
+    public function setPerPage(int $perPage): void;
 
     public function getPage(): int;
 

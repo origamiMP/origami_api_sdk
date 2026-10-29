@@ -4,12 +4,12 @@ API response data lives in the `tests/TestUtils/Tests<Domain>Dtos` traits (one p
 
 ## `mock<Dto>ApiData(array $override = []): array`
 
-One method per DTO (name without the `Dto` suffix), returning `array_merge($baseData, $override)` in the API format (snake_case keys). Model: `TestsTaxDtos::mockTaxApiData()`.
+One method per DTO (name without the `Dto` suffix), returning `[...$baseData, ...$override]` in the API format (snake_case keys). Model: `TestsTaxDtos::mockTaxApiData()`.
 
 - Every key the DTO validates (`required`, `present`) is there, so that the default data builds a valid DTO. Optional keys (includes, `fields_count`…) are left out, and added by override.
 - Ids: `TestCase::unique()`, foreign keys included. It is a counter reset before each test, so ids are always the same; an id checked by the test is still passed by override (`['id' => 42]`).
 - Enums: `XxxEnum::CASE->value`. Dates: `'2024-05-12 16:12:56'`. Includes: wrapped as Fractal does, `['data' => [...]]`.
-- A child node can have its own method, assembled by override to build a tree (`mockFormPageApiData()`…). So can a nested object that is not a DTO, when tests must change one of its fields, since `array_merge` only merges the first level (`mockCustomFieldModelValueConfigApiData()` for the `config` key of `CustomFieldModelValueDto`).
+- A child node can have its own method, assembled by override to build a tree (`mockFormPageApiData()`…). So can a nested object that is not a DTO, when tests must change one of its fields, since the spread only merges the first level (`mockCustomFieldModelValueConfigApiData()` for the `config` key of `CustomFieldModelValueDto`).
 - A response without dedicated DTO (stats, `check-pending`) can be written in the test.
 
 ## `mock<Dto>Dto(array $override = []): <Dto>`

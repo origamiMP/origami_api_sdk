@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class CreateBankAccountRequestParamBag extends RequestParamBag
+class CreateSellerBankAccountRequestParamBag extends RequestParamBag
 {
     /**
      * Nom de la banque
@@ -39,24 +39,12 @@ class CreateBankAccountRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'bankName',
-            'ownerName',
-            'ownerAddress',
-            'iban',
-            'bic',
-            'isDefault',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'bankName'     => ['required', 'string', 'max:255'],
-            'ownerName'    => ['required', 'string', 'max:255'],
-            'ownerAddress' => ['required', 'string', 'max:500'],
-            'iban'         => ['required', 'string', 'iban'],
-            'bic'          => ['required', 'string', 'bic'],
-            'isDefault'    => ['boolean'],
+            'bankName'     => 'bank_name',
+            'ownerName'    => 'owner_name',
+            'ownerAddress' => 'owner_address',
+            'iban'         => 'iban',
+            'bic'          => 'bic',
+            'isDefault'    => 'is_default',
         ];
     }
 }

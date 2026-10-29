@@ -35,25 +35,13 @@ class ListFormRequestParamBag extends RequestParamBag implements HasFiltersContr
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            $this->getFiltersParamsList(),
-            $this->getPaginationParamsList(),
-            $this->getSearchParamsList(),
-            $this->getIncludeParamsList(),
-            ['withCount'],
-        );
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return array_merge(
-            $this->getFiltersValidationRules(),
-            $this->getPaginationValidationRules(),
-            $this->getSearchValidationRules(),
-            $this->getIncludeValidationRules(),
-            ['with_count' => ['string', 'in:fields']],
-        );
+        return [
+            ...$this->getFiltersParamsList(),
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+            ...$this->getIncludesParamsList(),
+            'withCount' => 'with_count',
+        ];
     }
 
     protected static function getRequestMainDto(): string

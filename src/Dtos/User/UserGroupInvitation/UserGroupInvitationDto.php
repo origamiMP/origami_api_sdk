@@ -70,21 +70,19 @@ class UserGroupInvitationDto extends ApiResponseDto
             'user_group' => fn (object $userGroup) => $this->userGroup = $this->makeIncluded($userGroup, UserGroupDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        $statuses = collect(UserGroupInvitationDtoStatusEnum::cases())->pluck('value');
-
         $rules = [
             'id'             => ['required', 'integer'],
             'user_group_id'  => ['present', 'nullable', 'integer'],
             'email'          => ['required', 'string', 'email'],
-            'status'         => ['required', Rule::in($statuses)],
+            'status'         => ['required', Rule::enum(UserGroupInvitationDtoStatusEnum::class)],
             'onboarding_url' => ['required', 'string', 'url'],
             'sent_at'        => ['present', 'nullable', 'date'],
             'accepted_at'    => ['present', 'nullable', 'date'],
@@ -94,10 +92,10 @@ class UserGroupInvitationDto extends ApiResponseDto
             'token'          => ['required', 'string'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

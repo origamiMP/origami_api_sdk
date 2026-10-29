@@ -59,7 +59,7 @@ trait TestsSellerDtos
             'updated_at'               => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockSellerDto(array $override = []): SellerDto
@@ -87,7 +87,7 @@ trait TestsSellerDtos
             'psp_validation_state' => false,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockSellerDocumentApiData(array $override = []): array
@@ -103,7 +103,7 @@ trait TestsSellerDtos
             'updated_at'       => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockDocumentTypeApiData(array $override = []): array
@@ -119,6 +119,6 @@ trait TestsSellerDtos
             'updated_at'   => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

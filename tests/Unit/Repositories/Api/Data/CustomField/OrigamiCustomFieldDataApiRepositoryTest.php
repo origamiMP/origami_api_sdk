@@ -23,8 +23,8 @@ class OrigamiCustomFieldDataApiRepositoryTest extends TestCase
             $this->mockCustomFieldApiData(['key' => 'delivery_time']),
         ])));
         $paramBag = new ListCustomFieldRequestParamBag;
-        $paramBag->withFilters(['model_type' => 'seller']);
-        $paramBag->search('delivery');
+        $paramBag->setFilters(['model_type' => 'seller']);
+        $paramBag->setSearch('delivery');
 
         $customFields = (new OrigamiCustomFieldDataApiRepository($restClient))->list($paramBag);
 
@@ -49,7 +49,7 @@ class OrigamiCustomFieldDataApiRepositoryTest extends TestCase
             $this->mockCustomFieldValueApiData(['value' => 'standard']),
         ]]));
         $paramBag = new ListCustomFieldValueRequestParamBag;
-        $paramBag->search('s');
+        $paramBag->setSearch('s');
 
         $values = (new OrigamiCustomFieldDataApiRepository($restClient))->getValues(12, $paramBag);
 

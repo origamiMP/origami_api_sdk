@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
-use Illuminate\Support\Arr;
+use Closure;
 use OrigamiMp\OrigamiApiSdk\Enums\Http\HttpRequestParamsTypeEnum;
 
 abstract class RequestParamBag extends ParamBag
@@ -24,12 +24,12 @@ abstract class RequestParamBag extends ParamBag
 
         $headers = $this->getHeadersAsGuzzleParams();
 
-        return array_merge(
-            ! empty($jsonParams) ? $jsonParams : [],
-            ! empty($formParams) ? $formParams : [],
-            ! empty($queryParams) ? $queryParams : [],
-            ! empty($headers) ? $headers : [],
-        );
+        return [
+            ...$jsonParams,
+            ...$formParams,
+            ...$queryParams,
+            ...$headers,
+        ];
     }
 
     protected function getHeaders(): array
@@ -37,16 +37,37 @@ abstract class RequestParamBag extends ParamBag
         return [];
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    protected function getPropertiesToApiKeys(): array
+    {
+        return [
+            ...$this->getJsonRequestParamsList(),
+            ...$this->getFormRequestParamsList(),
+            ...$this->getQueryRequestParamsList(),
+        ];
+    }
+
+    /**
+     * @return array<string, string|Closure(mixed): array<string, mixed>> property name => API key, or closure (see ParamBag::getPropertiesToApiKeys())
+     */
     protected function getJsonRequestParamsList(): array
     {
         return [];
     }
 
+    /**
+     * @return array<string, string|Closure(mixed): array<string, mixed>> property name => API key, or closure (see ParamBag::getPropertiesToApiKeys())
+     */
     protected function getFormRequestParamsList(): array
     {
         return [];
     }
 
+    /**
+     * @return array<string, string|Closure(mixed): array<string, mixed>> property name => API key, or closure (see ParamBag::getPropertiesToApiKeys())
+     */
     protected function getQueryRequestParamsList(): array
     {
         return [];
@@ -61,20 +82,10 @@ abstract class RequestParamBag extends ParamBag
         HttpRequestParamsTypeEnum $requestParamsTypeEnum,
         array $requestParamsList,
     ): array {
-        // TODO DEV : Add validation mechanism with rules as $requestParamsList values
-        // TODO DEV : Throw custom validation exception if not validated
-
-        $paramsAsEncodableArray = $this->asEncodableArray(
-            Arr::except($requestParamsList, self::propertiesToExcludeFromGuzzleParams())
-        );
+        $paramsAsEncodableArray = $this->asEncodableArray($requestParamsList);
 
         return ! empty($paramsAsEncodableArray)
             ? [$requestParamsTypeEnum->value => $paramsAsEncodableArray]
             : [];
-    }
-
-    protected static function propertiesToExcludeFromGuzzleParams(): array
-    {
-        return [];
     }
 }

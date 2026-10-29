@@ -52,7 +52,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not valid JSON',
+            'Unreadable response from Origami API: HTTP 200, the body is not valid JSON',
         );
 
         $this->assertInstanceOf(\JsonException::class, $exception->getPrevious());
@@ -67,7 +67,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not a JSON object',
+            'Unreadable response from Origami API: HTTP 200, the body is not a JSON object',
         );
 
         $this->assertNull($exception->getPrevious());
@@ -99,7 +99,7 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeListResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not valid JSON',
+            'Unreadable response from Origami API: HTTP 200, the body is not valid JSON',
         );
 
         $this->assertInstanceOf(\JsonException::class, $exception->getPrevious());
@@ -114,10 +114,30 @@ class RestApiRepositoryTest extends TestCase
         $exception = $this->assertThatExceptionWasThrown(
             fn () => $this->repository->decodeListResponse(new Response(200, [], $body)),
             OrigamiApiUnknownException::class,
-            'Unreadable response from Origami API : HTTP 200, the body is not a JSON list',
+            'Unreadable response from Origami API: HTTP 200, the body is not a JSON list',
         );
 
         $this->assertNull($exception->getPrevious());
+    }
+
+    /**
+     * A decoded response with a `data` key should give its content.
+     */
+    public function test_get_response_content_data_or_empty_object_case_1(): void
+    {
+        $data = $this->repository->getResponseContentDataOrEmptyObject((object) ['data' => (object) ['id' => 42]]);
+
+        $this->assertEquals((object) ['id' => 42], $data);
+    }
+
+    /**
+     * A decoded response without `data` key should give an empty object.
+     */
+    public function test_get_response_content_data_or_empty_object_case_2(): void
+    {
+        $data = $this->repository->getResponseContentDataOrEmptyObject((object) ['id' => 42]);
+
+        $this->assertEquals((object) [], $data);
     }
 
     public static function invalidJsonBodyProvider(): array

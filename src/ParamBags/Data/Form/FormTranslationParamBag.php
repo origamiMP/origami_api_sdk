@@ -12,12 +12,12 @@ class FormTranslationParamBag extends ParamBag
 
     public ?string $description;
 
-    protected function validationRulesForProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'language_id' => ['required', 'integer'],
-            'name'        => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'languageId'  => 'language_id',
+            'name'        => 'name',
+            'description' => 'description',
         ];
     }
 }

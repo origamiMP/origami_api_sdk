@@ -14,7 +14,7 @@ enum CustomFieldDtoTypeEnum: string
 
     case INPUT = 'input';
 
-    case MULTI_SELECT = 'multiple';
+    case MULTIPLE = 'multiple';
 
     case SELECT = 'select';
 

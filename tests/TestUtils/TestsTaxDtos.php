@@ -2,7 +2,9 @@
 
 namespace Tests\TestUtils;
 
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 
 trait TestsTaxDtos
@@ -21,6 +23,11 @@ trait TestsTaxDtos
             ]],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
+    }
+
+    protected function mockTaxDto(array $override = []): TaxDto
+    {
+        return new TaxDto(Obj::fromArray($this->mockTaxApiData($override)));
     }
 }

@@ -116,24 +116,23 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\RoleDtoNotConstructableExceptio
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\RolePermissionDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationListResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationsSendResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupUserDtoNotConstructableException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
  * Guards the conventions shared by every Dto:
- * - any Dto implementing `Illuminate\Contracts\Support\Arrayable` must expose its properties as-is in `toArray()`
- *   (camelCase, matching the Dto's own PHP property names) — never converted to snake_case. This is what
- *   `ApiResponseDto::arrayFromPublicProperties()` provides to every Dto using it;
+ * - every Dto must expose its properties as-is in `toArray()` (camelCase, matching the Dto's own PHP property
+ *   names) — never converted to snake_case. This is what `ApiResponseDto::arrayFromPublicProperties()` provides;
  * - any Dto must reject an invalid API response with its own NotConstructable exception, so that the caller knows
  *   which part of the response is wrong. Every Dto must be listed in `notConstructableProvider()`.
  */
@@ -171,6 +170,35 @@ class ApiResponseDtoTest extends TestCase
         $this->assertArrayKeysAreCamelCase($array);
         $this->assertArrayHasKey('isDefault', $array);
         $this->assertTrue($array['isDefault']);
+    }
+
+    /**
+     * A Dto without its own toArray() should expose its properties as-is, its enums as their value and its included
+     * collections as arrays.
+     */
+    public function test_tax_dto_to_array_case_1(): void
+    {
+        $taxDto = $this->mockTaxDto();
+
+        $array = $taxDto->toArray();
+
+        $this->assertArrayKeysAreCamelCase($array);
+        $this->assertArrayHasKey('isDefault', $array);
+        $this->assertArrayHasKey('idScsTax', $array);
+        $this->assertSame('percentage', $array['type']);
+        $this->assertSame(['VAT'], array_column($array['translations'], 'name'));
+    }
+
+    /**
+     * Timestamps should be exposed in the DATE_ATOM format.
+     */
+    public function test_custom_field_dto_to_array_case_1(): void
+    {
+        $customFieldDto = $this->mockCustomFieldDto(['created_at' => '2024-05-12 16:12:56']);
+
+        $array = $customFieldDto->toArray();
+
+        $this->assertSame('2024-05-12T16:12:56+00:00', $array['createdAt']);
     }
 
     /**
@@ -257,15 +285,15 @@ class ApiResponseDtoTest extends TestCase
             'RolePermissionDto'                  => [RolePermissionDto::class, RolePermissionDtoNotConstructableException::class, (object) []],
             'UserDto'                            => [UserDto::class, UserDtoNotConstructableException::class, (object) []],
             'UserGroupDto'                       => [UserGroupDto::class, UserGroupDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationCancelDto'       => [UserGroupInvitationCancelDto::class, UserGroupInvitationCancelResponseDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationCheckPendingDto' => [UserGroupInvitationCheckPendingDto::class, UserGroupInvitationCheckPendingResponseDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationCancelDto'       => [UserGroupInvitationCancelDto::class, UserGroupInvitationCancelDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationCheckPendingDto' => [UserGroupInvitationCheckPendingDto::class, UserGroupInvitationCheckPendingDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationDto'             => [UserGroupInvitationDto::class, UserGroupInvitationDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationHistoryDto'      => [UserGroupInvitationHistoryDto::class, UserGroupInvitationHistoryResponseDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationListDto'         => [UserGroupInvitationListDto::class, UserGroupInvitationListResponseDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationHistoryDto'      => [UserGroupInvitationHistoryDto::class, UserGroupInvitationHistoryDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationListDto'         => [UserGroupInvitationListDto::class, UserGroupInvitationListDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationResultDto'       => [UserGroupInvitationResultDto::class, UserGroupInvitationResultDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationSendDto'         => [UserGroupInvitationSendDto::class, UserGroupInvitationsSendResponseDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationStatsDto'        => [UserGroupInvitationStatsDto::class, UserGroupInvitationStatsResponseDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationValidateDto'     => [UserGroupInvitationValidateDto::class, UserGroupInvitationValidateResponseDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationSendDto'         => [UserGroupInvitationSendDto::class, UserGroupInvitationSendDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationStatsDto'        => [UserGroupInvitationStatsDto::class, UserGroupInvitationStatsDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationValidateDto'     => [UserGroupInvitationValidateDto::class, UserGroupInvitationValidateDtoNotConstructableException::class, (object) []],
             'UserGroupUserDto'                   => [UserGroupUserDto::class, UserGroupUserDtoNotConstructableException::class, (object) []],
         ];
     }

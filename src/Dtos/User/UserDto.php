@@ -74,7 +74,7 @@ class UserDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserGroupDto[]|Collection
+     * @var Collection<int, UserGroupDto>
      */
     public Collection $userGroups;
 
@@ -88,7 +88,7 @@ class UserDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var RoleDto[]|Collection
+     * @var Collection<int, RoleDto>
      */
     public Collection $roles;
 
@@ -98,7 +98,7 @@ class UserDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserGroupUserDto[]|Collection
+     * @var Collection<int, UserGroupUserDto>
      */
     public Collection $userGroupUsers;
 
@@ -144,37 +144,35 @@ class UserDto extends ApiResponseDto
             'module'           => fn (object $module) => $this->module = $this->makeIncluded($module, ModuleDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-            $this->getCustomFieldsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+            ...$this->getCustomFieldsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        $states = collect(UserDtoStateEnum::cases())->pluck('value');
-
         $rules = [
             'id'                            => ['required', 'integer'],
-            'firstname'                     => ['required', 'string'],
-            'lastname'                      => ['required', 'string'],
-            'name'                          => ['required', 'string'],
+            'firstname'                     => ['present', 'string'],
+            'lastname'                      => ['present', 'string'],
+            'name'                          => ['present', 'string'],
             'email'                         => ['required', 'email'],
             'external_configuration'        => ['present', 'nullable', 'json'],
             'language_id'                   => ['present', 'nullable', 'integer'],
             'language_iso'                  => ['present', 'nullable', 'string'],
             'module_id'                     => ['present', 'nullable', 'integer'],
             'has_access_to_seller_features' => ['required', 'boolean'],
-            'state'                         => [Rule::in($states)],
+            'state'                         => [Rule::enum(UserDtoStateEnum::class)],
             'is_account_validated'          => ['boolean'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-            $this->getCustomFieldsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+            ...$this->getCustomFieldsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

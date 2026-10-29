@@ -2,14 +2,13 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormFieldParamsDtoNotConstructableException;
 
-class FormFieldParamsDto extends ApiResponseDto implements Arrayable
+class FormFieldParamsDto extends ApiResponseDto
 {
     /** @var string[]|null */
     public ?array $extensions = null;
@@ -48,7 +47,7 @@ class FormFieldParamsDto extends ApiResponseDto implements Arrayable
             'unit'        => ['nullable', 'string'],
             'min'         => ['nullable', 'numeric'],
             'max'         => ['nullable', 'numeric'],
-            'width'       => ['nullable', Rule::in(collect(FormFieldParamsDtoWidthEnum::cases())->pluck('value'))],
+            'width'       => ['nullable', Rule::enum(FormFieldParamsDtoWidthEnum::class)],
         ];
     }
 
@@ -57,10 +56,5 @@ class FormFieldParamsDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FormFieldParamsDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

@@ -25,18 +25,10 @@ class GetCurrentUserRequestParamBag extends RequestParamBag implements HasFilter
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            $this->getFiltersParamsList(),
-            $this->getIncludeParamsList(),
-        );
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return array_merge(
-            $this->getFiltersValidationRules(),
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$this->getFiltersParamsList(),
+            ...$this->getIncludesParamsList(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

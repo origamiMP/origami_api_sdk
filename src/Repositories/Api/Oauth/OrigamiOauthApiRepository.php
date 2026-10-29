@@ -21,8 +21,8 @@ class OrigamiOauthApiRepository extends RestApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws OrigamiApiUnauthorizedException
      * @throws OauthTokenDtoNotConstructableException
+     * @throws OrigamiApiUnauthorizedException
      */
     public function getOauthToken(GetOauthTokenRequestParamBag $paramBag): OauthTokenDto
     {
@@ -35,7 +35,6 @@ class OrigamiOauthApiRepository extends RestApiRepository
         }
 
         $response = $this->restClient->post('oauth/token', $paramBag);
-
         $responseContent = $this->decodeResponse($response);
 
         return new OauthTokenDto($responseContent);

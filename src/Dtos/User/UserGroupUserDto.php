@@ -34,7 +34,7 @@ class UserGroupUserDto extends ApiResponseDto
      *
      * May be undefined if the corresponding data was not included.
      *
-     * @var RoleDto[]|Collection
+     * @var Collection<int, RoleDto>
      */
     public Collection $roles;
 
@@ -66,10 +66,10 @@ class UserGroupUserDto extends ApiResponseDto
             'user_group' => fn (object $userGroup) => $this->userGroup = $this->makeIncluded($userGroup, UserGroupDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -80,10 +80,10 @@ class UserGroupUserDto extends ApiResponseDto
             'user_group_id' => ['required', 'integer'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

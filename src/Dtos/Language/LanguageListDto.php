@@ -9,9 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageListDtoNotConstruct
 
 class LanguageListDto extends ApiResponseDto
 {
-    /**
-     * @var Collection|LanguageDto[]
-     */
+    /** @var Collection<int, LanguageDto> */
     public Collection $data;
 
     protected function getDefaultDataStructureToProperties(): array

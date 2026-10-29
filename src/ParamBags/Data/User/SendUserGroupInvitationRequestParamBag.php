@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\User;
 
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class SendUserGroupInvitationsRequestParamBag extends RequestParamBag
+class SendUserGroupInvitationRequestParamBag extends RequestParamBag
 {
     /**
      * Array of email addresses to send invitations to
@@ -19,17 +19,8 @@ class SendUserGroupInvitationsRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'emails',
-            'onboardingUrl',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'emails'        => ['required', 'array', 'min:1', 'max:10'],
-            'emails.*'      => ['required', 'string', 'email', 'max:255'],
-            'onboardingUrl' => ['required', 'string', 'url', 'max:500'],
+            'emails'        => 'emails',
+            'onboardingUrl' => 'onboarding_url',
         ];
     }
 }

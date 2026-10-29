@@ -16,7 +16,7 @@ trait TestsOauthDtos
             'expires_in'    => 3600,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockOauthTokenDto(array $override = []): OauthTokenDto

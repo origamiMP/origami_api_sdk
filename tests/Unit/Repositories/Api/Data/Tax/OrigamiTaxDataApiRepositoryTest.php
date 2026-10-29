@@ -4,7 +4,7 @@ namespace Tests\Unit\Repositories\Api\Data\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes\TaxDtoTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax\CreateTaxRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax\TaxTranslationParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Tax\UpdateTaxRequestParamBag;

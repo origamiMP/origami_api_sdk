@@ -12,13 +12,17 @@ class JsonParamBagFixture extends RequestParamBag
 {
     public Carbon $date;
 
+    public Carbon $dateOnly;
+
+    /** Sent through a cast returning the property value itself, to set what a cast returns. */
+    public mixed $castResult;
+
     protected function getJsonRequestParamsList(): array
     {
-        return ['date'];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [];
+        return [
+            'date'       => 'date',
+            'dateOnly'   => fn (Carbon $date) => ['date_only' => $date->format('Y-m-d')],
+            'castResult' => fn (mixed $castResult) => $castResult,
+        ];
     }
 }

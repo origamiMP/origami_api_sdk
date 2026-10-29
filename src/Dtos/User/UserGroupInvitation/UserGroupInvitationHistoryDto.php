@@ -5,16 +5,14 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationHistoryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
 class UserGroupInvitationHistoryDto extends ApiResponseDto
 {
     use HasIncludes;
 
-    /**
-     * @var Collection|UserGroupInvitationDto[]
-     */
+    /** @var Collection<int, UserGroupInvitationDto> */
     public Collection $data;
 
     public static function getAvailableIncludes(): array
@@ -40,11 +38,11 @@ class UserGroupInvitationHistoryDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationHistoryResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationHistoryDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($invitationItem) => new UserGroupInvitationDto($invitationItem));
+        $this->data = collect($data)->map(fn ($invitation) => new UserGroupInvitationDto($invitation));
     }
 }

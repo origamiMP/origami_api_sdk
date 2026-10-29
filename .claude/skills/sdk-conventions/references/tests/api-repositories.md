@@ -1,18 +1,6 @@
-# Tests — Repositories and REST clients
+# Tests — API repositories
 
-A repository test checks both sides of the call, which are both part of the public contract of the SDK: **the HTTP request sent** and **the DTO built** from the response.
-
-## Fake HTTP client (`TestsRestClient`)
-
-No network and no mocking library (`createMock()`, Mockery): a real REST client of the SDK answers with queued Guzzle responses, so all its logic (headers, `v1/` prefix, errors) really runs.
-
-| Helper | Role |
-|---|---|
-| `mockDataRestClientReturning(...)`, `mockGuestRestClientReturning(...)`, `mockOauthRestClientReturning(...)` | Client matching the repository (`Data`, `Guest`, `Oauth`) |
-| `jsonResponse($body, $status = 200)`, `emptyResponse($status = 204)` | JSON response, response without body |
-| `new Response($status, [], $rawBody)` | Raw body (HTML, invalid JSON, `{}`…) |
-| a `\Throwable` instead of a response | Network failure |
-| `useMockedGuzzleClient($restClient, [...])` | Client built by hand (custom user agent, user group context) |
+An API repository test checks both sides of the call, which are both part of the public contract of the SDK: **the HTTP request sent** and **the DTO built** from the response. The client repository answering the call is built with the helpers of `client-repositories.md` (« Fake HTTP calls »).
 
 ## What to check, in this order
 
@@ -27,7 +15,7 @@ The expected JSON is written with snake_case keys and **literal values**, as sen
 - At least one test per public method.
 - One more case per notable variation: filter not available (not sent), optional parameter not set, method called without its optional param bag, empty or particular response (`[]`, no `data` key), param bag defaults versus values set.
 - One include test per method accepting includes (see below).
-- Not retested in each repository: what the REST client and `RestApiRepository` tests cover (HTTP errors, unreadable response).
+- Not retested in each API repository: what the client repository and `RestApiRepository` tests cover (HTTP errors, unreadable response).
 
 ### Include tests
 
@@ -52,7 +40,3 @@ The filtering itself is tested once in `Traits/ParamBags/HasIncludesTest`. When 
 | Creation (JSON body and response) | `OrigamiTaxDataApiRepositoryTest::test_create_case_1` |
 | Partial update (204) | `OrigamiTaxDataApiRepositoryTest::test_update_case_1` |
 | Action without body (204) | `OrigamiTaxDataApiRepositoryTest::test_delete_case_1` |
-
-## REST client tests
-
-The behavior shared by every client (headers, URL prefix, HTTP verbs, API errors turned into exceptions) is tested in `OrigamiRestClientTest`, through the Guest client; what is specific to one client is tested in its own file (`OrigamiDataRestClientTest`). These tests call `$restClient->get('some_resource')` directly and read the request with `$this->lastApiRequest()`. API error responses are built with `mockApiErrorsResponse()` and `mockApiErrorData()` (`TestsErrorDtos`).

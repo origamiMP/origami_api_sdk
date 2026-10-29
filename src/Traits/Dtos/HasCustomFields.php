@@ -7,9 +7,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldModelValueDto;
 
 trait HasCustomFields
 {
-    /**
-     * @var Collection|CustomFieldModelValueDto[]
-     */
+    /** @var Collection<int, CustomFieldModelValueDto> */
     public Collection $additionalInformation;
 
     protected function getCustomFieldsAsDataStructureToProperties(): array
@@ -26,7 +24,7 @@ trait HasCustomFields
         ];
     }
 
-    protected function initAdditionalInformation($additionalInformation): void
+    protected function initAdditionalInformation(object|array $additionalInformation): void
     {
         if (! is_object($additionalInformation)) {
             $this->additionalInformation = collect();

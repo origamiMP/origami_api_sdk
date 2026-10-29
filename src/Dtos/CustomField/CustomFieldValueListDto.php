@@ -16,6 +16,7 @@ class CustomFieldValueListDto extends ApiResponseDto
 {
     use HasIncludes;
 
+    /** @var Collection<int, CustomFieldValueDto> */
     public Collection $data;
 
     public static function getAvailableIncludes(): array

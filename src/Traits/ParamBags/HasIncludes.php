@@ -32,16 +32,9 @@ trait HasIncludes
         return $this->include;
     }
 
-    protected function getIncludeParamsList(): array
+    protected function getIncludesParamsList(): array
     {
-        return ['include'];
-    }
-
-    protected function getIncludeValidationRules(): array
-    {
-        return [
-            'include' => ['array'],
-        ];
+        return ['include' => 'include'];
     }
 
     /**

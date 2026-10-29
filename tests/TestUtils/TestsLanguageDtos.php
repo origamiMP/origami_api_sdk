@@ -18,7 +18,7 @@ trait TestsLanguageDtos
             'is_active'  => true,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockLanguageDto(array $override = []): LanguageDto

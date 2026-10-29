@@ -2,14 +2,13 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormPageDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 
-class FormPageDto extends ApiResponseDto implements Arrayable
+class FormPageDto extends ApiResponseDto
 {
     use HasIncludes;
 
@@ -50,8 +49,8 @@ class FormPageDto extends ApiResponseDto implements Arrayable
             'id'           => ['required', 'integer'],
             'position'     => ['required', 'integer'],
             'condition'    => ['present'],
-            'translations' => ['required'],
-            'sections'     => ['required'],
+            'translations' => ['required', 'array'],
+            'sections'     => ['required', 'array'],
         ];
     }
 
@@ -60,10 +59,5 @@ class FormPageDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FormPageDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

@@ -4,47 +4,50 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\RequiredIf;
 
 abstract class ParamBag
 {
-    protected function asEncodableArray(?array $propertiesList = null): array
-    {
-        $allProperties = $this->getAllObjectVars();
+    /**
+     * The properties this param bag sends, with their API key: `propertyName => 'api_key'`. A property needing a
+     * custom cast declares a closure instead, receiving the property value and returning a single API key / value
+     * pair, sent as is: `propertyName => fn (Carbon $date) => ['api_key' => $date->format('Y-m-d')]`.
+     * A property not listed, or not set, is not sent.
+     *
+     * @return array<string, string|Closure(mixed): array<string, mixed>>
+     */
+    abstract protected function getPropertiesToApiKeys(): array;
 
-        $properties = is_null($propertiesList) ? $allProperties : Arr::only($allProperties, $propertiesList);
-        $propertiesAsSnakeCase = $this->propertyNamesToSnakeCase($properties);
+    /**
+     * @param  array<string, string|Closure(mixed): array<string, mixed>>  $propertiesToApiKeys  property name => API key, or closure
+     */
+    protected function asEncodableArray(array $propertiesToApiKeys): array
+    {
+        $properties = $this->getAllObjectVars();
 
         $encodableArray = [];
 
-        foreach ($propertiesAsSnakeCase as $propertyName => $propertyValue) {
-            if ($this->doesPropertyHaveCustomCastMethod($propertyName)) {
-                $encodableArray[$propertyName] = $this->useCustomCastForProperty($propertyName, $propertyValue);
+        foreach ($propertiesToApiKeys as $propertyName => $apiKeyOrCaster) {
+            if (! array_key_exists($propertyName, $properties)) {
+                continue;
+            }
+
+            if ($apiKeyOrCaster instanceof Closure) {
+                $encodableArray = [
+                    ...$encodableArray,
+                    ...$this->useCustomCastForProperty($propertyName, $apiKeyOrCaster, $properties[$propertyName]),
+                ];
             } else {
-                $encodableArray[$propertyName] = $this->castPropertyToEncodableType($propertyValue);
+                $encodableArray[$apiKeyOrCaster] = $this->castPropertyToEncodableType($properties[$propertyName]);
             }
         }
 
         return $encodableArray;
     }
 
-    /**
-     * get_object_vars() only returns properties visible from the calling scope. Called directly here,
-     * it would miss private properties declared by traits used on subclasses (ex: HasIncludes::$include),
-     * since those are private to the subclass, not to this parent class. Binding the call to the object's
-     * own scope at runtime restores visibility of those properties.
-     */
-    private function getAllObjectVars(): array
-    {
-        return Closure::bind(fn () => get_object_vars($this), $this, $this)();
-    }
-
     protected function castPropertyToEncodableType(mixed $propertyValue): null|bool|int|float|string|array
     {
         if ($propertyValue instanceof ParamBag) {
-            return $propertyValue->asEncodableArray();
+            return $propertyValue->asEncodableArray($propertyValue->getPropertiesToApiKeys());
         }
 
         if (is_array($propertyValue)) {
@@ -83,46 +86,30 @@ abstract class ParamBag
         return $dateTime->format('Y-m-d H:i:s');
     }
 
-    protected function getCustomCastMethodNameForProperty(string $propertyName): string
+    /**
+     * @return array<string, mixed>
+     */
+    private function useCustomCastForProperty(string $propertyName, Closure $caster, mixed $propertyValue): array
     {
-        $formattedPropertyName = Str::ucfirst(Str::camel($propertyName));
+        $apiKeyToValue = $caster($propertyValue);
 
-        return "cast{$formattedPropertyName}ToEncodableType";
-    }
+        if (! is_array($apiKeyToValue) || count($apiKeyToValue) !== 1 || ! is_string(array_key_first($apiKeyToValue))) {
+            $classShortName = class_basename($this);
 
-    protected function doesPropertyHaveCustomCastMethod(string $propertyName): bool
-    {
-        return method_exists($this, $this->getCustomCastMethodNameForProperty($propertyName));
-    }
-
-    protected function useCustomCastForProperty(string $propertyName, mixed $propertyValue): mixed
-    {
-        $methodName = $this->getCustomCastMethodNameForProperty($propertyName);
-
-        return $this->$methodName($propertyValue);
-    }
-
-    protected function propertyNamesToSnakeCase(array $propertyList): array
-    {
-        $newPropertyList = [];
-
-        foreach ($propertyList as $propertyName => $propertyValue) {
-            $newPropertyList[Str::snake($propertyName)] = $propertyValue;
+            throw new \LogicException("[{$classShortName}] The cast of '{$propertyName}' must return a single API key / value pair.");
         }
 
-        return $newPropertyList;
+        return $apiKeyToValue;
     }
 
     /**
-     * $rules should be an array of rules that are applied to an attribute. If $condition is true,
-     * any 'required' rule (any rule that contains the word 'required') in $rules will be removed.
+     * get_object_vars() only returns properties visible from the calling scope. Called directly here,
+     * it would miss private properties declared by traits used on subclasses (ex: HasIncludes::$include),
+     * since those are private to the subclass, not to this parent class. Binding the call to the object's
+     * own scope at runtime restores visibility of those properties.
      */
-    protected function removeRequiredRuleIf(array $rules, bool $condition): array
+    private function getAllObjectVars(): array
     {
-        if (! $condition) {
-            return $rules;
-        }
-
-        return array_filter($rules, fn ($rule) => ! $rule instanceof RequiredIf && (! is_string($rule) || ! Str::contains($rule, 'required')));
+        return Closure::bind(fn () => get_object_vars($this), $this, $this)();
     }
 }

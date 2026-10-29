@@ -109,7 +109,7 @@ class OrigamiUserDataApiRepositoryTest extends TestCase
             'roles' => ['data' => [$this->mockRoleApiData(['id' => 42])]],
         ])]));
         $paramBag = new GetCurrentUserRequestParamBag;
-        $paramBag->withFilters(['roles_user_group_id' => 43]);
+        $paramBag->setFilters(['roles_user_group_id' => 43]);
         $paramBag->setIncludes(['roles']);
 
         $user = (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
@@ -130,7 +130,7 @@ class OrigamiUserDataApiRepositoryTest extends TestCase
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockUserApiData()]));
         $paramBag = new GetCurrentUserRequestParamBag;
-        $paramBag->withFilters(['roles_user_group_id' => 43, 'unknown_filter' => 'value']);
+        $paramBag->setFilters(['roles_user_group_id' => 43, 'unknown_filter' => 'value']);
 
         (new OrigamiUserDataApiRepository($restClient))->getCurrentAuthenticatedUser($paramBag);
 

@@ -34,7 +34,7 @@ trait TestsUserDtos
             'user_groups'                   => ['data' => []],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockUserDto(array $override = []): UserDto
@@ -78,7 +78,7 @@ trait TestsUserDtos
             'updated_at'           => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockUserGroupDto(array $override = []): UserGroupDto
@@ -98,7 +98,7 @@ trait TestsUserDtos
             'updated_at' => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockRoleDto(array $override = []): RoleDto
@@ -114,7 +114,7 @@ trait TestsUserDtos
             'associated_permissions' => [],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockUserGroupUserApiData(array $override = []): array
@@ -127,7 +127,7 @@ trait TestsUserDtos
             'updated_at'    => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockUserGroupUserDto(array $override = []): UserGroupUserDto

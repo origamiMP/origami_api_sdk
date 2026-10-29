@@ -14,13 +14,13 @@ class FormFieldTranslationParamBag extends ParamBag
 
     public ?string $placeholder;
 
-    protected function validationRulesForProperties(): array
+    protected function getPropertiesToApiKeys(): array
     {
         return [
-            'language_id' => ['required', 'integer'],
-            'label'       => ['required', 'string', 'max:255'],
-            'hint'        => ['nullable', 'string'],
-            'placeholder' => ['nullable', 'string', 'max:255'],
+            'languageId'  => 'language_id',
+            'label'       => 'label',
+            'hint'        => 'hint',
+            'placeholder' => 'placeholder',
         ];
     }
 }

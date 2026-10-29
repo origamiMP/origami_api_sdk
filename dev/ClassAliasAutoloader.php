@@ -38,19 +38,6 @@ class ClassAliasAutoloader
     protected $excludedAliases;
 
     /**
-     * Register a new alias loader instance.
-     *
-     * @param  string  $classMapPath
-     * @return static
-     */
-    public static function register($classMapPath, array $includedAliases = [], array $excludedAliases = [])
-    {
-        return tap(new static($classMapPath, $includedAliases, $excludedAliases), function ($loader) {
-            spl_autoload_register([$loader, 'aliasClass']);
-        });
-    }
-
-    /**
      * Create a new alias loader instance.
      *
      * @param  string  $classMapPath
@@ -75,6 +62,19 @@ class ClassAliasAutoloader
                 $this->classes[$name] = $class;
             }
         }
+    }
+
+    /**
+     * Register a new alias loader instance.
+     *
+     * @param  string  $classMapPath
+     * @return static
+     */
+    public static function register($classMapPath, array $includedAliases = [], array $excludedAliases = [])
+    {
+        return tap(new static($classMapPath, $includedAliases, $excludedAliases), function ($loader) {
+            spl_autoload_register([$loader, 'aliasClass']);
+        });
     }
 
     /**

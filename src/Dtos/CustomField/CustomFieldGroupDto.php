@@ -11,9 +11,7 @@ class CustomFieldGroupDto extends ApiResponseDto
 {
     public string $key;
 
-    /**
-     * @var Collection|CustomFieldGroupTranslationDto[]
-     */
+    /** @var Collection<int, CustomFieldGroupTranslationDto> */
     public Collection $translations;
 
     protected function getDefaultDataStructureToProperties(): array

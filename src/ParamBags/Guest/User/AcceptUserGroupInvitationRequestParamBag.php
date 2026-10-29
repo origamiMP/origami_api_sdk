@@ -16,25 +16,13 @@ class AcceptUserGroupInvitationRequestParamBag extends RequestParamBag implement
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'token',
+            'token' => 'token',
         ];
     }
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'token' => ['required', 'string', 'size:64'],
-        ];
-
-        return array_merge(
-            $rules,
-            $this->getIncludeValidationRules(),
-        );
+        return $this->getIncludesParamsList();
     }
 
     protected static function getRequestMainDto(): string

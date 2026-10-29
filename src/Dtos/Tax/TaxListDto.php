@@ -12,9 +12,7 @@ class TaxListDto extends ApiResponseDto
 {
     use HasIncludes;
 
-    /**
-     * @var Collection|TaxDto[]
-     */
+    /** @var Collection<int, TaxDto> */
     public Collection $data;
 
     public static function getAvailableIncludes(): array

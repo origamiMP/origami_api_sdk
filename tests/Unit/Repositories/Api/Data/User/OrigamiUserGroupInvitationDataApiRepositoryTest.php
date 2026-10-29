@@ -14,9 +14,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationVal
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoActionEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\CheckPendingUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\GetUserGroupInvitationHistoryRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationsRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ListUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ResendUserGroupInvitationRequestParamBag;
-use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationsRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\SendUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\User\ValidateUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\User\OrigamiUserGroupInvitationDataApiRepository;
 use Tests\TestCase;
@@ -39,7 +39,7 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
             ],
             'message' => 'Invitations processed.',
         ]));
-        $paramBag = new SendUserGroupInvitationsRequestParamBag;
+        $paramBag = new SendUserGroupInvitationRequestParamBag;
         $paramBag->emails = ['john@doe.com', 'jane@doe.com'];
         $paramBag->onboardingUrl = 'https://example.com/onboarding';
 
@@ -201,9 +201,9 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
             $this->mockUserGroupInvitationApiData(['id' => 1]),
         ])));
-        $paramBag = new ListUserGroupInvitationsRequestParamBag;
-        $paramBag->withFilters(['status' => 'pending']);
-        $paramBag->withoutPagination();
+        $paramBag = new ListUserGroupInvitationRequestParamBag;
+        $paramBag->setFilters(['status' => 'pending']);
+        $paramBag->setWithoutPagination(true);
 
         $invitations = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->list($paramBag);
 
@@ -227,7 +227,7 @@ class OrigamiUserGroupInvitationDataApiRepositoryTest extends TestCase
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
             $this->mockUserGroupInvitationApiData(['user_group' => ['data' => $this->mockUserGroupApiData(['id' => 42])]]),
         ])));
-        $paramBag = new ListUserGroupInvitationsRequestParamBag;
+        $paramBag = new ListUserGroupInvitationRequestParamBag;
         $paramBag->setIncludes(['user_group', 'unknown']);
 
         $invitations = (new OrigamiUserGroupInvitationDataApiRepository($restClient))->list($paramBag);

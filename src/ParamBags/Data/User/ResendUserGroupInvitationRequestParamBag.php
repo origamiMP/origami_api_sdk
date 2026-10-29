@@ -13,12 +13,7 @@ class ResendUserGroupInvitationRequestParamBag extends RequestParamBag implement
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludeValidationRules();
+        return $this->getIncludesParamsList();
     }
 
     protected static function getRequestMainDto(): string

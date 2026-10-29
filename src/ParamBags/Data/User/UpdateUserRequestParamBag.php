@@ -15,14 +15,7 @@ class UpdateUserRequestParamBag extends RequestParamBag
     protected function getJsonRequestParamsList(): array
     {
         return [
-            'externalConfiguration',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'externalConfiguration' => ['json'],
+            'externalConfiguration' => 'external_configuration',
         ];
     }
 }
