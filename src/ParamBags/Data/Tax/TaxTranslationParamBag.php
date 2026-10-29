@@ -17,12 +17,4 @@ class TaxTranslationParamBag extends ParamBag
             'name'       => 'name',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'language_id' => ['required', 'integer'],
-            'name'        => ['required', 'string'],
-        ];
-    }
 }

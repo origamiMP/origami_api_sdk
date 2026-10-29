@@ -19,10 +19,9 @@ class OrigamiPasswordGuestApiRepository extends OrigamiGuestApiRepository
      * @throws OrigamiApiUnknownException
      * @throws SendResetPasswordEmailDtoNotConstructableException
      */
-    public function sendResetPasswordEmail(SendResetPasswordEmailRequestParamBag $requestParamBag): SendResetPasswordEmailDto
+    public function sendResetPasswordEmail(SendResetPasswordEmailRequestParamBag $paramBag): SendResetPasswordEmailDto
     {
-        $response = $this->restClient->post('password/email', $requestParamBag);
-
+        $response = $this->restClient->post('password/email', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new SendResetPasswordEmailDto($responseContent);
@@ -33,10 +32,9 @@ class OrigamiPasswordGuestApiRepository extends OrigamiGuestApiRepository
      * @throws OrigamiApiUnknownException
      * @throws ResetPasswordDtoNotConstructableException
      */
-    public function resetPassword(ResetPasswordRequestParamBag $requestParamBag): ResetPasswordDto
+    public function resetPassword(ResetPasswordRequestParamBag $paramBag): ResetPasswordDto
     {
-        $response = $this->restClient->post('password/reset', $requestParamBag);
-
+        $response = $this->restClient->post('password/reset', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new ResetPasswordDto($responseContent);

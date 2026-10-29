@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelDtoNotConstructableException;
 
 class UserGroupInvitationCancelDto extends ApiResponseDto
 {
@@ -32,6 +32,6 @@ class UserGroupInvitationCancelDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationCancelResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationCancelDtoNotConstructableException($msg, previous: $previous);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldModelValueDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
@@ -26,7 +27,12 @@ trait TestsCustomFieldDtos
             'updated_at' => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
+    }
+
+    protected function mockCustomFieldDto(array $override = []): CustomFieldDto
+    {
+        return new CustomFieldDto(Obj::fromArray($this->mockCustomFieldApiData($override)));
     }
 
     protected function mockCustomFieldValueApiData(array $override = []): array
@@ -39,7 +45,7 @@ trait TestsCustomFieldDtos
             'updated_at'      => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     /**
@@ -53,7 +59,7 @@ trait TestsCustomFieldDtos
             'config' => $this->mockCustomFieldModelValueConfigApiData(),
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockCustomFieldModelValueDto(array $override = []): CustomFieldModelValueDto
@@ -78,7 +84,7 @@ trait TestsCustomFieldDtos
             'params' => null,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockCustomFieldGroupApiData(array $override = []): array
@@ -90,6 +96,6 @@ trait TestsCustomFieldDtos
             ],
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

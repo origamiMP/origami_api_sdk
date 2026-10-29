@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
@@ -18,7 +17,7 @@ use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasCustomFields;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
-class SellerDto extends ApiResponseDto implements Arrayable
+class SellerDto extends ApiResponseDto
 {
     use HasCustomFields, HasIncludes, HasTimestamps;
 
@@ -107,7 +106,7 @@ class SellerDto extends ApiResponseDto implements Arrayable
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerDocumentDto[]|Collection
+     * @var Collection<int, SellerDocumentDto>
      */
     public Collection $documents;
 
@@ -119,21 +118,21 @@ class SellerDto extends ApiResponseDto implements Arrayable
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerBankAccountDto[]|Collection
+     * @var Collection<int, SellerBankAccountDto>
      */
     public Collection $bankAccounts;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var DocumentTypeDto[]|Collection
+     * @var Collection<int, DocumentTypeDto>
      */
     public Collection $requiredDocuments;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserDto[]|Collection
+     * @var Collection<int, UserDto>
      */
     public Collection $users;
 
@@ -221,19 +220,15 @@ class SellerDto extends ApiResponseDto implements Arrayable
             'users'              => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-            $this->getCustomFieldsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+            ...$this->getCustomFieldsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        $mangopayScaStatuses = collect(SellerDtoMangopayScaStatusEnum::cases())->pluck('value');
-        $sellerTypes = collect(SellerDtoTypeEnum::cases())->pluck('value');
-        $states = collect(SellerDtoStateEnum::cases())->pluck('value');
-
         $rules = [
             'id'                   => ['required', 'integer'],
             'user_group_parent_id' => ['required', 'integer'],
@@ -263,9 +258,9 @@ class SellerDto extends ApiResponseDto implements Arrayable
             'external_uid'         => ['present', 'nullable', 'string'],
             'email_validated'      => ['required', 'boolean'],
             'phone_validated'      => ['required', 'boolean'],
-            'mangopay_sca_status'  => ['nullable', Rule::in($mangopayScaStatuses)],
-            'seller_type'          => ['required', Rule::in($sellerTypes)],
-            'state'                => ['required', Rule::in($states)],
+            'mangopay_sca_status'  => ['nullable', Rule::enum(SellerDtoMangopayScaStatusEnum::class)],
+            'seller_type'          => ['required', Rule::enum(SellerDtoTypeEnum::class)],
+            'state'                => ['required', Rule::enum(SellerDtoStateEnum::class)],
             'default_tax_id'       => ['required', 'integer'],
             // TODO : Add 'required' when feature flag will be merged
             'fees_profile_id'          => ['nullable', 'integer'],
@@ -279,11 +274,11 @@ class SellerDto extends ApiResponseDto implements Arrayable
             'is_in_holiday'            => ['required', 'boolean'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-            $this->getCustomFieldsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+            ...$this->getCustomFieldsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(
@@ -291,10 +286,5 @@ class SellerDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new SellerDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

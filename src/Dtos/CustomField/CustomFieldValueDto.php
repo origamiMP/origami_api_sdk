@@ -45,7 +45,7 @@ class CustomFieldValueDto extends ApiResponseDto
             'custom_field' => fn (object $customField) => $this->customField = $this->makeIncluded($customField, CustomFieldDto::class),
         ];
 
-        return array_merge($structure, $this->getTimestampsAsDataStructureToProperties());
+        return [...$structure, ...$this->getTimestampsAsDataStructureToProperties()];
     }
 
     protected function validationRulesForProperties(): array
@@ -56,7 +56,7 @@ class CustomFieldValueDto extends ApiResponseDto
             'custom_field_id' => ['required', 'integer'],
         ];
 
-        return array_merge($rules, $this->getTimestampsValidationRules());
+        return [...$rules, ...$this->getTimestampsValidationRules()];
     }
 
     protected static function getDefaultNotConstructableException(

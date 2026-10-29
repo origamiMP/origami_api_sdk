@@ -60,7 +60,7 @@ class HasIncludesTest extends TestCase
         $this->assertThatExceptionWasThrown(
             fn () => $this->makeFixture(['id' => 1, 'children' => ['items' => []]]),
             ApiResponseDtoNotConstructableException::class,
-            "[IncludesDtoFixture] Could not assign data 'children' to property : "
+            "[IncludesDtoFixture] Could not assign data 'children' to property: "
             .'[IncludesDtoFixture] Object part from API response does not have mandatory `data` field.',
         );
     }
@@ -84,7 +84,7 @@ class HasIncludesTest extends TestCase
         $this->assertThatExceptionWasThrown(
             fn () => $this->makeFixture(['id' => 1, 'parent' => ['id' => 2]]),
             ApiResponseDtoNotConstructableException::class,
-            "[IncludesDtoFixture] Could not assign data 'parent' to property : "
+            "[IncludesDtoFixture] Could not assign data 'parent' to property: "
             .'[IncludesDtoFixture] Object part from API response does not have mandatory `data` field.',
         );
     }

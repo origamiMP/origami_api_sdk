@@ -50,10 +50,10 @@ class SellerDocumentDto extends ApiResponseDto
             'document_type' => fn (object $documentType) => $this->documentType = $this->makeIncluded($documentType, DocumentTypeDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
@@ -67,10 +67,10 @@ class SellerDocumentDto extends ApiResponseDto
             'url'              => ['required', 'string', 'url'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

@@ -13,8 +13,6 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
 {
     /**
-     * Create a new tax
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws TaxDtoNotConstructableException
@@ -28,8 +26,6 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
     }
 
     /**
-     * Update an existing tax
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      */
@@ -39,8 +35,6 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
     }
 
     /**
-     * Delete an existing tax
-     *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      */

@@ -36,17 +36,4 @@ class FormFieldParamsParamBag extends ParamBag
             'width'      => 'width',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'extensions'  => ['array'],
-            'max_size_kb' => ['integer', 'min:1'],
-            'max_files'   => ['integer', 'min:1'],
-            'unit'        => ['string', 'max:8'],
-            'min'         => ['numeric'],
-            'max'         => ['numeric'],
-            'width'       => ['string'],
-        ];
-    }
 }

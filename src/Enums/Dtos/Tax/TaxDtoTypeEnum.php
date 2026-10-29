@@ -1,6 +1,6 @@
 <?php
 
-namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\Taxes;
+namespace OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax;
 
 enum TaxDtoTypeEnum: string
 {

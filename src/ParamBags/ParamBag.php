@@ -4,8 +4,6 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags;
 
 use Carbon\Carbon;
 use Closure;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\RequiredIf;
 
 abstract class ParamBag
 {
@@ -44,33 +42,6 @@ abstract class ParamBag
         }
 
         return $encodableArray;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function useCustomCastForProperty(string $propertyName, Closure $caster, mixed $propertyValue): array
-    {
-        $apiKeyToValue = $caster($propertyValue);
-
-        if (! is_array($apiKeyToValue) || count($apiKeyToValue) !== 1 || ! is_string(array_key_first($apiKeyToValue))) {
-            $classShortName = class_basename($this);
-
-            throw new \LogicException("[$classShortName] The cast of '$propertyName' must return a single API key / value pair.");
-        }
-
-        return $apiKeyToValue;
-    }
-
-    /**
-     * get_object_vars() only returns properties visible from the calling scope. Called directly here,
-     * it would miss private properties declared by traits used on subclasses (ex: HasIncludes::$include),
-     * since those are private to the subclass, not to this parent class. Binding the call to the object's
-     * own scope at runtime restores visibility of those properties.
-     */
-    private function getAllObjectVars(): array
-    {
-        return Closure::bind(fn () => get_object_vars($this), $this, $this)();
     }
 
     protected function castPropertyToEncodableType(mixed $propertyValue): null|bool|int|float|string|array
@@ -116,15 +87,29 @@ abstract class ParamBag
     }
 
     /**
-     * $rules should be an array of rules that are applied to an attribute. If $condition is true,
-     * any 'required' rule (any rule that contains the word 'required') in $rules will be removed.
+     * @return array<string, mixed>
      */
-    protected function removeRequiredRuleIf(array $rules, bool $condition): array
+    private function useCustomCastForProperty(string $propertyName, Closure $caster, mixed $propertyValue): array
     {
-        if (! $condition) {
-            return $rules;
+        $apiKeyToValue = $caster($propertyValue);
+
+        if (! is_array($apiKeyToValue) || count($apiKeyToValue) !== 1 || ! is_string(array_key_first($apiKeyToValue))) {
+            $classShortName = class_basename($this);
+
+            throw new \LogicException("[{$classShortName}] The cast of '{$propertyName}' must return a single API key / value pair.");
         }
 
-        return array_filter($rules, fn ($rule) => ! $rule instanceof RequiredIf && (! is_string($rule) || ! Str::contains($rule, 'required')));
+        return $apiKeyToValue;
+    }
+
+    /**
+     * get_object_vars() only returns properties visible from the calling scope. Called directly here,
+     * it would miss private properties declared by traits used on subclasses (ex: HasIncludes::$include),
+     * since those are private to the subclass, not to this parent class. Binding the call to the object's
+     * own scope at runtime restores visibility of those properties.
+     */
+    private function getAllObjectVars(): array
+    {
+        return Closure::bind(fn () => get_object_vars($this), $this, $this)();
     }
 }

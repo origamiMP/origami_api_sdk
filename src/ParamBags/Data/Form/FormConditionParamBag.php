@@ -21,13 +21,4 @@ class FormConditionParamBag extends ParamBag
             'value'    => 'value',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'field_key' => ['required', 'string'],
-            'operator'  => ['required', 'string'],
-            'value'     => ['nullable', 'string', 'max:255'],
-        ];
-    }
 }

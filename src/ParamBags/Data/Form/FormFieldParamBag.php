@@ -27,14 +27,10 @@ class FormFieldParamBag extends ParamBag
 
     public FormConditionParamBag $condition;
 
-    /**
-     * @var FormFieldTranslationParamBag[]
-     */
+    /** @var array<int, FormFieldTranslationParamBag> */
     public array $translations;
 
-    /**
-     * @var FormFieldOptionParamBag[]
-     */
+    /** @var array<int, FormFieldOptionParamBag> */
     public array $options;
 
     protected function getPropertiesToApiKeys(): array
@@ -52,22 +48,6 @@ class FormFieldParamBag extends ParamBag
             'condition'       => 'condition',
             'translations'    => 'translations',
             'options'         => 'options',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'                => ['integer'],
-            'key'               => ['string', 'max:64'],
-            'type'              => ['required', 'string'],
-            'is_required'       => ['required', 'boolean'],
-            'visible_to_seller' => ['required', 'boolean'],
-            'prefill_source'    => ['nullable', 'string'],
-            'prefill_readonly'  => ['required', 'boolean'],
-            'save_to_customer'  => ['required', 'boolean'],
-            'translations'      => ['required', 'array'],
-            'options'           => ['array'],
         ];
     }
 }

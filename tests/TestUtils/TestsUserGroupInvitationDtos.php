@@ -28,7 +28,7 @@ trait TestsUserGroupInvitationDtos
             'updated_at'     => '2024-05-12 16:12:56',
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 
     protected function mockUserGroupInvitationDto(array $override = []): UserGroupInvitationDto
@@ -46,6 +46,6 @@ trait TestsUserGroupInvitationDtos
             'error'         => null,
         ];
 
-        return array_merge($baseData, $override);
+        return [...$baseData, ...$override];
     }
 }

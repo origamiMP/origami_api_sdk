@@ -25,11 +25,11 @@ class HasFiltersTest extends TestCase
     /**
      * Base and additional filters should be kept with their values, as given.
      */
-    public function test_with_filters_case_1(): void
+    public function test_set_filters_case_1(): void
     {
         $paramBag = new FiltersParamBagFixture;
 
-        $paramBag->withFilters(['createdAfter' => '2024-05-12 16:12:56', 'is_active' => true]);
+        $paramBag->setFilters(['createdAfter' => '2024-05-12 16:12:56', 'is_active' => true]);
 
         $this->assertSame(['createdAfter' => '2024-05-12 16:12:56', 'is_active' => true], $paramBag->getFilters());
     }
@@ -37,11 +37,11 @@ class HasFiltersTest extends TestCase
     /**
      * A filter not available on the param bag should be dropped, keys being compared as given (no case conversion).
      */
-    public function test_with_filters_case_2(): void
+    public function test_set_filters_case_2(): void
     {
         $paramBag = new FiltersParamBagFixture;
 
-        $paramBag->withFilters(['is_active' => false, 'unknown_filter' => 'value', 'created_after' => '2024-05-12']);
+        $paramBag->setFilters(['is_active' => false, 'unknown_filter' => 'value', 'created_after' => '2024-05-12']);
 
         $this->assertSame(['is_active' => false], $paramBag->getFilters());
     }
@@ -49,12 +49,12 @@ class HasFiltersTest extends TestCase
     /**
      * Setting filters again should replace the previous ones, not add to them.
      */
-    public function test_with_filters_case_3(): void
+    public function test_set_filters_case_3(): void
     {
         $paramBag = new FiltersParamBagFixture;
-        $paramBag->withFilters(['is_active' => true]);
+        $paramBag->setFilters(['is_active' => true]);
 
-        $paramBag->withFilters(['updatedBefore' => '2024-05-12 16:12:56']);
+        $paramBag->setFilters(['updatedBefore' => '2024-05-12 16:12:56']);
 
         $this->assertSame(['updatedBefore' => '2024-05-12 16:12:56'], $paramBag->getFilters());
     }
@@ -76,17 +76,10 @@ class HasFiltersTest extends TestCase
     public function test_query_case_1(): void
     {
         $paramBag = new FiltersParamBagFixture;
-        $paramBag->withFilters(['createdAfter' => Carbon::parse('2024-05-12 16:12:56'), 'is_active' => true]);
+        $paramBag->setFilters(['createdAfter' => Carbon::parse('2024-05-12 16:12:56'), 'is_active' => true]);
 
         $guzzleParams = $paramBag->asGuzzleParams();
 
         $this->assertSame(['filter' => ['createdAfter' => '2024-05-12 16:12:56', 'is_active' => true]], $guzzleParams['query']);
-    }
-
-    public function test_get_filters_validation_rules_case_1(): void
-    {
-        $validationRules = (new FiltersParamBagFixture)->getFiltersValidationRules();
-
-        $this->assertSame(['filter' => ['array']], $validationRules);
     }
 }

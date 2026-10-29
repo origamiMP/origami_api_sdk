@@ -24,12 +24,12 @@ abstract class RequestParamBag extends ParamBag
 
         $headers = $this->getHeadersAsGuzzleParams();
 
-        return array_merge(
-            ! empty($jsonParams) ? $jsonParams : [],
-            ! empty($formParams) ? $formParams : [],
-            ! empty($queryParams) ? $queryParams : [],
-            ! empty($headers) ? $headers : [],
-        );
+        return [
+            ...$jsonParams,
+            ...$formParams,
+            ...$queryParams,
+            ...$headers,
+        ];
     }
 
     protected function getHeaders(): array
@@ -42,11 +42,11 @@ abstract class RequestParamBag extends ParamBag
      */
     protected function getPropertiesToApiKeys(): array
     {
-        return array_merge(
-            $this->getJsonRequestParamsList(),
-            $this->getFormRequestParamsList(),
-            $this->getQueryRequestParamsList(),
-        );
+        return [
+            ...$this->getJsonRequestParamsList(),
+            ...$this->getFormRequestParamsList(),
+            ...$this->getQueryRequestParamsList(),
+        ];
     }
 
     /**
@@ -82,9 +82,6 @@ abstract class RequestParamBag extends ParamBag
         HttpRequestParamsTypeEnum $requestParamsTypeEnum,
         array $requestParamsList,
     ): array {
-        // TODO DEV : Add validation mechanism with rules as $requestParamsList values
-        // TODO DEV : Throw custom validation exception if not validated
-
         $paramsAsEncodableArray = $this->asEncodableArray($requestParamsList);
 
         return ! empty($paramsAsEncodableArray)

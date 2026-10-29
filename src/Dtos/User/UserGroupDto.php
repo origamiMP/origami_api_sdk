@@ -78,21 +78,21 @@ class UserGroupDto extends ApiResponseDto
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerDocumentDto[]|Collection
+     * @var Collection<int, SellerDocumentDto>
      */
     public Collection $documents;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var SellerBankAccountDto[]|Collection
+     * @var Collection<int, SellerBankAccountDto>
      */
     public Collection $bankAccounts;
 
     /**
      * May be undefined if the corresponding data was not included.
      *
-     * @var UserDto[]|Collection
+     * @var Collection<int, UserDto>
      */
     public Collection $users;
 
@@ -159,19 +159,17 @@ class UserGroupDto extends ApiResponseDto
             'users'         => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
         ];
 
-        return array_merge(
-            $structure,
-            $this->getTimestampsAsDataStructureToProperties(),
-        );
+        return [
+            ...$structure,
+            ...$this->getTimestampsAsDataStructureToProperties(),
+        ];
     }
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(UserGroupDtoTypeEnum::cases())->pluck('value');
-
         $rules = [
             'id'                   => ['required', 'integer'],
-            'type'                 => ['required', Rule::in($types)],
+            'type'                 => ['required', Rule::enum(UserGroupDtoTypeEnum::class)],
             'user_group_parent_id' => ['required', 'integer'],
             'firstname'            => ['present', 'nullable', 'string'],
             'lastname'             => ['present', 'nullable', 'string'],
@@ -201,10 +199,10 @@ class UserGroupDto extends ApiResponseDto
             'phone_validated'      => ['required', 'boolean'],
         ];
 
-        return array_merge(
-            $rules,
-            $this->getTimestampsValidationRules(),
-        );
+        return [
+            ...$rules,
+            ...$this->getTimestampsValidationRules(),
+        ];
     }
 
     protected static function getDefaultNotConstructableException(

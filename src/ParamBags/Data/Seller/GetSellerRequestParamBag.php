@@ -13,12 +13,7 @@ class GetSellerRequestParamBag extends RequestParamBag implements HasIncludesCon
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludeValidationRules();
+        return $this->getIncludesParamsList();
     }
 
     protected static function getRequestMainDto(): string

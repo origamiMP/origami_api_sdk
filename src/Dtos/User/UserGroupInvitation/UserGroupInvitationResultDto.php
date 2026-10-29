@@ -33,13 +33,11 @@ class UserGroupInvitationResultDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $actions = collect(UserGroupInvitationResultDtoActionEnum::cases())->pluck('value');
-
         return [
             'email'         => ['required', 'string', 'email'],
             'success'       => ['required', 'boolean'],
             'invitation_id' => ['present', 'nullable', 'integer'],
-            'action'        => ['present', 'nullable', Rule::in($actions)],
+            'action'        => ['present', 'nullable', Rule::enum(UserGroupInvitationResultDtoActionEnum::class)],
             'error'         => ['present', 'nullable', 'string'],
         ];
     }

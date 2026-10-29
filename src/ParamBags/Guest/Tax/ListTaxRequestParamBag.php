@@ -7,18 +7,13 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
-class ListTaxesRequestParamBag extends RequestParamBag implements HasIncludesContract
+class ListTaxRequestParamBag extends RequestParamBag implements HasIncludesContract
 {
     use HasIncludes;
 
     protected function getQueryRequestParamsList(): array
     {
-        return $this->getIncludeParamsList();
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getIncludeValidationRules();
+        return $this->getIncludesParamsList();
     }
 
     protected static function getRequestMainDto(): string

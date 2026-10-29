@@ -9,9 +9,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeListDtoNotConstru
 
 class DocumentTypeListDto extends ApiResponseDto
 {
-    /**
-     * @var Collection|DocumentTypeDto[]
-     */
+    /** @var Collection<int, DocumentTypeDto> */
     public Collection $data;
 
     protected function getDefaultDataStructureToProperties(): array
@@ -35,6 +33,6 @@ class DocumentTypeListDto extends ApiResponseDto
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($document) => new DocumentTypeDto($document));
+        $this->data = collect($data)->map(fn ($documentType) => new DocumentTypeDto($documentType));
     }
 }

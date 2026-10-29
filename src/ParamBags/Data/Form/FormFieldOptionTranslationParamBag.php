@@ -17,12 +17,4 @@ class FormFieldOptionTranslationParamBag extends ParamBag
             'label'      => 'label',
         ];
     }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'language_id' => ['required', 'integer'],
-            'label'       => ['required', 'string', 'max:255'],
-        ];
-    }
 }

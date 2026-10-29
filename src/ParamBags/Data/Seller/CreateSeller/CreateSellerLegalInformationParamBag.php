@@ -3,13 +3,12 @@
 namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Seller\CreateSeller;
 
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
-use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Seller\CreateSellerLegalInformationParamBagLegalTypeEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupLegalInformationDtoLegalTypeEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\ParamBag;
 
 class CreateSellerLegalInformationParamBag extends ParamBag
 {
-    public CreateSellerLegalInformationParamBagLegalTypeEnum $legalType;
+    public UserGroupLegalInformationDtoLegalTypeEnum $legalType;
 
     public string $managerFirstName;
 
@@ -51,29 +50,6 @@ class CreateSellerLegalInformationParamBag extends ParamBag
             'registrationCity'      => 'registration_city',
             'legalForm'             => 'legal_form',
             'address'               => 'address',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $requiredIfCompanyLegalTypeRules = Rule::requiredIf(in_array($this->legalType, [
-            CreateSellerLegalInformationParamBagLegalTypeEnum::COMPANY,
-            CreateSellerLegalInformationParamBagLegalTypeEnum::SOLE_TRADER,
-        ]));
-
-        return [
-            'legalType'             => ['required'],
-            'managerFirstName'      => ['required', 'string', 'max:255'],
-            'managerLastName'       => ['required', 'string', 'max:255'],
-            'managerBirthday'       => ['required'],
-            'managerCountryIso'     => ['required', 'string', 'max:2'],
-            'managerNationalityIso' => ['required', 'string', 'max:2'],
-            'companyName'           => [$requiredIfCompanyLegalTypeRules, 'string', 'max:255'],
-            'companyContactEmail'   => [$requiredIfCompanyLegalTypeRules, 'email', 'max:255'],
-            'siret'                 => [$requiredIfCompanyLegalTypeRules, 'string', 'max:255'],
-            'tvaNumber'             => ['string', 'max:255'],
-            'registrationCity'      => ['string', 'max:255'],
-            'legalForm'             => ['string', 'max:255'],
         ];
     }
 }

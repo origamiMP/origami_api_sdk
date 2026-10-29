@@ -158,7 +158,7 @@ class OrigamiRestClientTest extends TestCase
 
         $exception = $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiUnknownException::class);
 
-        $this->assertSame('Server error.', $exception->errorDto?->message);
+        $this->assertSame('Server error.', $exception->getErrorDto()?->message);
     }
 
     /**
@@ -171,7 +171,7 @@ class OrigamiRestClientTest extends TestCase
 
         $exception = $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), OrigamiApiUnknownException::class);
 
-        $this->assertNull($exception->errorDto);
+        $this->assertNull($exception->getErrorDto());
         $this->assertSame('{"message":"Bad request."}', $exception->getPrevious()->getResponse()->getBody()->getContents());
     }
 

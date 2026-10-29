@@ -2,12 +2,11 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Language;
 
-use Illuminate\Contracts\Support\Arrayable;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageDtoNotConstructableException;
 
-class LanguageDto extends ApiResponseDto implements Arrayable
+class LanguageDto extends ApiResponseDto
 {
     public int $id;
 
@@ -46,10 +45,5 @@ class LanguageDto extends ApiResponseDto implements Arrayable
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new LanguageDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    public function toArray(): array
-    {
-        return $this->arrayFromPublicProperties();
     }
 }

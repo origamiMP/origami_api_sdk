@@ -10,7 +10,7 @@ trait HasPagination
 
     private int $itemPerPage = 20;
 
-    public function withoutPagination(bool $withoutPagination = true): void
+    public function setWithoutPagination(bool $withoutPagination): void
     {
         if ($withoutPagination) {
             $this->withoutPagination = true;
@@ -19,12 +19,12 @@ trait HasPagination
         }
     }
 
-    public function page(int $page = 1): void
+    public function setPage(int $page): void
     {
         $this->page = $page;
     }
 
-    public function perPage(int $perPage = 20): void
+    public function setPerPage(int $perPage): void
     {
         $this->itemPerPage = min(100, $perPage);
     }
@@ -47,14 +47,5 @@ trait HasPagination
     protected function getPaginationParamsList(): array
     {
         return ['page' => 'page', 'itemPerPage' => 'item_per_page', 'withoutPagination' => 'without_pagination'];
-    }
-
-    protected function getPaginationValidationRules(): array
-    {
-        return [
-            'page'              => ['integer', 'min:1'],
-            'itemPerPage'       => ['integer', 'min:1', 'max:100'],
-            'withoutPagination' => ['boolean'],
-        ];
     }
 }

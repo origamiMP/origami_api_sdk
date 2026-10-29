@@ -2,14 +2,13 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
-class FormListDto extends ApiResponseDto implements Arrayable
+class FormListDto extends ApiResponseDto
 {
     use HasIncludes, HasPagination;
 

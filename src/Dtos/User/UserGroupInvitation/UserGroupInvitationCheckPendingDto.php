@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCheckPendingDtoNotConstructableException;
 
 class UserGroupInvitationCheckPendingDto extends ApiResponseDto
 {
@@ -32,6 +32,6 @@ class UserGroupInvitationCheckPendingDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new UserGroupInvitationCheckPendingResponseDtoNotConstructableException($msg, previous: $previous);
+        return new UserGroupInvitationCheckPendingDtoNotConstructableException($msg, previous: $previous);
     }
 }

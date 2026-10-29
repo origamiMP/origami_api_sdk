@@ -66,7 +66,7 @@ class HasCustomFieldsTest extends TestCase
         $this->assertThatExceptionWasThrown(
             fn () => $this->makeFixture(['id' => 1, 'additional_information' => $additionalInformation]),
             ApiResponseDtoNotConstructableException::class,
-            '[CustomFieldsDtoFixture] Api response data failed to be validated : additional_information (validation.array)',
+            '[CustomFieldsDtoFixture] Api response data failed to be validated: additional_information (validation.array)',
         );
     }
 
@@ -91,8 +91,8 @@ class HasCustomFieldsTest extends TestCase
                 ]),
             ]]),
             ApiResponseDtoNotConstructableException::class,
-            "[CustomFieldsDtoFixture] Could not assign data 'additional_information' to property : "
-            .'[CustomFieldModelValueDto] Api response data failed to be validated : config.type (validation.in)',
+            "[CustomFieldsDtoFixture] Could not assign data 'additional_information' to property: "
+            .'[CustomFieldModelValueDto] Api response data failed to be validated: config.type (The selected config.type is invalid.)',
         );
 
         $this->assertInstanceOf(CustomFieldModelValueDtoNotConstructableException::class, $exception->getPrevious());

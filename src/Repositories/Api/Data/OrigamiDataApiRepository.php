@@ -11,9 +11,4 @@ abstract class OrigamiDataApiRepository extends RestApiRepository
     {
         parent::__construct($restClient);
     }
-
-    protected function getResponseContentDataOrEmptyObject(object $responseContent): object
-    {
-        return $responseContent->data ?? (object) [];
-    }
 }

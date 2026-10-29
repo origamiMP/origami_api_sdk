@@ -12,7 +12,7 @@ use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\OrigamiGuestApiRepository;
 class OrigamiUserGroupInvitationGuestApiRepository extends OrigamiGuestApiRepository
 {
     /**
-     * Accept an invitation using the token from the email (public endpoint)
+     * Accept an invitation using the token from the email
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
@@ -21,9 +21,8 @@ class OrigamiUserGroupInvitationGuestApiRepository extends OrigamiGuestApiReposi
     public function accept(AcceptUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationDto
     {
         $response = $this->restClient->post('users/groups/invitations/accept', $paramBag);
+        $responseContent = $this->decodeResponse($response);
 
-        $responseContent = $this->decodeResponse($response)->data;
-
-        return new UserGroupInvitationDto($responseContent);
+        return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));
     }
 }

@@ -13,7 +13,7 @@ use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
 
-class ListUserGroupInvitationsRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
+class ListUserGroupInvitationRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
 {
     use HasFilters, HasIncludes, HasPagination, HasSearch;
 
@@ -32,23 +32,12 @@ class ListUserGroupInvitationsRequestParamBag extends RequestParamBag implements
 
     protected function getQueryRequestParamsList(): array
     {
-        return array_merge(
-            parent::getQueryRequestParamsList(),
-            $this->getFiltersParamsList(),
-            $this->getPaginationParamsList(),
-            $this->getSearchParamsList(),
-            $this->getIncludeParamsList(),
-        );
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return array_merge(
-            $this->getFiltersValidationRules(),
-            $this->getPaginationValidationRules(),
-            $this->getSearchValidationRules(),
-            $this->getIncludeValidationRules(),
-        );
+        return [
+            ...$this->getFiltersParamsList(),
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+            ...$this->getIncludesParamsList(),
+        ];
     }
 
     protected static function getRequestMainDto(): string

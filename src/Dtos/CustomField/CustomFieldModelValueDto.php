@@ -26,9 +26,7 @@ class CustomFieldModelValueDto extends ApiResponseDto
 
     public bool $isPrivate;
 
-    /**
-     * @var Collection|CustomFieldTranslationDto[]
-     */
+    /** @var Collection<int, CustomFieldTranslationDto> */
     public Collection $translations;
 
     public ?CustomFieldGroupDto $group;
@@ -52,12 +50,10 @@ class CustomFieldModelValueDto extends ApiResponseDto
 
     protected function validationRulesForProperties(): array
     {
-        $types = collect(CustomFieldDtoTypeEnum::cases())->pluck('value');
-
         return [
             'value'               => ['present'],
             'config.id'           => ['required', 'int'],
-            'config.type'         => ['required', Rule::in($types)],
+            'config.type'         => ['required', Rule::enum(CustomFieldDtoTypeEnum::class)],
             'config.private'      => ['required', 'boolean'],
             'config.translations' => ['required', 'array'],
             'config.group'        => ['nullable', 'array'],

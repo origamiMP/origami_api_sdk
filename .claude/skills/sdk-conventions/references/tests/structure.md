@@ -12,7 +12,7 @@ tests/
 
 - One test file per tested class, at the matching place: `src/Repositories/Api/Data/Form/OrigamiFormDataApiRepository.php` → `tests/Unit/Repositories/Api/Data/Form/OrigamiFormDataApiRepositoryTest.php`.
 - Class `<TestedClass>Test`, extending `Tests\TestCase` (never `PHPUnit\Framework\TestCase` directly, to get every helper).
-- A behavior shared by several classes is tested in the file of the class carrying it (`OrigamiRestClientTest` for every REST client, `RestApiRepositoryTest` for every repository, `Traits/…/<Trait>Test` for a trait).
+- A behavior shared by several classes is tested in the file of the class carrying it (`OrigamiRestClientTest` for every client repository, `RestApiRepositoryTest` for every API repository, `Traits/…/<Trait>Test` for a trait).
 
 ## Fixtures (`tests/Fixtures/`)
 

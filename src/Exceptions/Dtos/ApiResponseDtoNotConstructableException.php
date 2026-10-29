@@ -2,4 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos;
 
-abstract class ApiResponseDtoNotConstructableException extends \Exception {}
+use OrigamiMp\OrigamiApiSdk\Exceptions\OrigamiApiSdkException;
+
+abstract class ApiResponseDtoNotConstructableException extends OrigamiApiSdkException {}
