@@ -17,7 +17,7 @@ class OrigamiConfigurationDataApiRepository extends OrigamiDataApiRepository
      */
     public function get(string $key): ConfigurationDto
     {
-        $response = $this->restClient->get("configurations/$key");
+        $response = $this->restClient->get("configurations/{$key}");
         $responseContent = $this->decodeResponse($response);
 
         return new ConfigurationDto($this->getResponseContentDataOrEmptyObject($responseContent));
