@@ -22,6 +22,7 @@ trait TestsModuleDtos
             'description'              => 'Payment module.',
             'image'                    => 'https://example.com/module.png',
             'available_configurations' => ['is_enabled' => true],
+            'is_active'                => true,
             'created_at'               => '2024-05-12 16:12:56',
             'updated_at'               => '2024-05-12 16:12:56',
         ];
