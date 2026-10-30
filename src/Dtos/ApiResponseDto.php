@@ -62,6 +62,16 @@ abstract class ApiResponseDto implements Arrayable
         return [];
     }
 
+    /**
+     * Keys of the data structure holding an include, always optional. A Dto with includes gets them from `HasIncludes`.
+     *
+     * @return string[]
+     */
+    protected function getIncludeKeys(): array
+    {
+        return [];
+    }
+
     protected function getDataToFillFrom(): object
     {
         return $this->apiResponse;
@@ -124,7 +134,7 @@ abstract class ApiResponseDto implements Arrayable
     {
         $include = Str::before($dottedPath, '.');
 
-        if (method_exists($this, 'getAvailableIncludes') && array_key_exists($include, static::getAvailableIncludes())) {
+        if (in_array($include, $this->getIncludeKeys(), true)) {
             return true;
         }
 
