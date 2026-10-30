@@ -26,16 +26,6 @@ class CustomFieldTranslationDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'language_id' => ['required', 'integer'],
-            'locale'      => ['required', 'string'],
-            'name'        => ['present', 'string'],
-            'description' => ['present', 'nullable', 'string'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

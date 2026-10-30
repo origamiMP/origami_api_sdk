@@ -3,6 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\User;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserDtoNotConstructableException;
@@ -24,6 +25,7 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws UserDtoNotConstructableException
      */
     public function getCurrentAuthenticatedUser(?GetCurrentUserRequestParamBag $paramBag = null): UserDto
@@ -31,6 +33,6 @@ class OrigamiUserDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get('me', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new UserDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new UserDto($this->getResponseContentData($responseContent));
     }
 }

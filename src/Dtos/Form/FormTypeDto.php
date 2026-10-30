@@ -37,19 +37,6 @@ class FormTypeDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'type'                    => ['required', 'string'],
-            'label'                   => ['present', 'string'],
-            'has_options'             => ['required', 'boolean'],
-            'accepts_several_options' => ['required', 'boolean'],
-            'can_be_prefilled'        => ['required', 'boolean'],
-            'params'                  => ['present', 'array'],
-            'condition_operators'     => ['present', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

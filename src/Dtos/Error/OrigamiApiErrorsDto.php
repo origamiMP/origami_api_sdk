@@ -36,14 +36,6 @@ class OrigamiApiErrorsDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'status_code' => ['required', 'integer'],
-            'errors'      => ['required', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

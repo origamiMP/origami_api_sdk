@@ -17,12 +17,4 @@ trait HasTimestamps
             'updated_at' => fn ($updatedAt) => $this->updatedAt = Carbon::parse($updatedAt),
         ];
     }
-
-    protected function getTimestampsValidationRules(): array
-    {
-        return [
-            'created_at' => ['required', 'date'],
-            'updated_at' => ['required', 'date'],
-        ];
-    }
 }

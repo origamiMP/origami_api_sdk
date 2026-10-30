@@ -2,7 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationResultDtoActionEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -28,17 +27,6 @@ class UserGroupInvitationResultDto extends ApiResponseDto
             'invitation_id' => 'invitationId',
             'action'        => fn ($action) => $this->action = UserGroupInvitationResultDtoActionEnum::from($action),
             'error'         => 'error',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'email'         => ['required', 'string', 'email'],
-            'success'       => ['required', 'boolean'],
-            'invitation_id' => ['present', 'nullable', 'integer'],
-            'action'        => ['present', 'nullable', Rule::enum(UserGroupInvitationResultDtoActionEnum::class)],
-            'error'         => ['present', 'nullable', 'string'],
         ];
     }
 

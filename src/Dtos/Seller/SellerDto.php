@@ -4,7 +4,6 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Seller;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
@@ -227,57 +226,10 @@ class SellerDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
-        $rules = [
-            'id'                   => ['required', 'integer'],
-            'user_group_parent_id' => ['required', 'integer'],
-            'firstname'            => ['present', 'nullable', 'string'],
-            'lastname'             => ['present', 'nullable', 'string'],
-            'name'                 => ['required', 'string'],
-            'email'                => ['required', 'string', 'email'],
-            'phone'                => ['present', 'nullable', 'string'],
-            'phone_area_code'      => ['present', 'nullable', 'string'],
-            'address_id'           => ['present', 'nullable', 'integer'],
-            'address_line1'        => ['present', 'string'],
-            'address_line2'        => ['present', 'string'],
-            'address_city'         => ['present', 'string'],
-            'address_postcode'     => ['present', 'string'],
-            'address_country'      => ['present', 'string'],
-            'address_country_iso'  => ['present', 'string'],
-            'address_longitude'    => ['present', 'string'],
-            'address_latitude'     => ['present', 'string'],
-            'address_region'       => ['present', 'string'],
-            'address_full'         => ['present', 'string'],
-            'image_url'            => ['present', 'nullable', 'string'],
-            'image_cover_url'      => ['present', 'nullable', 'string'],
-            'rate_total'           => ['required', 'numeric', 'min:0'],
-            'rate_count'           => ['required', 'integer', 'min:0'],
-            'language_iso'         => ['present', 'nullable', 'string'],
-            'language_id'          => ['present', 'nullable', 'integer'],
-            'external_uid'         => ['present', 'nullable', 'string'],
-            'email_validated'      => ['required', 'boolean'],
-            'phone_validated'      => ['required', 'boolean'],
-            'mangopay_sca_status'  => ['nullable', Rule::enum(SellerDtoMangopayScaStatusEnum::class)],
-            'seller_type'          => ['required', Rule::enum(SellerDtoTypeEnum::class)],
-            'state'                => ['required', Rule::enum(SellerDtoStateEnum::class)],
-            'default_tax_id'       => ['required', 'integer'],
-            // TODO : Add 'required' when feature flag will be merged
-            'fees_profile_id'          => ['nullable', 'integer'],
-            'seller_fees_profile_id'   => ['nullable', 'integer'],
-            'customer_fees_profile_id' => ['nullable', 'integer'],
-            'is_active'                => ['required', 'boolean'],
-            'invoice_tax_id'           => ['present', 'nullable', 'integer'],
-            'holiday_departure_date'   => ['present', 'nullable', 'date'],
-            'holiday_return_date'      => ['present', 'nullable', 'date'],
-            'deactivated_until'        => ['present', 'nullable', 'date'],
-            'is_in_holiday'            => ['required', 'boolean'],
-        ];
-
         return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
-            ...$this->getCustomFieldsValidationRules(),
+            'mangopay_sca_status',
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Tax;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
@@ -15,6 +16,7 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws TaxDtoNotConstructableException
      */
     public function create(CreateTaxRequestParamBag $paramBag): TaxDto
@@ -22,7 +24,7 @@ class OrigamiTaxDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->post('taxes', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new TaxDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new TaxDto($this->getResponseContentData($responseContent));
     }
 
     /**

@@ -68,13 +68,10 @@ class OrigamiApiErrorDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
         return [
-            'status'     => ['required', 'integer'],
-            'detail'     => ['required', 'string'],
-            'code'       => ['required', 'string'],
-            'data.field' => ['sometimes', 'nullable', 'string'],
+            'data.field',
         ];
     }
 

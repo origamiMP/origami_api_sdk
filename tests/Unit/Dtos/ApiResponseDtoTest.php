@@ -124,7 +124,9 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupIn
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\Fixtures\IncludesDtoFixture;
 use Tests\TestCase;
 
 /**
@@ -197,6 +199,38 @@ class ApiResponseDtoTest extends TestCase
         $array = $customFieldDto->toArray();
 
         $this->assertSame('2024-05-12T16:12:56+00:00', $array['createdAt']);
+    }
+
+    /**
+     * A key of the data structure missing from the response should make the Dto not constructable.
+     */
+    public function test_fill_case_1(): void
+    {
+        $this->assertThatExceptionWasThrown(
+            fn () => new IncludesDtoFixture((object) []),
+            ApiResponseDtoNotConstructableException::class,
+            "[IncludesDtoFixture] Missing key 'id' in the API response",
+        );
+    }
+
+    /**
+     * A missing include should leave its property unset.
+     */
+    public function test_fill_case_2(): void
+    {
+        $dto = new IncludesDtoFixture((object) ['id' => 42]);
+
+        $this->assertFalse(isset($dto->children));
+    }
+
+    /**
+     * A missing key declared optional by the Dto should leave its property as is.
+     */
+    public function test_fill_case_3(): void
+    {
+        $error = new OrigamiApiErrorDto(Obj::fromArray($this->mockApiErrorData(422, 'The name is required.', '0')));
+
+        $this->assertNull($error->field);
     }
 
     /**

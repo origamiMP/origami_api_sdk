@@ -43,17 +43,6 @@ class FormSectionDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'           => ['required', 'integer'],
-            'position'     => ['required', 'integer'],
-            'condition'    => ['present'],
-            'translations' => ['required', 'array'],
-            'fields'       => ['required', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

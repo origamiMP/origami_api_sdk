@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation;
 
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
@@ -73,28 +72,6 @@ class UserGroupInvitationDto extends ApiResponseDto
         return [
             ...$structure,
             ...$this->getTimestampsAsDataStructureToProperties(),
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'             => ['required', 'integer'],
-            'user_group_id'  => ['present', 'nullable', 'integer'],
-            'email'          => ['required', 'string', 'email'],
-            'status'         => ['required', Rule::enum(UserGroupInvitationDtoStatusEnum::class)],
-            'onboarding_url' => ['required', 'string', 'url'],
-            'sent_at'        => ['present', 'nullable', 'date'],
-            'accepted_at'    => ['present', 'nullable', 'date'],
-            'expires_at'     => ['required', 'date'],
-            'is_expired'     => ['required', 'boolean'],
-            'is_valid'       => ['required', 'boolean'],
-            'token'          => ['required', 'string'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
         ];
     }
 

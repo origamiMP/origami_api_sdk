@@ -51,16 +51,6 @@ class OauthTokenDto extends ApiResponseDto implements OauthTokenContract
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'token_type'    => ['required', 'string'],
-            'access_token'  => ['required', 'string'],
-            'refresh_token' => ['required', 'string'],
-            'expires_in'    => ['required', 'integer', 'min:1'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

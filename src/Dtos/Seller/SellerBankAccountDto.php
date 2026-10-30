@@ -44,22 +44,6 @@ class SellerBankAccountDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'                   => ['required', 'integer'],
-            'user_group_id'        => ['required', 'integer'],
-            'bank_name'            => ['required', 'string'],
-            'owner_name'           => ['required', 'string'],
-            'owner_address'        => ['required', 'string'],
-            'iban'                 => ['required', 'string'],
-            'bic'                  => ['required', 'string'],
-            'is_default'           => ['required', 'boolean'],
-            'is_active'            => ['required', 'boolean'],
-            'psp_validation_state' => ['required', 'boolean'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(string $msg, ?\Throwable $previous = null): ApiResponseDtoNotConstructableException
     {
         return new SellerBankAccountDtoNotConstructableException($msg, previous: $previous);
