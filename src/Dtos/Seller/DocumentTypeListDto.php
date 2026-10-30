@@ -19,13 +19,6 @@ class DocumentTypeListDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'data' => ['present', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(string $msg, ?\Throwable $previous = null): ApiResponseDtoNotConstructableException
     {
         return new DocumentTypeListDtoNotConstructableException($msg, previous: $previous);

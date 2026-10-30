@@ -23,15 +23,6 @@ class CountryDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'    => ['required', 'integer'],
-            'name'  => ['required', 'string'],
-            'iso_2' => ['required', 'string', 'size:2'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

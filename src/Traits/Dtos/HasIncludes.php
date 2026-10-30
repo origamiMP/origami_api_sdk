@@ -38,6 +38,14 @@ trait HasIncludes
     abstract public static function getAvailableIncludes(): array;
 
     /**
+     * {@inheritDoc}
+     */
+    protected function getIncludeKeys(): array
+    {
+        return array_keys(static::getAvailableIncludes());
+    }
+
+    /**
      * Includes come wrapped by Fractal: {"data": [...]}. An empty list gives an empty Collection.
      *
      * @template T of object

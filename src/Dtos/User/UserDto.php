@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserDtoStateEnum;
@@ -140,27 +139,11 @@ class UserDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
-        $rules = [
-            'id'                            => ['required', 'integer'],
-            'firstname'                     => ['present', 'string'],
-            'lastname'                      => ['present', 'string'],
-            'name'                          => ['present', 'string'],
-            'email'                         => ['required', 'email'],
-            'external_configuration'        => ['present', 'nullable', 'json'],
-            'language_id'                   => ['present', 'nullable', 'integer'],
-            'language_iso'                  => ['present', 'nullable', 'string'],
-            'module_id'                     => ['present', 'nullable', 'integer'],
-            'has_access_to_seller_features' => ['required', 'boolean'],
-            'state'                         => [Rule::enum(UserDtoStateEnum::class)],
-            'is_account_validated'          => ['boolean'],
-        ];
-
         return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
-            ...$this->getCustomFieldsValidationRules(),
+            'state',
+            'is_account_validated',
         ];
     }
 

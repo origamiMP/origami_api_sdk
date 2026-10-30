@@ -20,8 +20,8 @@ class RestApiRepositoryFixture extends RestApiRepository
         return parent::decodeListResponse($response);
     }
 
-    public function getResponseContentDataOrEmptyObject(object $responseContent): object
+    public function getResponseContentData(object $responseContent): object
     {
-        return parent::getResponseContentDataOrEmptyObject($responseContent);
+        return parent::getResponseContentData($responseContent);
     }
 }

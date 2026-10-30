@@ -5,8 +5,8 @@ namespace Tests\TestUtils;
 trait TestsExceptions
 {
     /**
-     * Asserts that calling $callableToTest throws a $exceptionClass, with $message when given. The exception is
-     * returned to assert anything else on it (ex: its error details, its previous exception).
+     * Asserts that calling $callableToTest throws a $exceptionClass, whose message contains $messagePart when given. The
+     * exception is returned to assert anything else on it (ex: its error details, its previous exception).
      *
      * @template T of \Throwable
      *
@@ -16,7 +16,7 @@ trait TestsExceptions
     protected function assertThatExceptionWasThrown(
         callable $callableToTest,
         string $exceptionClass,
-        ?string $message = null,
+        ?string $messagePart = null,
     ): \Throwable {
         try {
             $callableToTest();
@@ -26,7 +26,7 @@ trait TestsExceptions
                 $e,
                 "{$exceptionClass} was expected, ".$e::class." was thrown instead: {$e->getMessage()}",
             );
-            ! is_null($message) && $this->assertSame($message, $e->getMessage());
+            ! is_null($messagePart) && $this->assertStringContainsString($messagePart, $e->getMessage());
 
             return $e;
         }

@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -66,25 +65,6 @@ class FormFieldDto extends ApiResponseDto
             'condition'         => fn (?object $condition) => $this->condition = $condition ? new FormConditionDto($condition) : null,
             'translations'      => fn (object $translations) => $this->translations = $this->collectIncluded($translations, FormFieldTranslationDto::class),
             'options'           => fn (object $options) => $this->options = $this->collectIncluded($options, FormFieldOptionDto::class),
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'                => ['required', 'integer'],
-            'key'               => ['required', 'string'],
-            'type'              => ['required', Rule::enum(FormFieldDtoTypeEnum::class)],
-            'is_required'       => ['required', 'boolean'],
-            'position'          => ['required', 'integer'],
-            'params'            => ['present'],
-            'visible_to_seller' => ['required', 'boolean'],
-            'prefill_source'    => ['present', 'nullable', 'string'],
-            'prefill_readonly'  => ['required', 'boolean'],
-            'save_to_customer'  => ['required', 'boolean'],
-            'condition'         => ['present'],
-            'translations'      => ['required', 'array'],
-            'options'           => ['required', 'array'],
         ];
     }
 

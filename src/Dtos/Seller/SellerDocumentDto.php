@@ -56,23 +56,6 @@ class SellerDocumentDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'               => ['required', 'integer'],
-            'seller_id'        => ['required', 'integer'],
-            'document_type_id' => ['required', 'integer'],
-            'name'             => ['required', 'string'],
-            'validate'         => ['required'],
-            'url'              => ['required', 'string', 'url'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

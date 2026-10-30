@@ -30,5 +30,5 @@ Changing an enum used in several places means checking, for each of them, that t
 
 ## Usage
 
-- In a DTO, the value is converted in the data structure (`fn ($type) => $this->type = TaxDtoTypeEnum::from($type)`) and validated with `Rule::enum(TaxDtoTypeEnum::class)` (see `dtos.md`).
+- In a DTO, the value is converted in the data structure (`fn ($type) => $this->type = TaxDtoTypeEnum::from($type)`) (see `dtos.md`): an unknown value makes the DTO not constructable.
 - In a param bag, the property is typed with the enum and sent as its value automatically (see `param-bags.md`).

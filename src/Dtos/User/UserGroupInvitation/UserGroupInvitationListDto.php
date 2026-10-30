@@ -22,11 +22,6 @@ class UserGroupInvitationListDto extends ApiResponseDto
         return $this->getPaginationAsDataStructureToProperties();
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return $this->getPaginationValidationRules();
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

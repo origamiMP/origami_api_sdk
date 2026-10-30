@@ -26,13 +26,11 @@ class FormPrefillSourceDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
         return [
-            'source' => ['required', 'string'],
-            'label'  => ['present', 'string'],
-            'key'    => ['nullable', 'string'],
-            'type'   => ['nullable', 'string'],
+            'key',
+            'type',
         ];
     }
 

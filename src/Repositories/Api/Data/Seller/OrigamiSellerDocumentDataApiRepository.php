@@ -4,6 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeListDtoNotConstructableException;
@@ -16,6 +17,7 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws SellerDocumentDtoNotConstructableException
      */
     public function create(CreateSellerDocumentRequestParamBag $paramBag): SellerDocumentDto
@@ -23,7 +25,7 @@ class OrigamiSellerDocumentDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->post('sellers/documents', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new SellerDocumentDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new SellerDocumentDto($this->getResponseContentData($responseContent));
     }
 
     /**

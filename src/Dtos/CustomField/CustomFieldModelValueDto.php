@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\CustomField;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -45,19 +44,6 @@ class CustomFieldModelValueDto extends ApiResponseDto
                 'group'        => fn ($group) => $this->group = is_null($group) ? null : new CustomFieldGroupDto($group),
                 'params'       => 'params',
             ],
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'value'               => ['present'],
-            'config.id'           => ['required', 'int'],
-            'config.type'         => ['required', Rule::enum(CustomFieldDtoTypeEnum::class)],
-            'config.private'      => ['required', 'boolean'],
-            'config.translations' => ['required', 'array'],
-            'config.group'        => ['nullable', 'array'],
-            'config.params'       => ['present'],
         ];
     }
 

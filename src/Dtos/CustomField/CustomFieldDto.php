@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\CustomField;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -74,22 +73,6 @@ class CustomFieldDto extends ApiResponseDto
         ];
 
         return [...$structure, ...$this->getTimestampsAsDataStructureToProperties()];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'                    => ['required', 'integer'],
-            'key'                   => ['required', 'string'],
-            'type'                  => ['required', Rule::enum(CustomFieldDtoTypeEnum::class)],
-            'model_type'            => ['required', 'string'],
-            'custom_field_group_id' => ['present', 'nullable', 'integer'],
-            'params'                => ['present', 'nullable'],
-            'private'               => ['required', 'boolean'],
-            'translations'          => ['required', 'array'],
-        ];
-
-        return [...$rules, ...$this->getTimestampsValidationRules()];
     }
 
     protected static function getDefaultNotConstructableException(

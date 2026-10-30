@@ -1,6 +1,6 @@
 # Code — DTOs
 
-A DTO reads and validates an API response, and exposes its values as typed properties. It extends `ApiResponseDto`, whose constructor validates the response then fills the properties.
+A DTO reads an API response, and exposes its values as typed properties. It extends `ApiResponseDto`, whose constructor fills the properties from the response. The API is the source of truth: a DTO does not validate the response, the types of its properties and the missing keys are enough to reject one that does not match.
 
 ## File organization
 
@@ -25,11 +25,11 @@ In this order:
 2. the properties;
 3. `getAvailableIncludes()`, when the DTO uses `HasIncludes`;
 4. the other public methods specific to the DTO (`FeatureFlagListDto::isFlagActive()`);
-5. `getDefaultDataStructureToProperties()`, `validationRulesForProperties()`, `getDefaultNotConstructableException()`;
+5. `getDefaultDataStructureToProperties()`, `getOptionalKeys()` when the DTO has optional keys, `getDefaultNotConstructableException()`;
 6. the other protected methods: first the helpers building a property (`init<Property>()`, see « Nested lists »), then any other helper (`OrigamiApiErrorDto::getCorrespondingExceptionToErrorCode()`);
 7. `toArray()`, when the DTO overrides it (see « `toArray()` »): last, below the protected methods, which matter more to understand the DTO.
 
-Overriding the constructor stays exceptional: `FeatureFlagListDto` wraps a bare map into a `flags` key before validating it.
+Overriding the constructor stays exceptional: `FeatureFlagListDto` wraps a bare map into a `flags` key before filling its properties.
 
 ## Properties
 
@@ -50,14 +50,18 @@ Maps each API key to its property: the property name when the value is used as i
 
 A nested key is written as a nested array or a dotted key (`'file.max_size_kb' => 'fileMaxSizeKb'`, `FormTypesDto`).
 
-## Validation (`validationRulesForProperties()`)
+## Missing keys (`getOptionalKeys()`)
 
-Laravel rules on the raw response, one line per key the DTO requires or checks (an include sent only on demand has no rule, `UserDto`):
+Every key of the data structure is required: a key missing from the response makes the DTO not constructable (`[SellerDto] Missing key 'email' in the API response`). A key present but `null` is not missing: its property is nullable.
 
-- `required` for a key always present with a value, `present` + `nullable` for a key present but possibly `null`;
-- a type rule (`integer`, `string`, `boolean`, `numeric`, `array`, `date`);
-- an enum: `Rule::enum(TaxDtoTypeEnum::class)` (see `enums.md`);
-- an include: `['required', 'array']` when the API always sends it.
+The exceptions:
+
+- the includes (the keys of `getAvailableIncludes()`), always optional;
+- the keys the API does not always send, listed in `getOptionalKeys()`, in dotted notation (`FormDto`: `fields_count`, sent only with `with_count`; `OrigamiApiErrorDto`: `data.field`). An optional key missing leaves its property uninitialized.
+
+A key is optional only when the API itself omits it: check its transformer in `origami_api` (a condition, a module hook, a feature flag), never assume it.
+
+A value of the wrong type, an unknown enum value or an unreadable date makes the assignment fail, which makes the DTO not constructable as well. PHP converts compatible scalars on the way (`"42"` to an `int` property gives `42`).
 
 ## NotConstructable exception (`getDefaultNotConstructableException()`)
 
@@ -102,8 +106,8 @@ protected function initTranslations(array $translations): void
 
 **Any DTO whose response is a collection of items is a list**, whatever its name and whether it is paginated or not: `SellerListDto`, `ModuleListDto`, but also `UserGroupInvitationHistoryDto`. Look at the API response (a Fractal collection) and at the DTO property holding the items, not at the name.
 
-- A paginated list uses `HasPagination`, and returns its structure and rules (`getPaginationAsDataStructureToProperties()`, `getPaginationValidationRules()`) (`SellerListDto`).
-- A non-paginated list holds its items in a `data` property, validated `['present', 'array']` (`ModuleListDto`), next to the other values of the response if any (`UserGroupInvitationSendDto::$message`).
+- A paginated list uses `HasPagination`, and returns its structure (`getPaginationAsDataStructureToProperties()`) (`SellerListDto`).
+- A non-paginated list holds its items in a `data` property (`ModuleListDto`), next to the other values of the response if any (`UserGroupInvitationSendDto::$message`).
 - Both build their items in `initData()`, like any nested list (see above): `fn ($module) => new ModuleDto($module)`.
 
 A list DTO offers the same includes as its item, since the API applies them to each item. It does not copy them, it returns those of its item, so that both never diverge:

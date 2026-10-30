@@ -57,6 +57,7 @@ trait TestsSellerDtos
             'is_in_holiday'            => false,
             'created_at'               => '2024-05-12 16:12:56',
             'updated_at'               => '2024-05-12 16:12:56',
+            'additional_information'   => [],
         ];
 
         return [...$baseData, ...$override];
