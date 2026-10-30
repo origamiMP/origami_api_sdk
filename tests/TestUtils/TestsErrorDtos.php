@@ -3,6 +3,8 @@
 namespace Tests\TestUtils;
 
 use GuzzleHttp\Psr7\Response;
+use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 
 trait TestsErrorDtos
 {
@@ -22,6 +24,11 @@ trait TestsErrorDtos
         }
 
         return $error;
+    }
+
+    protected function mockOrigamiApiErrorDto(int $status, string $detail, string $code, ?string $field = null): OrigamiApiErrorDto
+    {
+        return new OrigamiApiErrorDto(Obj::fromArray($this->mockApiErrorData($status, $detail, $code, $field)));
     }
 
     /**

@@ -49,7 +49,7 @@ class HasCustomFieldsTest extends TestCase
     }
 
     /**
-     * A response without `additional_information` should make the Dto not constructable, since the API always sends it.
+     * A response without `additional_information` should make the Dto not constructable.
      */
     public function test_additional_information_case_3(): void
     {

@@ -130,7 +130,8 @@ use Tests\Fixtures\IncludesDtoFixture;
 use Tests\TestCase;
 
 /**
- * Guards the conventions shared by every Dto:
+ * Behavior shared by every Dto (`ApiResponseDto::fill()`), tested through a fixture (which adds nothing to it), and
+ * guards the conventions shared by every Dto:
  * - every Dto must expose its properties as-is in `toArray()` (camelCase, matching the Dto's own PHP property
  *   names) — never converted to snake_case. This is what `ApiResponseDto::arrayFromPublicProperties()` provides;
  * - any Dto must reject an invalid API response with its own NotConstructable exception, so that the caller knows
@@ -207,7 +208,7 @@ class ApiResponseDtoTest extends TestCase
     public function test_fill_case_1(): void
     {
         $this->assertThatExceptionWasThrown(
-            fn () => new IncludesDtoFixture((object) []),
+            fn () => $this->makeFixture(['children' => ['data' => []]]),
             ApiResponseDtoNotConstructableException::class,
             "[IncludesDtoFixture] Missing key 'id' in the API response",
         );
@@ -218,7 +219,7 @@ class ApiResponseDtoTest extends TestCase
      */
     public function test_fill_case_2(): void
     {
-        $dto = new IncludesDtoFixture((object) ['id' => 42]);
+        $dto = $this->makeFixture(['id' => 42]);
 
         $this->assertFalse(isset($dto->children));
     }
@@ -228,7 +229,7 @@ class ApiResponseDtoTest extends TestCase
      */
     public function test_fill_case_3(): void
     {
-        $error = new OrigamiApiErrorDto(Obj::fromArray($this->mockApiErrorData(422, 'The name is required.', '0')));
+        $error = $this->mockOrigamiApiErrorDto(422, 'The name is required.', '0');
 
         $this->assertNull($error->field);
     }
@@ -327,5 +328,10 @@ class ApiResponseDtoTest extends TestCase
             'UserGroupInvitationStatsDto'        => [UserGroupInvitationStatsDto::class, UserGroupInvitationStatsDtoNotConstructableException::class, (object) []],
             'UserGroupInvitationValidateDto'     => [UserGroupInvitationValidateDto::class, UserGroupInvitationValidateDtoNotConstructableException::class, (object) []],
         ];
+    }
+
+    private function makeFixture(array $apiData): IncludesDtoFixture
+    {
+        return new IncludesDtoFixture(Obj::fromArray($apiData));
     }
 }

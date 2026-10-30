@@ -23,7 +23,7 @@ The family of an exception, and so its folder in `src/Exceptions/`, depends on w
 
 ## Names
 
-- API family: `OrigamiApi<Status>Exception` (`OrigamiApiTooManyRequestsException`).
+- API family: `OrigamiApi<Status>Exception` for an error tied to an HTTP status (`OrigamiApiTooManyRequestsException`), `OrigamiApi<WhatHappened>Exception` otherwise (`OrigamiApiUnknownException`, `OrigamiApiMultipleException`, `OrigamiApiResponseWithoutDataException`).
 - DTO family: `<Dto>NotConstructableException` (see `dtos.md`).
 
 ## Contents
