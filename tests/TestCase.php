@@ -4,6 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tests\TestUtils\TestsArrayableDtos;
+use Tests\TestUtils\TestsConfigurationDtos;
 use Tests\TestUtils\TestsCountryDtos;
 use Tests\TestUtils\TestsCustomFieldDtos;
 use Tests\TestUtils\TestsErrorDtos;
@@ -21,6 +22,7 @@ use Tests\TestUtils\TestsUserGroupInvitationDtos;
 abstract class TestCase extends BaseTestCase
 {
     use TestsArrayableDtos,
+        TestsConfigurationDtos,
         TestsCountryDtos,
         TestsCustomFieldDtos,
         TestsErrorDtos,

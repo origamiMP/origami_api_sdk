@@ -3,6 +3,7 @@
 namespace Tests\Unit\Dtos;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Configuration\ConfigurationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
@@ -64,6 +65,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSen
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Configuration\ConfigurationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldDtoNotConstructableException;
@@ -232,6 +234,7 @@ class ApiResponseDtoTest extends TestCase
     public static function notConstructableProvider(): array
     {
         return [
+            'ConfigurationDto'                   => [ConfigurationDto::class, ConfigurationDtoNotConstructableException::class, (object) []],
             'CountryDto'                         => [CountryDto::class, CountryDtoNotConstructableException::class, (object) []],
             'CountryListDto'                     => [CountryListDto::class, CountryListDtoNotConstructableException::class, (object) []],
             'CustomFieldDto'                     => [CustomFieldDto::class, CustomFieldDtoNotConstructableException::class, (object) []],
