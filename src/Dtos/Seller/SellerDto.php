@@ -76,7 +76,7 @@ class SellerDto extends ApiResponseDto
 
     public bool $phoneValidated;
 
-    public ?SellerDtoMangopayScaStatusEnum $mangopayScaStatus;
+    public ?SellerDtoMangopayScaStatusEnum $mangopayScaStatus = null;
 
     public SellerDtoTypeEnum $type;
 
@@ -84,7 +84,7 @@ class SellerDto extends ApiResponseDto
 
     public int $defaultTaxId;
 
-    public ?int $feesProfileId;
+    public ?int $feesProfileId = null;
 
     public ?int $sellerFeesProfileId;
 
@@ -230,6 +230,7 @@ class SellerDto extends ApiResponseDto
     {
         return [
             'mangopay_sca_status',
+            'fees_profile_id',
         ];
     }
 

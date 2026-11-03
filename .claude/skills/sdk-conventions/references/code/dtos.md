@@ -57,9 +57,11 @@ Every key of the data structure is required: a key missing from the response mak
 The exceptions:
 
 - the includes (the keys of `getAvailableIncludes()`), always optional;
-- the keys the API does not always send, listed in `getOptionalKeys()`, in dotted notation (`FormDto`: `fields_count`, sent only with `with_count`; `OrigamiApiErrorDto`: `data.field`). An optional key missing leaves its property uninitialized.
+- the keys the API does not always send, listed in `getOptionalKeys()`, in dotted notation (`FormDto`: `fields_count`, sent only with `with_count`; `OrigamiApiErrorDto`: `data.field`).
 
-A key is optional only when the API itself omits it: check its transformer in `origami_api` (a condition, a module hook, a feature flag), never assume it.
+A key is optional only when the API itself omits it, or is going to: check its transformer in `origami_api` (a condition, a module hook, a feature flag) and the deprecations of its model (`SellerDto`: `fees_profile_id`, to be removed with a release flag), never assume it.
+
+An optional key missing leaves its property as declared: a nullable property gets `= null`, so that `toArray()` always exposes it (`SellerDto::$mangopayScaStatus`); a non-nullable one stays uninitialized (`UserDto::$state`).
 
 A value of the wrong type, an unknown enum value or an unreadable date makes the assignment fail, which makes the DTO not constructable as well. PHP converts compatible scalars on the way (`"42"` to an `int` property gives `42`).
 
