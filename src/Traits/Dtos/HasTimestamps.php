@@ -13,8 +13,8 @@ trait HasTimestamps
     protected function getTimestampsAsDataStructureToProperties(): array
     {
         return [
-            'created_at' => fn ($createdAt) => $this->createdAt = Carbon::parse($createdAt),
-            'updated_at' => fn ($updatedAt) => $this->updatedAt = Carbon::parse($updatedAt),
+            'created_at' => fn (string $createdAt) => $this->createdAt = Carbon::parse($createdAt),
+            'updated_at' => fn (string $updatedAt) => $this->updatedAt = Carbon::parse($updatedAt),
         ];
     }
 }

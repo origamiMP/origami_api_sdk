@@ -35,8 +35,8 @@ class DocumentTypeDto extends ApiResponseDto
             'mandatory_on' => 'mandatoryOn',
             'format'       => 'format',
             'key'          => 'key',
-            'created_at'   => fn ($date) => $this->createdAt = Carbon::parse($date),
-            'updated_at'   => fn ($date) => $this->updatedAt = Carbon::parse($date),
+            'created_at'   => fn (string $date) => $this->createdAt = Carbon::parse($date),
+            'updated_at'   => fn (string $date) => $this->updatedAt = Carbon::parse($date),
             'required_by'  => 'requiredBy',
         ];
 

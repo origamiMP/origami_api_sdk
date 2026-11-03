@@ -61,7 +61,7 @@ class UserGroupInvitationDto extends ApiResponseDto
             'onboarding_url' => 'onboardingUrl',
             'sent_at'        => fn ($date) => $this->sentAt = is_null($date) ? null : Carbon::parse($date),
             'accepted_at'    => fn ($date) => $this->acceptedAt = is_null($date) ? null : Carbon::parse($date),
-            'expires_at'     => fn ($date) => $this->expiresAt = Carbon::parse($date),
+            'expires_at'     => fn (string $date) => $this->expiresAt = Carbon::parse($date),
             'is_expired'     => 'isExpired',
             'is_valid'       => 'isValid',
             'token'          => 'token',
