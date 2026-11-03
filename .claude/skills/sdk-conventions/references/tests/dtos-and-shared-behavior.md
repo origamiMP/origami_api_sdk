@@ -15,7 +15,7 @@ Every DTO must reject an invalid response with **its own** « NotConstructable �
 - `test_not_constructable_case_1` builds each DTO of `notConstructableProvider()` from an invalid response, and checks the exception and its `[<DtoName>]` message prefix;
 - `test_not_constructable_case_2` fails if a DTO of `src/Dtos/` is missing from the provider.
 
-**When you create a DTO**, add its line to the provider: the DTO, its exception, and an invalid response — `(object) []` when the DTO has a required field, otherwise a value of the wrong type.
+**When you create a DTO**, add its line to the provider: the DTO, its exception, and an invalid response — `(object) []` when the DTO has a required key, otherwise a value of the wrong type.
 
 ## Guard tests
 

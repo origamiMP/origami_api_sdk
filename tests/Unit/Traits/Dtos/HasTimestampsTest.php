@@ -13,7 +13,7 @@ use Tests\TestCase;
 class HasTimestampsTest extends TestCase
 {
     /**
-     * A null created_at should make the Dto not constructable, instead of giving the current date.
+     * A null created_at should make the Dto not constructable.
      */
     public function test_created_at_case_1(): void
     {

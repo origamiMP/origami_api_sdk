@@ -48,7 +48,7 @@ Maps each API key to its property: the property name when the value is used as i
 'translations' => fn (object $translations) => $this->translations = $this->collectIncluded($translations, TaxTranslationDto::class),
 ```
 
-A closure types its parameter with what the API sends, like the helpers building a property (see « Nested lists »). A permissive conversion accepts what it should reject (`Carbon::parse(null)` gives the current date): its parameter is typed (`fn (string $createdAt) => …`, `HasTimestamps`), or `null` is handled explicitly when the value can be null (`UserGroupInvitationDto::$sentAt`).
+A closure whose conversion is permissive accepts what it should reject (`Carbon::parse(null)` gives the current date): its parameter is typed with what the API sends (`fn (string $createdAt) => …`, `HasTimestamps`), or `null` is handled explicitly when the value can be null (`UserGroupInvitationDto::$sentAt`). A closure passing the value to a strict conversion (`::from()`, a typed `init<Property>()`) does not need to type it.
 
 A nested key is written as a nested array or a dotted key (`'file.max_size_kb' => 'fileMaxSizeKb'`, `FormTypesDto`).
 
