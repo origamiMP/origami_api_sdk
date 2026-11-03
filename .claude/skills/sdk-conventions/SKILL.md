@@ -8,7 +8,7 @@ description: "Use when working in origami_api_sdk: creating, changing or reviewi
 ## Project context
 
 - PHP SDK (`origami-mp/origami-api-sdk`) calling the central Origami API. It is used by origami_admin_v2, among others.
-- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **client repositories** (sending the HTTP requests of the API repositories), **traits** carrying shared behavior and their **contracts**, **exceptions**, **enums** and generic **helpers**.
+- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading the API response into typed properties), **client repositories** (sending the HTTP requests of the API repositories), **traits** carrying shared behavior and their **contracts**, **exceptions**, **enums** and generic **helpers**.
 - The API code (to check the actual format of its responses) lives in the sibling repo `origami_api`.
 
 ## How to use this skill
