@@ -34,6 +34,8 @@ class ModuleDto extends ApiResponseDto
 
     public object $availableConfigurations;
 
+    public bool $isActive;
+
     public static function getAvailableIncludes(): array
     {
         return [
@@ -49,14 +51,15 @@ class ModuleDto extends ApiResponseDto
             'id'                       => 'id',
             'name'                     => 'name',
             'current_version'          => 'currentVersion',
-            'configurations'           => 'configurations',
+            'configurations'           => fn (object|array $configurations) => $this->configurations = (object) $configurations,
             'type'                     => 'type',
             'version'                  => 'version',
             'author'                   => 'author',
             'display_name'             => 'displayName',
             'description'              => 'description',
             'image'                    => 'imageUrl',
-            'available_configurations' => 'availableConfigurations',
+            'available_configurations' => fn (object|array $availableConfigurations) => $this->availableConfigurations = (object) $availableConfigurations,
+            'is_active'                => 'isActive',
         ];
 
         return [

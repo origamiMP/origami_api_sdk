@@ -34,7 +34,7 @@ The CRUD methods first, in the order of the table above (`list`, `get`, `create`
 
 ### Parameters
 
-The ids of the path first, typed `int`, then the param bag, always named `$paramBag`.
+The ids of the path first, typed `int`, then the param bag, always named `$paramBag`. A resource identified by a key instead of an id takes it as `string $key` (`OrigamiConfigurationDataApiRepository::get()`).
 
 The id of the API repository's resource is named `$id` (`OrigamiCustomFieldDataApiRepository::getValues(int $id, …)`). The id of another resource is named after it (`$sellerId` in `OrigamiSellerDocumentDataApiRepository::getRequiredDocuments()`).
 
