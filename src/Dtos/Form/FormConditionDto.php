@@ -2,7 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormConditionDtoOperatorEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -22,15 +21,6 @@ class FormConditionDto extends ApiResponseDto
             'field_key' => 'fieldKey',
             'operator'  => fn (string $operator) => $this->operator = FormConditionDtoOperatorEnum::from($operator),
             'value'     => 'value',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'field_key' => ['required', 'string'],
-            'operator'  => ['required', Rule::enum(FormConditionDtoOperatorEnum::class)],
-            'value'     => ['present', 'nullable', 'string'],
         ];
     }
 

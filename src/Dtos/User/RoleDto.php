@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\RoleDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -67,22 +66,6 @@ class RoleDto extends ApiResponseDto
         return [
             ...$structure,
             ...$this->getTimestampsAsDataStructureToProperties(),
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'         => ['required', 'integer'],
-            'name'       => ['required', 'string'],
-            'type'       => ['required', Rule::enum(RoleDtoTypeEnum::class)],
-            'color'      => ['required', 'string'],
-            'text_color' => ['required', 'string'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
         ];
     }
 

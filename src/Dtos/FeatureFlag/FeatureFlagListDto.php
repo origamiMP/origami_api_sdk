@@ -24,15 +24,7 @@ class FeatureFlagListDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'flags' => 'flags',
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'flags'   => ['present', 'array'],
-            'flags.*' => ['boolean'],
+            'flags' => fn (array $flags) => $this->initFlags($flags),
         ];
     }
 
@@ -41,5 +33,19 @@ class FeatureFlagListDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new FeatureFlagListDtoNotConstructableException($msg, previous: $previous);
+    }
+
+    /**
+     * @throws FeatureFlagListDtoNotConstructableException
+     */
+    protected function initFlags(array $flags): void
+    {
+        foreach ($flags as $name => $state) {
+            if (! is_bool($state)) {
+                throw self::getDefaultNotConstructableException("The state of the flag '{$name}' is not a boolean.");
+            }
+        }
+
+        $this->flags = $flags;
     }
 }

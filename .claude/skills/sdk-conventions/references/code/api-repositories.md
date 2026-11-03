@@ -57,7 +57,7 @@ When the method receives `null`, it passes it on to the client repository, which
    - `decodeResponse()` for a JSON object, the usual case;
    - `decodeListResponse()` for a bare JSON list (`getLegalTypes()`).
 3. After a blank line, the return of the DTO:
-   - for an item, built from the `data` key with `getResponseContentDataOrEmptyObject()` (`OrigamiSellerDataApiRepository::get()`);
+   - for an item, built from the `data` key with `getResponseContentData()`, which throws `OrigamiApiResponseWithoutDataException` when the key is missing (`OrigamiSellerDataApiRepository::get()`);
    - for a list, or a response without `data` key, built from the whole response (`OrigamiSellerDataApiRepository::list()`).
 
 A request answering without a body (204) gives a `void` method, which only calls the client repository (`OrigamiTaxDataApiRepository::update()`).
@@ -70,13 +70,15 @@ Any other logic stays exceptional: `OrigamiOauthApiRepository::getOauthToken()` 
 - Always the `@throws`, in this order:
   1. `HttpClientException` (network failure);
   2. `OrigamiApiUnknownException` (unreadable response, unknown API error);
-  3. the « NotConstructable » exception of the returned DTO, when the method returns one;
-  4. the specific API exceptions known for the endpoint (`OrigamiApiClientErrorException`, `OrigamiApiMultipleException` on `OrigamiFormDataApiRepository::update()`).
+  3. `OrigamiApiResponseWithoutDataException`, when the method reads the `data` key;
+  4. the « NotConstructable » exception of the returned DTO, when the method returns one;
+  5. the specific API exceptions known for the endpoint (`OrigamiApiClientErrorException`, `OrigamiApiMultipleException` on `OrigamiFormDataApiRepository::update()`).
 
 ```php
 /**
  * @throws HttpClientException
  * @throws OrigamiApiUnknownException
+ * @throws OrigamiApiResponseWithoutDataException
  * @throws SellerDtoNotConstructableException
  */
 public function get(int $id, ?GetSellerRequestParamBag $paramBag = null): SellerDto
@@ -84,7 +86,7 @@ public function get(int $id, ?GetSellerRequestParamBag $paramBag = null): Seller
     $response = $this->restClient->get("sellers/{$id}", $paramBag);
     $responseContent = $this->decodeResponse($response);
 
-    return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));
+    return new SellerDto($this->getResponseContentData($responseContent));
 }
 ```
 

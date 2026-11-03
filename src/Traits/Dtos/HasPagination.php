@@ -34,20 +34,6 @@ trait HasPagination
         ];
     }
 
-    protected function getPaginationValidationRules(): array
-    {
-        return [
-            'data'                         => ['present', 'array'],
-            'meta'                         => ['required', 'array'],
-            'meta.pagination'              => ['required', 'array'],
-            'meta.pagination.total'        => ['required', 'integer'],
-            'meta.pagination.count'        => ['required', 'integer'],
-            'meta.pagination.per_page'     => ['required', 'integer'],
-            'meta.pagination.current_page' => ['required', 'integer'],
-            'meta.pagination.total_pages'  => ['required', 'integer'],
-        ];
-    }
-
     abstract protected function initData(array $data): void;
 
     public function toArray(): array

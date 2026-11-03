@@ -30,6 +30,7 @@ trait TestsUserDtos
             'is_account_validated'          => true,
             'created_at'                    => '2024-05-12 16:12:56',
             'updated_at'                    => '2024-05-12 16:12:56',
+            'additional_information'        => [],
             'user_groups'                   => ['data' => []],
         ];
 

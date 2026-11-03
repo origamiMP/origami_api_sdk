@@ -16,13 +16,15 @@ The family of an exception, and so its folder in `src/Exceptions/`, depends on w
 - `OrigamiApiSingleException` (abstract): one error of the API, carrying its `OrigamiApiErrorDto` (`getErrorDto()`, `getOrigamiApiErrorCode()`).
   - `OrigamiApiClientErrorException`: any 4xx, with one subclass per known status (`OrigamiApiBadRequestException`, `OrigamiApiNotFoundException`, `OrigamiApiUnprocessableEntityException`…).
 - `OrigamiApiMultipleException`: several errors at once (`getErrorDtos()`).
-- `OrigamiApiUnknownException`: a status outside the 4xx (5xx…), an error response that is not an Origami API error (a proxy's HTML page), or a response that cannot be read; `getErrorDto()` is `null` when there is no API error to read.
+- `OrigamiApiUnexpectedResponseException` (abstract): the API answered, but not in a usable form, to catch these cases at once.
+  - `OrigamiApiResponseWithoutDataException`: a response without the `data` key holding the item (`RestApiRepository::getResponseContentData()`).
+  - `OrigamiApiUnknownException`: a status outside the 4xx (5xx…), an error response that is not an Origami API error (a proxy's HTML page), or a response that cannot be read; `getErrorDto()` is `null` when there is no API error to read.
 
 `OrigamiApiErrorDto::getCorrespondingException()` picks the exception, by error code first (`getCorrespondingExceptionToErrorCode()`), then, for an error code not registered, by HTTP status (`getCorrespondingExceptionToHttpStatusCode()`). A new status gets its subclass of `OrigamiApiClientErrorException` and its line in the second method; a new error code its line in the first one, with its case in `OrigamiApiErrorCodeEnum`.
 
 ## Names
 
-- API family: `OrigamiApi<Status>Exception` (`OrigamiApiTooManyRequestsException`).
+- API family: `OrigamiApi<Status>Exception` for an error tied to an HTTP status (`OrigamiApiTooManyRequestsException`), `OrigamiApi<WhatHappened>Exception` otherwise (`OrigamiApiUnknownException`, `OrigamiApiMultipleException`, `OrigamiApiResponseWithoutDataException`, `OrigamiApiUnexpectedResponseException`).
 - DTO family: `<Dto>NotConstructableException` (see `dtos.md`).
 
 ## Contents

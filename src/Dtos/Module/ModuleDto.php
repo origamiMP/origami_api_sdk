@@ -68,29 +68,6 @@ class ModuleDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'                       => ['required', 'integer'],
-            'name'                     => ['required', 'string'],
-            'current_version'          => ['required', 'string'],
-            'configurations'           => ['present', 'array'],
-            'type'                     => ['required', 'string'],
-            'version'                  => ['required', 'string'],
-            'author'                   => ['required', 'string'],
-            'display_name'             => ['required', 'string'],
-            'description'              => ['required', 'string'],
-            'image'                    => ['required', 'string'],
-            'available_configurations' => ['present', 'array'],
-            'is_active'                => ['required', 'boolean'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

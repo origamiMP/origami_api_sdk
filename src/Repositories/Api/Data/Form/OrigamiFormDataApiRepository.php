@@ -8,6 +8,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormPrefillSourcesDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Form\FormTypesDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiClientErrorException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiMultipleException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Form\FormDtoNotConstructableException;
@@ -41,6 +42,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws FormDtoNotConstructableException
      */
     public function get(int $id, ?GetFormRequestParamBag $paramBag = null): FormDto
@@ -48,12 +50,13 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get("forms/{$id}", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new FormDto($this->getResponseContentData($responseContent));
     }
 
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws FormDtoNotConstructableException
      */
     public function create(CreateFormRequestParamBag $paramBag): FormDto
@@ -61,7 +64,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->post('forms', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new FormDto($this->getResponseContentData($responseContent));
     }
 
     /**
@@ -90,6 +93,7 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws FormDtoNotConstructableException
      */
     public function duplicate(int $id, ?DuplicateFormRequestParamBag $paramBag = null): FormDto
@@ -97,12 +101,13 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->post("forms/{$id}/duplicate", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new FormDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new FormDto($this->getResponseContentData($responseContent));
     }
 
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws FormTypesDtoNotConstructableException
      */
     public function getTypes(): FormTypesDto
@@ -110,12 +115,13 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get('forms/types');
         $responseContent = $this->decodeResponse($response);
 
-        return new FormTypesDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new FormTypesDto($this->getResponseContentData($responseContent));
     }
 
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws FormPrefillSourcesDtoNotConstructableException
      */
     public function getPrefillSources(): FormPrefillSourcesDto
@@ -123,6 +129,6 @@ class OrigamiFormDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get('forms/prefill-sources');
         $responseContent = $this->decodeResponse($response);
 
-        return new FormPrefillSourcesDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new FormPrefillSourcesDto($this->getResponseContentData($responseContent));
     }
 }

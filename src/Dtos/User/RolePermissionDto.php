@@ -31,16 +31,6 @@ class RolePermissionDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'                       => ['required', 'integer'],
-            'permission'               => ['required', 'string'],
-            'associated_permissions'   => ['present', 'array'],
-            'associated_permissions.*' => ['string'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

@@ -22,14 +22,6 @@ class CustomFieldGroupDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'key'          => ['required', 'string'],
-            'translations' => ['required', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

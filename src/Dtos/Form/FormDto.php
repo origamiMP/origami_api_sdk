@@ -54,17 +54,10 @@ class FormDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
         return [
-            'id'                    => ['required', 'integer'],
-            'is_active'             => ['required', 'boolean'],
-            'is_purchase_enabled'   => ['required', 'boolean'],
-            'is_quote_enabled'      => ['required', 'boolean'],
-            'is_standalone_enabled' => ['required', 'boolean'],
-            'fields_count'          => ['nullable', 'integer'],
-            'translations'          => ['required', 'array'],
-            ...$this->getTimestampsValidationRules(),
+            'fields_count',
         ];
     }
 

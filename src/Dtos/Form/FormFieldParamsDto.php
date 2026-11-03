@@ -2,7 +2,6 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Form;
 
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Form\FormFieldParamsDtoWidthEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -38,16 +37,16 @@ class FormFieldParamsDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
         return [
-            'extensions'  => ['nullable', 'array'],
-            'max_size_kb' => ['nullable', 'integer'],
-            'max_files'   => ['nullable', 'integer'],
-            'unit'        => ['nullable', 'string'],
-            'min'         => ['nullable', 'numeric'],
-            'max'         => ['nullable', 'numeric'],
-            'width'       => ['nullable', Rule::enum(FormFieldParamsDtoWidthEnum::class)],
+            'extensions',
+            'max_size_kb',
+            'max_files',
+            'unit',
+            'min',
+            'max',
+            'width',
         ];
     }
 

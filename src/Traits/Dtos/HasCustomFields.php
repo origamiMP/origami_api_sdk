@@ -17,13 +17,6 @@ trait HasCustomFields
         ];
     }
 
-    protected function getCustomFieldsValidationRules(): array
-    {
-        return [
-            'additional_information' => ['array'],
-        ];
-    }
-
     protected function initAdditionalInformation(object|array $additionalInformation): void
     {
         if (! is_object($additionalInformation)) {

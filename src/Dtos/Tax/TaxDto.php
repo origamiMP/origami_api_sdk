@@ -3,7 +3,6 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Tax;
 
 use Illuminate\Support\Collection;
-use Illuminate\Validation\Rule;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Tax\TaxDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
@@ -46,19 +45,6 @@ class TaxDto extends ApiResponseDto
             'is_default'   => 'isDefault',
             'module_id'    => 'moduleId',
             'translations' => fn (object $translations) => $this->translations = $this->collectIncluded($translations, TaxTranslationDto::class),
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'           => ['required', 'integer'],
-            'value'        => ['required', 'numeric'],
-            'type'         => ['required', Rule::enum(TaxDtoTypeEnum::class)],
-            'id_scs_tax'   => ['present', 'nullable', 'integer'],
-            'is_default'   => ['required', 'boolean'],
-            'module_id'    => ['present', 'nullable', 'integer'],
-            'translations' => ['required', 'array'],
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Repositories\Api;
 
 use GuzzleHttp\Psr7\Response;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Fixtures\RestApiRepositoryFixture;
@@ -123,21 +124,23 @@ class RestApiRepositoryTest extends TestCase
     /**
      * A decoded response with a `data` key should give its content.
      */
-    public function test_get_response_content_data_or_empty_object_case_1(): void
+    public function test_get_response_content_data_case_1(): void
     {
-        $data = $this->repository->getResponseContentDataOrEmptyObject((object) ['data' => (object) ['id' => 42]]);
+        $data = $this->repository->getResponseContentData((object) ['data' => (object) ['id' => 42]]);
 
         $this->assertEquals((object) ['id' => 42], $data);
     }
 
     /**
-     * A decoded response without `data` key should give an empty object.
+     * A decoded response without `data` key should be thrown as a response without data.
      */
-    public function test_get_response_content_data_or_empty_object_case_2(): void
+    public function test_get_response_content_data_case_2(): void
     {
-        $data = $this->repository->getResponseContentDataOrEmptyObject((object) ['id' => 42]);
-
-        $this->assertEquals((object) [], $data);
+        $this->assertThatExceptionWasThrown(
+            fn () => $this->repository->getResponseContentData((object) ['id' => 42]),
+            OrigamiApiResponseWithoutDataException::class,
+            'Response from Origami API without data key',
+        );
     }
 
     public static function invalidJsonBodyProvider(): array

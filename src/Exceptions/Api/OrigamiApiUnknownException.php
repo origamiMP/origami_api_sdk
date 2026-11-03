@@ -6,7 +6,7 @@ use GuzzleHttp\Exception\BadResponseException;
 use OrigamiMp\OrigamiApiSdk\Dtos\Error\OrigamiApiErrorDto;
 use Psr\Http\Message\ResponseInterface;
 
-class OrigamiApiUnknownException extends OrigamiApiException
+class OrigamiApiUnknownException extends OrigamiApiUnexpectedResponseException
 {
     public function __construct(
         string $message = '',

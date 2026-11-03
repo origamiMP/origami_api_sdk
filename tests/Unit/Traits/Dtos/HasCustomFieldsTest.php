@@ -3,6 +3,7 @@
 namespace Tests\Unit\Traits\Dtos;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldModelValueDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\CustomField\CustomFieldDtoTypeEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldModelValueDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
@@ -48,13 +49,15 @@ class HasCustomFieldsTest extends TestCase
     }
 
     /**
-     * A response without `additional_information` should leave the property unset.
+     * A response without `additional_information` should make the Dto not constructable.
      */
     public function test_additional_information_case_3(): void
     {
-        $dto = $this->makeFixture(['id' => 1]);
-
-        $this->assertFalse(isset($dto->additionalInformation));
+        $this->assertThatExceptionWasThrown(
+            fn () => $this->makeFixture(['id' => 1]),
+            ApiResponseDtoNotConstructableException::class,
+            "[CustomFieldsDtoFixture] Missing key 'additional_information' in the API response",
+        );
     }
 
     /**
@@ -66,7 +69,7 @@ class HasCustomFieldsTest extends TestCase
         $this->assertThatExceptionWasThrown(
             fn () => $this->makeFixture(['id' => 1, 'additional_information' => $additionalInformation]),
             ApiResponseDtoNotConstructableException::class,
-            '[CustomFieldsDtoFixture] Api response data failed to be validated: additional_information (validation.array)',
+            "[CustomFieldsDtoFixture] Could not assign data 'additional_information' to property: ",
         );
     }
 
@@ -92,7 +95,8 @@ class HasCustomFieldsTest extends TestCase
             ]]),
             ApiResponseDtoNotConstructableException::class,
             "[CustomFieldsDtoFixture] Could not assign data 'additional_information' to property: "
-            .'[CustomFieldModelValueDto] Api response data failed to be validated: config.type (The selected config.type is invalid.)',
+            ."[CustomFieldModelValueDto] Could not assign data 'config.type' to property: "
+            .'"unknown" is not a valid backing value for enum '.CustomFieldDtoTypeEnum::class,
         );
 
         $this->assertInstanceOf(CustomFieldModelValueDtoNotConstructableException::class, $exception->getPrevious());

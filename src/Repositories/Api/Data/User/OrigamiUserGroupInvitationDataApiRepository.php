@@ -10,6 +10,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationLis
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationCancelDtoNotConstructableException;
@@ -78,6 +79,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws UserGroupInvitationDtoNotConstructableException
      */
     public function resend(int $id, ?ResendUserGroupInvitationRequestParamBag $paramBag = null): UserGroupInvitationDto
@@ -85,7 +87,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
         $response = $this->restClient->post("users/groups/invitations/{$id}/resend", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new UserGroupInvitationDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new UserGroupInvitationDto($this->getResponseContentData($responseContent));
     }
 
     /**
@@ -108,6 +110,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws UserGroupInvitationStatsDtoNotConstructableException
      */
     public function getStats(): UserGroupInvitationStatsDto
@@ -115,7 +118,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
         $response = $this->restClient->get('users/groups/invitations/stats');
         $responseContent = $this->decodeResponse($response);
 
-        return new UserGroupInvitationStatsDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new UserGroupInvitationStatsDto($this->getResponseContentData($responseContent));
     }
 
     /**
@@ -138,6 +141,7 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws UserGroupInvitationCheckPendingDtoNotConstructableException
      */
     public function checkPending(CheckPendingUserGroupInvitationRequestParamBag $paramBag): UserGroupInvitationCheckPendingDto
@@ -145,6 +149,6 @@ class OrigamiUserGroupInvitationDataApiRepository extends OrigamiDataApiReposito
         $response = $this->restClient->get('users/groups/invitations/check-pending', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new UserGroupInvitationCheckPendingDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new UserGroupInvitationCheckPendingDto($this->getResponseContentData($responseContent));
     }
 }

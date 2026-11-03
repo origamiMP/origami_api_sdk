@@ -38,16 +38,6 @@ class FormFieldOptionDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'           => ['required', 'integer'],
-            'value'        => ['required', 'string'],
-            'position'     => ['required', 'integer'],
-            'translations' => ['required', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

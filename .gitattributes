@@ -10,4 +10,5 @@ psysh.php export-ignore
 /bin export-ignore
 /tests export-ignore
 /.claude export-ignore
+/CLAUDE.md export-ignore
 phpunit.xml export-ignore

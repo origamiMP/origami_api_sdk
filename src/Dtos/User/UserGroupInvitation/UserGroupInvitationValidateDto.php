@@ -20,14 +20,6 @@ class UserGroupInvitationValidateDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'success' => ['required', 'boolean'],
-            'message' => ['required', 'string'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

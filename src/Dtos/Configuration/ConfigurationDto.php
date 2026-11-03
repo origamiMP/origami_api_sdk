@@ -24,14 +24,6 @@ class ConfigurationDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'key'   => ['required', 'string'],
-            'value' => ['present', 'nullable'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

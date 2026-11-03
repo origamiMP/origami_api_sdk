@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api;
 
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Repositories\Client\RestClientRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -52,10 +53,16 @@ abstract class RestApiRepository
 
     /**
      * Reads the `data` key of a decoded response, which holds the item of a Fractal response.
+     *
+     * @throws OrigamiApiResponseWithoutDataException
      */
-    protected function getResponseContentDataOrEmptyObject(object $responseContent): object
+    protected function getResponseContentData(object $responseContent): object
     {
-        return $responseContent->data ?? (object) [];
+        if (! isset($responseContent->data)) {
+            throw new OrigamiApiResponseWithoutDataException;
+        }
+
+        return $responseContent->data;
     }
 
     /**

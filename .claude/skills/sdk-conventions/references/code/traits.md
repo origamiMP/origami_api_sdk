@@ -34,11 +34,11 @@ A setter is named `set<Property>()` and takes the value without default; a gette
 
 ## What a trait gives to the class using it
 
-A trait gives the class its part of the structure (and of the rules, for a DTO), named after its feature, and the class merges them with its own:
+A trait gives the class its part of the structure, named after its feature, and the class merges them with its own:
 
 | Kind | Methods | Example |
 |---|---|---|
-| DTO | `get<Feature>AsDataStructureToProperties()`, `get<Feature>ValidationRules()` | `HasTimestamps`, merged by `CustomFieldDto` |
+| DTO | `get<Feature>AsDataStructureToProperties()` | `HasTimestamps`, merged by `CustomFieldDto` |
 | Param bag | `get<Feature>ParamsList()` | `HasIncludes`: `getIncludesParamsList()` |
 
 What the class must provide is an abstract method of the trait: `getAvailableIncludes()`, `getRequestMainDto()`, `getAdditionalAvailableFilters()`, `initData()`.

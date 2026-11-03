@@ -23,14 +23,6 @@ class FormPrefillSourcesDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'attributes'    => ['present', 'array'],
-            'custom_fields' => ['present', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,
