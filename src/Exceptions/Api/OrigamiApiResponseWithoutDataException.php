@@ -2,7 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Exceptions\Api;
 
-class OrigamiApiResponseWithoutDataException extends OrigamiApiException
+class OrigamiApiResponseWithoutDataException extends OrigamiApiUnexpectedResponseException
 {
     public function __construct()
     {
