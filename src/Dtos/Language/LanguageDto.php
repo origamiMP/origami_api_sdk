@@ -29,17 +29,6 @@ class LanguageDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'         => ['required', 'integer'],
-            'locale'     => ['required', 'string'],
-            'name'       => ['required', 'string'],
-            'is_default' => ['required', 'boolean'],
-            'is_active'  => ['required', 'boolean'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

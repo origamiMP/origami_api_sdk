@@ -37,18 +37,6 @@ class FormTypesDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'types'            => ['present', 'array'],
-            'file.extensions'  => ['required', 'array'],
-            'file.max_size_kb' => ['required', 'integer'],
-            'file.max_files'   => ['required', 'integer'],
-            'max_length'       => ['required', 'array'],
-            'limits'           => ['required', 'array'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

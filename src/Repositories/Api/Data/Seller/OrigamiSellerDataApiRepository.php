@@ -5,6 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Seller;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerLegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDtoNotConstructableException;
@@ -33,6 +34,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws SellerDtoNotConstructableException
      */
     public function get(int $id, ?GetSellerRequestParamBag $paramBag = null): SellerDto
@@ -40,12 +42,13 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->get("sellers/{$id}", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new SellerDto($this->getResponseContentData($responseContent));
     }
 
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
      * @throws SellerDtoNotConstructableException
      */
     public function create(CreateSellerRequestParamBag $paramBag): SellerDto
@@ -53,7 +56,7 @@ class OrigamiSellerDataApiRepository extends OrigamiDataApiRepository
         $response = $this->restClient->post('sellers', $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new SellerDto($this->getResponseContentDataOrEmptyObject($responseContent));
+        return new SellerDto($this->getResponseContentData($responseContent));
     }
 
     /**

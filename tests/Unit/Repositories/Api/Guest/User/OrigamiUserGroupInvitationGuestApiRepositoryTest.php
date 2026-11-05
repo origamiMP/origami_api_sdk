@@ -5,7 +5,7 @@ namespace Tests\Unit\Repositories\Api\Guest\User;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoStatusEnum;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Guest\User\AcceptUserGroupInvitationRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Guest\User\OrigamiUserGroupInvitationGuestApiRepository;
 use Tests\TestCase;
@@ -58,8 +58,8 @@ class OrigamiUserGroupInvitationGuestApiRepositoryTest extends TestCase
     }
 
     /**
-     * `POST users/groups/invitations/accept` answering without a `data` key should throw the « NotConstructable »
-     * exception of the invitation.
+     * `POST users/groups/invitations/accept` answering without a `data` key should be thrown as a response without
+     * data.
      */
     public function test_accept_case_3(): void
     {
@@ -69,7 +69,7 @@ class OrigamiUserGroupInvitationGuestApiRepositoryTest extends TestCase
 
         $this->assertThatExceptionWasThrown(
             fn () => (new OrigamiUserGroupInvitationGuestApiRepository($restClient))->accept($paramBag),
-            UserGroupInvitationDtoNotConstructableException::class,
+            OrigamiApiResponseWithoutDataException::class,
         );
     }
 }

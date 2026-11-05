@@ -35,8 +35,8 @@ class DocumentTypeDto extends ApiResponseDto
             'mandatory_on' => 'mandatoryOn',
             'format'       => 'format',
             'key'          => 'key',
-            'created_at'   => fn ($date) => $this->createdAt = Carbon::parse($date),
-            'updated_at'   => fn ($date) => $this->updatedAt = Carbon::parse($date),
+            'created_at'   => fn (string $date) => $this->createdAt = Carbon::parse($date),
+            'updated_at'   => fn (string $date) => $this->updatedAt = Carbon::parse($date),
             'required_by'  => 'requiredBy',
         ];
 
@@ -46,23 +46,10 @@ class DocumentTypeDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
+    protected function getOptionalKeys(): array
     {
-        $rules = [
-            'id'            => ['required', 'integer'],
-            'type'          => ['required', 'string'],
-            'mandatory_on'  => ['required', 'string'],
-            'format'        => ['required', 'string'],
-            'key'           => ['required', 'string'],
-            'created_at'    => ['required', 'date'],
-            'updated_at'    => ['required', 'date'],
-            'required_by'   => ['array'],
-            'required_by.*' => ['string'],
-        ];
-
         return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
+            'required_by',
         ];
     }
 

@@ -40,7 +40,7 @@ Only two blocks (build, assert) when building is the tested action, or when chec
 
 ## Exceptions
 
-Always `assertThatExceptionWasThrown()` (`TestsExceptions`): it checks the class and, if given, the exact message, and returns the exception for further assertions (`RestApiRepositoryTest::test_decode_response_case_3`).
+Always `assertThatExceptionWasThrown()` (`TestsExceptions`): it checks the class and, if given, a part of the message (the whole message, or its stable part when the end varies), and returns the exception for further assertions (`RestApiRepositoryTest::test_decode_response_case_3`).
 
 ```php
 $this->assertThatExceptionWasThrown(fn () => $restClient->get('some_resource'), HttpClientException::class);

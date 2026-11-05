@@ -14,4 +14,4 @@ Unit tests only (`tests/Unit`, PHPUnit 12, PHP 8.4). Each rule is written in a s
 | DTO tests, error case of every DTO, guard tests | `dtos-and-shared-behavior.md` |
 | Traits and abstract classes: testing through a fixture | `dtos-and-shared-behavior.md` |
 
-To finish, `vendor/bin/phpunit` and `vendor/bin/pint --test` must pass.
+To finish, `vendor/bin/phpunit`, `vendor/bin/pint --test` and `vendor/bin/phpstan analyse` must pass.

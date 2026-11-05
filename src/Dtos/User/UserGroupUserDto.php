@@ -72,20 +72,6 @@ class UserGroupUserDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'            => ['required', 'integer'],
-            'user_id'       => ['required', 'integer'],
-            'user_group_id' => ['required', 'integer'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

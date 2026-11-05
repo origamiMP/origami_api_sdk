@@ -8,7 +8,7 @@ description: "Use when working in origami_api_sdk: creating, changing or reviewi
 ## Project context
 
 - PHP SDK (`origami-mp/origami-api-sdk`) calling the central Origami API. It is used by origami_admin_v2, among others.
-- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading and validating the API response), **client repositories** (sending the HTTP requests of the API repositories), **traits** carrying shared behavior and their **contracts**, **exceptions**, **enums** and generic **helpers**.
+- Code organization: **API repositories** (an HTTP call in, a DTO out) split between `Data` (authenticated), `Guest` (public) and `Oauth`, **param bags** (the parameters sent), **DTOs** (reading the API response into typed properties), **client repositories** (sending the HTTP requests of the API repositories), **traits** carrying shared behavior and their **contracts**, **exceptions**, **enums** and generic **helpers**.
 - The API code (to check the actual format of its responses) lives in the sibling repo `origami_api`.
 
 ## How to use this skill
@@ -26,11 +26,11 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 | `references/code/param-bags.md` | You create or change a param bag, or an API repository method: request vs nested param bags, folder (subfolder of a request), class names, order of the class contents, properties, the API key declared for every property sent and its custom cast, cross-cutting traits and their contracts, no validation rules, the include rule and its scope |
 | `references/code/api-repositories.md` | You create or change an API repository or one of its methods: folder, class and method names, method order, parameters (optional param bag), body, docblock and `@throws` |
 | `references/code/client-repositories.md` | You create or change a client repository: class hierarchy, folder, name, constructor, overridden hooks |
-| `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, validation rules, exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
+| `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, missing and optional keys (`getOptionalKeys()`), exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
 | `references/code/traits.md` | You create or change a trait, or its contract: folder, name, when it has a contract, order of the contents, setters and getters, what it gives to the class using it |
 | `references/code/exceptions.md` | You create, throw or catch an exception: `OrigamiApiSdkException`, families and folders, API exceptions and how an API error picks one, names, contents, messages, native exceptions |
-| `references/code/enums.md` | You create, rename or use an enum: contents and case names, folder (mirror of the class using it, or thematic), name (with the exception of a class not in the SDK yet), a param bag reusing the enum of its DTO, changing an enum used in several places, conversion and validation (`Rule::enum()`) |
-| `references/code/helpers.md` | You create, change or use a helper: no business logic, folder per subject, name, static methods (and the exception of the classes adapting Laravel), documentation of what it fixes, tests |
+| `references/code/enums.md` | You create, rename or use an enum: contents and case names, folder (mirror of the class using it, or thematic), name (with the exception of a class not in the SDK yet), a param bag reusing the enum of its DTO, changing an enum used in several places, conversion |
+| `references/code/helpers.md` | You create, change or use a helper: no business logic, folder per subject, name, static methods, documentation of what it fixes, tests |
 | `references/code/contracts.md` | You create, implement or import a contract (interface): when one exists (trait, DTO, other needs), folder, name, contents, `<Name>Contract` alias |
 
 ## General rules

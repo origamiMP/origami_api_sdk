@@ -34,6 +34,8 @@ class ModuleDto extends ApiResponseDto
 
     public object $availableConfigurations;
 
+    public bool $isActive;
+
     public static function getAvailableIncludes(): array
     {
         return [
@@ -49,41 +51,20 @@ class ModuleDto extends ApiResponseDto
             'id'                       => 'id',
             'name'                     => 'name',
             'current_version'          => 'currentVersion',
-            'configurations'           => 'configurations',
+            'configurations'           => fn (object|array $configurations) => $this->configurations = (object) $configurations,
             'type'                     => 'type',
             'version'                  => 'version',
             'author'                   => 'author',
             'display_name'             => 'displayName',
             'description'              => 'description',
             'image'                    => 'imageUrl',
-            'available_configurations' => 'availableConfigurations',
+            'available_configurations' => fn (object|array $availableConfigurations) => $this->availableConfigurations = (object) $availableConfigurations,
+            'is_active'                => 'isActive',
         ];
 
         return [
             ...$structure,
             ...$this->getTimestampsAsDataStructureToProperties(),
-        ];
-    }
-
-    protected function validationRulesForProperties(): array
-    {
-        $rules = [
-            'id'                       => ['required', 'integer'],
-            'name'                     => ['required', 'string'],
-            'current_version'          => ['required', 'string'],
-            'configurations'           => ['required', 'array'],
-            'type'                     => ['required', 'string'],
-            'version'                  => ['required', 'string'],
-            'author'                   => ['required', 'string'],
-            'display_name'             => ['required', 'string'],
-            'description'              => ['required', 'string'],
-            'image'                    => ['required', 'string'],
-            'available_configurations' => ['required', 'array'],
-        ];
-
-        return [
-            ...$rules,
-            ...$this->getTimestampsValidationRules(),
         ];
     }
 

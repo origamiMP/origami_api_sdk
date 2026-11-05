@@ -32,18 +32,6 @@ class FormFieldTranslationDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'id'          => ['required', 'integer'],
-            'language_id' => ['required', 'integer'],
-            'locale'      => ['required', 'string'],
-            'label'       => ['present', 'nullable', 'string'],
-            'hint'        => ['present', 'nullable', 'string'],
-            'placeholder' => ['present', 'nullable', 'string'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

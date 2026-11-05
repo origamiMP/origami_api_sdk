@@ -9,7 +9,6 @@ A helper is generic code, without any business logic of the API: it could be reu
 | Subfolder | Subject |
 |---|---|
 | `Support/` | Primitive types (array, object…): `Obj` |
-| `Validation/` | Running the Laravel validation outside of Laravel: `Validator`, `DummyTranslator` |
 
 A helper about the SDK itself stays at the root of `src/Helpers/` (`OrigamiApiSdk::getVersion()`). A new subject gets its subfolder and its line in the table above.
 
@@ -20,8 +19,7 @@ A class in the singular, named after the concept it handles (`Obj` for an object
 ## Contents
 
 - `static` methods, without state (`Obj::fromArray()`).
-- Parameters and return value typed, `mixed` when any value is accepted (`Obj::get(mixed $target, …)`). A method implementing an interface of a library keeps the signature of the interface (`DummyTranslator`).
-- 📢 Documented exception: a class adapting a component of Laravel is instantiated, not static (`Validator` extends the Laravel validator with `DummyTranslator`, which returns the keys of the messages until a real translation exists).
+- Parameters and return value typed, `mixed` when any value is accepted (`Obj::get(mixed $target, …)`). A method implementing an interface of a library keeps the signature of the interface.
 
 ## Documentation
 

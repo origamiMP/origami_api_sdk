@@ -32,18 +32,6 @@ class UserGroupInvitationStatsDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'total'           => ['required', 'integer', 'min:0'],
-            'pending'         => ['required', 'integer', 'min:0'],
-            'accepted'        => ['required', 'integer', 'min:0'],
-            'cancelled'       => ['required', 'integer', 'min:0'],
-            'expired'         => ['required', 'integer', 'min:0'],
-            'acceptance_rate' => ['required', 'numeric', 'min:0', 'max:100'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,

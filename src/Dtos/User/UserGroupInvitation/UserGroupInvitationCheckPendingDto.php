@@ -20,14 +20,6 @@ class UserGroupInvitationCheckPendingDto extends ApiResponseDto
         ];
     }
 
-    protected function validationRulesForProperties(): array
-    {
-        return [
-            'email'                  => ['required', 'string', 'email'],
-            'has_pending_invitation' => ['required', 'boolean'],
-        ];
-    }
-
     protected static function getDefaultNotConstructableException(
         string $msg,
         ?\Throwable $previous = null,
