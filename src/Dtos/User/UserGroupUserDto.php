@@ -2,25 +2,35 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupUserDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasIncludes;
-use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasTimestamps;
 
 /**
  * Membership of a User in a UserGroup.
  */
 class UserGroupUserDto extends ApiResponseDto
 {
-    use HasIncludes, HasTimestamps;
+    use HasIncludes;
 
     public int $id;
 
     public int $userId;
 
     public int $userGroupId;
+
+    /**
+     * Null when the membership was attached without timestamps (memberships created by the SSO modules).
+     */
+    public ?Carbon $createdAt;
+
+    /**
+     * Null when the membership was attached without timestamps (memberships created by the SSO modules).
+     */
+    public ?Carbon $updatedAt;
 
     /**
      * User of this membership.
@@ -56,19 +66,16 @@ class UserGroupUserDto extends ApiResponseDto
 
     protected function getDefaultDataStructureToProperties(): array
     {
-        $structure = [
+        return [
             'id'            => 'id',
             'user_id'       => 'userId',
             'user_group_id' => 'userGroupId',
+            'created_at'    => fn ($createdAt) => $this->createdAt = is_null($createdAt) ? null : Carbon::parse($createdAt),
+            'updated_at'    => fn ($updatedAt) => $this->updatedAt = is_null($updatedAt) ? null : Carbon::parse($updatedAt),
 
             'user'       => fn (object $user) => $this->user = $this->makeIncluded($user, UserDto::class),
             'roles'      => fn (object $roles) => $this->roles = $this->collectIncluded($roles, RoleDto::class),
             'user_group' => fn (object $userGroup) => $this->userGroup = $this->makeIncluded($userGroup, UserGroupDto::class),
-        ];
-
-        return [
-            ...$structure,
-            ...$this->getTimestampsAsDataStructureToProperties(),
         ];
     }
 

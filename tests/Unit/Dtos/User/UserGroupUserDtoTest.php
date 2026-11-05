@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Dtos\User;
 
+use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\RoleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupDto;
@@ -11,6 +12,34 @@ use Tests\TestCase;
 
 class UserGroupUserDtoTest extends TestCase
 {
+    /**
+     * The timestamps should be read as dates.
+     */
+    public function test_timestamps_case_1(): void
+    {
+        $userGroupUserDto = $this->mockUserGroupUserDto([
+            'created_at' => '2024-05-12 16:12:56',
+            'updated_at' => '2024-06-01 09:30:00',
+        ]);
+
+        $this->assertInstanceOf(Carbon::class, $userGroupUserDto->createdAt);
+        $this->assertSame('2024-05-12 16:12:56', $userGroupUserDto->createdAt->toDateTimeString());
+        $this->assertInstanceOf(Carbon::class, $userGroupUserDto->updatedAt);
+        $this->assertSame('2024-06-01 09:30:00', $userGroupUserDto->updatedAt->toDateTimeString());
+    }
+
+    /**
+     * A membership attached without timestamps (by the SSO modules) should be constructable, with null timestamps
+     * rather than the current date.
+     */
+    public function test_timestamps_case_2(): void
+    {
+        $userGroupUserDto = $this->mockUserGroupUserDto(['created_at' => null, 'updated_at' => null]);
+
+        $this->assertNull($userGroupUserDto->createdAt);
+        $this->assertNull($userGroupUserDto->updatedAt);
+    }
+
     /**
      * The `roles` include should be read as a collection of roles, whatever their type: a root role is attached to an
      * operator user group.
