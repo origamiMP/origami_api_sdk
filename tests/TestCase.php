@@ -16,6 +16,7 @@ use Tests\TestUtils\TestsModuleDtos;
 use Tests\TestUtils\TestsOauthDtos;
 use Tests\TestUtils\TestsRestClient;
 use Tests\TestUtils\TestsSellerDtos;
+use Tests\TestUtils\TestsServiceDtos;
 use Tests\TestUtils\TestsTaxDtos;
 use Tests\TestUtils\TestsUserDtos;
 use Tests\TestUtils\TestsUserGroupInvitationDtos;
@@ -35,6 +36,7 @@ abstract class TestCase extends BaseTestCase
         TestsOauthDtos,
         TestsRestClient,
         TestsSellerDtos,
+        TestsServiceDtos,
         TestsTaxDtos,
         TestsUserDtos,
         TestsUserGroupInvitationDtos;

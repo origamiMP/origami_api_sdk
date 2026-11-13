@@ -93,6 +93,8 @@ A DTO whose resource has includes on the API side uses the `HasIncludes` trait (
 
 Adding an include later means creating its DTO, uncommenting the line and reading it. Full example: `SellerDto`.
 
+A single item include of a nullable relation comes as `{"data": []}` when the resource has none (Fractal serializes a null resource this way): its property is nullable and it is read with `makeNullableIncluded()`, which gives `null` (`ServiceBookingDto::$customer`).
+
 ## Nested lists
 
 A list of items that is not an include (no Fractal `data` wrapper) is built by a `protected` helper `init<Property>(array $<property>): void`, which fills the property. Its parameter is typed with exactly what the API sends: `array` for a list, a union when it varies (`HasCustomFields::initAdditionalInformation(object|array …)`: a map of custom fields, or `[]` when it is empty). Do not fall back on `mixed` for convenience: look for what the API actually returns (its transformer in `origami_api`, see `references/tests/mock-data.md`), and use `mixed` only when any value is really possible. The closure parameter is the singular of the property:

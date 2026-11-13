@@ -23,11 +23,14 @@ class IncludesDtoFixture extends ApiResponseDto
 
     public IncludesDtoFixture $parent;
 
+    public ?IncludesDtoFixture $sibling;
+
     public static function getAvailableIncludes(): array
     {
         return [
             'children'    => self::class,
             'parent'      => self::class,
+            'sibling'     => self::class,
             'translation' => FormTranslationDto::class,
         ];
     }
@@ -38,6 +41,7 @@ class IncludesDtoFixture extends ApiResponseDto
             'id'       => 'id',
             'children' => fn (object $children) => $this->children = $this->collectIncluded($children, self::class),
             'parent'   => fn (object $parent) => $this->parent = $this->makeIncluded($parent, self::class),
+            'sibling'  => fn (object $sibling) => $this->sibling = $this->makeNullableIncluded($sibling, self::class),
         ];
     }
 

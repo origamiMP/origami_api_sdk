@@ -1,0 +1,48 @@
+<?php
+
+namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service;
+
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasFilters as HasFiltersContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasPagination as HasPaginationContract;
+use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasSearch as HasSearchContract;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingListDto;
+use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
+use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasSearch;
+
+class ListServiceBookingRequestParamBag extends RequestParamBag implements HasFiltersContract, HasIncludesContract, HasPaginationContract, HasSearchContract
+{
+    use HasFilters, HasIncludes, HasPagination, HasSearch;
+
+    protected static function getAdditionalAvailableFilters(): array
+    {
+        return [
+            'status',
+            'state_id',
+            'origin',
+            'seller_id',
+            'starts_between',
+            'service_planning_id',
+            'product_id',
+            'reference',
+        ];
+    }
+
+    protected function getQueryRequestParamsList(): array
+    {
+        return [
+            ...$this->getFiltersParamsList(),
+            ...$this->getPaginationParamsList(),
+            ...$this->getSearchParamsList(),
+            ...$this->getIncludesParamsList(),
+        ];
+    }
+
+    protected static function getRequestMainDto(): string
+    {
+        return ServiceBookingListDto::class;
+    }
+}

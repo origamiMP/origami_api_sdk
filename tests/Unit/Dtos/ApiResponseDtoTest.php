@@ -48,6 +48,13 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerLegalTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingCustomerDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingCustomerUserDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingOrderDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingSellerDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
@@ -64,6 +71,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationRes
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Configuration\ConfigurationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
@@ -110,6 +118,13 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDocumentDtoNotConstruct
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerLegalTypeListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingCustomerDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingCustomerUserDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingOrderDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingSellerDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceSlotDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxTranslationDtoNotConstructableException;
@@ -126,6 +141,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupIn
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationSendDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Workflow\StateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Fixtures\IncludesDtoFixture;
@@ -314,6 +330,14 @@ class ApiResponseDtoTest extends TestCase
             'SellerDto'                          => [SellerDto::class, SellerDtoNotConstructableException::class, (object) []],
             'SellerLegalTypeListDto'             => [SellerLegalTypeListDto::class, SellerLegalTypeListDtoNotConstructableException::class, (object) []],
             'SellerListDto'                      => [SellerListDto::class, SellerListDtoNotConstructableException::class, (object) []],
+            'ServiceBookingCustomerDto'          => [ServiceBookingCustomerDto::class, ServiceBookingCustomerDtoNotConstructableException::class, (object) []],
+            'ServiceBookingCustomerUserDto'      => [ServiceBookingCustomerUserDto::class, ServiceBookingCustomerUserDtoNotConstructableException::class, (object) []],
+            'ServiceBookingDto'                  => [ServiceBookingDto::class, ServiceBookingDtoNotConstructableException::class, (object) []],
+            'ServiceBookingListDto'              => [ServiceBookingListDto::class, ServiceBookingListDtoNotConstructableException::class, (object) []],
+            'ServiceBookingOrderDto'             => [ServiceBookingOrderDto::class, ServiceBookingOrderDtoNotConstructableException::class, (object) []],
+            'ServiceBookingSellerDto'            => [ServiceBookingSellerDto::class, ServiceBookingSellerDtoNotConstructableException::class, (object) []],
+            'ServiceSlotDto'                     => [ServiceSlotDto::class, ServiceSlotDtoNotConstructableException::class, (object) []],
+            'StateDto'                           => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
             'TaxDto'                             => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
             'TaxListDto'                         => [TaxListDto::class, TaxListDtoNotConstructableException::class, (object) []],
             'TaxTranslationDto'                  => [TaxTranslationDto::class, TaxTranslationDtoNotConstructableException::class, (object) []],

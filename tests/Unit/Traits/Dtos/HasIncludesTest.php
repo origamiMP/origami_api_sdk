@@ -89,6 +89,27 @@ class HasIncludesTest extends TestCase
         );
     }
 
+    /**
+     * A nullable single item include answered without item (`{"data": []}`) should be null.
+     */
+    public function test_make_nullable_included_case_1(): void
+    {
+        $dto = $this->makeFixture(['id' => 1, 'sibling' => ['data' => []]]);
+
+        $this->assertNull($dto->sibling);
+    }
+
+    /**
+     * A nullable single item include answered with an item should be read from its `data` key, as the given Dto.
+     */
+    public function test_make_nullable_included_case_2(): void
+    {
+        $dto = $this->makeFixture(['id' => 1, 'sibling' => ['data' => ['id' => 2]]]);
+
+        $this->assertInstanceOf(IncludesDtoFixture::class, $dto->sibling);
+        $this->assertSame(2, $dto->sibling->id);
+    }
+
     private function makeFixture(array $apiData): IncludesDtoFixture
     {
         return new IncludesDtoFixture(Obj::fromArray($apiData));
