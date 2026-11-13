@@ -17,6 +17,10 @@ class ProductOfferDto extends ApiResponseDto
 
     public int $sellerId;
 
+    public float $priceTaxExc;
+
+    public float $priceTaxInc;
+
     /** May be undefined if the corresponding data was not included. */
     public ProductDto $product;
 
@@ -41,10 +45,12 @@ class ProductOfferDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'         => 'id',
-            'product_id' => 'productId',
-            'seller_id'  => 'sellerId',
-            'product'    => fn (object $product) => $this->product = $this->makeIncluded($product, ProductDto::class),
+            'id'            => 'id',
+            'product_id'    => 'productId',
+            'seller_id'     => 'sellerId',
+            'price_tax_exc' => fn ($price) => $this->priceTaxExc = (float) $price,
+            'price_tax_inc' => fn ($price) => $this->priceTaxInc = (float) $price,
+            'product'       => fn (object $product) => $this->product = $this->makeIncluded($product, ProductDto::class),
         ];
     }
 

@@ -72,7 +72,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
             $this->mockServiceBookingApiData([
                 'id'    => 42,
                 'slot'  => ['data' => $this->mockServiceSlotApiData(['id' => 7])],
-                'offer' => ['data' => ['id' => 11, 'product_id' => 12, 'seller_id' => 8, 'product' => ['data' => [
+                'offer' => ['data' => ['id' => 11, 'product_id' => 12, 'seller_id' => 8, 'price_tax_exc' => '62.500000', 'price_tax_inc' => '75.000000', 'product' => ['data' => [
                     'id' => 12, 'reference' => 'COUPE', 'translations' => ['data' => [['locale' => 'fr', 'language_id' => 1, 'default' => true, 'name' => 'Coupe femme']]],
                 ]]]],
                 'customer'         => ['data' => $this->mockServiceBookingCustomerApiData(['id' => 3])],
@@ -96,6 +96,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(ServiceSlotDto::class, $booking->slot);
         $this->assertSame(7, $booking->slot->id);
         $this->assertSame('Coupe femme', $booking->offer->product->translations->first()->name);
+        $this->assertSame(75.0, $booking->offer->priceTaxInc);
         $this->assertInstanceOf(ServiceBookingCustomerDto::class, $booking->customer);
         $this->assertSame('Jane Doe', $booking->customer->user->name);
         $this->assertInstanceOf(ServiceBookingSellerDto::class, $booking->seller);
