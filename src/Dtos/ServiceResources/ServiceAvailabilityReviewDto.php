@@ -9,14 +9,15 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewDtoNotConstructableException;
 
 /**
- * An availability added by a provider to a planning attached to a place, which the team approves before it can be booked.
- * Exactly one of `rule`, `exception` and `slot` is set.
+ * An availability added by a provider to a planning attached to a place, which the team approves before it can be booked,
+ * or a resource the provider asks for, without planning. Exactly one of `rule`, `exception`, `slot` and `assignment` is
+ * set.
  */
 class ServiceAvailabilityReviewDto extends ApiResponseDto
 {
     public int $id;
 
-    public int $servicePlanningId;
+    public ?int $servicePlanningId;
 
     public ?int $sellerId;
 
@@ -25,6 +26,8 @@ class ServiceAvailabilityReviewDto extends ApiResponseDto
     public ?ServiceAvailabilityReviewExceptionDto $exception;
 
     public ?ServiceAvailabilityReviewSlotDto $slot;
+
+    public ?ServiceResourceAssignmentDto $assignment;
 
     public ServiceAvailabilityReviewDtoStatusEnum $status;
 
@@ -43,6 +46,7 @@ class ServiceAvailabilityReviewDto extends ApiResponseDto
             'rule'                => fn (?object $rule) => $this->rule = is_null($rule) ? null : new ServiceAvailabilityReviewRuleDto($rule),
             'exception'           => fn (?object $exception) => $this->exception = is_null($exception) ? null : new ServiceAvailabilityReviewExceptionDto($exception),
             'slot'                => fn (?object $slot) => $this->slot = is_null($slot) ? null : new ServiceAvailabilityReviewSlotDto($slot),
+            'assignment'          => fn (?object $assignment) => $this->assignment = is_null($assignment) ? null : new ServiceResourceAssignmentDto($assignment),
             'status'              => fn ($status) => $this->status = ServiceAvailabilityReviewDtoStatusEnum::from($status),
             'requested_at'        => fn (string $requestedAt) => $this->requestedAt = Carbon::parse($requestedAt),
             'reviewed_at'         => fn (?string $reviewedAt) => $this->reviewedAt = is_null($reviewedAt) ? null : Carbon::parse($reviewedAt),

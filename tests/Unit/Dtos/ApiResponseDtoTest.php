@@ -69,6 +69,8 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalSellerSummaryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalSummaryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePlanningSiteDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceAssignmentDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceAssignmentListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardBookingDto;
@@ -167,6 +169,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdraw
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdrawalSellerSummaryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdrawalSummaryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePlanningSiteDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceAssignmentDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceAssignmentListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardBookingDtoNotConstructableException;
@@ -405,6 +409,8 @@ class ApiResponseDtoTest extends TestCase
             'ServiceLateWithdrawalSellerSummaryDto' => [ServiceLateWithdrawalSellerSummaryDto::class, ServiceLateWithdrawalSellerSummaryDtoNotConstructableException::class, (object) []],
             'ServiceLateWithdrawalSummaryDto'       => [ServiceLateWithdrawalSummaryDto::class, ServiceLateWithdrawalSummaryDtoNotConstructableException::class, (object) []],
             'ServicePlanningSiteDto'                => [ServicePlanningSiteDto::class, ServicePlanningSiteDtoNotConstructableException::class, (object) []],
+            'ServiceResourceAssignmentDto'          => [ServiceResourceAssignmentDto::class, ServiceResourceAssignmentDtoNotConstructableException::class, (object) []],
+            'ServiceResourceAssignmentListDto'      => [ServiceResourceAssignmentListDto::class, ServiceResourceAssignmentListDtoNotConstructableException::class, (object) []],
             'ServiceResourceDto'                    => [ServiceResourceDto::class, ServiceResourceDtoNotConstructableException::class, (object) []],
             'ServiceResourceListDto'                => [ServiceResourceListDto::class, ServiceResourceListDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardBookingDto'            => [ServiceSiteBoardBookingDto::class, ServiceSiteBoardBookingDtoNotConstructableException::class, (object) []],
