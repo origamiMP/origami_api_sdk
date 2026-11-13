@@ -5,6 +5,7 @@ namespace Tests\TestUtils;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoOriginEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServicePlanningDtoBookingUnitEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceSlotDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
@@ -58,6 +59,37 @@ trait TestsServiceDtos
             'closed_at'           => null,
             'origin'              => 'rule',
             'source_rule_id'      => TestCase::unique(),
+        ];
+
+        return [...$baseData, ...$override];
+    }
+
+    protected function mockServicePlanningApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'                          => TestCase::unique(),
+            'product_offer_id'            => TestCase::unique(),
+            'product_id'                  => TestCase::unique(),
+            'seller_id'                   => TestCase::unique(),
+            'name'                        => 'Haircut',
+            'booking_unit'                => ServicePlanningDtoBookingUnitEnum::TIME_SLOT->value,
+            'slot_duration_minutes'       => 45,
+            'capacity'                    => 1,
+            'min_days'                    => null,
+            'max_days'                    => null,
+            'timezone'                    => 'Europe/Paris',
+            'min_notice_minutes'          => null,
+            'max_horizon_days'            => 60,
+            'no_show_fee_type'            => null,
+            'no_show_fee_value'           => null,
+            'free_cancellation_hours'     => null,
+            'late_cancellation_fee_type'  => null,
+            'late_cancellation_fee_value' => null,
+            'is_active'                   => true,
+            'position'                    => 0,
+            'slots_count'                 => null,
+            'created_at'                  => '2024-05-12T16:12:56.000000Z',
+            'updated_at'                  => '2024-05-12T16:12:56.000000Z',
         ];
 
         return [...$baseData, ...$override];
