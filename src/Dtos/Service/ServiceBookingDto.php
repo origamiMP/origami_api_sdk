@@ -5,6 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Service;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductOfferDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoOriginEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
@@ -52,6 +53,9 @@ class ServiceBookingDto extends ApiResponseDto
     /** May be undefined if the corresponding data was not included. */
     public ServiceSlotDto $slot;
 
+    /** May be undefined if the corresponding data was not included. */
+    public ProductOfferDto $offer;
+
     /**
      * May be undefined if the corresponding data was not included. Null when the current user may not see it, or the
      * booking has none.
@@ -77,8 +81,8 @@ class ServiceBookingDto extends ApiResponseDto
     public static function getAvailableIncludes(): array
     {
         return [
-            'slot' => ServiceSlotDto::class,
-            // 'offer',
+            'slot'  => ServiceSlotDto::class,
+            'offer' => ProductOfferDto::class,
             // 'rangeSlots',
             'customer'         => ServiceBookingCustomerDto::class,
             'seller'           => ServiceBookingSellerDto::class,
@@ -109,6 +113,7 @@ class ServiceBookingDto extends ApiResponseDto
             'hold_expires_at'              => fn (?string $holdExpiresAt) => $this->holdExpiresAt = is_null($holdExpiresAt) ? null : Carbon::parse($holdExpiresAt),
             ...$this->getTimestampsAsDataStructureToProperties(),
             'slot'             => fn (object $slot) => $this->slot = $this->makeIncluded($slot, ServiceSlotDto::class),
+            'offer'            => fn (object $offer) => $this->offer = $this->makeIncluded($offer, ProductOfferDto::class),
             'customer'         => fn (object $customer) => $this->customer = $this->makeNullableIncluded($customer, ServiceBookingCustomerDto::class),
             'seller'           => fn (object $seller) => $this->seller = $this->makeNullableIncluded($seller, ServiceBookingSellerDto::class),
             'state'            => fn (object $state) => $this->state = $this->makeNullableIncluded($state, StateDto::class),

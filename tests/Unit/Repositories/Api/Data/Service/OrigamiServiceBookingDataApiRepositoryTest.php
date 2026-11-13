@@ -70,8 +70,11 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
             $this->mockServiceBookingApiData([
-                'id'               => 42,
-                'slot'             => ['data' => $this->mockServiceSlotApiData(['id' => 7])],
+                'id'    => 42,
+                'slot'  => ['data' => $this->mockServiceSlotApiData(['id' => 7])],
+                'offer' => ['data' => ['id' => 11, 'product_id' => 12, 'seller_id' => 8, 'product' => ['data' => [
+                    'id' => 12, 'reference' => 'COUPE', 'translations' => ['data' => [['locale' => 'fr', 'language_id' => 1, 'default' => true, 'name' => 'Coupe femme']]],
+                ]]]],
                 'customer'         => ['data' => $this->mockServiceBookingCustomerApiData(['id' => 3])],
                 'seller'           => ['data' => ['id' => 8, 'name' => 'Inès Moreau']],
                 'state'            => ['data' => $this->mockStateApiData(['id' => 31])],
@@ -80,18 +83,19 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
             ]),
         ])));
         $paramBag = new ListServiceBookingRequestParamBag;
-        $paramBag->setIncludes(['slot', 'customer', 'seller', 'state', 'available_states', 'order', 'offer', 'unknown']);
+        $paramBag->setIncludes(['slot', 'offer.product', 'customer', 'seller', 'state', 'available_states', 'order', 'rangeSlots', 'unknown']);
 
         $bookings = (new OrigamiServiceBookingDataApiRepository($restClient))->list($paramBag);
 
         $this->assertLastApiRequestQueryWas([
             'page'          => '1',
             'item_per_page' => '20',
-            'include'       => ['slot', 'customer', 'seller', 'state', 'available_states', 'order'],
+            'include'       => ['slot', 'offer.product', 'customer', 'seller', 'state', 'available_states', 'order'],
         ]);
         $booking = $bookings->data->first();
         $this->assertInstanceOf(ServiceSlotDto::class, $booking->slot);
         $this->assertSame(7, $booking->slot->id);
+        $this->assertSame('Coupe femme', $booking->offer->product->translations->first()->name);
         $this->assertInstanceOf(ServiceBookingCustomerDto::class, $booking->customer);
         $this->assertSame('Jane Doe', $booking->customer->user->name);
         $this->assertInstanceOf(ServiceBookingSellerDto::class, $booking->seller);

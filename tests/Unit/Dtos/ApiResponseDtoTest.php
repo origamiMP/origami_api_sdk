@@ -42,6 +42,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\ResetPasswordDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductOfferDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
@@ -137,6 +140,9 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleListDtoNotConstructable
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\ResetPasswordDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\SendResetPasswordEmailDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductOfferDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductTranslationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\SellerBankAccountDtoNotConstructableException;
@@ -413,6 +419,9 @@ class ApiResponseDtoTest extends TestCase
             'ServiceSiteListDto'                    => [ServiceSiteListDto::class, ServiceSiteListDtoNotConstructableException::class, (object) []],
             'ServiceSiteOpeningHourDto'             => [ServiceSiteOpeningHourDto::class, ServiceSiteOpeningHourDtoNotConstructableException::class, (object) []],
             'ServiceSitePlanningDto'                => [ServiceSitePlanningDto::class, ServiceSitePlanningDtoNotConstructableException::class, (object) []],
+            'ProductDto'                            => [ProductDto::class, ProductDtoNotConstructableException::class, (object) []],
+            'ProductOfferDto'                       => [ProductOfferDto::class, ProductOfferDtoNotConstructableException::class, (object) []],
+            'ProductTranslationDto'                 => [ProductTranslationDto::class, ProductTranslationDtoNotConstructableException::class, (object) []],
             'TaxDto'                                => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
             'TaxListDto'                            => [TaxListDto::class, TaxListDtoNotConstructableException::class, (object) []],
             'TaxTranslationDto'                     => [TaxTranslationDto::class, TaxTranslationDtoNotConstructableException::class, (object) []],
