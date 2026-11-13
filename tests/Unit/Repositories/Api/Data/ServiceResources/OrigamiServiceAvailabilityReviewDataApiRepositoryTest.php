@@ -21,7 +21,7 @@ class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
             $this->mockServiceAvailabilityReviewApiData(['id' => 1]),
             $this->mockServiceAvailabilityReviewApiData(['id' => 2, 'rule' => null, 'slot' => ['id' => 3, 'starts_at' => '2024-05-12 10:00:00', 'ends_at' => '2024-05-12 11:00:00']]),
-            $this->mockServiceAvailabilityReviewApiData(['id' => 4, 'service_planning_id' => null, 'rule' => null, 'assignment' => $this->mockServiceResourceAssignmentApiData(['status' => 'pending'])]),
+            $this->mockServiceAvailabilityReviewApiData(['id' => 4, 'service_planning_id' => null, 'rule' => null, 'presence' => $this->mockServicePresenceApiData(['status' => 'pending'])]),
         ])));
         $paramBag = new ListServiceAvailabilityReviewRequestParamBag;
         $paramBag->setFilters(['status' => 'pending']);
@@ -34,7 +34,7 @@ class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
         $this->assertSame('10:00:00', $reviews->data->first()->rule->startTime);
         $this->assertSame(3, $reviews->data->get(1)->slot->id);
         $this->assertNull($reviews->data->last()->servicePlanningId);
-        $this->assertSame('Chair 3', $reviews->data->last()->assignment->resourceName);
+        $this->assertSame('Chair 3', $reviews->data->last()->presence->resourceName);
     }
 
     public function test_approve_case_1(): void

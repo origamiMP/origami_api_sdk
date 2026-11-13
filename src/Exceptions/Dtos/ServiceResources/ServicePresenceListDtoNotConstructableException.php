@@ -4,4 +4,4 @@ namespace OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 
-class ServiceResourceAssignmentListDtoNotConstructableException extends ApiResponseDtoNotConstructableException {}
+class ServicePresenceListDtoNotConstructableException extends ApiResponseDtoNotConstructableException {}

@@ -5,13 +5,13 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceAvailabilityReviewDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceAssignmentDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceDtoNotConstructableException;
 
 /**
- * A resource of a place given to a provider on some days (Y-m-d, both included). One the team gives is approved at
- * once, one the provider asks for is pending until the team answers its review.
+ * A provider present at a place on a resource (a chair) from one wall-clock time of the place to another: her slots open
+ * there only. One the team creates is approved at once, one the provider asks for is pending until the team answers.
  */
-class ServiceResourceAssignmentDto extends ApiResponseDto
+class ServicePresenceDto extends ApiResponseDto
 {
     public int $id;
 
@@ -25,11 +25,14 @@ class ServiceResourceAssignmentDto extends ApiResponseDto
 
     public int $sellerId;
 
-    public string $dateStart;
+    /** Y-m-d H:i:s, wall-clock time of the place. */
+    public string $startsAt;
 
-    public string $dateEnd;
+    public string $endsAt;
 
     public ServiceAvailabilityReviewDtoStatusEnum $status;
+
+    public bool $requestedBySeller;
 
     public ?int $reviewId;
 
@@ -45,12 +48,13 @@ class ServiceResourceAssignmentDto extends ApiResponseDto
                 $this->resourceType = $resource->type;
                 $this->resourceName = $resource->name;
             },
-            'seller_id'  => 'sellerId',
-            'date_start' => 'dateStart',
-            'date_end'   => 'dateEnd',
-            'status'     => fn (string $status) => $this->status = ServiceAvailabilityReviewDtoStatusEnum::from($status),
-            'review_id'  => 'reviewId',
-            'note'       => 'note',
+            'seller_id'           => 'sellerId',
+            'starts_at'           => 'startsAt',
+            'ends_at'             => 'endsAt',
+            'status'              => fn (string $status) => $this->status = ServiceAvailabilityReviewDtoStatusEnum::from($status),
+            'requested_by_seller' => 'requestedBySeller',
+            'review_id'           => 'reviewId',
+            'note'                => 'note',
         ];
     }
 
@@ -58,6 +62,6 @@ class ServiceResourceAssignmentDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new ServiceResourceAssignmentDtoNotConstructableException($msg, previous: $previous);
+        return new ServicePresenceDtoNotConstructableException($msg, previous: $previous);
     }
 }

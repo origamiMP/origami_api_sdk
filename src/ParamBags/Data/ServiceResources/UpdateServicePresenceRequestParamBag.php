@@ -5,9 +5,9 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
 /**
- * Moves the provider to another resource of the place over the days of the assignment.
+ * Moves the presence to another resource of the place; the bookings follow it.
  */
-class UpdateServiceResourceAssignmentRequestParamBag extends RequestParamBag
+class UpdateServicePresenceRequestParamBag extends RequestParamBag
 {
     public int $serviceResourceId;
 

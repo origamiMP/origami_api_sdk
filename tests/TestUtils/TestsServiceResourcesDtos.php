@@ -110,7 +110,7 @@ trait TestsServiceResourcesDtos
             'rule'                => ['id' => TestCase::unique(), 'weekday' => 6, 'start_time' => '10:00:00', 'end_time' => '13:00:00', 'valid_from' => null, 'valid_until' => null, 'capacity_override' => null],
             'exception'           => null,
             'slot'                => null,
-            'assignment'          => null,
+            'presence'            => null,
             'status'              => ServiceAvailabilityReviewDtoStatusEnum::PENDING->value,
             'requested_at'        => '2024-05-12 16:12:56',
             'reviewed_at'         => null,
@@ -120,7 +120,7 @@ trait TestsServiceResourcesDtos
         return [...$baseData, ...$override];
     }
 
-    protected function mockServiceResourceAssignmentApiData(array $override = []): array
+    protected function mockServicePresenceApiData(array $override = []): array
     {
         $baseData = [
             'id'                  => TestCase::unique(),
@@ -128,8 +128,9 @@ trait TestsServiceResourcesDtos
             'service_resource_id' => 3,
             'resource'            => ['id' => 3, 'type' => 'chair', 'name' => 'Chair 3'],
             'seller_id'           => TestCase::unique(),
-            'date_start'          => '2024-05-18',
-            'date_end'            => '2024-05-18',
+            'starts_at'           => '2024-05-18 09:00:00',
+            'ends_at'             => '2024-05-18 18:00:00',
+            'requested_by_seller' => false,
             'status'              => ServiceAvailabilityReviewDtoStatusEnum::APPROVED->value,
             'review_id'           => null,
             'note'                => null,

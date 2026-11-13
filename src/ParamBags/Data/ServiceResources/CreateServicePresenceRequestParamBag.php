@@ -4,7 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 
-class CreateServiceResourceAssignmentRequestParamBag extends RequestParamBag
+class CreateServicePresenceRequestParamBag extends RequestParamBag
 {
     public int $serviceSiteId;
 
@@ -13,10 +13,13 @@ class CreateServiceResourceAssignmentRequestParamBag extends RequestParamBag
     public int $sellerId;
 
     /** Y-m-d, a day of the place. */
-    public string $dateStart;
+    public string $date;
 
-    /** Y-m-d, included. */
-    public string $dateEnd;
+    /** H:i, wall-clock time of the place. */
+    public string $startTime;
+
+    /** H:i, after the start. */
+    public string $endTime;
 
     protected function getJsonRequestParamsList(): array
     {
@@ -24,8 +27,9 @@ class CreateServiceResourceAssignmentRequestParamBag extends RequestParamBag
             'serviceSiteId'     => 'service_site_id',
             'serviceResourceId' => 'service_resource_id',
             'sellerId'          => 'seller_id',
-            'dateStart'         => 'date_start',
-            'dateEnd'           => 'date_end',
+            'date'              => 'date',
+            'startTime'         => 'start_time',
+            'endTime'           => 'end_time',
         ];
     }
 }

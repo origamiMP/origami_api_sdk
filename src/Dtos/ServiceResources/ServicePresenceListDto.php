@@ -4,10 +4,10 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceAssignmentListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Traits\Dtos\HasPagination;
 
-class ServiceResourceAssignmentListDto extends ApiResponseDto
+class ServicePresenceListDto extends ApiResponseDto
 {
     use HasPagination;
 
@@ -20,11 +20,11 @@ class ServiceResourceAssignmentListDto extends ApiResponseDto
         string $msg,
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
-        return new ServiceResourceAssignmentListDtoNotConstructableException($msg, previous: $previous);
+        return new ServicePresenceListDtoNotConstructableException($msg, previous: $previous);
     }
 
     protected function initData(array $data): void
     {
-        $this->data = collect($data)->map(fn ($assignment) => new ServiceResourceAssignmentDto($assignment));
+        $this->data = collect($data)->map(fn ($presence) => new ServicePresenceDto($presence));
     }
 }

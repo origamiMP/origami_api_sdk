@@ -8,12 +8,13 @@ use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasFilters;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasPagination;
 
-class ListServiceResourceAssignmentRequestParamBag extends RequestParamBag implements HasFiltersContract, HasPaginationContract
+class ListServicePresenceRequestParamBag extends RequestParamBag implements HasFiltersContract, HasPaginationContract
 {
     use HasFilters, HasPagination;
 
     /**
-     * `date`: the assignments covering this day (Y-m-d).
+     * `date`: the presences overlapping this day (Y-m-d); `between`: those overlapping the days between two dates
+     * (`Y-m-d,Y-m-d`).
      */
     protected static function getAdditionalAvailableFilters(): array
     {
@@ -22,6 +23,7 @@ class ListServiceResourceAssignmentRequestParamBag extends RequestParamBag imple
             'seller_id',
             'service_resource_id',
             'date',
+            'between',
         ];
     }
 
