@@ -2,14 +2,20 @@
 
 namespace Tests\Unit\Repositories\Api\Data\Service;
 
+use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingCustomerDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingOrderDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingSellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateDto;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoOriginEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ConfirmServiceBookingRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\CreateServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ListServiceBookingRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\RescheduleServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\UpdateServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Service\OrigamiServiceBookingDataApiRepository;
 use Tests\TestCase;
@@ -121,6 +127,83 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
     }
 
     /**
+     * `POST catalog/service-bookings` should send the slot, the offer and the user the operator books for, and read the
+     * pending booking.
+     */
+    public function test_create_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData([
+            'id'     => 42,
+            'status' => ServiceBookingDtoStatusEnum::PENDING->value,
+            'origin' => ServiceBookingDtoOriginEnum::STAFF->value,
+        ])]));
+        $paramBag = new CreateServiceBookingRequestParamBag;
+        $paramBag->serviceSlotId = 21;
+        $paramBag->productOfferId = 11;
+        $paramBag->userId = 7;
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'catalog/service-bookings');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertLastApiRequestJsonWas(['service_slot_id' => 21, 'product_offer_id' => 11, 'user_id' => 7]);
+        $this->assertInstanceOf(ServiceBookingDto::class, $booking);
+        $this->assertSame(42, $booking->id);
+        $this->assertSame(ServiceBookingDtoStatusEnum::PENDING, $booking->status);
+    }
+
+    /**
+     * The days of a planning by day range should be sent as dates, with the origin, the quantity and the hold.
+     */
+    public function test_create_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData(['id' => 42])]));
+        $paramBag = new CreateServiceBookingRequestParamBag;
+        $paramBag->servicePlanningId = 9;
+        $paramBag->startsOn = Carbon::parse('2024-05-12 16:12:56');
+        $paramBag->endsOn = Carbon::parse('2024-05-14');
+        $paramBag->quantity = 2;
+        $paramBag->holdDurationMinutes = 30;
+        $paramBag->origin = ServiceBookingDtoOriginEnum::SELLER_LINK;
+        $paramBag->originDetail = 'newsletter';
+        $paramBag->reference = 'RES-0042';
+
+        (new OrigamiServiceBookingDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestJsonWas([
+            'service_planning_id'   => 9,
+            'starts_on'             => '2024-05-12',
+            'ends_on'               => '2024-05-14',
+            'quantity'              => 2,
+            'reference'             => 'RES-0042',
+            'hold_duration_minutes' => 30,
+            'origin'                => 'seller_link',
+            'origin_detail'         => 'newsletter',
+        ]);
+    }
+
+    /**
+     * `POST catalog/service-bookings` should only request the available includes, and read them.
+     */
+    public function test_create_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData([
+            'id'       => 42,
+            'customer' => ['data' => $this->mockServiceBookingCustomerApiData(['id' => 3])],
+        ])]));
+        $paramBag = new CreateServiceBookingRequestParamBag;
+        $paramBag->serviceSlotId = 21;
+        $paramBag->productOfferId = 11;
+        $paramBag->setIncludes(['customer', 'rangeSlots']);
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestQueryWas(['include' => ['customer']]);
+        $this->assertInstanceOf(ServiceBookingCustomerDto::class, $booking->customer);
+        $this->assertSame(3, $booking->customer->id);
+    }
+
+    /**
      * `PATCH catalog/service-bookings/{id}` should send the state the booking moves to.
      */
     public function test_update_case_1(): void
@@ -133,5 +216,77 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('PATCH', 'catalog/service-bookings/42');
         $this->assertLastApiRequestJsonWas(['state_id' => 29]);
+    }
+
+    /**
+     * `POST catalog/service-bookings/{id}/confirm` without order should send nothing, and read the confirmed booking.
+     */
+    public function test_confirm_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData(['id' => 42])]));
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->confirm(42);
+
+        $this->assertLastApiRequestWas('POST', 'catalog/service-bookings/42/confirm');
+        $this->assertLastApiRequestHadNoBody();
+        $this->assertInstanceOf(ServiceBookingDto::class, $booking);
+        $this->assertSame(ServiceBookingDtoStatusEnum::CONFIRMED, $booking->status);
+    }
+
+    /**
+     * The order line and the reference of the storefront order should be sent, and the available includes requested.
+     */
+    public function test_confirm_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData([
+            'id'   => 42,
+            'slot' => ['data' => $this->mockServiceSlotApiData(['id' => 21])],
+        ])]));
+        $paramBag = new ConfirmServiceBookingRequestParamBag;
+        $paramBag->orderLineId = 5;
+        $paramBag->reference = 'ORD-0005';
+        $paramBag->setIncludes(['slot', 'unknown']);
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->confirm(42, $paramBag);
+
+        $this->assertLastApiRequestQueryWas(['include' => ['slot']]);
+        $this->assertLastApiRequestJsonWas(['order_line_id' => 5, 'reference' => 'ORD-0005']);
+        $this->assertSame(21, $booking->slot->id);
+    }
+
+    /**
+     * `POST catalog/service-bookings/{id}/reschedule` should send the slot the booking moves to.
+     */
+    public function test_reschedule_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData(['id' => 42, 'service_slot_id' => 22])]));
+        $paramBag = new RescheduleServiceBookingRequestParamBag;
+        $paramBag->serviceSlotId = 22;
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->reschedule(42, $paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'catalog/service-bookings/42/reschedule');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertLastApiRequestJsonWas(['service_slot_id' => 22]);
+        $this->assertSame(22, $booking->serviceSlotId);
+    }
+
+    /**
+     * `POST catalog/service-bookings/{id}/reschedule` should only request the available includes, and read them.
+     */
+    public function test_reschedule_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData([
+            'id'   => 42,
+            'slot' => ['data' => $this->mockServiceSlotApiData(['id' => 22])],
+        ])]));
+        $paramBag = new RescheduleServiceBookingRequestParamBag;
+        $paramBag->serviceSlotId = 22;
+        $paramBag->setIncludes(['slot', 'rangeSlots']);
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->reschedule(42, $paramBag);
+
+        $this->assertLastApiRequestQueryWas(['include' => ['slot']]);
+        $this->assertSame(22, $booking->slot->id);
     }
 }
