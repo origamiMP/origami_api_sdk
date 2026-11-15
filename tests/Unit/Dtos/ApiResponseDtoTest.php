@@ -63,6 +63,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingSellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServicePlanningDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServicePlanningListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesFailedDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewDto;
@@ -173,6 +174,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingSellerDtoNotCo
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServicePlanningDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServicePlanningListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceSlotDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceSlotListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesFailedDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewDtoNotConstructableException;
@@ -421,6 +423,7 @@ class ApiResponseDtoTest extends TestCase
             'ServicePlanningDto'                              => [ServicePlanningDto::class, ServicePlanningDtoNotConstructableException::class, (object) []],
             'ServicePlanningListDto'                          => [ServicePlanningListDto::class, ServicePlanningListDtoNotConstructableException::class, (object) []],
             'ServiceSlotDto'                                  => [ServiceSlotDto::class, ServiceSlotDtoNotConstructableException::class, (object) []],
+            'ServiceSlotListDto'                              => [ServiceSlotListDto::class, ServiceSlotListDtoNotConstructableException::class, (object) []],
             'StateDto'                                        => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
             'AddressDto'                                      => [AddressDto::class, AddressDtoNotConstructableException::class, (object) []],
             'ServiceAvailabilityReviewDto'                    => [ServiceAvailabilityReviewDto::class, ServiceAvailabilityReviewDtoNotConstructableException::class, (object) []],
