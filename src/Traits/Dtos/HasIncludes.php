@@ -74,20 +74,4 @@ trait HasIncludes
 
         return new $dtoClass($included->data);
     }
-
-    /**
-     * A single item include the API answers without item (a nullable relation) comes as `{"data": []}`: Fractal
-     * serializes a null resource this way.
-     *
-     * @template T of object
-     *
-     * @param  class-string<T>  $dtoClass
-     * @return T|null
-     */
-    protected function makeNullableIncluded(object $included, string $dtoClass): ?object
-    {
-        $this->throwIfDataFieldOnObjectIsEmpty($included);
-
-        return $included->data === [] ? null : new $dtoClass($included->data);
-    }
 }

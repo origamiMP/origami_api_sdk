@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service;
 use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Contracts\Traits\ParamBags\HasIncludes as HasIncludesContract;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoOriginEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Service\CreateServiceBookingParamBagOriginEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\RequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Traits\ParamBags\HasIncludes;
 
@@ -36,7 +36,8 @@ class CreateServiceBookingRequestParamBag extends RequestParamBag implements Has
 
     public int $holdDurationMinutes;
 
-    public ServiceBookingDtoOriginEnum $origin;
+    /** The origin a booking can declare; the API sets the one of a booking made by the team or a seller. */
+    public CreateServiceBookingParamBagOriginEnum $origin;
 
     public ?string $originDetail;
 

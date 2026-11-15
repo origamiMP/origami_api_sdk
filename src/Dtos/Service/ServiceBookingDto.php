@@ -50,23 +50,20 @@ class ServiceBookingDto extends ApiResponseDto
 
     public ?Carbon $holdExpiresAt;
 
-    /** May be undefined if the corresponding data was not included. */
-    public ServiceSlotDto $slot;
+    /** Null when not included, or when the booking, over a range of days, has none. */
+    public ?ServiceSlotDto $slot = null;
 
-    /** May be undefined if the corresponding data was not included. */
-    public ProductOfferDto $offer;
+    /** Null when not included, or when the offer is gone. */
+    public ?ProductOfferDto $offer = null;
 
-    /**
-     * May be undefined if the corresponding data was not included. Null when the current user may not see it, or the
-     * booking has none.
-     */
-    public ?ServiceBookingCustomerDto $customer;
+    /** Null when not included, when the current user may not see it, or when the booking has none. */
+    public ?ServiceBookingCustomerDto $customer = null;
 
-    /** May be undefined if the corresponding data was not included. Null when the booking has none. */
-    public ?ServiceBookingSellerDto $seller;
+    /** Null when not included, or when the booking has none. */
+    public ?ServiceBookingSellerDto $seller = null;
 
-    /** May be undefined if the corresponding data was not included. Null when the booking has none. */
-    public ?StateDto $state;
+    /** Null when not included, or when the booking has none. */
+    public ?StateDto $state = null;
 
     /**
      * The states the current user can move the booking to. May be undefined if the corresponding data was not included.
@@ -75,15 +72,22 @@ class ServiceBookingDto extends ApiResponseDto
      */
     public Collection $availableStates;
 
-    /** May be undefined if the corresponding data was not included. Null when the booking has none. */
-    public ?ServiceBookingOrderDto $order;
+    /**
+     * The slots of a booking over a range of days. May be undefined if the corresponding data was not included.
+     *
+     * @var Collection<int, ServiceSlotDto>
+     */
+    public Collection $rangeSlots;
+
+    /** Null when not included, or when the booking has none. */
+    public ?ServiceBookingOrderDto $order = null;
 
     public static function getAvailableIncludes(): array
     {
         return [
-            'slot'  => ServiceSlotDto::class,
-            'offer' => ProductOfferDto::class,
-            // 'rangeSlots',
+            'slot'             => ServiceSlotDto::class,
+            'offer'            => ProductOfferDto::class,
+            'rangeSlots'       => ServiceSlotDto::class,
             'customer'         => ServiceBookingCustomerDto::class,
             'seller'           => ServiceBookingSellerDto::class,
             'state'            => StateDto::class,
@@ -114,11 +118,12 @@ class ServiceBookingDto extends ApiResponseDto
             ...$this->getTimestampsAsDataStructureToProperties(),
             'slot'             => fn (object $slot) => $this->slot = $this->makeIncluded($slot, ServiceSlotDto::class),
             'offer'            => fn (object $offer) => $this->offer = $this->makeIncluded($offer, ProductOfferDto::class),
-            'customer'         => fn (object $customer) => $this->customer = $this->makeNullableIncluded($customer, ServiceBookingCustomerDto::class),
-            'seller'           => fn (object $seller) => $this->seller = $this->makeNullableIncluded($seller, ServiceBookingSellerDto::class),
-            'state'            => fn (object $state) => $this->state = $this->makeNullableIncluded($state, StateDto::class),
+            'customer'         => fn (object $customer) => $this->customer = $this->makeIncluded($customer, ServiceBookingCustomerDto::class),
+            'seller'           => fn (object $seller) => $this->seller = $this->makeIncluded($seller, ServiceBookingSellerDto::class),
+            'state'            => fn (object $state) => $this->state = $this->makeIncluded($state, StateDto::class),
+            'rangeSlots'       => fn (object $rangeSlots) => $this->rangeSlots = $this->collectIncluded($rangeSlots, ServiceSlotDto::class),
             'available_states' => fn (object $states) => $this->availableStates = $this->collectIncluded($states, StateDto::class),
-            'order'            => fn (object $order) => $this->order = $this->makeNullableIncluded($order, ServiceBookingOrderDto::class),
+            'order'            => fn (object $order) => $this->order = $this->makeIncluded($order, ServiceBookingOrderDto::class),
         ];
     }
 

@@ -40,14 +40,14 @@ class ServicePlanningDto extends ApiResponseDto
 
     public int $position;
 
-    /** May be undefined if the corresponding data was not included. */
-    public ProductOfferDto $offer;
+    /** Null when not included, or when the offer of the planning is gone. */
+    public ?ProductOfferDto $offer = null;
 
-    /** May be undefined if the corresponding data was not included. Null when the offer of the planning is gone. */
-    public ?ProductDto $product;
+    /** Null when not included, or when the offer of the planning is gone. */
+    public ?ProductDto $product = null;
 
-    /** May be undefined if the corresponding data was not included. Null when the offer of the planning is gone. */
-    public ?SellerDto $seller;
+    /** Null when not included, or when the offer of the planning is gone. */
+    public ?SellerDto $seller = null;
 
     /**
      * May be undefined if the corresponding data was not included.
@@ -83,8 +83,8 @@ class ServicePlanningDto extends ApiResponseDto
             'is_active'             => 'isActive',
             'position'              => 'position',
             'offer'                 => fn (object $offer) => $this->offer = $this->makeIncluded($offer, ProductOfferDto::class),
-            'product'               => fn (object $product) => $this->product = $this->makeNullableIncluded($product, ProductDto::class),
-            'seller'                => fn (object $seller) => $this->seller = $this->makeNullableIncluded($seller, SellerDto::class),
+            'product'               => fn (object $product) => $this->product = $this->makeIncluded($product, ProductDto::class),
+            'seller'                => fn (object $seller) => $this->seller = $this->makeIncluded($seller, SellerDto::class),
             'slots'                 => fn (object $slots) => $this->slots = $this->collectIncluded($slots, ServiceSlotDto::class),
         ];
     }

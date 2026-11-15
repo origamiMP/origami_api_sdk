@@ -39,11 +39,11 @@ class ServiceAvailabilityReviewPresenceDto extends ApiResponseDto
             'series_id'       => 'seriesId',
             'starts_at'       => 'startsAt',
             'ends_at'         => 'endsAt',
-            'resource'        => function (object $resource) {
-                $this->resourceId = $resource->id;
-                $this->resourceType = $resource->type;
-                $this->resourceName = $resource->name;
-            },
+            'resource'        => [
+                'id'   => 'resourceId',
+                'type' => 'resourceType',
+                'name' => 'resourceName',
+            ],
         ];
     }
 

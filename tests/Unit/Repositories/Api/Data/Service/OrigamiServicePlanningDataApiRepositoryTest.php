@@ -69,8 +69,8 @@ class OrigamiServicePlanningDataApiRepositoryTest extends TestCase
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
             $this->mockServicePlanningApiData([
                 'id'      => 42,
-                'offer'   => ['data' => ['id' => 11, 'product_id' => 12, 'seller_id' => 8, 'price_tax_exc' => '62.500000', 'price_tax_inc' => '75.000000']],
-                'product' => ['data' => ['id' => 12, 'reference' => 'HAIRCUT', 'translations' => ['data' => [['locale' => 'en', 'language_id' => 1, 'default' => true, 'name' => 'Haircut']]]]],
+                'offer'   => ['data' => $this->mockProductOfferApiData(['id' => 11])],
+                'product' => ['data' => $this->mockProductApiData(['id' => 12])],
                 'seller'  => ['data' => $this->mockSellerApiData(['id' => 8])],
                 'slots'   => ['data' => [$this->mockServiceSlotApiData(['id' => 7])]],
             ]),
@@ -97,19 +97,21 @@ class OrigamiServicePlanningDataApiRepositoryTest extends TestCase
     }
 
     /**
-     * A planning whose offer is gone has no product nor seller: the includes come as an empty `data`.
+     * A planning whose offer is gone has no offer, product nor seller: the API leaves these includes out, so they should
+     * be null.
      */
     public function test_list_case_4(): void
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
-            $this->mockServicePlanningApiData(['id' => 42, 'product_id' => null, 'seller_id' => null, 'product' => ['data' => []], 'seller' => ['data' => []]]),
+            $this->mockServicePlanningApiData(['id' => 42, 'product_id' => null, 'seller_id' => null]),
         ])));
         $paramBag = new ListServicePlanningRequestParamBag;
-        $paramBag->setIncludes(['product', 'seller']);
+        $paramBag->setIncludes(['offer', 'product', 'seller']);
 
         $planning = (new OrigamiServicePlanningDataApiRepository($restClient))->list($paramBag)->data->first();
 
         $this->assertNull($planning->sellerId);
+        $this->assertNull($planning->offer);
         $this->assertNull($planning->product);
         $this->assertNull($planning->seller);
     }

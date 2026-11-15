@@ -12,6 +12,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoOriginEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Service\CreateServiceBookingParamBagOriginEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ConfirmServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\CreateServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ListServiceBookingRequestParamBag;
@@ -78,9 +79,9 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
             $this->mockServiceBookingApiData([
                 'id'    => 42,
                 'slot'  => ['data' => $this->mockServiceSlotApiData(['id' => 7])],
-                'offer' => ['data' => ['id' => 11, 'product_id' => 12, 'seller_id' => 8, 'price_tax_exc' => '62.500000', 'price_tax_inc' => '75.000000', 'product' => ['data' => [
-                    'id' => 12, 'reference' => 'COUPE', 'translations' => ['data' => [['locale' => 'fr', 'language_id' => 1, 'default' => true, 'name' => 'Coupe femme']]],
-                ]]]],
+                'offer' => ['data' => $this->mockProductOfferApiData(['id' => 11, 'product' => ['data' => $this->mockProductApiData([
+                    'id' => 12, 'translations' => ['data' => [$this->mockProductTranslationApiData(['locale' => 'fr', 'name' => 'Coupe femme'])]],
+                ])]])],
                 'customer'         => ['data' => $this->mockServiceBookingCustomerApiData(['id' => 3])],
                 'seller'           => ['data' => ['id' => 8, 'name' => 'Inès Moreau']],
                 'state'            => ['data' => $this->mockStateApiData(['id' => 31])],
@@ -96,7 +97,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestQueryWas([
             'page'          => '1',
             'item_per_page' => '20',
-            'include'       => ['slot', 'offer.product', 'customer', 'seller', 'state', 'available_states', 'order'],
+            'include'       => ['slot', 'offer.product', 'customer', 'seller', 'state', 'available_states', 'order', 'rangeSlots'],
         ]);
         $booking = $bookings->data->first();
         $this->assertInstanceOf(ServiceSlotDto::class, $booking->slot);
@@ -164,7 +165,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
         $paramBag->endsOn = Carbon::parse('2024-05-14');
         $paramBag->quantity = 2;
         $paramBag->holdDurationMinutes = 30;
-        $paramBag->origin = ServiceBookingDtoOriginEnum::SELLER_LINK;
+        $paramBag->origin = CreateServiceBookingParamBagOriginEnum::SELLER_LINK;
         $paramBag->originDetail = 'newsletter';
         $paramBag->reference = 'RES-0042';
 
@@ -194,7 +195,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
         $paramBag = new CreateServiceBookingRequestParamBag;
         $paramBag->serviceSlotId = 21;
         $paramBag->productOfferId = 11;
-        $paramBag->setIncludes(['customer', 'rangeSlots']);
+        $paramBag->setIncludes(['customer', 'unknown']);
 
         $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->create($paramBag);
 
@@ -282,7 +283,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
         ])]));
         $paramBag = new RescheduleServiceBookingRequestParamBag;
         $paramBag->serviceSlotId = 22;
-        $paramBag->setIncludes(['slot', 'rangeSlots']);
+        $paramBag->setIncludes(['slot', 'unknown']);
 
         $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->reschedule(42, $paramBag);
 

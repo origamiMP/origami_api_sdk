@@ -5,7 +5,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceSlotDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceSiteBoardSlotDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardSlotDtoNotConstructableException;
 
@@ -26,7 +26,7 @@ class ServiceSiteBoardSlotDto extends ApiResponseDto
 
     public Carbon $endsAt;
 
-    public ServiceSlotDtoStatusEnum $status;
+    public ServiceSiteBoardSlotDtoStatusEnum $status;
 
     public ?string $closedReason;
 
@@ -46,7 +46,7 @@ class ServiceSiteBoardSlotDto extends ApiResponseDto
             'service_resource_id' => 'serviceResourceId',
             'starts_at'           => fn (string $startsAt) => $this->startsAt = Carbon::parse($startsAt),
             'ends_at'             => fn (string $endsAt) => $this->endsAt = Carbon::parse($endsAt),
-            'status'              => fn ($status) => $this->status = ServiceSlotDtoStatusEnum::from($status),
+            'status'              => fn ($status) => $this->status = ServiceSiteBoardSlotDtoStatusEnum::from($status),
             'closed_reason'       => 'closedReason',
             'capacity'            => 'capacity',
             'booked_count'        => 'bookedCount',

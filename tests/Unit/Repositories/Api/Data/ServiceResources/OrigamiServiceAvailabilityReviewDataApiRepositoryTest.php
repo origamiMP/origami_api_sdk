@@ -10,6 +10,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewPrese
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewRejectSeriesDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceAvailabilityReviewDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceAvailabilityReviewRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\RejectSeriesServiceAvailabilityReviewRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\RejectServiceAvailabilityReviewRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\ServiceResources\OrigamiServiceAvailabilityReviewDataApiRepository;
 use Tests\TestCase;
@@ -101,13 +102,21 @@ class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
         $this->assertSame([2, 12, '130108'], [$approval->failed->first()->serviceAvailabilityReviewId, $approval->failed->first()->servicePresenceId, $approval->failed->first()->code]);
     }
 
+    /**
+     * When no presence of the series can be granted any more, nothing should be approved and every review should come
+     * back as failed.
+     */
     public function test_approve_series_case_2(): void
     {
-        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [], 'meta' => ['failed' => []]]));
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [], 'meta' => ['failed' => [
+            ['service_availability_review_id' => 1, 'service_presence_id' => 11, 'code' => '130109'],
+            ['service_availability_review_id' => 2, 'service_presence_id' => 12, 'code' => '130108'],
+        ]]]));
 
         $approval = (new OrigamiServiceAvailabilityReviewDataApiRepository($restClient))->approveSeries('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b');
 
-        $this->assertCount(0, $approval->failed);
+        $this->assertCount(0, $approval->data);
+        $this->assertSame([1, 2], $approval->failed->pluck('serviceAvailabilityReviewId')->all());
     }
 
     /**
@@ -120,7 +129,7 @@ class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
             $this->mockServiceAvailabilityReviewApiData(['id' => 1, 'status' => ServiceAvailabilityReviewDtoStatusEnum::REJECTED->value]),
             $this->mockServiceAvailabilityReviewApiData(['id' => 2, 'status' => ServiceAvailabilityReviewDtoStatusEnum::REJECTED->value]),
         ]]));
-        $paramBag = new RejectServiceAvailabilityReviewRequestParamBag;
+        $paramBag = new RejectSeriesServiceAvailabilityReviewRequestParamBag;
         $paramBag->note = 'Place closed on Saturdays';
 
         $rejection = (new OrigamiServiceAvailabilityReviewDataApiRepository($restClient))->rejectSeries('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b', $paramBag);

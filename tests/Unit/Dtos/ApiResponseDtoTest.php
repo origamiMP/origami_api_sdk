@@ -81,6 +81,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceUpdateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardBookingDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardEventDto;
@@ -88,6 +89,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardResourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardSiteDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardSlotDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventCreateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteListDto;
@@ -189,6 +191,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceDtoN
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceUpdateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardBookingDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardEventDtoNotConstructableException;
@@ -196,6 +199,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardRes
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardSiteDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardSlotDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteEventCreateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteEventDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteEventListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteListDtoNotConstructableException;
@@ -436,6 +440,7 @@ class ApiResponseDtoTest extends TestCase
             'ServicePresenceDto'                              => [ServicePresenceDto::class, ServicePresenceDtoNotConstructableException::class, (object) []],
             'ServicePresenceListDto'                          => [ServicePresenceListDto::class, ServicePresenceListDtoNotConstructableException::class, (object) []],
             'ServiceResourceDto'                              => [ServiceResourceDto::class, ServiceResourceDtoNotConstructableException::class, (object) []],
+            'ServiceResourceUpdateDto'                        => [ServiceResourceUpdateDto::class, ServiceResourceUpdateDtoNotConstructableException::class, (object) []],
             'ServiceResourceListDto'                          => [ServiceResourceListDto::class, ServiceResourceListDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardBookingDto'                      => [ServiceSiteBoardBookingDto::class, ServiceSiteBoardBookingDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardDto'                             => [ServiceSiteBoardDto::class, ServiceSiteBoardDtoNotConstructableException::class, (object) []],
@@ -445,6 +450,7 @@ class ApiResponseDtoTest extends TestCase
             'ServiceSiteBoardSlotDto'                         => [ServiceSiteBoardSlotDto::class, ServiceSiteBoardSlotDtoNotConstructableException::class, (object) []],
             'ServiceSiteDto'                                  => [ServiceSiteDto::class, ServiceSiteDtoNotConstructableException::class, (object) []],
             'ServiceSiteEventDto'                             => [ServiceSiteEventDto::class, ServiceSiteEventDtoNotConstructableException::class, (object) []],
+            'ServiceSiteEventCreateDto'                       => [ServiceSiteEventCreateDto::class, ServiceSiteEventCreateDtoNotConstructableException::class, (object) []],
             'ServiceSiteEventListDto'                         => [ServiceSiteEventListDto::class, ServiceSiteEventListDtoNotConstructableException::class, (object) []],
             'ServiceSiteListDto'                              => [ServiceSiteListDto::class, ServiceSiteListDtoNotConstructableException::class, (object) []],
             'ServiceSiteOpeningHourDto'                       => [ServiceSiteOpeningHourDto::class, ServiceSiteOpeningHourDtoNotConstructableException::class, (object) []],

@@ -7,7 +7,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Address\AddressDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteListDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceSiteBoardBookingDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServiceSiteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\GetServiceSiteBoardRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceSiteRequestParamBag;
@@ -160,7 +160,7 @@ class OrigamiServiceSiteDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(ServiceSiteBoardDto::class, $board);
         $slot = $board->slots->first();
         $this->assertEquals(Carbon::parse('2024-05-12 10:00:00'), $slot->startsAt);
-        $this->assertSame(ServiceBookingDtoStatusEnum::CONFIRMED, $slot->bookings->first()->status);
+        $this->assertSame(ServiceSiteBoardBookingDtoStatusEnum::CONFIRMED, $slot->bookings->first()->status);
         $this->assertSame([3], $board->events->first()->resourceIds);
     }
 }

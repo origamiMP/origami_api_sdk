@@ -27,16 +27,28 @@ class StateDto extends ApiResponseDto
 
     public string $textColor;
 
-    public ?string $name;
+    /** Sent until the API release 2.14. */
+    public ?string $name = null;
 
-    public ?string $actionName;
+    /** Sent until the API release 2.14. */
+    public ?string $actionName = null;
 
-    public ?string $description;
+    /** Sent until the API release 2.14. */
+    public ?string $description = null;
 
     public static function getAvailableIncludes(): array
     {
         return [
             // 'translations',
+            // 'next_states',
+            // 'actions',
+            // 'workflow',
+            // 'next_states_by_user_group_type',
+            // 'restricted_next_states',
+            // 'actions_by_user_group_type',
+            // 'restricted_actions',
+            // 'order_seller_informations',
+            // 'service_booking_informations',
         ];
     }
 
@@ -54,6 +66,15 @@ class StateDto extends ApiResponseDto
             'name'        => 'name',
             'action_name' => 'actionName',
             'description' => 'description',
+        ];
+    }
+
+    protected function getOptionalKeys(): array
+    {
+        return [
+            'name',
+            'action_name',
+            'description',
         ];
     }
 

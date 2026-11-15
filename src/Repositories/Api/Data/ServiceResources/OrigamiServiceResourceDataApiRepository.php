@@ -4,11 +4,13 @@ namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceUpdateDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceUpdateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServiceResourceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceResourceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\UpdateServiceResourceRequestParamBag;
@@ -46,15 +48,14 @@ class OrigamiServiceResourceDataApiRepository extends OrigamiDataApiRepository
     /**
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
-     * @throws OrigamiApiResponseWithoutDataException
-     * @throws ServiceResourceDtoNotConstructableException
+     * @throws ServiceResourceUpdateDtoNotConstructableException
      */
-    public function update(int $id, UpdateServiceResourceRequestParamBag $paramBag): ServiceResourceDto
+    public function update(int $id, UpdateServiceResourceRequestParamBag $paramBag): ServiceResourceUpdateDto
     {
         $response = $this->restClient->patch("modules/service_resources/resources/{$id}", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
-        return new ServiceResourceDto($this->getResponseContentData($responseContent));
+        return new ServiceResourceUpdateDto($responseContent);
     }
 
     /**

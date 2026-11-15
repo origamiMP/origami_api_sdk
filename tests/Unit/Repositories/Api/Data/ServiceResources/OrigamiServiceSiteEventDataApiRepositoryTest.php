@@ -3,6 +3,7 @@
 namespace Tests\Unit\Repositories\Api\Data\ServiceResources;
 
 use Carbon\Carbon;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventCreateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventListDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServiceSiteEventRequestParamBag;
@@ -31,7 +32,10 @@ class OrigamiServiceSiteEventDataApiRepositoryTest extends TestCase
      */
     public function test_create_case_1(): void
     {
-        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceSiteEventApiData(['id' => 42])], 201));
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse([
+            'data' => $this->mockServiceSiteEventApiData(['id' => 42]),
+            'meta' => ['booked_slot_ids_to_handle' => [21]],
+        ], 201));
         $paramBag = new CreateServiceSiteEventRequestParamBag;
         $paramBag->serviceSiteId = 7;
         $paramBag->label = 'Works';
@@ -39,7 +43,7 @@ class OrigamiServiceSiteEventDataApiRepositoryTest extends TestCase
         $paramBag->endsAt = Carbon::parse('2024-05-12 13:00:00');
         $paramBag->resourceIds = [3];
 
-        $event = (new OrigamiServiceSiteEventDataApiRepository($restClient))->create($paramBag);
+        $creation = (new OrigamiServiceSiteEventDataApiRepository($restClient))->create($paramBag);
 
         $this->assertLastApiRequestWas('POST', 'modules/service_resources/events');
         $this->assertLastApiRequestJsonWas([
@@ -49,8 +53,10 @@ class OrigamiServiceSiteEventDataApiRepositoryTest extends TestCase
             'ends_at'         => '2024-05-12 13:00:00',
             'resource_ids'    => [3],
         ]);
-        $this->assertInstanceOf(ServiceSiteEventDto::class, $event);
-        $this->assertSame(42, $event->id);
+        $this->assertInstanceOf(ServiceSiteEventCreateDto::class, $creation);
+        $this->assertInstanceOf(ServiceSiteEventDto::class, $creation->data);
+        $this->assertSame(42, $creation->data->id);
+        $this->assertSame([21], $creation->bookedSlotIdsToHandle);
     }
 
     public function test_delete_case_1(): void

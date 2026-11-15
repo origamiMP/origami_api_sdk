@@ -14,6 +14,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailability
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewRejectSeriesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceAvailabilityReviewRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\RejectSeriesServiceAvailabilityReviewRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\RejectServiceAvailabilityReviewRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
@@ -61,31 +62,31 @@ class OrigamiServiceAvailabilityReviewDataApiRepository extends OrigamiDataApiRe
     }
 
     /**
-     * Approves every pending review of a series (a uuid): those whose presence can no longer be granted stay pending and
+     * Approves every pending review of a series (its uuid): those whose presence can no longer be granted stay pending and
      * come back as failed. The API refuses a series with nothing pending (`REVIEW_NOT_PENDING`).
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws ServiceAvailabilityReviewApproveSeriesDtoNotConstructableException
      */
-    public function approveSeries(string $series): ServiceAvailabilityReviewApproveSeriesDto
+    public function approveSeries(string $seriesId): ServiceAvailabilityReviewApproveSeriesDto
     {
-        $response = $this->restClient->post("modules/service_resources/availability-reviews/series/{$series}/approve");
+        $response = $this->restClient->post("modules/service_resources/availability-reviews/series/{$seriesId}/approve");
         $responseContent = $this->decodeResponse($response);
 
         return new ServiceAvailabilityReviewApproveSeriesDto($responseContent);
     }
 
     /**
-     * Rejects every pending review of a series (a uuid), with the reason told to the provider.
+     * Rejects every pending review of a series (its uuid), with the reason told to the provider.
      *
      * @throws HttpClientException
      * @throws OrigamiApiUnknownException
      * @throws ServiceAvailabilityReviewRejectSeriesDtoNotConstructableException
      */
-    public function rejectSeries(string $series, RejectServiceAvailabilityReviewRequestParamBag $paramBag): ServiceAvailabilityReviewRejectSeriesDto
+    public function rejectSeries(string $seriesId, RejectSeriesServiceAvailabilityReviewRequestParamBag $paramBag): ServiceAvailabilityReviewRejectSeriesDto
     {
-        $response = $this->restClient->post("modules/service_resources/availability-reviews/series/{$series}/reject", $paramBag);
+        $response = $this->restClient->post("modules/service_resources/availability-reviews/series/{$seriesId}/reject", $paramBag);
         $responseContent = $this->decodeResponse($response);
 
         return new ServiceAvailabilityReviewRejectSeriesDto($responseContent);

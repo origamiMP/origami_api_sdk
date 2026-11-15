@@ -3,7 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceAvailabilityReviewDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServicePresenceDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceDtoNotConstructableException;
 
@@ -33,7 +33,7 @@ class ServicePresenceDto extends ApiResponseDto
 
     public string $endsAt;
 
-    public ServiceAvailabilityReviewDtoStatusEnum $status;
+    public ServicePresenceDtoStatusEnum $status;
 
     public bool $requestedBySeller;
 
@@ -47,15 +47,15 @@ class ServicePresenceDto extends ApiResponseDto
             'id'                  => 'id',
             'service_site_id'     => 'serviceSiteId',
             'service_resource_id' => 'serviceResourceId',
-            'resource'            => function (object $resource) {
-                $this->resourceType = $resource->type;
-                $this->resourceName = $resource->name;
-            },
+            'resource'            => [
+                'type' => 'resourceType',
+                'name' => 'resourceName',
+            ],
             'seller_id'           => 'sellerId',
             'series_id'           => 'seriesId',
             'starts_at'           => 'startsAt',
             'ends_at'             => 'endsAt',
-            'status'              => fn (string $status) => $this->status = ServiceAvailabilityReviewDtoStatusEnum::from($status),
+            'status'              => fn (string $status) => $this->status = ServicePresenceDtoStatusEnum::from($status),
             'requested_by_seller' => 'requestedBySeller',
             'review_id'           => 'reviewId',
             'note'                => 'note',

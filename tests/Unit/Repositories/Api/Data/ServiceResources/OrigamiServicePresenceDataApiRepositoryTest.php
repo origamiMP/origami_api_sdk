@@ -6,7 +6,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesDto
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesSkippedDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceListDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceAvailabilityReviewDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServicePresenceDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServicePresenceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServicePresenceSeriesRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServicePresenceRequestParamBag;
@@ -51,7 +51,7 @@ class OrigamiServicePresenceDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestWas('POST', 'modules/service_resources/presences');
         $this->assertLastApiRequestJsonWas(['service_site_id' => 7, 'service_resource_id' => 3, 'seller_id' => 5, 'date' => '2024-05-18', 'start_time' => '09:00', 'end_time' => '18:00']);
         $this->assertInstanceOf(ServicePresenceDto::class, $presence);
-        $this->assertSame(ServiceAvailabilityReviewDtoStatusEnum::APPROVED, $presence->status);
+        $this->assertSame(ServicePresenceDtoStatusEnum::APPROVED, $presence->status);
     }
 
     public function test_update_case_1(): void

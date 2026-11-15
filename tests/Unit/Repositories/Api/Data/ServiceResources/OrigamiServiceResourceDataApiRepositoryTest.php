@@ -4,6 +4,7 @@ namespace Tests\Unit\Repositories\Api\Data\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceUpdateDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServiceResourceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceResourceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\UpdateServiceResourceRequestParamBag;
@@ -47,15 +48,20 @@ class OrigamiServiceResourceDataApiRepositoryTest extends TestCase
 
     public function test_update_case_1(): void
     {
-        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceResourceApiData(['id' => 42, 'is_active' => false])]));
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse([
+            'data' => $this->mockServiceResourceApiData(['id' => 42, 'is_active' => false]),
+            'meta' => ['booked_slot_ids_to_handle' => [21, 22]],
+        ]));
         $paramBag = new UpdateServiceResourceRequestParamBag;
         $paramBag->isActive = false;
 
-        $resource = (new OrigamiServiceResourceDataApiRepository($restClient))->update(42, $paramBag);
+        $update = (new OrigamiServiceResourceDataApiRepository($restClient))->update(42, $paramBag);
 
         $this->assertLastApiRequestWas('PATCH', 'modules/service_resources/resources/42');
         $this->assertLastApiRequestJsonWas(['is_active' => false]);
-        $this->assertFalse($resource->isActive);
+        $this->assertInstanceOf(ServiceResourceUpdateDto::class, $update);
+        $this->assertFalse($update->data->isActive);
+        $this->assertSame([21, 22], $update->bookedSlotIdsToHandle);
     }
 
     public function test_delete_case_1(): void

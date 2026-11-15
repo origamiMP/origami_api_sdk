@@ -2,20 +2,37 @@
 
 namespace Tests\Unit\Dtos\Service;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotDto;
 use Tests\TestCase;
 
 class ServiceBookingDtoTest extends TestCase
 {
     /**
-     * A booking held in a cart has no customer, order nor state yet: their includes should be null.
+     * A booking without slot, offer, customer, seller, state nor order: the API leaves out an include without item, so
+     * they should be null.
      */
     public function test_includes_case_1(): void
     {
-        $booking = $this->mockServiceBookingDto(['customer' => ['data' => []], 'order' => ['data' => []], 'state' => ['data' => []]]);
+        $booking = $this->mockServiceBookingDto();
 
+        $this->assertNull($booking->slot);
+        $this->assertNull($booking->offer);
         $this->assertNull($booking->customer);
-        $this->assertNull($booking->order);
+        $this->assertNull($booking->seller);
         $this->assertNull($booking->state);
+        $this->assertNull($booking->order);
+        $this->assertFalse(isset($booking->rangeSlots));
+    }
+
+    /**
+     * The slots of a booking over a range of days should be read.
+     */
+    public function test_range_slots_case_1(): void
+    {
+        $booking = $this->mockServiceBookingDto(['rangeSlots' => ['data' => [$this->mockServiceSlotApiData(['id' => 7]), $this->mockServiceSlotApiData(['id' => 8])]]]);
+
+        $this->assertContainsOnlyInstancesOf(ServiceSlotDto::class, $booking->rangeSlots);
+        $this->assertSame([7, 8], $booking->rangeSlots->pluck('id')->all());
     }
 
     /**
