@@ -107,9 +107,7 @@ trait TestsServiceResourcesDtos
             'id'                  => TestCase::unique(),
             'service_planning_id' => TestCase::unique(),
             'seller_id'           => TestCase::unique(),
-            'rule'                => ['id' => TestCase::unique(), 'weekday' => 6, 'start_time' => '10:00:00', 'end_time' => '13:00:00', 'valid_from' => null, 'valid_until' => null, 'capacity_override' => null],
-            'exception'           => null,
-            'slot'                => null,
+            'slot'                => ['id' => TestCase::unique(), 'starts_at' => '2024-05-12 10:00:00', 'ends_at' => '2024-05-12 11:00:00'],
             'presence'            => null,
             'status'              => ServiceAvailabilityReviewDtoStatusEnum::PENDING->value,
             'requested_at'        => '2024-05-12 16:12:56',
@@ -128,12 +126,31 @@ trait TestsServiceResourcesDtos
             'service_resource_id' => 3,
             'resource'            => ['id' => 3, 'type' => 'chair', 'name' => 'Chair 3'],
             'seller_id'           => TestCase::unique(),
+            'series_id'           => null,
             'starts_at'           => '2024-05-18 09:00:00',
             'ends_at'             => '2024-05-18 18:00:00',
             'requested_by_seller' => false,
             'status'              => ServiceAvailabilityReviewDtoStatusEnum::APPROVED->value,
             'review_id'           => null,
             'note'                => null,
+        ];
+
+        return [...$baseData, ...$override];
+    }
+
+    /**
+     * The presence a review is about, as the API sends it inside the review.
+     */
+    protected function mockServiceAvailabilityReviewPresenceApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'              => TestCase::unique(),
+            'service_site_id' => TestCase::unique(),
+            'seller_id'       => TestCase::unique(),
+            'series_id'       => null,
+            'starts_at'       => '2024-05-18 09:00:00',
+            'ends_at'         => '2024-05-18 18:00:00',
+            'resource'        => ['id' => 3, 'type' => 'chair', 'name' => 'Chair 3'],
         ];
 
         return [...$baseData, ...$override];

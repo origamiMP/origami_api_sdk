@@ -25,6 +25,9 @@ class ServicePresenceDto extends ApiResponseDto
 
     public int $sellerId;
 
+    /** The series of the regular presences it belongs to, if any. */
+    public ?string $seriesId;
+
     /** Y-m-d H:i:s, wall-clock time of the place. */
     public string $startsAt;
 
@@ -49,6 +52,7 @@ class ServicePresenceDto extends ApiResponseDto
                 $this->resourceName = $resource->name;
             },
             'seller_id'           => 'sellerId',
+            'series_id'           => 'seriesId',
             'starts_at'           => 'startsAt',
             'ends_at'             => 'endsAt',
             'status'              => fn (string $status) => $this->status = ServiceAvailabilityReviewDtoStatusEnum::from($status),

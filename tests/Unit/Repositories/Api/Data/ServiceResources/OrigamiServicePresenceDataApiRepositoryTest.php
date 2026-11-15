@@ -2,10 +2,13 @@
 
 namespace Tests\Unit\Repositories\Api\Data\ServiceResources;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesSkippedDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceListDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceAvailabilityReviewDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServicePresenceRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServicePresenceSeriesRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServicePresenceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\UpdateServicePresenceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\ServiceResources\OrigamiServicePresenceDataApiRepository;
@@ -64,6 +67,26 @@ class OrigamiServicePresenceDataApiRepositoryTest extends TestCase
         $this->assertSame(4, $presence->serviceResourceId);
     }
 
+    /**
+     * `PATCH modules/service_resources/presences/{id}` should send the new hours of the day, without the resource when it
+     * does not change.
+     */
+    public function test_update_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServicePresenceApiData([
+            'id' => 42, 'starts_at' => '2024-05-18 10:00:00', 'ends_at' => '2024-05-18 16:30:00',
+        ])]));
+        $paramBag = new UpdateServicePresenceRequestParamBag;
+        $paramBag->date = '2024-05-18';
+        $paramBag->startTime = '10:00';
+        $paramBag->endTime = '16:30';
+
+        $presence = (new OrigamiServicePresenceDataApiRepository($restClient))->update(42, $paramBag);
+
+        $this->assertLastApiRequestJsonWas(['date' => '2024-05-18', 'start_time' => '10:00', 'end_time' => '16:30']);
+        $this->assertSame('2024-05-18 16:30:00', $presence->endsAt);
+    }
+
     public function test_delete_case_1(): void
     {
         $restClient = $this->mockDataRestClientReturning($this->emptyResponse());
@@ -71,5 +94,49 @@ class OrigamiServicePresenceDataApiRepositoryTest extends TestCase
         (new OrigamiServicePresenceDataApiRepository($restClient))->delete(42);
 
         $this->assertLastApiRequestWas('DELETE', 'modules/service_resources/presences/42');
+    }
+
+    /**
+     * `POST modules/service_resources/presences/series` should send the weekday and the dates of the series, and read the
+     * presences created, with their series, and the dates skipped.
+     */
+    public function test_create_series_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse([
+            'data' => [
+                $this->mockServicePresenceApiData(['id' => 1, 'series_id' => '9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b']),
+                $this->mockServicePresenceApiData(['id' => 2, 'series_id' => '9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b']),
+            ],
+            'meta' => ['skipped' => [['date' => '2024-05-25', 'code' => '130108']]],
+        ], 201));
+        $paramBag = new CreateServicePresenceSeriesRequestParamBag;
+        $paramBag->serviceSiteId = 4;
+        $paramBag->serviceResourceId = 3;
+        $paramBag->sellerId = 8;
+        $paramBag->weekday = 6;
+        $paramBag->startTime = '09:00';
+        $paramBag->endTime = '17:00';
+        $paramBag->from = '2024-05-18';
+        $paramBag->until = '2024-06-01';
+
+        $series = (new OrigamiServicePresenceDataApiRepository($restClient))->createSeries($paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'modules/service_resources/presences/series');
+        $this->assertLastApiRequestJsonWas([
+            'service_site_id'     => 4,
+            'service_resource_id' => 3,
+            'seller_id'           => 8,
+            'weekday'             => 6,
+            'start_time'          => '09:00',
+            'end_time'            => '17:00',
+            'from'                => '2024-05-18',
+            'until'               => '2024-06-01',
+        ]);
+        $this->assertInstanceOf(ServicePresenceCreateSeriesDto::class, $series);
+        $this->assertContainsOnlyInstancesOf(ServicePresenceDto::class, $series->data);
+        $this->assertSame([1, 2], $series->data->pluck('id')->all());
+        $this->assertSame('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b', $series->data->first()->seriesId);
+        $this->assertContainsOnlyInstancesOf(ServicePresenceCreateSeriesSkippedDto::class, $series->skipped);
+        $this->assertSame([['date' => '2024-05-25', 'code' => '130108']], $series->skipped->map->toArray()->all());
     }
 }

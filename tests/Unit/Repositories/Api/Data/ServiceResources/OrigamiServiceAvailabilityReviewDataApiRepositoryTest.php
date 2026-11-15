@@ -2,8 +2,12 @@
 
 namespace Tests\Unit\Repositories\Api\Data\ServiceResources;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesFailedDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewPresenceDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewRejectSeriesDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceAvailabilityReviewDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceAvailabilityReviewRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\RejectServiceAvailabilityReviewRequestParamBag;
@@ -13,15 +17,19 @@ use Tests\TestCase;
 class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
 {
     /**
-     * `GET modules/service_resources/availability-reviews` should send the status filter, and read the rule, the
-     * opening, the slot or the resource asked for each review is about.
+     * `GET modules/service_resources/availability-reviews` should send the status filter, and read the slot or the
+     * presence each review is about, with the series of a regular request.
      */
     public function test_list_case_1(): void
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
-            $this->mockServiceAvailabilityReviewApiData(['id' => 1]),
-            $this->mockServiceAvailabilityReviewApiData(['id' => 2, 'rule' => null, 'slot' => ['id' => 3, 'starts_at' => '2024-05-12 10:00:00', 'ends_at' => '2024-05-12 11:00:00']]),
-            $this->mockServiceAvailabilityReviewApiData(['id' => 4, 'service_planning_id' => null, 'rule' => null, 'presence' => $this->mockServicePresenceApiData(['status' => 'pending'])]),
+            $this->mockServiceAvailabilityReviewApiData(['id' => 1, 'slot' => ['id' => 3, 'starts_at' => '2024-05-12 10:00:00', 'ends_at' => '2024-05-12 11:00:00']]),
+            $this->mockServiceAvailabilityReviewApiData([
+                'id'                  => 4,
+                'service_planning_id' => null,
+                'slot'                => null,
+                'presence'            => $this->mockServiceAvailabilityReviewPresenceApiData(['id' => 9, 'series_id' => '9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b']),
+            ]),
         ])));
         $paramBag = new ListServiceAvailabilityReviewRequestParamBag;
         $paramBag->setFilters(['status' => 'pending']);
@@ -31,10 +39,13 @@ class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestWas('GET', 'modules/service_resources/availability-reviews');
         $this->assertLastApiRequestQueryWas(['filter' => ['status' => 'pending'], 'page' => '1', 'item_per_page' => '20']);
         $this->assertInstanceOf(ServiceAvailabilityReviewListDto::class, $reviews);
-        $this->assertSame('10:00:00', $reviews->data->first()->rule->startTime);
-        $this->assertSame(3, $reviews->data->get(1)->slot->id);
-        $this->assertNull($reviews->data->last()->servicePlanningId);
-        $this->assertSame('Chair 3', $reviews->data->last()->presence->resourceName);
+        $this->assertSame(3, $reviews->data->first()->slot->id);
+        $this->assertNull($reviews->data->first()->presence);
+        $presence = $reviews->data->last()->presence;
+        $this->assertInstanceOf(ServiceAvailabilityReviewPresenceDto::class, $presence);
+        $this->assertSame(9, $presence->id);
+        $this->assertSame('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b', $presence->seriesId);
+        $this->assertSame([3, 'chair', 'Chair 3'], [$presence->resourceId, $presence->resourceType, $presence->resourceName]);
     }
 
     public function test_approve_case_1(): void
@@ -67,5 +78,56 @@ class OrigamiServiceAvailabilityReviewDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestWas('POST', 'modules/service_resources/availability-reviews/42/reject');
         $this->assertLastApiRequestJsonWas(['note' => 'Place closed on Saturdays']);
         $this->assertSame(ServiceAvailabilityReviewDtoStatusEnum::REJECTED, $review->status);
+    }
+
+    /**
+     * `POST modules/service_resources/availability-reviews/series/{series}/approve` should read the reviews granted and
+     * those left pending.
+     */
+    public function test_approve_series_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse([
+            'data' => [$this->mockServiceAvailabilityReviewApiData(['id' => 1, 'status' => ServiceAvailabilityReviewDtoStatusEnum::APPROVED->value])],
+            'meta' => ['failed' => [['service_availability_review_id' => 2, 'service_presence_id' => 12, 'code' => '130108']]],
+        ]));
+
+        $approval = (new OrigamiServiceAvailabilityReviewDataApiRepository($restClient))->approveSeries('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b');
+
+        $this->assertLastApiRequestWas('POST', 'modules/service_resources/availability-reviews/series/9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b/approve');
+        $this->assertLastApiRequestHadNoBody();
+        $this->assertInstanceOf(ServiceAvailabilityReviewApproveSeriesDto::class, $approval);
+        $this->assertSame([1], $approval->data->pluck('id')->all());
+        $this->assertContainsOnlyInstancesOf(ServiceAvailabilityReviewApproveSeriesFailedDto::class, $approval->failed);
+        $this->assertSame([2, 12, '130108'], [$approval->failed->first()->serviceAvailabilityReviewId, $approval->failed->first()->servicePresenceId, $approval->failed->first()->code]);
+    }
+
+    public function test_approve_series_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [], 'meta' => ['failed' => []]]));
+
+        $approval = (new OrigamiServiceAvailabilityReviewDataApiRepository($restClient))->approveSeries('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b');
+
+        $this->assertCount(0, $approval->failed);
+    }
+
+    /**
+     * `POST modules/service_resources/availability-reviews/series/{series}/reject` should send the reason told to the
+     * provider, and read the reviews rejected.
+     */
+    public function test_reject_series_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [
+            $this->mockServiceAvailabilityReviewApiData(['id' => 1, 'status' => ServiceAvailabilityReviewDtoStatusEnum::REJECTED->value]),
+            $this->mockServiceAvailabilityReviewApiData(['id' => 2, 'status' => ServiceAvailabilityReviewDtoStatusEnum::REJECTED->value]),
+        ]]));
+        $paramBag = new RejectServiceAvailabilityReviewRequestParamBag;
+        $paramBag->note = 'Place closed on Saturdays';
+
+        $rejection = (new OrigamiServiceAvailabilityReviewDataApiRepository($restClient))->rejectSeries('9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b', $paramBag);
+
+        $this->assertLastApiRequestWas('POST', 'modules/service_resources/availability-reviews/series/9b2f3a4e-1c2d-4e5f-8a9b-0c1d2e3f4a5b/reject');
+        $this->assertLastApiRequestJsonWas(['note' => 'Place closed on Saturdays']);
+        $this->assertInstanceOf(ServiceAvailabilityReviewRejectSeriesDto::class, $rejection);
+        $this->assertSame([1, 2], $rejection->data->pluck('id')->all());
     }
 }

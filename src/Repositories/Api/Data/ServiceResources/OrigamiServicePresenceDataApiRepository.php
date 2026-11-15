@@ -2,14 +2,17 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\ServiceResources;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceListDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceCreateSeriesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServicePresenceRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServicePresenceSeriesRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServicePresenceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\UpdateServicePresenceRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
@@ -64,5 +67,21 @@ class OrigamiServicePresenceDataApiRepository extends OrigamiDataApiRepository
     public function delete(int $id): void
     {
         $this->restClient->delete("modules/service_resources/presences/{$id}");
+    }
+
+    /**
+     * Creates the presences of a series, one per date, apart from the dates where the resource or the provider is taken:
+     * those come back as skipped. Created by the team, they are approved at once.
+     *
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws ServicePresenceCreateSeriesDtoNotConstructableException
+     */
+    public function createSeries(CreateServicePresenceSeriesRequestParamBag $paramBag): ServicePresenceCreateSeriesDto
+    {
+        $response = $this->restClient->post('modules/service_resources/presences/series', $paramBag);
+        $responseContent = $this->decodeResponse($response);
+
+        return new ServicePresenceCreateSeriesDto($responseContent);
     }
 }

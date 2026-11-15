@@ -63,16 +63,20 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceBookingSellerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServicePlanningDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServicePlanningListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Service\ServiceSlotDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesFailedDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewExceptionDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewListDto;
-use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewRuleDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewPresenceDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewRejectSeriesDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceAvailabilityReviewSlotDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalSellerSummaryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceLateWithdrawalSummaryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePlanningSiteDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceCreateSeriesSkippedDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServicePresenceListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceDto;
@@ -167,16 +171,20 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingSellerDtoNotCo
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServicePlanningDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServicePlanningListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceSlotDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewApproveSeriesFailedDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewExceptionDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewListDtoNotConstructableException;
-use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewRuleDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewPresenceDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewRejectSeriesDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewSlotDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdrawalDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdrawalListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdrawalSellerSummaryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceLateWithdrawalSummaryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePlanningSiteDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceCreateSeriesDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceCreateSeriesSkippedDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServicePresenceListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceDtoNotConstructableException;
@@ -353,109 +361,113 @@ class ApiResponseDtoTest extends TestCase
     public static function notConstructableProvider(): array
     {
         return [
-            'ConfigurationDto'                      => [ConfigurationDto::class, ConfigurationDtoNotConstructableException::class, (object) []],
-            'CountryDto'                            => [CountryDto::class, CountryDtoNotConstructableException::class, (object) []],
-            'CountryListDto'                        => [CountryListDto::class, CountryListDtoNotConstructableException::class, (object) []],
-            'CustomFieldDto'                        => [CustomFieldDto::class, CustomFieldDtoNotConstructableException::class, (object) []],
-            'CustomFieldGroupDto'                   => [CustomFieldGroupDto::class, CustomFieldGroupDtoNotConstructableException::class, (object) []],
-            'CustomFieldGroupTranslationDto'        => [CustomFieldGroupTranslationDto::class, CustomFieldGroupTranslationDtoNotConstructableException::class, (object) []],
-            'CustomFieldListDto'                    => [CustomFieldListDto::class, CustomFieldListDtoNotConstructableException::class, (object) []],
-            'CustomFieldModelValueDto'              => [CustomFieldModelValueDto::class, CustomFieldModelValueDtoNotConstructableException::class, (object) []],
-            'CustomFieldTranslationDto'             => [CustomFieldTranslationDto::class, CustomFieldTranslationDtoNotConstructableException::class, (object) []],
-            'CustomFieldValueDto'                   => [CustomFieldValueDto::class, CustomFieldValueDtoNotConstructableException::class, (object) []],
-            'CustomFieldValueListDto'               => [CustomFieldValueListDto::class, CustomFieldValueListDtoNotConstructableException::class, (object) []],
-            'CustomerDto'                           => [CustomerDto::class, CustomerDtoNotConstructableException::class, (object) []],
-            'CustomerListDto'                       => [CustomerListDto::class, CustomerListDtoNotConstructableException::class, (object) []],
-            'OrigamiApiErrorDto'                    => [OrigamiApiErrorDto::class, OrigamiApiErrorDtoNotConstructableException::class, (object) []],
-            'OrigamiApiErrorsDto'                   => [OrigamiApiErrorsDto::class, OrigamiApiErrorsDtoNotConstructableException::class, (object) []],
-            'FeatureFlagListDto'                    => [FeatureFlagListDto::class, FeatureFlagListDtoNotConstructableException::class, (object) ['some_flag' => 'yes']],
-            'FormConditionDto'                      => [FormConditionDto::class, FormConditionDtoNotConstructableException::class, (object) []],
-            'FormDto'                               => [FormDto::class, FormDtoNotConstructableException::class, (object) []],
-            'FormFieldDto'                          => [FormFieldDto::class, FormFieldDtoNotConstructableException::class, (object) []],
-            'FormFieldOptionDto'                    => [FormFieldOptionDto::class, FormFieldOptionDtoNotConstructableException::class, (object) []],
-            'FormFieldOptionTranslationDto'         => [FormFieldOptionTranslationDto::class, FormFieldOptionTranslationDtoNotConstructableException::class, (object) []],
-            'FormFieldParamsDto'                    => [FormFieldParamsDto::class, FormFieldParamsDtoNotConstructableException::class, (object) ['max_size_kb' => 'big']],
-            'FormFieldTranslationDto'               => [FormFieldTranslationDto::class, FormFieldTranslationDtoNotConstructableException::class, (object) []],
-            'FormListDto'                           => [FormListDto::class, FormListDtoNotConstructableException::class, (object) []],
-            'FormPageDto'                           => [FormPageDto::class, FormPageDtoNotConstructableException::class, (object) []],
-            'FormPageTranslationDto'                => [FormPageTranslationDto::class, FormPageTranslationDtoNotConstructableException::class, (object) []],
-            'FormPrefillSourceDto'                  => [FormPrefillSourceDto::class, FormPrefillSourceDtoNotConstructableException::class, (object) []],
-            'FormPrefillSourcesDto'                 => [FormPrefillSourcesDto::class, FormPrefillSourcesDtoNotConstructableException::class, (object) []],
-            'FormSectionDto'                        => [FormSectionDto::class, FormSectionDtoNotConstructableException::class, (object) []],
-            'FormSectionTranslationDto'             => [FormSectionTranslationDto::class, FormSectionTranslationDtoNotConstructableException::class, (object) []],
-            'FormTranslationDto'                    => [FormTranslationDto::class, FormTranslationDtoNotConstructableException::class, (object) []],
-            'FormTypeDto'                           => [FormTypeDto::class, FormTypeDtoNotConstructableException::class, (object) []],
-            'FormTypesDto'                          => [FormTypesDto::class, FormTypesDtoNotConstructableException::class, (object) []],
-            'LanguageDto'                           => [LanguageDto::class, LanguageDtoNotConstructableException::class, (object) []],
-            'LanguageListDto'                       => [LanguageListDto::class, LanguageListDtoNotConstructableException::class, (object) []],
-            'ModuleDto'                             => [ModuleDto::class, ModuleDtoNotConstructableException::class, (object) []],
-            'ModuleListDto'                         => [ModuleListDto::class, ModuleListDtoNotConstructableException::class, (object) []],
-            'OauthTokenDto'                         => [OauthTokenDto::class, OauthTokenDtoNotConstructableException::class, (object) []],
-            'ResetPasswordDto'                      => [ResetPasswordDto::class, ResetPasswordDtoNotConstructableException::class, (object) []],
-            'SendResetPasswordEmailDto'             => [SendResetPasswordEmailDto::class, SendResetPasswordEmailDtoNotConstructableException::class, (object) []],
-            'DocumentTypeDto'                       => [DocumentTypeDto::class, DocumentTypeDtoNotConstructableException::class, (object) []],
-            'DocumentTypeListDto'                   => [DocumentTypeListDto::class, DocumentTypeListDtoNotConstructableException::class, (object) []],
-            'SellerBankAccountDto'                  => [SellerBankAccountDto::class, SellerBankAccountDtoNotConstructableException::class, (object) []],
-            'SellerDocumentDto'                     => [SellerDocumentDto::class, SellerDocumentDtoNotConstructableException::class, (object) []],
-            'SellerDto'                             => [SellerDto::class, SellerDtoNotConstructableException::class, (object) []],
-            'SellerLegalTypeListDto'                => [SellerLegalTypeListDto::class, SellerLegalTypeListDtoNotConstructableException::class, (object) []],
-            'SellerListDto'                         => [SellerListDto::class, SellerListDtoNotConstructableException::class, (object) []],
-            'ServiceBookingCustomerDto'             => [ServiceBookingCustomerDto::class, ServiceBookingCustomerDtoNotConstructableException::class, (object) []],
-            'ServiceBookingCustomerUserDto'         => [ServiceBookingCustomerUserDto::class, ServiceBookingCustomerUserDtoNotConstructableException::class, (object) []],
-            'ServiceBookingDto'                     => [ServiceBookingDto::class, ServiceBookingDtoNotConstructableException::class, (object) []],
-            'ServiceBookingListDto'                 => [ServiceBookingListDto::class, ServiceBookingListDtoNotConstructableException::class, (object) []],
-            'ServiceBookingOrderDto'                => [ServiceBookingOrderDto::class, ServiceBookingOrderDtoNotConstructableException::class, (object) []],
-            'ServiceBookingSellerDto'               => [ServiceBookingSellerDto::class, ServiceBookingSellerDtoNotConstructableException::class, (object) []],
-            'ServicePlanningDto'                    => [ServicePlanningDto::class, ServicePlanningDtoNotConstructableException::class, (object) []],
-            'ServicePlanningListDto'                => [ServicePlanningListDto::class, ServicePlanningListDtoNotConstructableException::class, (object) []],
-            'ServiceSlotDto'                        => [ServiceSlotDto::class, ServiceSlotDtoNotConstructableException::class, (object) []],
-            'StateDto'                              => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
-            'AddressDto'                            => [AddressDto::class, AddressDtoNotConstructableException::class, (object) []],
-            'ServiceAvailabilityReviewDto'          => [ServiceAvailabilityReviewDto::class, ServiceAvailabilityReviewDtoNotConstructableException::class, (object) []],
-            'ServiceAvailabilityReviewExceptionDto' => [ServiceAvailabilityReviewExceptionDto::class, ServiceAvailabilityReviewExceptionDtoNotConstructableException::class, (object) []],
-            'ServiceAvailabilityReviewListDto'      => [ServiceAvailabilityReviewListDto::class, ServiceAvailabilityReviewListDtoNotConstructableException::class, (object) []],
-            'ServiceAvailabilityReviewRuleDto'      => [ServiceAvailabilityReviewRuleDto::class, ServiceAvailabilityReviewRuleDtoNotConstructableException::class, (object) []],
-            'ServiceAvailabilityReviewSlotDto'      => [ServiceAvailabilityReviewSlotDto::class, ServiceAvailabilityReviewSlotDtoNotConstructableException::class, (object) []],
-            'ServiceLateWithdrawalDto'              => [ServiceLateWithdrawalDto::class, ServiceLateWithdrawalDtoNotConstructableException::class, (object) []],
-            'ServiceLateWithdrawalListDto'          => [ServiceLateWithdrawalListDto::class, ServiceLateWithdrawalListDtoNotConstructableException::class, (object) []],
-            'ServiceLateWithdrawalSellerSummaryDto' => [ServiceLateWithdrawalSellerSummaryDto::class, ServiceLateWithdrawalSellerSummaryDtoNotConstructableException::class, (object) []],
-            'ServiceLateWithdrawalSummaryDto'       => [ServiceLateWithdrawalSummaryDto::class, ServiceLateWithdrawalSummaryDtoNotConstructableException::class, (object) []],
-            'ServicePlanningSiteDto'                => [ServicePlanningSiteDto::class, ServicePlanningSiteDtoNotConstructableException::class, (object) []],
-            'ServicePresenceDto'                    => [ServicePresenceDto::class, ServicePresenceDtoNotConstructableException::class, (object) []],
-            'ServicePresenceListDto'                => [ServicePresenceListDto::class, ServicePresenceListDtoNotConstructableException::class, (object) []],
-            'ServiceResourceDto'                    => [ServiceResourceDto::class, ServiceResourceDtoNotConstructableException::class, (object) []],
-            'ServiceResourceListDto'                => [ServiceResourceListDto::class, ServiceResourceListDtoNotConstructableException::class, (object) []],
-            'ServiceSiteBoardBookingDto'            => [ServiceSiteBoardBookingDto::class, ServiceSiteBoardBookingDtoNotConstructableException::class, (object) []],
-            'ServiceSiteBoardDto'                   => [ServiceSiteBoardDto::class, ServiceSiteBoardDtoNotConstructableException::class, (object) []],
-            'ServiceSiteBoardEventDto'              => [ServiceSiteBoardEventDto::class, ServiceSiteBoardEventDtoNotConstructableException::class, (object) []],
-            'ServiceSiteBoardResourceDto'           => [ServiceSiteBoardResourceDto::class, ServiceSiteBoardResourceDtoNotConstructableException::class, (object) []],
-            'ServiceSiteBoardSiteDto'               => [ServiceSiteBoardSiteDto::class, ServiceSiteBoardSiteDtoNotConstructableException::class, (object) []],
-            'ServiceSiteBoardSlotDto'               => [ServiceSiteBoardSlotDto::class, ServiceSiteBoardSlotDtoNotConstructableException::class, (object) []],
-            'ServiceSiteDto'                        => [ServiceSiteDto::class, ServiceSiteDtoNotConstructableException::class, (object) []],
-            'ServiceSiteEventDto'                   => [ServiceSiteEventDto::class, ServiceSiteEventDtoNotConstructableException::class, (object) []],
-            'ServiceSiteEventListDto'               => [ServiceSiteEventListDto::class, ServiceSiteEventListDtoNotConstructableException::class, (object) []],
-            'ServiceSiteListDto'                    => [ServiceSiteListDto::class, ServiceSiteListDtoNotConstructableException::class, (object) []],
-            'ServiceSiteOpeningHourDto'             => [ServiceSiteOpeningHourDto::class, ServiceSiteOpeningHourDtoNotConstructableException::class, (object) []],
-            'ServiceSitePlanningDto'                => [ServiceSitePlanningDto::class, ServiceSitePlanningDtoNotConstructableException::class, (object) []],
-            'ProductDto'                            => [ProductDto::class, ProductDtoNotConstructableException::class, (object) []],
-            'ProductOfferDto'                       => [ProductOfferDto::class, ProductOfferDtoNotConstructableException::class, (object) []],
-            'ProductTranslationDto'                 => [ProductTranslationDto::class, ProductTranslationDtoNotConstructableException::class, (object) []],
-            'TaxDto'                                => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
-            'TaxListDto'                            => [TaxListDto::class, TaxListDtoNotConstructableException::class, (object) []],
-            'TaxTranslationDto'                     => [TaxTranslationDto::class, TaxTranslationDtoNotConstructableException::class, (object) []],
-            'RoleDto'                               => [RoleDto::class, RoleDtoNotConstructableException::class, (object) []],
-            'RolePermissionDto'                     => [RolePermissionDto::class, RolePermissionDtoNotConstructableException::class, (object) []],
-            'UserDto'                               => [UserDto::class, UserDtoNotConstructableException::class, (object) []],
-            'UserGroupDto'                          => [UserGroupDto::class, UserGroupDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationCancelDto'          => [UserGroupInvitationCancelDto::class, UserGroupInvitationCancelDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationCheckPendingDto'    => [UserGroupInvitationCheckPendingDto::class, UserGroupInvitationCheckPendingDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationDto'                => [UserGroupInvitationDto::class, UserGroupInvitationDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationHistoryDto'         => [UserGroupInvitationHistoryDto::class, UserGroupInvitationHistoryDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationListDto'            => [UserGroupInvitationListDto::class, UserGroupInvitationListDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationResultDto'          => [UserGroupInvitationResultDto::class, UserGroupInvitationResultDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationSendDto'            => [UserGroupInvitationSendDto::class, UserGroupInvitationSendDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationStatsDto'           => [UserGroupInvitationStatsDto::class, UserGroupInvitationStatsDtoNotConstructableException::class, (object) []],
-            'UserGroupInvitationValidateDto'        => [UserGroupInvitationValidateDto::class, UserGroupInvitationValidateDtoNotConstructableException::class, (object) []],
+            'ConfigurationDto'                                => [ConfigurationDto::class, ConfigurationDtoNotConstructableException::class, (object) []],
+            'CountryDto'                                      => [CountryDto::class, CountryDtoNotConstructableException::class, (object) []],
+            'CountryListDto'                                  => [CountryListDto::class, CountryListDtoNotConstructableException::class, (object) []],
+            'CustomFieldDto'                                  => [CustomFieldDto::class, CustomFieldDtoNotConstructableException::class, (object) []],
+            'CustomFieldGroupDto'                             => [CustomFieldGroupDto::class, CustomFieldGroupDtoNotConstructableException::class, (object) []],
+            'CustomFieldGroupTranslationDto'                  => [CustomFieldGroupTranslationDto::class, CustomFieldGroupTranslationDtoNotConstructableException::class, (object) []],
+            'CustomFieldListDto'                              => [CustomFieldListDto::class, CustomFieldListDtoNotConstructableException::class, (object) []],
+            'CustomFieldModelValueDto'                        => [CustomFieldModelValueDto::class, CustomFieldModelValueDtoNotConstructableException::class, (object) []],
+            'CustomFieldTranslationDto'                       => [CustomFieldTranslationDto::class, CustomFieldTranslationDtoNotConstructableException::class, (object) []],
+            'CustomFieldValueDto'                             => [CustomFieldValueDto::class, CustomFieldValueDtoNotConstructableException::class, (object) []],
+            'CustomFieldValueListDto'                         => [CustomFieldValueListDto::class, CustomFieldValueListDtoNotConstructableException::class, (object) []],
+            'CustomerDto'                                     => [CustomerDto::class, CustomerDtoNotConstructableException::class, (object) []],
+            'CustomerListDto'                                 => [CustomerListDto::class, CustomerListDtoNotConstructableException::class, (object) []],
+            'OrigamiApiErrorDto'                              => [OrigamiApiErrorDto::class, OrigamiApiErrorDtoNotConstructableException::class, (object) []],
+            'OrigamiApiErrorsDto'                             => [OrigamiApiErrorsDto::class, OrigamiApiErrorsDtoNotConstructableException::class, (object) []],
+            'FeatureFlagListDto'                              => [FeatureFlagListDto::class, FeatureFlagListDtoNotConstructableException::class, (object) ['some_flag' => 'yes']],
+            'FormConditionDto'                                => [FormConditionDto::class, FormConditionDtoNotConstructableException::class, (object) []],
+            'FormDto'                                         => [FormDto::class, FormDtoNotConstructableException::class, (object) []],
+            'FormFieldDto'                                    => [FormFieldDto::class, FormFieldDtoNotConstructableException::class, (object) []],
+            'FormFieldOptionDto'                              => [FormFieldOptionDto::class, FormFieldOptionDtoNotConstructableException::class, (object) []],
+            'FormFieldOptionTranslationDto'                   => [FormFieldOptionTranslationDto::class, FormFieldOptionTranslationDtoNotConstructableException::class, (object) []],
+            'FormFieldParamsDto'                              => [FormFieldParamsDto::class, FormFieldParamsDtoNotConstructableException::class, (object) ['max_size_kb' => 'big']],
+            'FormFieldTranslationDto'                         => [FormFieldTranslationDto::class, FormFieldTranslationDtoNotConstructableException::class, (object) []],
+            'FormListDto'                                     => [FormListDto::class, FormListDtoNotConstructableException::class, (object) []],
+            'FormPageDto'                                     => [FormPageDto::class, FormPageDtoNotConstructableException::class, (object) []],
+            'FormPageTranslationDto'                          => [FormPageTranslationDto::class, FormPageTranslationDtoNotConstructableException::class, (object) []],
+            'FormPrefillSourceDto'                            => [FormPrefillSourceDto::class, FormPrefillSourceDtoNotConstructableException::class, (object) []],
+            'FormPrefillSourcesDto'                           => [FormPrefillSourcesDto::class, FormPrefillSourcesDtoNotConstructableException::class, (object) []],
+            'FormSectionDto'                                  => [FormSectionDto::class, FormSectionDtoNotConstructableException::class, (object) []],
+            'FormSectionTranslationDto'                       => [FormSectionTranslationDto::class, FormSectionTranslationDtoNotConstructableException::class, (object) []],
+            'FormTranslationDto'                              => [FormTranslationDto::class, FormTranslationDtoNotConstructableException::class, (object) []],
+            'FormTypeDto'                                     => [FormTypeDto::class, FormTypeDtoNotConstructableException::class, (object) []],
+            'FormTypesDto'                                    => [FormTypesDto::class, FormTypesDtoNotConstructableException::class, (object) []],
+            'LanguageDto'                                     => [LanguageDto::class, LanguageDtoNotConstructableException::class, (object) []],
+            'LanguageListDto'                                 => [LanguageListDto::class, LanguageListDtoNotConstructableException::class, (object) []],
+            'ModuleDto'                                       => [ModuleDto::class, ModuleDtoNotConstructableException::class, (object) []],
+            'ModuleListDto'                                   => [ModuleListDto::class, ModuleListDtoNotConstructableException::class, (object) []],
+            'OauthTokenDto'                                   => [OauthTokenDto::class, OauthTokenDtoNotConstructableException::class, (object) []],
+            'ResetPasswordDto'                                => [ResetPasswordDto::class, ResetPasswordDtoNotConstructableException::class, (object) []],
+            'SendResetPasswordEmailDto'                       => [SendResetPasswordEmailDto::class, SendResetPasswordEmailDtoNotConstructableException::class, (object) []],
+            'DocumentTypeDto'                                 => [DocumentTypeDto::class, DocumentTypeDtoNotConstructableException::class, (object) []],
+            'DocumentTypeListDto'                             => [DocumentTypeListDto::class, DocumentTypeListDtoNotConstructableException::class, (object) []],
+            'SellerBankAccountDto'                            => [SellerBankAccountDto::class, SellerBankAccountDtoNotConstructableException::class, (object) []],
+            'SellerDocumentDto'                               => [SellerDocumentDto::class, SellerDocumentDtoNotConstructableException::class, (object) []],
+            'SellerDto'                                       => [SellerDto::class, SellerDtoNotConstructableException::class, (object) []],
+            'SellerLegalTypeListDto'                          => [SellerLegalTypeListDto::class, SellerLegalTypeListDtoNotConstructableException::class, (object) []],
+            'SellerListDto'                                   => [SellerListDto::class, SellerListDtoNotConstructableException::class, (object) []],
+            'ServiceBookingCustomerDto'                       => [ServiceBookingCustomerDto::class, ServiceBookingCustomerDtoNotConstructableException::class, (object) []],
+            'ServiceBookingCustomerUserDto'                   => [ServiceBookingCustomerUserDto::class, ServiceBookingCustomerUserDtoNotConstructableException::class, (object) []],
+            'ServiceBookingDto'                               => [ServiceBookingDto::class, ServiceBookingDtoNotConstructableException::class, (object) []],
+            'ServiceBookingListDto'                           => [ServiceBookingListDto::class, ServiceBookingListDtoNotConstructableException::class, (object) []],
+            'ServiceBookingOrderDto'                          => [ServiceBookingOrderDto::class, ServiceBookingOrderDtoNotConstructableException::class, (object) []],
+            'ServiceBookingSellerDto'                         => [ServiceBookingSellerDto::class, ServiceBookingSellerDtoNotConstructableException::class, (object) []],
+            'ServicePlanningDto'                              => [ServicePlanningDto::class, ServicePlanningDtoNotConstructableException::class, (object) []],
+            'ServicePlanningListDto'                          => [ServicePlanningListDto::class, ServicePlanningListDtoNotConstructableException::class, (object) []],
+            'ServiceSlotDto'                                  => [ServiceSlotDto::class, ServiceSlotDtoNotConstructableException::class, (object) []],
+            'StateDto'                                        => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
+            'AddressDto'                                      => [AddressDto::class, AddressDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewDto'                    => [ServiceAvailabilityReviewDto::class, ServiceAvailabilityReviewDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewApproveSeriesDto'       => [ServiceAvailabilityReviewApproveSeriesDto::class, ServiceAvailabilityReviewApproveSeriesDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewApproveSeriesFailedDto' => [ServiceAvailabilityReviewApproveSeriesFailedDto::class, ServiceAvailabilityReviewApproveSeriesFailedDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewPresenceDto'            => [ServiceAvailabilityReviewPresenceDto::class, ServiceAvailabilityReviewPresenceDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewRejectSeriesDto'        => [ServiceAvailabilityReviewRejectSeriesDto::class, ServiceAvailabilityReviewRejectSeriesDtoNotConstructableException::class, (object) []],
+            'ServicePresenceCreateSeriesDto'                  => [ServicePresenceCreateSeriesDto::class, ServicePresenceCreateSeriesDtoNotConstructableException::class, (object) []],
+            'ServicePresenceCreateSeriesSkippedDto'           => [ServicePresenceCreateSeriesSkippedDto::class, ServicePresenceCreateSeriesSkippedDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewListDto'                => [ServiceAvailabilityReviewListDto::class, ServiceAvailabilityReviewListDtoNotConstructableException::class, (object) []],
+            'ServiceAvailabilityReviewSlotDto'                => [ServiceAvailabilityReviewSlotDto::class, ServiceAvailabilityReviewSlotDtoNotConstructableException::class, (object) []],
+            'ServiceLateWithdrawalDto'                        => [ServiceLateWithdrawalDto::class, ServiceLateWithdrawalDtoNotConstructableException::class, (object) []],
+            'ServiceLateWithdrawalListDto'                    => [ServiceLateWithdrawalListDto::class, ServiceLateWithdrawalListDtoNotConstructableException::class, (object) []],
+            'ServiceLateWithdrawalSellerSummaryDto'           => [ServiceLateWithdrawalSellerSummaryDto::class, ServiceLateWithdrawalSellerSummaryDtoNotConstructableException::class, (object) []],
+            'ServiceLateWithdrawalSummaryDto'                 => [ServiceLateWithdrawalSummaryDto::class, ServiceLateWithdrawalSummaryDtoNotConstructableException::class, (object) []],
+            'ServicePlanningSiteDto'                          => [ServicePlanningSiteDto::class, ServicePlanningSiteDtoNotConstructableException::class, (object) []],
+            'ServicePresenceDto'                              => [ServicePresenceDto::class, ServicePresenceDtoNotConstructableException::class, (object) []],
+            'ServicePresenceListDto'                          => [ServicePresenceListDto::class, ServicePresenceListDtoNotConstructableException::class, (object) []],
+            'ServiceResourceDto'                              => [ServiceResourceDto::class, ServiceResourceDtoNotConstructableException::class, (object) []],
+            'ServiceResourceListDto'                          => [ServiceResourceListDto::class, ServiceResourceListDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardBookingDto'                      => [ServiceSiteBoardBookingDto::class, ServiceSiteBoardBookingDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardDto'                             => [ServiceSiteBoardDto::class, ServiceSiteBoardDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardEventDto'                        => [ServiceSiteBoardEventDto::class, ServiceSiteBoardEventDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardResourceDto'                     => [ServiceSiteBoardResourceDto::class, ServiceSiteBoardResourceDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardSiteDto'                         => [ServiceSiteBoardSiteDto::class, ServiceSiteBoardSiteDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardSlotDto'                         => [ServiceSiteBoardSlotDto::class, ServiceSiteBoardSlotDtoNotConstructableException::class, (object) []],
+            'ServiceSiteDto'                                  => [ServiceSiteDto::class, ServiceSiteDtoNotConstructableException::class, (object) []],
+            'ServiceSiteEventDto'                             => [ServiceSiteEventDto::class, ServiceSiteEventDtoNotConstructableException::class, (object) []],
+            'ServiceSiteEventListDto'                         => [ServiceSiteEventListDto::class, ServiceSiteEventListDtoNotConstructableException::class, (object) []],
+            'ServiceSiteListDto'                              => [ServiceSiteListDto::class, ServiceSiteListDtoNotConstructableException::class, (object) []],
+            'ServiceSiteOpeningHourDto'                       => [ServiceSiteOpeningHourDto::class, ServiceSiteOpeningHourDtoNotConstructableException::class, (object) []],
+            'ServiceSitePlanningDto'                          => [ServiceSitePlanningDto::class, ServiceSitePlanningDtoNotConstructableException::class, (object) []],
+            'ProductDto'                                      => [ProductDto::class, ProductDtoNotConstructableException::class, (object) []],
+            'ProductOfferDto'                                 => [ProductOfferDto::class, ProductOfferDtoNotConstructableException::class, (object) []],
+            'ProductTranslationDto'                           => [ProductTranslationDto::class, ProductTranslationDtoNotConstructableException::class, (object) []],
+            'TaxDto'                                          => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
+            'TaxListDto'                                      => [TaxListDto::class, TaxListDtoNotConstructableException::class, (object) []],
+            'TaxTranslationDto'                               => [TaxTranslationDto::class, TaxTranslationDtoNotConstructableException::class, (object) []],
+            'RoleDto'                                         => [RoleDto::class, RoleDtoNotConstructableException::class, (object) []],
+            'RolePermissionDto'                               => [RolePermissionDto::class, RolePermissionDtoNotConstructableException::class, (object) []],
+            'UserDto'                                         => [UserDto::class, UserDtoNotConstructableException::class, (object) []],
+            'UserGroupDto'                                    => [UserGroupDto::class, UserGroupDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationCancelDto'                    => [UserGroupInvitationCancelDto::class, UserGroupInvitationCancelDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationCheckPendingDto'              => [UserGroupInvitationCheckPendingDto::class, UserGroupInvitationCheckPendingDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationDto'                          => [UserGroupInvitationDto::class, UserGroupInvitationDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationHistoryDto'                   => [UserGroupInvitationHistoryDto::class, UserGroupInvitationHistoryDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationListDto'                      => [UserGroupInvitationListDto::class, UserGroupInvitationListDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationResultDto'                    => [UserGroupInvitationResultDto::class, UserGroupInvitationResultDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationSendDto'                      => [UserGroupInvitationSendDto::class, UserGroupInvitationSendDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationStatsDto'                     => [UserGroupInvitationStatsDto::class, UserGroupInvitationStatsDtoNotConstructableException::class, (object) []],
+            'UserGroupInvitationValidateDto'                  => [UserGroupInvitationValidateDto::class, UserGroupInvitationValidateDtoNotConstructableException::class, (object) []],
         ];
     }
 

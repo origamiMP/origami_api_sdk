@@ -9,9 +9,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableExcept
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceAvailabilityReviewDtoNotConstructableException;
 
 /**
- * An availability added by a provider to a planning attached to a place, which the team approves before it can be booked,
- * or a presence the provider asks for, without planning. Exactly one of `rule`, `exception`, `slot` and `presence` is
- * set.
+ * A slot a provider adds to a planning attached to a place, which the team approves before it can be booked, or a
+ * presence the provider asks for, without planning. Exactly one of `slot` and `presence` is set.
  */
 class ServiceAvailabilityReviewDto extends ApiResponseDto
 {
@@ -21,13 +20,9 @@ class ServiceAvailabilityReviewDto extends ApiResponseDto
 
     public ?int $sellerId;
 
-    public ?ServiceAvailabilityReviewRuleDto $rule;
-
-    public ?ServiceAvailabilityReviewExceptionDto $exception;
-
     public ?ServiceAvailabilityReviewSlotDto $slot;
 
-    public ?ServicePresenceDto $presence;
+    public ?ServiceAvailabilityReviewPresenceDto $presence;
 
     public ServiceAvailabilityReviewDtoStatusEnum $status;
 
@@ -43,10 +38,8 @@ class ServiceAvailabilityReviewDto extends ApiResponseDto
             'id'                  => 'id',
             'service_planning_id' => 'servicePlanningId',
             'seller_id'           => 'sellerId',
-            'rule'                => fn (?object $rule) => $this->rule = is_null($rule) ? null : new ServiceAvailabilityReviewRuleDto($rule),
-            'exception'           => fn (?object $exception) => $this->exception = is_null($exception) ? null : new ServiceAvailabilityReviewExceptionDto($exception),
             'slot'                => fn (?object $slot) => $this->slot = is_null($slot) ? null : new ServiceAvailabilityReviewSlotDto($slot),
-            'presence'            => fn (?object $presence) => $this->presence = is_null($presence) ? null : new ServicePresenceDto($presence),
+            'presence'            => fn (?object $presence) => $this->presence = is_null($presence) ? null : new ServiceAvailabilityReviewPresenceDto($presence),
             'status'              => fn ($status) => $this->status = ServiceAvailabilityReviewDtoStatusEnum::from($status),
             'requested_at'        => fn (string $requestedAt) => $this->requestedAt = Carbon::parse($requestedAt),
             'reviewed_at'         => fn (?string $reviewedAt) => $this->reviewedAt = is_null($reviewedAt) ? null : Carbon::parse($reviewedAt),
