@@ -27,14 +27,11 @@ class StateDto extends ApiResponseDto
 
     public string $textColor;
 
-    /** Sent until the API release 2.14. */
-    public ?string $name = null;
+    public ?string $name;
 
-    /** Sent until the API release 2.14. */
-    public ?string $actionName = null;
+    public ?string $actionName;
 
-    /** Sent until the API release 2.14. */
-    public ?string $description = null;
+    public ?string $description;
 
     public static function getAvailableIncludes(): array
     {
@@ -66,15 +63,6 @@ class StateDto extends ApiResponseDto
             'name'        => 'name',
             'action_name' => 'actionName',
             'description' => 'description',
-        ];
-    }
-
-    protected function getOptionalKeys(): array
-    {
-        return [
-            'name',
-            'action_name',
-            'description',
         ];
     }
 
