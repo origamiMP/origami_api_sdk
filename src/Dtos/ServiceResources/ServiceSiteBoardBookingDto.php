@@ -3,7 +3,7 @@
 namespace OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
-use OrigamiMp\OrigamiApiSdk\Enums\Dtos\ServiceResources\ServiceSiteBoardBookingDtoStatusEnum;
+use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardBookingDtoNotConstructableException;
 
@@ -11,7 +11,7 @@ class ServiceSiteBoardBookingDto extends ApiResponseDto
 {
     public int $id;
 
-    public ServiceSiteBoardBookingDtoStatusEnum $status;
+    public ServiceBookingDtoStatusEnum $status;
 
     public ?int $stateId;
 
@@ -21,7 +21,7 @@ class ServiceSiteBoardBookingDto extends ApiResponseDto
     {
         return [
             'id'       => 'id',
-            'status'   => fn ($status) => $this->status = ServiceSiteBoardBookingDtoStatusEnum::from($status),
+            'status'   => fn ($status) => $this->status = ServiceBookingDtoStatusEnum::from($status),
             'state_id' => 'stateId',
             'quantity' => 'quantity',
         ];
