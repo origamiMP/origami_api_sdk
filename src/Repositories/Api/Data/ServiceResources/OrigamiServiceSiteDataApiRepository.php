@@ -3,16 +3,19 @@
 namespace OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\ServiceResources;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteListDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiResponseWithoutDataException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Api\OrigamiApiUnknownException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServiceSiteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\GetServiceSiteBoardRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\GetServiceSiteBoardsRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceSiteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\UpdateServiceSiteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
@@ -97,5 +100,20 @@ class OrigamiServiceSiteDataApiRepository extends OrigamiDataApiRepository
         $responseContent = $this->decodeResponse($response);
 
         return new ServiceSiteBoardDto($this->getResponseContentData($responseContent));
+    }
+
+    /**
+     * The board of each place asked, in the format of `getBoard()`.
+     *
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws ServiceSiteBoardListDtoNotConstructableException
+     */
+    public function getBoards(GetServiceSiteBoardsRequestParamBag $paramBag): ServiceSiteBoardListDto
+    {
+        $response = $this->restClient->get('modules/service_resources/sites/boards', $paramBag);
+        $responseContent = $this->decodeResponse($response);
+
+        return new ServiceSiteBoardListDto($responseContent);
     }
 }

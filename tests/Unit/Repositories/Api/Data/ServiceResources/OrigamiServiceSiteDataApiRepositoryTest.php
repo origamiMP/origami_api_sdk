@@ -5,11 +5,13 @@ namespace Tests\Unit\Repositories\Api\Data\ServiceResources;
 use Carbon\Carbon;
 use OrigamiMp\OrigamiApiSdk\Dtos\Address\AddressDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteListDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\CreateServiceSiteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\GetServiceSiteBoardRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\GetServiceSiteBoardsRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ListServiceSiteRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ServiceSiteAddressParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\ServiceResources\ServiceSiteOpeningHourParamBag;
@@ -162,5 +164,44 @@ class OrigamiServiceSiteDataApiRepositoryTest extends TestCase
         $this->assertEquals(Carbon::parse('2024-05-12 10:00:00'), $slot->startsAt);
         $this->assertSame(ServiceBookingDtoStatusEnum::CONFIRMED, $slot->bookings->first()->status);
         $this->assertSame([3], $board->events->first()->resourceIds);
+    }
+
+    /**
+     * `GET modules/service_resources/sites/boards` should send the places and the period, and read the board of each.
+     */
+    public function test_get_boards_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [
+            $this->mockServiceSiteBoardApiData(['site' => ['id' => 42, 'name' => 'Marais', 'timezone' => 'Europe/Paris']]),
+            $this->mockServiceSiteBoardApiData(['site' => ['id' => 43, 'name' => 'Bastille', 'timezone' => 'Europe/Paris']]),
+        ]]));
+        $paramBag = new GetServiceSiteBoardsRequestParamBag;
+        $paramBag->ids = [42, 43];
+        $paramBag->from = '2024-05-12';
+        $paramBag->to = '2024-05-13';
+
+        $boards = (new OrigamiServiceSiteDataApiRepository($restClient))->getBoards($paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'modules/service_resources/sites/boards');
+        $this->assertLastApiRequestQueryWas(['ids' => ['42', '43'], 'from' => '2024-05-12', 'to' => '2024-05-13']);
+        $this->assertInstanceOf(ServiceSiteBoardListDto::class, $boards);
+        $this->assertContainsOnlyInstancesOf(ServiceSiteBoardDto::class, $boards->data);
+        $this->assertSame([42, 43], $boards->data->map(fn ($board) => $board->site->id)->all());
+        $this->assertSame(ServiceBookingDtoStatusEnum::CONFIRMED, $boards->data->first()->slots->first()->bookings->first()->status);
+    }
+
+    /**
+     * `GET modules/service_resources/sites/boards` should send only the places when the period is not set.
+     */
+    public function test_get_boards_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => []]));
+        $paramBag = new GetServiceSiteBoardsRequestParamBag;
+        $paramBag->ids = [42];
+
+        $boards = (new OrigamiServiceSiteDataApiRepository($restClient))->getBoards($paramBag);
+
+        $this->assertLastApiRequestQueryWas(['ids' => ['42']]);
+        $this->assertCount(0, $boards->data);
     }
 }

@@ -86,6 +86,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceResourceUpdateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardBookingDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardEventDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardResourceDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardSiteDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteBoardSlotDto;
@@ -197,6 +198,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceResourceUpda
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardBookingDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardEventDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardResourceDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardSiteDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteBoardSlotDtoNotConstructableException;
@@ -447,6 +449,7 @@ class ApiResponseDtoTest extends TestCase
             'ServiceResourceListDto'                          => [ServiceResourceListDto::class, ServiceResourceListDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardBookingDto'                      => [ServiceSiteBoardBookingDto::class, ServiceSiteBoardBookingDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardDto'                             => [ServiceSiteBoardDto::class, ServiceSiteBoardDtoNotConstructableException::class, (object) []],
+            'ServiceSiteBoardListDto'                         => [ServiceSiteBoardListDto::class, ServiceSiteBoardListDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardEventDto'                        => [ServiceSiteBoardEventDto::class, ServiceSiteBoardEventDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardResourceDto'                     => [ServiceSiteBoardResourceDto::class, ServiceSiteBoardResourceDtoNotConstructableException::class, (object) []],
             'ServiceSiteBoardSiteDto'                         => [ServiceSiteBoardSiteDto::class, ServiceSiteBoardSiteDtoNotConstructableException::class, (object) []],
