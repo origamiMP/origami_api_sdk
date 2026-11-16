@@ -17,6 +17,13 @@ class ListServiceBookingRequestParamBag extends RequestParamBag implements HasFi
 {
     use HasFilters, HasIncludes, HasPagination, HasSearch;
 
+    /**
+     * Sorts the list: `name` is the field (`starts_at`), `way` is `asc` (default) or `desc`.
+     *
+     * @var array{name: string, way?: string}
+     */
+    public array $order;
+
     protected static function getAdditionalAvailableFilters(): array
     {
         return [
@@ -25,6 +32,7 @@ class ListServiceBookingRequestParamBag extends RequestParamBag implements HasFi
             'origin',
             'seller_id',
             'starts_between',
+            'service_slot_id',
             'service_planning_id',
             'product_id',
             'reference',
@@ -38,6 +46,7 @@ class ListServiceBookingRequestParamBag extends RequestParamBag implements HasFi
             ...$this->getPaginationParamsList(),
             ...$this->getSearchParamsList(),
             ...$this->getIncludesParamsList(),
+            'order' => 'order',
         ];
     }
 

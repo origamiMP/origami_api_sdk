@@ -128,6 +128,27 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
     }
 
     /**
+     * `GET catalog/service-bookings` should send a list of slots and of plannings as a `whereIn` filter, and the sort on
+     * the start of the slot.
+     */
+    public function test_list_case_5(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([])));
+        $paramBag = new ListServiceBookingRequestParamBag;
+        $paramBag->setFilters(['service_slot_id' => [7, 8], 'service_planning_id' => [3, 4]]);
+        $paramBag->order = ['name' => 'starts_at', 'way' => 'desc'];
+
+        (new OrigamiServiceBookingDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestQueryWas([
+            'filter'        => ['service_slot_id' => ['7', '8'], 'service_planning_id' => ['3', '4']],
+            'page'          => '1',
+            'item_per_page' => '20',
+            'order'         => ['name' => 'starts_at', 'way' => 'desc'],
+        ]);
+    }
+
+    /**
      * `POST catalog/service-bookings` should send the slot, the offer and the user the operator books for, and read the
      * pending booking.
      */
