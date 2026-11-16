@@ -2,6 +2,8 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductOfferDto;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 
 trait TestsProductDtos
@@ -17,6 +19,11 @@ trait TestsProductDtos
         ];
 
         return [...$baseData, ...$override];
+    }
+
+    protected function mockProductOfferDto(array $override = []): ProductOfferDto
+    {
+        return new ProductOfferDto(Obj::fromArray($this->mockProductOfferApiData($override)));
     }
 
     protected function mockProductApiData(array $override = []): array
