@@ -36,7 +36,7 @@ Overriding the constructor stays exceptional: `FeatureFlagListDto` wraps a bare 
 - `public` and typed. A value the API can send as `null` gives a nullable type (`?int $moduleId`).
 - Named in camelCase after the API key (`id_scs_tax` → `$idScsTax`), unless another name makes more sense.
 - An enum value is a backed enum (`TaxDtoTypeEnum`), a date a `Carbon` (`HasTimestamps`), a list of DTOs a `Collection` documented by `/** @var Collection<int, TaxTranslationDto> */`.
-- An include property stays uninitialized when the include was not requested: its docblock says « May be undefined if the corresponding data was not included. » (`UserDto::$userGroups`).
+- An include property stays uninitialized when the include was not requested: its docblock says « May be undefined if the corresponding data was not included. » (`UserDto::$userGroups`), except a nullable single item include, declared `= null` (see « Declaring includes »).
 
 ## Data structure (`getDefaultDataStructureToProperties()`)
 
@@ -92,6 +92,8 @@ A DTO whose resource has includes on the API side uses the `HasIncludes` trait (
 ```
 
 Adding an include later means creating its DTO, uncommenting the line and reading it. Full example: `SellerDto`.
+
+A single item include the API may answer without item (its transformer returns `null`) is left out of the response by Fractal, as if it was not requested: its property is nullable and declared `= null`, so that it is `null` both when the relation is empty and when the include was not requested, instead of uninitialized (`ServiceBookingDto::$customer`).
 
 ## Nested lists
 

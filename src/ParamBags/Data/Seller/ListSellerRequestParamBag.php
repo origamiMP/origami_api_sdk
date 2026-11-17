@@ -20,6 +20,7 @@ class ListSellerRequestParamBag extends RequestParamBag implements HasFiltersCon
     protected static function getAdditionalAvailableFilters(): array
     {
         return [
+            'id',
             'without_phone',
             'address_city',
             'external_uid',
