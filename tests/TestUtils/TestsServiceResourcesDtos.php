@@ -143,6 +143,7 @@ trait TestsServiceResourcesDtos
             'seller_id'           => TestCase::unique(),
             'service_site_id'     => TestCase::unique(),
             'service_planning_id' => TestCase::unique(),
+            'service_presence_id' => null,
             'service_resource_id' => null,
             'duration_minutes'    => 60,
             'notice_minutes'      => 120,

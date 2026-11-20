@@ -26,6 +26,21 @@ class OrigamiServiceLateWithdrawalDataApiRepositoryTest extends TestCase
     }
 
     /**
+     * A range of a presence comes without planning, a slot logged by an API before the presences without presence.
+     */
+    public function test_list_case_2(): void
+    {
+        $presenceRange = $this->mockServiceLateWithdrawalApiData(['service_planning_id' => null, 'service_presence_id' => 7]);
+        $slot = $this->mockServiceLateWithdrawalApiData(['service_planning_id' => 3]);
+        unset($slot['service_presence_id']);
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([$presenceRange, $slot])));
+
+        $withdrawals = (new OrigamiServiceLateWithdrawalDataApiRepository($restClient))->list(new ListServiceLateWithdrawalRequestParamBag);
+
+        $this->assertSame([[null, 7], [3, null]], $withdrawals->data->map(fn ($withdrawal) => [$withdrawal->servicePlanningId, $withdrawal->servicePresenceId])->all());
+    }
+
+    /**
      * `GET modules/service_resources/late-withdrawals/summary` should read the late withdrawals per provider.
      */
     public function test_get_summary_case_1(): void
