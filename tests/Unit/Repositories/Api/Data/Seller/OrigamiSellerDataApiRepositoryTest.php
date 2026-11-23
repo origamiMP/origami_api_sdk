@@ -304,4 +304,22 @@ class OrigamiSellerDataApiRepositoryTest extends TestCase
         $this->assertInstanceOf(SellerListDto::class, $sellers);
         $this->assertSame(42, $sellers->data->first()->id);
     }
+
+    /**
+     * `GET sellers` should send a list of ids as a `whereIn` filter.
+     */
+    public function test_list_case_5(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([])));
+        $paramBag = new ListSellerRequestParamBag;
+        $paramBag->setFilters(['id' => [8, 9]]);
+
+        (new OrigamiSellerDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestQueryWas([
+            'filter'        => ['id' => ['8', '9']],
+            'page'          => '1',
+            'item_per_page' => '20',
+        ]);
+    }
 }

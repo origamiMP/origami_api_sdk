@@ -54,6 +54,10 @@ A request param bag offering a common feature of the API uses its trait from `Tr
 
 The param bag merges the API keys of each trait with its own: `...$this->getIncludesParamsList()` (`ListSellerRequestParamBag`).
 
+## Sort
+
+A list the API sorts declares a public `array $order` property, typed `array{name: string, way?: string}`, with the API key `'order' => 'order'` in `getQueryRequestParamsList()`: the API reads `order[name]` (a column, or an `orderBy<Name>` scope of the model) and `order[way]` (`asc` by default, or `desc`). Only `ListServiceBookingRequestParamBag` sorts today, so there is no trait: a second param bag that sorts turns it into a `HasOrder` trait in this table.
+
 ## No validation rules
 
 A param bag declares no validation rules: the API validates what it receives, and answers an invalid request with a 422 that the SDK throws as `OrigamiApiUnprocessableEntityException` (see `exceptions.md`).

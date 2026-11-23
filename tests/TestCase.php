@@ -3,9 +3,11 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Tests\TestUtils\TestsAddressDtos;
 use Tests\TestUtils\TestsArrayableDtos;
 use Tests\TestUtils\TestsConfigurationDtos;
 use Tests\TestUtils\TestsCountryDtos;
+use Tests\TestUtils\TestsCustomerDtos;
 use Tests\TestUtils\TestsCustomFieldDtos;
 use Tests\TestUtils\TestsErrorDtos;
 use Tests\TestUtils\TestsExceptions;
@@ -14,17 +16,23 @@ use Tests\TestUtils\TestsFormDtos;
 use Tests\TestUtils\TestsLanguageDtos;
 use Tests\TestUtils\TestsModuleDtos;
 use Tests\TestUtils\TestsOauthDtos;
+use Tests\TestUtils\TestsProductDtos;
 use Tests\TestUtils\TestsRestClient;
 use Tests\TestUtils\TestsSellerDtos;
+use Tests\TestUtils\TestsServiceDtos;
+use Tests\TestUtils\TestsServiceResourcesDtos;
 use Tests\TestUtils\TestsTaxDtos;
 use Tests\TestUtils\TestsUserDtos;
 use Tests\TestUtils\TestsUserGroupInvitationDtos;
+use Tests\TestUtils\TestsWorkflowDtos;
 
 abstract class TestCase extends BaseTestCase
 {
-    use TestsArrayableDtos,
+    use TestsAddressDtos,
+        TestsArrayableDtos,
         TestsConfigurationDtos,
         TestsCountryDtos,
+        TestsCustomerDtos,
         TestsCustomFieldDtos,
         TestsErrorDtos,
         TestsExceptions,
@@ -33,11 +41,15 @@ abstract class TestCase extends BaseTestCase
         TestsLanguageDtos,
         TestsModuleDtos,
         TestsOauthDtos,
+        TestsProductDtos,
         TestsRestClient,
         TestsSellerDtos,
+        TestsServiceDtos,
+        TestsServiceResourcesDtos,
         TestsTaxDtos,
         TestsUserDtos,
-        TestsUserGroupInvitationDtos;
+        TestsUserGroupInvitationDtos,
+        TestsWorkflowDtos;
 
     private static int $uniqueCounter = 0;
 
