@@ -11,6 +11,10 @@ An API repository groups the API calls of a resource. Each method sends a reques
 
 `OrigamiOauthApiRepository` is the only API repository of the `Oauth` family, directly in `src/Repositories/Api/Oauth/`.
 
+### Sub-resources
+
+A resource the API only reaches through the path of its parent (`modules/{moduleId}/payment_method_rules`, `modules/service_resources/plannings/{servicePlanningId}/site`) gets its own API repository, rather than methods added to the repository of its parent. It goes in the domain of its parent, with its DTOs: `Module/OrigamiPaymentMethodRuleDataApiRepository` returning `Dtos/Module/PaymentMethodRuleListDto`, `ServiceResources/OrigamiServicePlanningSiteDataApiRepository`. Its methods follow the usual names (see « Method names »), and take the id of the parent named after it (`list(int $moduleId)`, see « Parameters »).
+
 ## Class names
 
 `Origami<Resource><Family>ApiRepository`: `OrigamiSellerDataApiRepository`, `OrigamiTaxGuestApiRepository`. An API repository extends the base class of its family (`OrigamiDataApiRepository`, `OrigamiGuestApiRepository`), whose constructor requires the matching client repository. `OrigamiOauthApiRepository` extends `RestApiRepository` directly.
@@ -24,11 +28,12 @@ An API repository groups the API calls of a resource. Each method sends a reques
 | Creation (`POST sellers`) | `create` |
 | Update (`PATCH sellers/{id}`) | `update` |
 | Deletion (`DELETE sellers/{id}`) | `delete` |
+| Replacement of the whole list by the one sent (`PUT modules/{moduleId}/payment_method_rules`) | `sync` (`OrigamiPaymentMethodRuleDataApiRepository`) |
 | Any other request | The action of the endpoint (`activate`, `duplicate`, `checkPending`), or `get<Thing>` for another read (`getLegalTypes`, `getHistory`) |
 
 ## Method order
 
-The CRUD methods first, in the order of the table above (`list`, `get`, `create`, `update`, `delete`), then the other methods (`OrigamiFormDataApiRepository`).
+The CRUD methods first, in the order of the table above (`list`, `get`, `create`, `update`, `delete`, `sync`), then the other methods (`OrigamiFormDataApiRepository`).
 
 ## Method contents
 

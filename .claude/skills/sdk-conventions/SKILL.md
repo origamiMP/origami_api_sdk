@@ -24,7 +24,7 @@ Start with `references/tests/README.md`: it lists every test topic and the singl
 | File | Read it when… |
 |---|---|
 | `references/code/param-bags.md` | You create or change a param bag, or an API repository method: request vs nested param bags, folder (subfolder of a request), class names, order of the class contents, properties, the API key declared for every property sent and its custom cast, cross-cutting traits and their contracts, no validation rules, the include rule and its scope |
-| `references/code/api-repositories.md` | You create or change an API repository or one of its methods: folder, class and method names, method order, parameters (optional param bag), body, docblock and `@throws` |
+| `references/code/api-repositories.md` | You create or change an API repository or one of its methods: folder, sub-resources (own repository in the domain of the parent), class and method names (`sync` for a `PUT` replacing a list), method order, parameters (optional param bag), body, docblock and `@throws` |
 | `references/code/client-repositories.md` | You create or change a client repository: class hierarchy, folder, name, constructor, overridden hooks |
 | `references/code/dtos.md` | You create or change a DTO: folder, class name, order of the class contents (an overridden `toArray()` last), properties, data structure, missing and optional keys (`getOptionalKeys()`), exception, includes (commented ones included), nested lists (`init<Property>()`), list DTOs, `toArray()` |
 | `references/code/traits.md` | You create or change a trait, or its contract: folder, name, when it has a contract, order of the contents, setters and getters, what it gives to the class using it |

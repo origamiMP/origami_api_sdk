@@ -40,3 +40,4 @@ The filtering itself is tested once in `Traits/ParamBags/HasIncludesTest`. When 
 | Creation (JSON body and response) | `OrigamiTaxDataApiRepositoryTest::test_create_case_1` |
 | Partial update (204) | `OrigamiTaxDataApiRepositoryTest::test_update_case_1` |
 | Action without body (204) | `OrigamiTaxDataApiRepositoryTest::test_delete_case_1` |
+| Replacement of the list of a sub-resource (`PUT`, nested param bags, list answered) | `OrigamiPaymentMethodRuleDataApiRepositoryTest::test_sync_case_1` |
