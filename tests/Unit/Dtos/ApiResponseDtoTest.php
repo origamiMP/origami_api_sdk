@@ -47,6 +47,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Payment\PaymentPspCardDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Payment\PaymentTransactionDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductOfferDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Product\ProductTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\DocumentTypeDto;
@@ -161,6 +162,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\SendResetPasswordEmailDtoNo
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Payment\PaymentPspCardDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Payment\PaymentTransactionDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductOfferDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Product\ProductTranslationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Seller\DocumentTypeDtoNotConstructableException;
@@ -468,6 +470,7 @@ class ApiResponseDtoTest extends TestCase
             'PaymentPspCardDto'                               => [PaymentPspCardDto::class, PaymentPspCardDtoNotConstructableException::class, (object) []],
             'PaymentTransactionDto'                           => [PaymentTransactionDto::class, PaymentTransactionDtoNotConstructableException::class, (object) []],
             'ProductDto'                                      => [ProductDto::class, ProductDtoNotConstructableException::class, (object) []],
+            'ProductListDto'                                  => [ProductListDto::class, ProductListDtoNotConstructableException::class, (object) []],
             'ProductOfferDto'                                 => [ProductOfferDto::class, ProductOfferDtoNotConstructableException::class, (object) []],
             'ProductTranslationDto'                           => [ProductTranslationDto::class, ProductTranslationDtoNotConstructableException::class, (object) []],
             'TaxDto'                                          => [TaxDto::class, TaxDtoNotConstructableException::class, (object) []],
