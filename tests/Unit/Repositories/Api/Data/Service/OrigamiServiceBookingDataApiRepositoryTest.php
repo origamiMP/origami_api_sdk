@@ -15,6 +15,7 @@ use OrigamiMp\OrigamiApiSdk\Enums\Dtos\Service\ServiceBookingDtoStatusEnum;
 use OrigamiMp\OrigamiApiSdk\Enums\ParamBags\Data\Service\CreateServiceBookingParamBagOriginEnum;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ConfirmServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\CreateServiceBookingRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\GetServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ListServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\RescheduleServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\UpdateServiceBookingRequestParamBag;
@@ -86,7 +87,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
                 'seller'           => ['data' => ['id' => 8, 'name' => 'Inès Moreau']],
                 'state'            => ['data' => $this->mockStateApiData(['id' => 31])],
                 'available_states' => ['data' => [$this->mockStateApiData(['id' => 29]), $this->mockStateApiData(['id' => 30])]],
-                'order'            => ['data' => ['id' => 5, 'reference' => 'ORD-0005']],
+                'order'            => ['data' => ['id' => 5, 'order_id' => 4, 'reference' => 'ORD-0005']],
             ]),
         ])));
         $paramBag = new ListServiceBookingRequestParamBag;
@@ -114,6 +115,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
         $this->assertSame([29, 30], $booking->availableStates->pluck('id')->all());
         $this->assertInstanceOf(ServiceBookingOrderDto::class, $booking->order);
         $this->assertSame('ORD-0005', $booking->order->reference);
+        $this->assertSame(4, $booking->order->orderId);
     }
 
     public function test_list_case_4(): void
@@ -146,6 +148,27 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
             'item_per_page' => '20',
             'order'         => ['name' => 'starts_at', 'way' => 'desc'],
         ]);
+    }
+
+    /**
+     * `GET catalog/service-bookings/{id}` should only request the available includes, and read the order of the booking.
+     */
+    public function test_get_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockServiceBookingApiData([
+            'id'    => 42,
+            'order' => ['data' => ['id' => 5, 'order_id' => 4, 'reference' => 'ORD-0005']],
+        ])]));
+        $paramBag = new GetServiceBookingRequestParamBag;
+        $paramBag->setIncludes(['order', 'unknown']);
+
+        $booking = (new OrigamiServiceBookingDataApiRepository($restClient))->get(42, $paramBag);
+
+        $this->assertLastApiRequestWas('GET', 'catalog/service-bookings/42');
+        $this->assertLastApiRequestQueryWas(['include' => ['order']]);
+        $this->assertInstanceOf(ServiceBookingDto::class, $booking);
+        $this->assertSame(42, $booking->id);
+        $this->assertSame(4, $booking->order->orderId);
     }
 
     /**

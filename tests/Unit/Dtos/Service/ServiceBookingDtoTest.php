@@ -25,6 +25,17 @@ class ServiceBookingDtoTest extends TestCase
     }
 
     /**
+     * The order of a booking from an API that does not send the order it belongs to yet should still be read.
+     */
+    public function test_order_case_1(): void
+    {
+        $booking = $this->mockServiceBookingDto(['order' => ['data' => ['id' => 5, 'reference' => 'ORD-0005']]]);
+
+        $this->assertSame(5, $booking->order->id);
+        $this->assertNull($booking->order->orderId);
+    }
+
+    /**
      * The slots of a booking over a range of days should be read.
      */
     public function test_range_slots_case_1(): void
