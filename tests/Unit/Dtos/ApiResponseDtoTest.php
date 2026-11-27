@@ -41,6 +41,7 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Language\LanguageDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Language\LanguageListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleLogDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\PaymentMethodRuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\PaymentMethodRuleListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
@@ -155,6 +156,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageDtoNotConstructable
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleLogDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\PaymentMethodRuleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\PaymentMethodRuleListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
@@ -410,6 +412,7 @@ class ApiResponseDtoTest extends TestCase
             'LanguageListDto'                                 => [LanguageListDto::class, LanguageListDtoNotConstructableException::class, (object) []],
             'ModuleDto'                                       => [ModuleDto::class, ModuleDtoNotConstructableException::class, (object) []],
             'ModuleListDto'                                   => [ModuleListDto::class, ModuleListDtoNotConstructableException::class, (object) []],
+            'ModuleLogDto'                                    => [ModuleLogDto::class, ModuleLogDtoNotConstructableException::class, (object) []],
             'PaymentMethodRuleDto'                            => [PaymentMethodRuleDto::class, PaymentMethodRuleDtoNotConstructableException::class, (object) []],
             'PaymentMethodRuleListDto'                        => [PaymentMethodRuleListDto::class, PaymentMethodRuleListDtoNotConstructableException::class, (object) []],
             'OauthTokenDto'                                   => [OauthTokenDto::class, OauthTokenDtoNotConstructableException::class, (object) []],

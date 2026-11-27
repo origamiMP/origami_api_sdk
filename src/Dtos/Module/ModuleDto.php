@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Module;
 
+use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
@@ -36,12 +37,19 @@ class ModuleDto extends ApiResponseDto
 
     public bool $isActive;
 
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var Collection<int, ModuleLogDto>
+     */
+    public Collection $logs;
+
     public static function getAvailableIncludes(): array
     {
         return [
             // 'payment_psp',
             // 'webhooks',
-            // 'logs',
+            'logs' => ModuleLogDto::class,
         ];
     }
 
@@ -60,6 +68,7 @@ class ModuleDto extends ApiResponseDto
             'image'                    => 'imageUrl',
             'available_configurations' => fn (object|array $availableConfigurations) => $this->availableConfigurations = (object) $availableConfigurations,
             'is_active'                => 'isActive',
+            'logs'                     => fn (object $logs) => $this->logs = $this->collectIncluded($logs, ModuleLogDto::class),
         ];
 
         return [
