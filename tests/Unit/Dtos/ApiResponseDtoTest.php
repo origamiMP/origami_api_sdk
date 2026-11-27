@@ -41,6 +41,12 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Language\LanguageDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Language\LanguageListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\Prestashop\PrestashopOrderStateDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\Prestashop\PrestashopOrderStateListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\Prestashop\PrestashopShippingZoneDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\Prestashop\PrestashopShippingZoneListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\Prestashop\PrestashopTaxDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\Prestashop\PrestashopTaxListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\ResetPasswordDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
@@ -97,6 +103,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteEventListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSiteOpeningHourDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\ServiceResources\ServiceSitePlanningDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Shipping\ShippingZoneDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Shipping\ShippingZoneListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Shipping\ShippingZoneTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Tax\TaxTranslationDto;
@@ -153,6 +162,12 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageDtoNotConstructable
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\Prestashop\PrestashopOrderStateDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\Prestashop\PrestashopOrderStateListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\Prestashop\PrestashopShippingZoneDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\Prestashop\PrestashopShippingZoneListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\Prestashop\PrestashopTaxDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\Prestashop\PrestashopTaxListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\ResetPasswordDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\SendResetPasswordEmailDtoNotConstructableException;
@@ -209,6 +224,9 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteEventLis
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSiteOpeningHourDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ServiceResources\ServiceSitePlanningDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Shipping\ShippingZoneDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Shipping\ShippingZoneListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Shipping\ShippingZoneTranslationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Tax\TaxTranslationDtoNotConstructableException;
@@ -426,6 +444,15 @@ class ApiResponseDtoTest extends TestCase
             'ServicePlanningListDto'                          => [ServicePlanningListDto::class, ServicePlanningListDtoNotConstructableException::class, (object) []],
             'ServiceSlotDto'                                  => [ServiceSlotDto::class, ServiceSlotDtoNotConstructableException::class, (object) []],
             'ServiceSlotListDto'                              => [ServiceSlotListDto::class, ServiceSlotListDtoNotConstructableException::class, (object) []],
+            'PrestashopOrderStateDto'                         => [PrestashopOrderStateDto::class, PrestashopOrderStateDtoNotConstructableException::class, (object) []],
+            'PrestashopOrderStateListDto'                     => [PrestashopOrderStateListDto::class, PrestashopOrderStateListDtoNotConstructableException::class, (object) []],
+            'PrestashopShippingZoneDto'                       => [PrestashopShippingZoneDto::class, PrestashopShippingZoneDtoNotConstructableException::class, (object) []],
+            'PrestashopShippingZoneListDto'                   => [PrestashopShippingZoneListDto::class, PrestashopShippingZoneListDtoNotConstructableException::class, (object) []],
+            'PrestashopTaxDto'                                => [PrestashopTaxDto::class, PrestashopTaxDtoNotConstructableException::class, (object) []],
+            'PrestashopTaxListDto'                            => [PrestashopTaxListDto::class, PrestashopTaxListDtoNotConstructableException::class, (object) []],
+            'ShippingZoneDto'                                 => [ShippingZoneDto::class, ShippingZoneDtoNotConstructableException::class, (object) []],
+            'ShippingZoneListDto'                             => [ShippingZoneListDto::class, ShippingZoneListDtoNotConstructableException::class, (object) []],
+            'ShippingZoneTranslationDto'                      => [ShippingZoneTranslationDto::class, ShippingZoneTranslationDtoNotConstructableException::class, (object) []],
             'StateDto'                                        => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
             'AddressDto'                                      => [AddressDto::class, AddressDtoNotConstructableException::class, (object) []],
             'ServiceAvailabilityReviewDto'                    => [ServiceAvailabilityReviewDto::class, ServiceAvailabilityReviewDtoNotConstructableException::class, (object) []],
