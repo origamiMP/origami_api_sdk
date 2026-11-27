@@ -42,6 +42,8 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Language\LanguageListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Module\ModuleLogDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\PaymentMethodRuleDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Module\PaymentMethodRuleListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Oauth\OauthTokenDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\ResetPasswordDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Password\SendResetPasswordEmailDto;
@@ -155,6 +157,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Language\LanguageListDtoNotConstruct
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\ModuleLogDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\PaymentMethodRuleDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Module\PaymentMethodRuleListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Oauth\OauthTokenDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\ResetPasswordDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Password\SendResetPasswordEmailDtoNotConstructableException;
@@ -409,6 +413,8 @@ class ApiResponseDtoTest extends TestCase
             'ModuleDto'                                       => [ModuleDto::class, ModuleDtoNotConstructableException::class, (object) []],
             'ModuleListDto'                                   => [ModuleListDto::class, ModuleListDtoNotConstructableException::class, (object) []],
             'ModuleLogDto'                                    => [ModuleLogDto::class, ModuleLogDtoNotConstructableException::class, (object) []],
+            'PaymentMethodRuleDto'                            => [PaymentMethodRuleDto::class, PaymentMethodRuleDtoNotConstructableException::class, (object) []],
+            'PaymentMethodRuleListDto'                        => [PaymentMethodRuleListDto::class, PaymentMethodRuleListDtoNotConstructableException::class, (object) []],
             'OauthTokenDto'                                   => [OauthTokenDto::class, OauthTokenDtoNotConstructableException::class, (object) []],
             'ResetPasswordDto'                                => [ResetPasswordDto::class, ResetPasswordDtoNotConstructableException::class, (object) []],
             'SendResetPasswordEmailDto'                       => [SendResetPasswordEmailDto::class, SendResetPasswordEmailDtoNotConstructableException::class, (object) []],

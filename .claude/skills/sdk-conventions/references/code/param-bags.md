@@ -20,7 +20,7 @@ A nested param bag goes:
 ## Class names
 
 - Request param bag: `<Verb><Resource>RequestParamBag`, the verb being the method of the API repository and the resource in the singular: `ListCountryRequestParamBag` for `OrigamiCountryGuestApiRepository::list()`, `CreateSellerBankAccountRequestParamBag` for `OrigamiSellerBankAccountDataApiRepository::create()`.
-- Nested param bag: `<Resource><Part>ParamBag` (`TaxTranslationParamBag`, `FormFieldOptionParamBag`), prefixed by the request when it lives in its subfolder (`CreateSellerLegalInformationParamBag`).
+- Nested param bag: `<Resource><Part>ParamBag` (`TaxTranslationParamBag`, `FormFieldOptionParamBag`), prefixed by the request when it lives in its subfolder (`CreateSellerLegalInformationParamBag`). When the nested param bag is an item of the resource itself, there is no part: the request prefix alone (`SyncPaymentMethodRule/SyncPaymentMethodRuleParamBag`, one rule of the list sent by `SyncPaymentMethodRuleRequestParamBag`).
 
 ## Class contents
 
@@ -31,13 +31,14 @@ In this order:
 3. the constructor, when the param bag sets a fixed value (`GetOauthTokenWithPasswordRequestParamBag`);
 4. `getAdditionalAvailableFilters()`, when the param bag uses `HasFilters`;
 5. the API keys (see « Keys sent to the API »): `getPropertiesToApiKeys()` for a nested param bag, otherwise `getJsonRequestParamsList()`, `getFormRequestParamsList()`, then `getQueryRequestParamsList()`;
-6. `getRequestMainDto()`, when the param bag uses `HasIncludes`.
+6. `getRequestMainDto()`, when the param bag uses `HasIncludes`;
+7. the private helpers of the custom casts (see « Custom cast »).
 
 A param bag calls the parent method of a list or of the rules (`...parent::getJsonRequestParamsList()`) only when its parent declares some itself (`GetOauthTokenRequestParamBag` for its two subclasses), never when the parent is `RequestParamBag` or `ParamBag`.
 
 ## Properties
 
-- `public` and typed, named in camelCase. A property left unset is not sent.
+- `public` and typed, named in camelCase. A property left unset is not sent. An amount is a `string` (see `SKILL.md`, « General rules »).
 - A backed enum, a `Carbon`, a nested param bag or an array of them is converted automatically (see « Custom cast »).
 - An array of nested param bags is documented by `/** @var array<int, TaxTranslationParamBag> */`.
 
@@ -81,6 +82,8 @@ A property value is converted by `ParamBag::castPropertyToEncodableType()` (nest
 ```
 
 The closure is only called when the property is set. Returning anything else than a single pair with a string key throws a `LogicException`. Model: `CreateSellerRequestParamBag`.
+
+When several properties need the same conversion, the closures call a `private` helper of the param bag, named after what it does and documented with why the API needs it, rather than repeating the conversion: `SyncPaymentMethodRuleParamBag::roundAmount()`, for `minAmount` and `maxAmount`.
 
 ## Includes
 

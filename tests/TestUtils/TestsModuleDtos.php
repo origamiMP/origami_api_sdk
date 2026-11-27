@@ -51,4 +51,21 @@ trait TestsModuleDtos
     {
         return new ModuleLogDto(Obj::fromArray($this->mockModuleLogApiData($override)));
     }
+
+    protected function mockPaymentMethodRuleApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'             => TestCase::unique(),
+            'module_id'      => TestCase::unique(),
+            'payment_method' => 'PAYIN',
+            // The amounts are sent as strings with 2 decimals.
+            'min_amount'         => '100.00',
+            'max_amount'         => null,
+            'customer_group_ids' => [TestCase::unique()],
+            'created_at'         => '2024-05-12 16:12:56',
+            'updated_at'         => '2024-05-12 16:12:56',
+        ];
+
+        return [...$baseData, ...$override];
+    }
 }
