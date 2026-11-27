@@ -34,6 +34,8 @@ class ListServiceBookingRequestParamBag extends RequestParamBag implements HasFi
             'starts_between',
             'service_slot_id',
             'service_planning_id',
+            // the filters of the plannings, `filter[planning][service_site_id]` for instance
+            'planning',
             'product_id',
             'reference',
         ];
