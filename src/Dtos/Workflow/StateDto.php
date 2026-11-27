@@ -2,6 +2,7 @@
 
 namespace OrigamiMp\OrigamiApiSdk\Dtos\Workflow;
 
+use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Workflow\StateDtoNotConstructableException;
@@ -27,22 +28,21 @@ class StateDto extends ApiResponseDto
 
     public string $textColor;
 
-    public ?string $name;
-
-    public ?string $actionName;
-
-    public ?string $description;
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var Collection<int, StateTranslationDto>
+     */
+    public Collection $translations;
 
     public static function getAvailableIncludes(): array
     {
         return [
-            // 'translations',
+            'translations' => StateTranslationDto::class,
             // 'next_states',
             // 'actions',
             // 'workflow',
-            // 'next_states_by_user_group_type',
             // 'restricted_next_states',
-            // 'actions_by_user_group_type',
             // 'restricted_actions',
             // 'order_seller_informations',
             // 'service_booking_informations',
@@ -52,17 +52,15 @@ class StateDto extends ApiResponseDto
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
-            'id'          => 'id',
-            'key'         => 'key',
-            'color'       => 'color',
-            'initial'     => 'initial',
-            'is_final'    => 'isFinal',
-            'readonly'    => 'readonly',
-            'workflow_id' => 'workflowId',
-            'text_color'  => 'textColor',
-            'name'        => 'name',
-            'action_name' => 'actionName',
-            'description' => 'description',
+            'id'           => 'id',
+            'key'          => 'key',
+            'color'        => 'color',
+            'initial'      => 'initial',
+            'is_final'     => 'isFinal',
+            'readonly'     => 'readonly',
+            'workflow_id'  => 'workflowId',
+            'text_color'   => 'textColor',
+            'translations' => fn (object $translations) => $this->translations = $this->collectIncluded($translations, StateTranslationDto::class),
         ];
     }
 
