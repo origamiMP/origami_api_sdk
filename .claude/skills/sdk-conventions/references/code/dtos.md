@@ -61,11 +61,22 @@ The exceptions:
 - the includes (the keys of `getAvailableIncludes()`), always optional;
 - the keys the API does not always send, listed in `getOptionalKeys()`, in dotted notation (`FormDto`: `fields_count`, sent only with `with_count`; `OrigamiApiErrorDto`: `data.field`).
 
-A key is optional only when the API itself omits it, or is going to: check its transformer in `origami_api` (a condition, a module hook, a feature flag) and the deprecations of its model (`SellerDto`: `fees_profile_id`, to be removed with a release flag), never assume it.
+A key is optional only when the API itself omits it, or is going to: check its transformer in `origami_api` (a condition, a module hook, a feature flag) and the deprecations of its model (`SellerDto`: `fees_profile_id`, to be removed with a release flag), never assume it. A deprecated key is not mapped at all in a new DTO (see « Deprecated API data »).
 
 An optional key missing leaves its property as declared: a nullable property gets `= null`, so that `toArray()` always exposes it (`SellerDto::$mangopayScaStatus`); a non-nullable one stays uninitialized (`UserDto::$state`).
 
 A value of the wrong type, an unknown enum value or an unreadable date makes the assignment fail, which makes the DTO not constructable as well. PHP converts compatible scalars on the way (`"42"` to an `int` property gives `42`).
+
+## Deprecated API data
+
+A new DTO, or a new key or include in an existing DTO, never maps data the API deprecates:
+
+- a key or an include removed behind a `V3_*` release flag (`ReleaseFlagNameEnum` in `origami_api`, e.g. `V3_DELETE_DEPRECATED_BY_USER_GROUP_TYPE_INCLUDES_FROM_STATE_TRANSFORMER`);
+- a key or an include documented as deprecated or to remove in its transformer (`@deprecated`, « Remove it at release … »).
+
+It is neither a property, nor a key of the data structure, nor a line of `getAvailableIncludes()`, not even commented: the DTO reads the data replacing it (`StateDto`: the names from the `translations` include, not the top-level `name`, `action_name` and `description`; `restricted_next_states` and `restricted_actions`, not their `*_by_user_group_type` versions). The include rule of `param-bags.md` does not apply to a deprecated include.
+
+A deprecated key that an existing DTO already maps is optional until it is removed (see « Missing keys », `SellerDto`: `fees_profile_id`).
 
 ## NotConstructable exception (`getDefaultNotConstructableException()`)
 
@@ -81,7 +92,7 @@ Every new DTO gets a line in the provider of `ApiResponseDtoTest`: see `referenc
 
 A DTO whose resource has includes on the API side uses the `HasIncludes` trait (`Traits\Dtos`). Why every include must be declared is in `param-bags.md`.
 
-`getAvailableIncludes()` lists **all** the includes the API offers for the resource, default ones and those restricted to some roles or behind a feature flag included:
+`getAvailableIncludes()` lists **all** the includes the API offers for the resource, default ones and those restricted to some roles or behind a feature flag included, deprecated ones excepted (see « Deprecated API data »):
 
 - an include whose DTO exists in the SDK is mapped to it, and read in `getDefaultDataStructureToProperties()` with `collectIncluded()` or `makeIncluded()`;
 - an include whose DTO does not exist yet stays **as a comment**, to keep the link with the API.

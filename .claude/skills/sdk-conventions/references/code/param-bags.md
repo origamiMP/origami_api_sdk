@@ -88,6 +88,8 @@ The closure is only called when the property is set. Returning anything else tha
 
 **If an API request offers an include, whether by default or on demand, the param bag of the SDK method calling it must allow providing it.**
 
+A deprecated include is the only exception: see `dtos.md`, « Deprecated API data ».
+
 The SDK must not restrict what the API can do: an include it cannot request forces the application to make several calls, or to bypass the SDK. Default includes are concerned too: requesting them explicitly makes the call independent from a change of the API defaults, and allows requesting their nested includes (e.g. `pages.sections`).
 
 The SDK is under development: the rule applies to the param bags and DTOs **that exist in the SDK**. Creating the missing DTOs of included resources is not mandatory, but the DTO still lists every API include, as a comment when its DTO does not exist (see `dtos.md`).
