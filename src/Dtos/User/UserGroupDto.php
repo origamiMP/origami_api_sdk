@@ -4,6 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\User;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Enums\Dtos\User\UserGroupDtoTypeEnum;
@@ -95,6 +96,13 @@ class UserGroupDto extends ApiResponseDto
      */
     public Collection $users;
 
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var Collection<int, CustomerGroupDto>
+     */
+    public Collection $customerGroups;
+
     public static function getAvailableIncludes(): array
     {
         return [
@@ -116,7 +124,7 @@ class UserGroupDto extends ApiResponseDto
             // 'translations',
             // 'user_group_users',
             // 'mandates',
-            // 'customer_groups',
+            'customer_groups' => CustomerGroupDto::class,
         ];
     }
 
@@ -153,9 +161,10 @@ class UserGroupDto extends ApiResponseDto
             'email_validated'      => 'emailValidated',
             'phone_validated'      => 'phoneValidated',
 
-            'documents'     => fn (object $documents) => $this->documents = $this->collectIncluded($documents, SellerDocumentDto::class),
-            'bank_accounts' => fn (object $bankAccounts) => $this->bankAccounts = $this->collectIncluded($bankAccounts, SellerBankAccountDto::class),
-            'users'         => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
+            'documents'       => fn (object $documents) => $this->documents = $this->collectIncluded($documents, SellerDocumentDto::class),
+            'bank_accounts'   => fn (object $bankAccounts) => $this->bankAccounts = $this->collectIncluded($bankAccounts, SellerBankAccountDto::class),
+            'users'           => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
+            'customer_groups' => fn (object $customerGroups) => $this->customerGroups = $this->collectIncluded($customerGroups, CustomerGroupDto::class),
         ];
 
         return [
