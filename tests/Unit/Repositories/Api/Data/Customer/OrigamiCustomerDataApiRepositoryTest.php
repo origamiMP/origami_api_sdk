@@ -3,6 +3,7 @@
 namespace Tests\Unit\Repositories\Api\Data\Customer;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\CreateCustomer\CreateCustomerUserParamBag;
@@ -76,6 +77,33 @@ class OrigamiCustomerDataApiRepositoryTest extends TestCase
     }
 
     /**
+     * `GET customers` should read the `customer_groups` include, with the default flag of each group.
+     */
+    public function test_list_case_4(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse($this->mockApiPaginatedListData([
+            $this->mockCustomerApiData(['customer_groups' => ['data' => [
+                $this->mockCustomerGroupApiData(['id' => 42, 'is_default' => 1]),
+                $this->mockCustomerGroupApiData(['id' => 43, 'is_default' => 0]),
+            ]]]),
+        ])));
+        $paramBag = new ListCustomerRequestParamBag;
+        $paramBag->setIncludes(['customer_groups']);
+
+        $customers = (new OrigamiCustomerDataApiRepository($restClient))->list($paramBag);
+
+        $this->assertLastApiRequestQueryWas([
+            'page'          => '1',
+            'item_per_page' => '20',
+            'include'       => ['customer_groups'],
+        ]);
+        $customerGroups = $customers->data->first()->customerGroups;
+        $this->assertContainsOnlyInstancesOf(CustomerGroupDto::class, $customerGroups);
+        $this->assertSame([42, 43], $customerGroups->pluck('id')->all());
+        $this->assertSame([true, false], $customerGroups->pluck('isDefault')->all());
+    }
+
+    /**
      * `POST customers` should send the customer and the user created with it, and request the includes as query.
      */
     public function test_create_case_1(): void
@@ -128,5 +156,26 @@ class OrigamiCustomerDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestQueryWas([]);
         $this->assertLastApiRequestJsonWas(['firstname' => 'Jane', 'lastname' => 'Doe', 'email' => 'jane@doe.com']);
+    }
+
+    /**
+     * `POST customers` should request the `customer_groups` include, and read it.
+     */
+    public function test_create_case_3(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockCustomerApiData([
+            'customer_groups' => ['data' => [$this->mockCustomerGroupApiData(['id' => 42, 'is_default' => 1])]],
+        ])]));
+        $paramBag = new CreateCustomerRequestParamBag;
+        $paramBag->firstName = 'Jane';
+        $paramBag->lastName = 'Doe';
+        $paramBag->email = 'jane@doe.com';
+        $paramBag->setIncludes(['customer_groups']);
+
+        $customer = (new OrigamiCustomerDataApiRepository($restClient))->create($paramBag);
+
+        $this->assertLastApiRequestQueryWas(['include' => ['customer_groups']]);
+        $this->assertContainsOnlyInstancesOf(CustomerGroupDto::class, $customer->customerGroups);
+        $this->assertSame([42], $customer->customerGroups->pluck('id')->all());
     }
 }
