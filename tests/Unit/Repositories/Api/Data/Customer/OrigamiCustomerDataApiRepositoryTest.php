@@ -4,9 +4,11 @@ namespace Tests\Unit\Repositories\Api\Data\Customer;
 
 use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Payment\PaymentPspCardDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\CreateCustomer\CreateCustomerUserParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\CreateCustomerRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\GetCustomerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\ListCustomerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\Customer\OrigamiCustomerDataApiRepository;
 use Tests\TestCase;
@@ -73,6 +75,42 @@ class OrigamiCustomerDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestQueryWas([]);
         $this->assertSame(42, $customers->data->first()->id);
         $this->assertFalse(isset($customers->data->first()->users));
+    }
+
+    public function test_get_case_1(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockCustomerApiData(['id' => 42])]));
+
+        $customer = (new OrigamiCustomerDataApiRepository($restClient))->get(42);
+
+        $this->assertLastApiRequestWas('GET', 'customers/42');
+        $this->assertLastApiRequestQueryWas([]);
+        $this->assertInstanceOf(CustomerDto::class, $customer);
+        $this->assertSame(42, $customer->id);
+        $this->assertFalse(isset($customer->pspCards));
+    }
+
+    /**
+     * `GET customers/{id}` should only request the available includes, and read the saved cards with their brand and
+     * last digits.
+     */
+    public function test_get_case_2(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => $this->mockCustomerApiData([
+            'id'        => 42,
+            'psp_cards' => ['data' => [$this->mockPaymentPspCardApiData(['id' => 7])]],
+        ])]));
+        $paramBag = new GetCustomerRequestParamBag;
+        $paramBag->setIncludes(['psp_cards', 'psp_wallets', 'unknown']);
+
+        $customer = (new OrigamiCustomerDataApiRepository($restClient))->get(42, $paramBag);
+
+        $this->assertLastApiRequestQueryWas(['include' => ['psp_cards']]);
+        $this->assertContainsOnlyInstancesOf(PaymentPspCardDto::class, $customer->pspCards);
+        $card = $customer->pspCards->first();
+        $this->assertSame(7, $card->id);
+        $this->assertSame('visa', $card->brand);
+        $this->assertSame('4242', $card->last4);
     }
 
     /**

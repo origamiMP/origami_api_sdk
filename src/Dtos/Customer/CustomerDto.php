@@ -4,6 +4,7 @@ namespace OrigamiMp\OrigamiApiSdk\Dtos\Customer;
 
 use Illuminate\Support\Collection;
 use OrigamiMp\OrigamiApiSdk\Dtos\ApiResponseDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Payment\PaymentPspCardDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerDtoNotConstructableException;
@@ -38,6 +39,14 @@ class CustomerDto extends ApiResponseDto
      */
     public Collection $users;
 
+    /**
+     * Its validated cards, given to an operator or to the customer only. May be undefined if the corresponding data was
+     * not included.
+     *
+     * @var Collection<int, PaymentPspCardDto>
+     */
+    public Collection $pspCards;
+
     public static function getAvailableIncludes(): array
     {
         return [
@@ -51,6 +60,7 @@ class CustomerDto extends ApiResponseDto
             // 'order_addresses',
             // 'payment_reports',
             // 'product_offers',
+            'psp_cards' => PaymentPspCardDto::class,
             // 'psp_wallets',
             // 'shipping_offers',
             // 'subscriptions',
@@ -71,6 +81,7 @@ class CustomerDto extends ApiResponseDto
             'email'                => 'email',
             'phone'                => 'phone',
             'users'                => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
+            'psp_cards'            => fn (object $cards) => $this->pspCards = $this->collectIncluded($cards, PaymentPspCardDto::class),
             ...$this->getTimestampsAsDataStructureToProperties(),
         ];
     }

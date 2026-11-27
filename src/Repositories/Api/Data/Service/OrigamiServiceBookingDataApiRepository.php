@@ -11,6 +11,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingDtoNotConstruc
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Service\ServiceBookingListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ConfirmServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\CreateServiceBookingRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\GetServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\ListServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\RescheduleServiceBookingRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Service\UpdateServiceBookingRequestParamBag;
@@ -29,6 +30,20 @@ class OrigamiServiceBookingDataApiRepository extends OrigamiDataApiRepository
         $responseContent = $this->decodeResponse($response);
 
         return new ServiceBookingListDto($responseContent);
+    }
+
+    /**
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
+     * @throws ServiceBookingDtoNotConstructableException
+     */
+    public function get(int $id, ?GetServiceBookingRequestParamBag $paramBag = null): ServiceBookingDto
+    {
+        $response = $this->restClient->get("catalog/service-bookings/{$id}", $paramBag);
+        $responseContent = $this->decodeResponse($response);
+
+        return new ServiceBookingDto($this->getResponseContentData($responseContent));
     }
 
     /**

@@ -10,6 +10,7 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Client\HttpClientException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\CreateCustomerRequestParamBag;
+use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\GetCustomerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\ParamBags\Data\Customer\ListCustomerRequestParamBag;
 use OrigamiMp\OrigamiApiSdk\Repositories\Api\Data\OrigamiDataApiRepository;
 
@@ -26,6 +27,20 @@ class OrigamiCustomerDataApiRepository extends OrigamiDataApiRepository
         $responseContent = $this->decodeResponse($response);
 
         return new CustomerListDto($responseContent);
+    }
+
+    /**
+     * @throws HttpClientException
+     * @throws OrigamiApiUnknownException
+     * @throws OrigamiApiResponseWithoutDataException
+     * @throws CustomerDtoNotConstructableException
+     */
+    public function get(int $id, ?GetCustomerRequestParamBag $paramBag = null): CustomerDto
+    {
+        $response = $this->restClient->get("customers/{$id}", $paramBag);
+        $responseContent = $this->decodeResponse($response);
+
+        return new CustomerDto($this->getResponseContentData($responseContent));
     }
 
     /**

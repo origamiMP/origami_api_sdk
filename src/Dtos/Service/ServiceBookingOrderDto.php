@@ -13,13 +13,24 @@ class ServiceBookingOrderDto extends ApiResponseDto
 {
     public int $id;
 
+    /** The order holding the order of the seller, a payment being made on it; null from an API that does not send it yet. */
+    public ?int $orderId = null;
+
     public ?string $reference;
 
     protected function getDefaultDataStructureToProperties(): array
     {
         return [
             'id'        => 'id',
+            'order_id'  => 'orderId',
             'reference' => 'reference',
+        ];
+    }
+
+    protected function getOptionalKeys(): array
+    {
+        return [
+            'order_id',
         ];
     }
 
