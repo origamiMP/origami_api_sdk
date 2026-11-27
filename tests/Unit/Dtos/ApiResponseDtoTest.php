@@ -8,6 +8,9 @@ use OrigamiMp\OrigamiApiSdk\Dtos\Configuration\ConfigurationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Country\CountryListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerListDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\CustomField\CustomFieldGroupDto;
@@ -120,6 +123,9 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Configuration\ConfigurationDtoNotCon
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Country\CountryListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerGroupDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerGroupListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerGroupTranslationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Customer\CustomerListDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\CustomField\CustomFieldGroupDtoNotConstructableException;
@@ -381,6 +387,9 @@ class ApiResponseDtoTest extends TestCase
             'CustomFieldValueDto'                             => [CustomFieldValueDto::class, CustomFieldValueDtoNotConstructableException::class, (object) []],
             'CustomFieldValueListDto'                         => [CustomFieldValueListDto::class, CustomFieldValueListDtoNotConstructableException::class, (object) []],
             'CustomerDto'                                     => [CustomerDto::class, CustomerDtoNotConstructableException::class, (object) []],
+            'CustomerGroupDto'                                => [CustomerGroupDto::class, CustomerGroupDtoNotConstructableException::class, (object) []],
+            'CustomerGroupListDto'                            => [CustomerGroupListDto::class, CustomerGroupListDtoNotConstructableException::class, (object) []],
+            'CustomerGroupTranslationDto'                     => [CustomerGroupTranslationDto::class, CustomerGroupTranslationDtoNotConstructableException::class, (object) []],
             'CustomerListDto'                                 => [CustomerListDto::class, CustomerListDtoNotConstructableException::class, (object) []],
             'OrigamiApiErrorDto'                              => [OrigamiApiErrorDto::class, OrigamiApiErrorDtoNotConstructableException::class, (object) []],
             'OrigamiApiErrorsDto'                             => [OrigamiApiErrorsDto::class, OrigamiApiErrorsDtoNotConstructableException::class, (object) []],

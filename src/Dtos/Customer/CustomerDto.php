@@ -38,11 +38,18 @@ class CustomerDto extends ApiResponseDto
      */
     public Collection $users;
 
+    /**
+     * May be undefined if the corresponding data was not included.
+     *
+     * @var Collection<int, CustomerGroupDto>
+     */
+    public Collection $customerGroups;
+
     public static function getAvailableIncludes(): array
     {
         return [
             // 'bank_accounts',
-            // 'customer_groups',
+            'customer_groups' => CustomerGroupDto::class,
             // 'documents',
             // 'invoices',
             // 'legal_information',
@@ -70,6 +77,7 @@ class CustomerDto extends ApiResponseDto
             'name'                 => 'name',
             'email'                => 'email',
             'phone'                => 'phone',
+            'customer_groups'      => fn (object $customerGroups) => $this->customerGroups = $this->collectIncluded($customerGroups, CustomerGroupDto::class),
             'users'                => fn (object $users) => $this->users = $this->collectIncluded($users, UserDto::class),
             ...$this->getTimestampsAsDataStructureToProperties(),
         ];

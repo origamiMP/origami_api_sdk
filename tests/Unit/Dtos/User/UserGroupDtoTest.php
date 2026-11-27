@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Dtos\User;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerBankAccountDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Seller\SellerDocumentDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserDto;
@@ -51,6 +52,21 @@ class UserGroupDtoTest extends TestCase
     }
 
     /**
+     * The `customer_groups` include should be read as a collection of customer groups, with their default flag.
+     */
+    public function test_customer_groups_case_1(): void
+    {
+        $userGroupDto = $this->mockUserGroupDto(['customer_groups' => ['data' => [
+            $this->mockCustomerGroupApiData(['id' => 1, 'is_default' => 1]),
+            $this->mockCustomerGroupApiData(['id' => 2, 'is_default' => 0]),
+        ]]]);
+
+        $this->assertContainsOnlyInstancesOf(CustomerGroupDto::class, $userGroupDto->customerGroups);
+        $this->assertSame([1, 2], $userGroupDto->customerGroups->pluck('id')->all());
+        $this->assertSame([true, false], $userGroupDto->customerGroups->pluck('isDefault')->all());
+    }
+
+    /**
      * Without any include, the included collections should stay undefined.
      */
     public function test_includes_case_1(): void
@@ -60,5 +76,6 @@ class UserGroupDtoTest extends TestCase
         $this->assertFalse(isset($userGroupDto->users));
         $this->assertFalse(isset($userGroupDto->documents));
         $this->assertFalse(isset($userGroupDto->bankAccounts));
+        $this->assertFalse(isset($userGroupDto->customerGroups));
     }
 }

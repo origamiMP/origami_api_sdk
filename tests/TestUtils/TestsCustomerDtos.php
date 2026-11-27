@@ -2,6 +2,8 @@
 
 namespace Tests\TestUtils;
 
+use OrigamiMp\OrigamiApiSdk\Dtos\Customer\CustomerGroupDto;
+use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use Tests\TestCase;
 
 trait TestsCustomerDtos
@@ -24,5 +26,36 @@ trait TestsCustomerDtos
         ];
 
         return [...$baseData, ...$override];
+    }
+
+    /**
+     * The `is_default` key is only sent when the group is included from a customer: add it by override, like the
+     * `translations` include.
+     */
+    protected function mockCustomerGroupApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'           => TestCase::unique(),
+            'external_uid' => null,
+        ];
+
+        return [...$baseData, ...$override];
+    }
+
+    protected function mockCustomerGroupTranslationApiData(array $override = []): array
+    {
+        $baseData = [
+            'id'          => TestCase::unique(),
+            'name'        => 'Professionals',
+            'language_id' => TestCase::unique(),
+            'locale'      => 'en',
+        ];
+
+        return [...$baseData, ...$override];
+    }
+
+    protected function mockCustomerGroupDto(array $override = []): CustomerGroupDto
+    {
+        return new CustomerGroupDto(Obj::fromArray($this->mockCustomerGroupApiData($override)));
     }
 }
