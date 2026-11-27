@@ -17,9 +17,9 @@ class PaymentMethodRuleDto extends ApiResponseDto
 
     public string $paymentMethod;
 
-    public ?float $minAmount;
+    public ?string $minAmount;
 
-    public ?float $maxAmount;
+    public ?string $maxAmount;
 
     /** @var array<int, int> */
     public array $customerGroupIds;
@@ -30,8 +30,8 @@ class PaymentMethodRuleDto extends ApiResponseDto
             'id'                 => 'id',
             'module_id'          => 'moduleId',
             'payment_method'     => 'paymentMethod',
-            'min_amount'         => fn (?string $minAmount) => $this->minAmount = $this->readAmount($minAmount),
-            'max_amount'         => fn (?string $maxAmount) => $this->maxAmount = $this->readAmount($maxAmount),
+            'min_amount'         => 'minAmount',
+            'max_amount'         => 'maxAmount',
             'customer_group_ids' => 'customerGroupIds',
             ...$this->getTimestampsAsDataStructureToProperties(),
         ];
@@ -42,13 +42,5 @@ class PaymentMethodRuleDto extends ApiResponseDto
         ?\Throwable $previous = null,
     ): ApiResponseDtoNotConstructableException {
         return new PaymentMethodRuleDtoNotConstructableException($msg, previous: $previous);
-    }
-
-    /**
-     * The API casts the amounts as `decimal:2`: it sends them as strings, or null when the rule has no bound.
-     */
-    protected function readAmount(?string $amount): ?float
-    {
-        return is_null($amount) ? null : (float) $amount;
     }
 }

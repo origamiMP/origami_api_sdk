@@ -36,7 +36,7 @@ trait TestsModuleDtos
             'id'             => TestCase::unique(),
             'module_id'      => TestCase::unique(),
             'payment_method' => 'PAYIN',
-            // The API casts the amounts as `decimal:2`: they are sent as strings.
+            // The amounts are sent as strings with 2 decimals.
             'min_amount'         => '100.00',
             'max_amount'         => null,
             'customer_group_ids' => [TestCase::unique()],

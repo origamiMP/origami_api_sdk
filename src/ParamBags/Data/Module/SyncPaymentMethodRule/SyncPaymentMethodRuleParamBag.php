@@ -11,9 +11,9 @@ class SyncPaymentMethodRuleParamBag extends ParamBag
 {
     public string $paymentMethod;
 
-    public ?float $minAmount;
+    public ?string $minAmount;
 
-    public ?float $maxAmount;
+    public ?string $maxAmount;
 
     /** @var array<int, int> */
     public array $customerGroupIds;
@@ -22,17 +22,26 @@ class SyncPaymentMethodRuleParamBag extends ParamBag
     {
         return [
             'paymentMethod'    => 'payment_method',
-            'minAmount'        => fn (?float $minAmount) => ['min_amount' => $this->roundAmount($minAmount)],
-            'maxAmount'        => fn (?float $maxAmount) => ['max_amount' => $this->roundAmount($maxAmount)],
+            'minAmount'        => fn (?string $minAmount) => ['min_amount' => $this->roundAmount($minAmount)],
+            'maxAmount'        => fn (?string $maxAmount) => ['max_amount' => $this->roundAmount($maxAmount)],
             'customerGroupIds' => 'customer_group_ids',
         ];
     }
 
     /**
-     * The API only accepts amounts with at most 2 decimals: a computed float (`0.1 + 0.2`) would be refused.
+     * The API only accepts amounts with at most 2 decimals: an amount with more (`'99.999'`) is rounded half up
+     * (`'100.00'`). A value that is not a number is sent as is, for the API to refuse it.
      */
-    private function roundAmount(?float $amount): ?float
+    private function roundAmount(?string $amount): ?string
     {
-        return is_null($amount) ? null : round($amount, 2);
+        if (is_null($amount)) {
+            return null;
+        }
+
+        try {
+            return bcround($amount, 2);
+        } catch (\ValueError) {
+            return $amount;
+        }
     }
 }

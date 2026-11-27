@@ -12,7 +12,7 @@ class OrigamiPaymentMethodRuleDataApiRepositoryTest extends TestCase
 {
     /**
      * `GET modules/{id}/payment_method_rules` answers a non-paginated list: each of its items should be read as a
-     * rule, its amounts (sent as strings) as floats, or null when not set.
+     * rule, its amounts as the strings the API sends, or null when not set.
      */
     public function test_list_case_1(): void
     {
@@ -27,8 +27,8 @@ class OrigamiPaymentMethodRuleDataApiRepositoryTest extends TestCase
         $this->assertLastApiRequestQueryWas([]);
         $this->assertInstanceOf(PaymentMethodRuleListDto::class, $paymentMethodRules);
         $this->assertSame([1, 2], $paymentMethodRules->data->pluck('id')->all());
-        $this->assertSame([100.0, null], $paymentMethodRules->data->pluck('minAmount')->all());
-        $this->assertSame([null, 500.5], $paymentMethodRules->data->pluck('maxAmount')->all());
+        $this->assertSame(['100.00', null], $paymentMethodRules->data->pluck('minAmount')->all());
+        $this->assertSame([null, '500.50'], $paymentMethodRules->data->pluck('maxAmount')->all());
         $this->assertSame([[], [42, 43]], $paymentMethodRules->data->pluck('customerGroupIds')->all());
     }
 
@@ -57,13 +57,13 @@ class OrigamiPaymentMethodRuleDataApiRepositoryTest extends TestCase
         ]]));
         $cardRule = new SyncPaymentMethodRuleParamBag;
         $cardRule->paymentMethod = 'PAYIN';
-        $cardRule->minAmount = 100.0;
+        $cardRule->minAmount = '100.00';
         $cardRule->maxAmount = null;
         $cardRule->customerGroupIds = [42, 43];
         $debitRule = new SyncPaymentMethodRuleParamBag;
         $debitRule->paymentMethod = 'DEBIT_AGREEMENT';
         $debitRule->minAmount = null;
-        $debitRule->maxAmount = 500.5;
+        $debitRule->maxAmount = '500.50';
         $debitRule->customerGroupIds = [];
         $paramBag = new SyncPaymentMethodRuleRequestParamBag;
         $paramBag->rules = [$cardRule, $debitRule];
@@ -72,8 +72,8 @@ class OrigamiPaymentMethodRuleDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('PUT', 'modules/42/payment_method_rules');
         $this->assertLastApiRequestJsonWas(['rules' => [
-            ['payment_method' => 'PAYIN', 'min_amount' => 100.0, 'max_amount' => null, 'customer_group_ids' => [42, 43]],
-            ['payment_method' => 'DEBIT_AGREEMENT', 'min_amount' => null, 'max_amount' => 500.5, 'customer_group_ids' => []],
+            ['payment_method' => 'PAYIN', 'min_amount' => '100.00', 'max_amount' => null, 'customer_group_ids' => [42, 43]],
+            ['payment_method' => 'DEBIT_AGREEMENT', 'min_amount' => null, 'max_amount' => '500.50', 'customer_group_ids' => []],
         ]]);
         $this->assertInstanceOf(PaymentMethodRuleListDto::class, $paymentMethodRules);
         $this->assertSame([1, 2], $paymentMethodRules->data->pluck('id')->all());
@@ -115,21 +115,39 @@ class OrigamiPaymentMethodRuleDataApiRepositoryTest extends TestCase
     }
 
     /**
-     * `PUT modules/{id}/payment_method_rules` should round the amounts to 2 decimals, the only precision the API
-     * accepts: a computed amount (`0.1 + 0.2` gives `0.30000000000000004`) would otherwise be refused.
+     * `PUT modules/{id}/payment_method_rules` should round the amounts half up to 2 decimals, the only precision the
+     * API accepts, and send an amount without decimals with its 2 decimals.
      */
     public function test_sync_case_4(): void
     {
         $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [$this->mockPaymentMethodRuleApiData()]]));
         $rule = new SyncPaymentMethodRuleParamBag;
         $rule->paymentMethod = 'PAYIN';
-        $rule->minAmount = 0.1 + 0.2;
-        $rule->maxAmount = 99.999;
+        $rule->minAmount = '0.305';
+        $rule->maxAmount = '100';
         $paramBag = new SyncPaymentMethodRuleRequestParamBag;
         $paramBag->rules = [$rule];
 
         (new OrigamiPaymentMethodRuleDataApiRepository($restClient))->sync(42, $paramBag);
 
-        $this->assertLastApiRequestJsonWas(['rules' => [['payment_method' => 'PAYIN', 'min_amount' => 0.3, 'max_amount' => 100.0]]]);
+        $this->assertLastApiRequestJsonWas(['rules' => [['payment_method' => 'PAYIN', 'min_amount' => '0.31', 'max_amount' => '100.00']]]);
+    }
+
+    /**
+     * `PUT modules/{id}/payment_method_rules` should send an amount that is not a number as is, for the API to refuse
+     * it.
+     */
+    public function test_sync_case_5(): void
+    {
+        $restClient = $this->mockDataRestClientReturning($this->jsonResponse(['data' => [$this->mockPaymentMethodRuleApiData()]]));
+        $rule = new SyncPaymentMethodRuleParamBag;
+        $rule->paymentMethod = 'PAYIN';
+        $rule->minAmount = '12,50';
+        $paramBag = new SyncPaymentMethodRuleRequestParamBag;
+        $paramBag->rules = [$rule];
+
+        (new OrigamiPaymentMethodRuleDataApiRepository($restClient))->sync(42, $paramBag);
+
+        $this->assertLastApiRequestJsonWas(['rules' => [['payment_method' => 'PAYIN', 'min_amount' => '12,50']]]);
     }
 }
