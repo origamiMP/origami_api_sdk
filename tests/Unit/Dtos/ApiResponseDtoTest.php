@@ -114,6 +114,8 @@ use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationSen
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDto;
 use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateListDto;
+use OrigamiMp\OrigamiApiSdk\Dtos\Workflow\StateTranslationDto;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Address\AddressDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\ApiResponseDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Configuration\ConfigurationDtoNotConstructableException;
@@ -226,6 +228,8 @@ use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupIn
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationStatsDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\User\UserGroupInvitation\UserGroupInvitationValidateDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Workflow\StateDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Workflow\StateListDtoNotConstructableException;
+use OrigamiMp\OrigamiApiSdk\Exceptions\Dtos\Workflow\StateTranslationDtoNotConstructableException;
 use OrigamiMp\OrigamiApiSdk\Helpers\Support\Obj;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Fixtures\IncludesDtoFixture;
@@ -427,6 +431,8 @@ class ApiResponseDtoTest extends TestCase
             'ServiceSlotDto'                                  => [ServiceSlotDto::class, ServiceSlotDtoNotConstructableException::class, (object) []],
             'ServiceSlotListDto'                              => [ServiceSlotListDto::class, ServiceSlotListDtoNotConstructableException::class, (object) []],
             'StateDto'                                        => [StateDto::class, StateDtoNotConstructableException::class, (object) []],
+            'StateListDto'                                    => [StateListDto::class, StateListDtoNotConstructableException::class, (object) []],
+            'StateTranslationDto'                             => [StateTranslationDto::class, StateTranslationDtoNotConstructableException::class, (object) []],
             'AddressDto'                                      => [AddressDto::class, AddressDtoNotConstructableException::class, (object) []],
             'ServiceAvailabilityReviewDto'                    => [ServiceAvailabilityReviewDto::class, ServiceAvailabilityReviewDtoNotConstructableException::class, (object) []],
             'ServiceAvailabilityReviewApproveSeriesDto'       => [ServiceAvailabilityReviewApproveSeriesDto::class, ServiceAvailabilityReviewApproveSeriesDtoNotConstructableException::class, (object) []],
