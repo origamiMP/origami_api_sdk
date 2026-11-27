@@ -38,7 +38,7 @@ A param bag calls the parent method of a list or of the rules (`...parent::getJs
 
 ## Properties
 
-- `public` and typed, named in camelCase. A property left unset is not sent.
+- `public` and typed, named in camelCase. A property left unset is not sent. An amount is a `string` (see `SKILL.md`, « General rules »).
 - A backed enum, a `Carbon`, a nested param bag or an array of them is converted automatically (see « Custom cast »).
 - An array of nested param bags is documented by `/** @var array<int, TaxTranslationParamBag> */`.
 

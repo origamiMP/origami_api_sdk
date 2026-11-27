@@ -35,7 +35,7 @@ Overriding the constructor stays exceptional: `FeatureFlagListDto` wraps a bare 
 
 - `public` and typed. A value the API can send as `null` gives a nullable type (`?int $moduleId`).
 - Named in camelCase after the API key (`id_scs_tax` → `$idScsTax`), unless another name makes more sense.
-- An enum value is a backed enum (`TaxDtoTypeEnum`), a date a `Carbon` (`HasTimestamps`), a list of DTOs a `Collection` documented by `/** @var Collection<int, TaxTranslationDto> */`.
+- An enum value is a backed enum (`TaxDtoTypeEnum`), a date a `Carbon` (`HasTimestamps`), an amount a `string` (see `SKILL.md`, « General rules »), a list of DTOs a `Collection` documented by `/** @var Collection<int, TaxTranslationDto> */`.
 - An include property stays uninitialized when the include was not requested: its docblock says « May be undefined if the corresponding data was not included. » (`UserDto::$userGroups`), except a nullable single item include, declared `= null` (see « Declaring includes »).
 
 ## Data structure (`getDefaultDataStructureToProperties()`)
