@@ -26,6 +26,9 @@ class ServicePlanningDto extends ApiResponseDto
     /** Null when the offer of the planning is gone. */
     public ?int $sellerId;
 
+    /** Whether the offer of the planning is active, a planning of an inactive offer being not bookable; null from an API that does not send it yet. */
+    public ?bool $offerIsActive = null;
+
     public string $name;
 
     public ServicePlanningDtoBookingUnitEnum $bookingUnit;
@@ -75,6 +78,7 @@ class ServicePlanningDto extends ApiResponseDto
             'product_offer_id'      => 'productOfferId',
             'product_id'            => 'productId',
             'seller_id'             => 'sellerId',
+            'offer_is_active'       => 'offerIsActive',
             'name'                  => 'name',
             'booking_unit'          => fn ($bookingUnit) => $this->bookingUnit = ServicePlanningDtoBookingUnitEnum::from($bookingUnit),
             'slot_duration_minutes' => 'slotDurationMinutes',
@@ -86,6 +90,13 @@ class ServicePlanningDto extends ApiResponseDto
             'product'               => fn (object $product) => $this->product = $this->makeIncluded($product, ProductDto::class),
             'seller'                => fn (object $seller) => $this->seller = $this->makeIncluded($seller, SellerDto::class),
             'slots'                 => fn (object $slots) => $this->slots = $this->collectIncluded($slots, ServiceSlotDto::class),
+        ];
+    }
+
+    protected function getOptionalKeys(): array
+    {
+        return [
+            'offer_is_active',
         ];
     }
 

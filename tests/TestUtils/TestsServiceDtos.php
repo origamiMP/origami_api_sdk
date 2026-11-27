@@ -71,6 +71,7 @@ trait TestsServiceDtos
             'product_offer_id'            => TestCase::unique(),
             'product_id'                  => TestCase::unique(),
             'seller_id'                   => TestCase::unique(),
+            'offer_is_active'             => true,
             'name'                        => 'Haircut',
             'booking_unit'                => ServicePlanningDtoBookingUnitEnum::TIME_SLOT->value,
             'slot_duration_minutes'       => 45,
