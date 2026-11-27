@@ -34,7 +34,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
             $this->mockServiceBookingApiData(['id' => 2, 'status' => ServiceBookingDtoStatusEnum::HONORED->value]),
         ])));
         $paramBag = new ListServiceBookingRequestParamBag;
-        $paramBag->setFilters(['seller_id' => 8, 'starts_between' => '2024-05-12,2024-05-12', 'status' => 'confirmed,honored']);
+        $paramBag->setFilters(['seller_id' => 8, 'starts_between' => '2024-05-12,2024-05-12', 'status' => 'confirmed,honored', 'planning' => ['service_site_id' => 3]]);
         $paramBag->setWithoutPagination(true);
         $paramBag->setSearch('john');
 
@@ -42,7 +42,7 @@ class OrigamiServiceBookingDataApiRepositoryTest extends TestCase
 
         $this->assertLastApiRequestWas('GET', 'catalog/service-bookings');
         $this->assertLastApiRequestQueryWas([
-            'filter'             => ['seller_id' => '8', 'starts_between' => '2024-05-12,2024-05-12', 'status' => 'confirmed,honored'],
+            'filter'             => ['seller_id' => '8', 'starts_between' => '2024-05-12,2024-05-12', 'status' => 'confirmed,honored', 'planning' => ['service_site_id' => '3']],
             'page'               => '1',
             'item_per_page'      => '20',
             'without_pagination' => '1',
