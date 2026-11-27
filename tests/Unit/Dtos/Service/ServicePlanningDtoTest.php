@@ -30,4 +30,18 @@ class ServicePlanningDtoTest extends TestCase
             'over a range of days' => ['day_range', ServicePlanningDtoBookingUnitEnum::DAY_RANGE],
         ];
     }
+
+    /**
+     * Whether the offer of a planning is active should be read, and be null from an API that does not send it yet.
+     */
+    public function test_offer_is_active_case_1(): void
+    {
+        $data = $this->mockServicePlanningApiData(['offer_is_active' => false]);
+        $planning = new ServicePlanningDto(Obj::fromArray($data));
+        unset($data['offer_is_active']);
+        $older = new ServicePlanningDto(Obj::fromArray($data));
+
+        $this->assertFalse($planning->offerIsActive);
+        $this->assertNull($older->offerIsActive);
+    }
 }
