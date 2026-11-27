@@ -12,6 +12,7 @@
     ],
     "require": {
         "php": "^8.4",
+        "ext-bcmath": "*",
         "guzzlehttp/guzzle": "^7.9",
         "illuminate/support": "^13.0",
         "nesbot/carbon": "^3.9"
